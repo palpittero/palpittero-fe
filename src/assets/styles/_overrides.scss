@@ -1,0 +1,39 @@
+// Suggested location to add your overrides so that migration would be easy by just updating the SASS folder in the future
+body {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+  }
+}
+
+.field {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.p-datatable-wrapper {
+  overflow: auto;
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+.layout-sidebar {
+  z-index: 0;
+}
+
+
+.layout-mobile-sidebar-active {
+  .layout-sidebar {
+    z-index: 999;
+  }
+}

@@ -1,0 +1,31 @@
+{
+    "folders": [{
+      "path": "."
+    }],
+    "settings": {
+      "editor.formatOnSave": false,
+      "editor.tabSize": 2,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+      },
+      "eslint.options": {
+        "extensions": [
+          ".js",
+          ".vue",
+        ]
+      },
+      "eslint.validate": [
+        "vue",
+        "html",
+        "hollowtree.vue-snippets",
+        "javascript",
+        "vue-html",
+      ],
+      "vetur.validation.script": false,
+      "vetur.validation.template": false,
+    },
+    "extensions": {
+      "recommendations": []
+    }
+  }
+  
