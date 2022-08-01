@@ -21,10 +21,13 @@ const signUp = ({ name, email, password, passwordConfirmation }) =>
 const recoverPassword = ({ email }) =>
   api.post(`${RESOURCE_URI}/recoverPassword`, { email })
 
+const activateAccount = (token) => api.post(`${RESOURCE_URI}/activate/${token}`)
+
 export default {
   authenticate,
   refreshToken,
   fetchLoggedUser,
   signUp,
-  recoverPassword
+  recoverPassword,
+  activateAccount
 }
