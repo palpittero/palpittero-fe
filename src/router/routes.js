@@ -4,6 +4,7 @@ import Guesses from '@/pages/App/Guesses.vue'
 
 import Login from '@/pages/Auth/Login.vue'
 import SignUp from '@/pages/Auth/SignUp.vue'
+import ActivateAccount from '@/pages/Auth/ActivateAccount.vue'
 import ForgotPassword from '@/pages/Auth/ForgotPassword.vue'
 
 import NotFound from '@/pages/Errors/NotFound.vue'
@@ -46,6 +47,12 @@ const routes = [
     name: 'SignUp',
     path: '/sign-up',
     component: SignUp,
+    meta: { public: true }
+  },
+  {
+    name: 'ActivateAccount',
+    path: '/activate-account',
+    component: ActivateAccount,
     meta: { public: true }
   },
   {

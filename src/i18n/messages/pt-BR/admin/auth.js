@@ -38,5 +38,16 @@ export default {
     message:
       'Você receberá, em breve, um e-mail com instruções para a recuperação da sua senha',
     cta: 'Fazer Login'
+  },
+  activateAccount: {
+    title: 'Ativação de Conta',
+    subtitle: 'Aguarde enquanto ativamos a sua conta',
+    message:
+      'Em breve sua conta estará ativada e você poderá realizar login na plataforma.'
+  },
+  accountActivated: {
+    title: 'Ativação de Conta',
+    subtitle: 'Sua conta foi ativada com sucesso',
+    message: 'Clique no botão abaixo para realizar o seu login'
   }
 }
