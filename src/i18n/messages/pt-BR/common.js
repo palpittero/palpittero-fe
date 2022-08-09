@@ -1,4 +1,6 @@
 export default {
+  administrator: 'Administrador',
+  player: 'Jogador',
   cancel: 'Cancelar',
   ok: 'Ok',
   confirm: 'Confirmar',

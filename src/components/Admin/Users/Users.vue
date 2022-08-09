@@ -98,7 +98,6 @@ const loadUsers = async () => {
   try {
     users.loading = true
     users.data = await services.users.fetchUsers()
-    console.log(users.data)
   } catch (error) {
     users.error = error.message
   } finally {
@@ -112,21 +111,33 @@ const handleNewUser = () => {
 }
 
 const handleDetailsDialogSubmit = async (user) => {
-  if (user.id) {
-    await services.users.updateUser(user)
-  } else {
-    await services.users.createUser(user)
+  try {
+    if (user.id) {
+      await services.users.updateUser(user)
+    } else {
+      await services.users.createUser(user)
+    }
+
+    toast.add({
+      severity: 'success',
+      summary: i18n.t('common.success'),
+      detail: i18n.t('admin.users.saveSuccess'),
+      life: 4000
+    })
+
+    handleDetailsDialogHide()
+    loadUsers()
+  } catch (error) {
+    if (error.response.status === 409) {
+      toast.add({
+        severity: 'error',
+        summary: i18n.t('common.error'),
+        detail: i18n.t('admin.auth.error.emailAlreadyInUse'),
+        life: 3000,
+        group: 'app'
+      })
+    }
   }
-
-  toast.add({
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.users.saveSuccess'),
-    life: 4000
-  })
-
-  handleDetailsDialogHide()
-  loadUsers()
 }
 
 const handleDetailsDialogHide = () => {

@@ -1,4 +1,5 @@
 export default {
+  administrator: 'Administrador',
   name: 'Nome',
   email: 'E-mail',
   phone: 'Telefone',

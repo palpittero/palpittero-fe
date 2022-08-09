@@ -21,7 +21,7 @@
       :class="{ 'p-invalid': submitted && errors.email }"
     />
     <small class="p-invalid" v-if="submitted && errors.email">
-      {{ $t('admin.Inform a valid e-mail.') }}
+      {{ $t('admin.users.validation.email') }}
     </small>
   </div>
   <template v-if="!user.id">
@@ -29,6 +29,7 @@
       <label for="password">{{ $t('admin.users.password') }}</label>
       <InputText
         id="password"
+        type="password"
         v-model.trim="user.password"
         required
         :class="{ 'p-invalid': submitted && errors.password }"
@@ -43,6 +44,7 @@
       }}</label>
       <InputText
         id="password-confirmation"
+        type="password"
         v-model.trim="user.passwordConfirmation"
         required
         :class="{ 'p-invalid': submitted && errors.passwordConfirmation }"
@@ -57,6 +59,20 @@
     <InputText id="phone" v-model="user.phone" />
   </div>
 
+  <div class="field-checkbox">
+    <Checkbox
+      id="admin"
+      name="city"
+      v-model="user.role"
+      :false-value="USER_ROLES.PLAYER"
+      :true-value="USER_ROLES.ADMIN"
+      binary
+    />
+    <label for="admin">
+      {{ $t('admin.users.administrator') }}
+    </label>
+  </div>
+
   <div class="field">
     <label class="mb-3">{{ $t('common.status') }}</label>
     <BaseStatusPartialForm v-model="user.status" />
@@ -66,6 +82,8 @@
 <script setup>
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import { reactive, watch } from 'vue'
+
+import { USER_ROLES } from '@/constants/users'
 
 const props = defineProps({
   modelValue: {
