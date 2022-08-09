@@ -52,7 +52,7 @@ watch(
   () => props.visible,
   async (visible) => {
     if (visible && league.value.id) {
-      league.value.users = await services.leagues.fetchUsers(league.value)
+      // league.value.users = await services.leagues.fetchUsers(league.value)
       league.value.championships = await services.leagues.fetchChampionships(
         league.value.id
       )

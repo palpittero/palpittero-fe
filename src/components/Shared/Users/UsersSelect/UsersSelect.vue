@@ -1,19 +1,24 @@
 <template>
-  <MultiSelect
-    v-model="selectedUsers"
-    :options="filteredUsers"
-    optionLabel="name"
-    :optionValue="getOptionValue"
-    filter
-    display="chip"
-    :placeholder="$t('admin.users.selectUsers')"
-    :class="{ 'p-invalid': invalid }"
-  />
+  <UsersFetcher :parse-options="parseUsers">
+    <template #default="{ loading, data }">
+      <MultiSelect
+        v-model="selectedUsers"
+        :options="data"
+        optionLabel="name"
+        :optionValue="getOptionValue"
+        :loading="loading"
+        filter
+        display="chip"
+        :placeholder="$t('admin.users.selectUsers')"
+        :class="{ 'p-invalid': invalid }"
+      />
+    </template>
+  </UsersFetcher>
 </template>
 
 <script setup>
-import services from '@/services'
-import { computed, reactive, onMounted } from 'vue'
+import { computed } from 'vue'
+import UsersFetcher from '@/components/Shared/Users/UsersFetcher/UsersFetcher.vue'
 
 const props = defineProps({
   modelValue: {
@@ -30,12 +35,6 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue'])
 
-const users = reactive({
-  loading: false,
-  error: null,
-  data: []
-})
-
 const selectedUsers = computed({
   set(value) {
     emits('update:modelValue', value)
@@ -47,17 +46,10 @@ const selectedUsers = computed({
   }
 })
 
-onMounted(async () => {
-  users.loading = true
-  users.data = await services.users.fetchUsers()
-  users.loading = false
-})
-
-const filteredUsers = computed(() =>
-  users.data
+const parseUsers = (users) =>
+  users
     .filter(({ id }) => !props.filterIds.includes(id))
     .map(({ id, name }) => ({ id, name }))
-)
 
 const getOptionValue = ({ id, name }) => ({ id, name })
 </script>

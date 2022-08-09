@@ -96,8 +96,13 @@
   </div>
 
   <div class="field">
+    <label class="mb-3">{{ $t('admin.leagues.owner') }}</label>
+    <UserSelect v-model="league.ownerId" />
+  </div>
+
+  <div class="field">
     <label class="mb-3">{{ $t('admin.leagues.participants') }}</label>
-    <UsersSelect v-model="league.users" />
+    <UsersSelect v-model="league.users" :filter-ids="[league.ownerId]" />
   </div>
 
   <div class="field">
@@ -108,15 +113,12 @@
 
 <script setup>
 import { computed, reactive, ref, watch } from 'vue'
-// import { useAuthStore } from '@/stores/auth'
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import UsersSelect from '@/components/Shared/Users/UsersSelect/UsersSelect.vue'
+import UserSelect from '@/components/Shared/Users/UserSelect/UserSelect.vue'
 
 import { LEAGUE_POINTS_STRATEGY } from '@/constants/leagues'
 import ChampionshipsPickList from '@/components/Admin/Championships/ChampionshipsPickList/ChampionshipsPickList.vue'
-// import { emit } from 'process'
-
-// const authStore = useAuthStore()
 
 const props = defineProps({
   modelValue: {
@@ -152,6 +154,6 @@ const handleBadgeError = () => (isBadgeLoaded.value = false)
 .league-form__badge {
   display: flex;
   justify-content: center;
-  max-width: 50%;
+  max-width: 64px;
 }
 </style>

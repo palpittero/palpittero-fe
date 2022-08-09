@@ -31,5 +31,6 @@ export default {
   deleteUserConfirmation:
     'Deseja realmente remover o usuário <b>{userName}</b> da liga <b>{leagueName}</b>?',
   deleteUserSuccess: 'Usuário removido da liga com sucesso',
-  leagueOwner: 'Proprietário da liga'
+  leagueOwner: 'Proprietário da liga',
+  owner: 'Proprietário'
 }

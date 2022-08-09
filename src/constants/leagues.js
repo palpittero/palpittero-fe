@@ -11,6 +11,7 @@ export const LEAGUE_MODEL = {
   private: true,
   users: [],
   championships: [],
+  ownerId: null,
   pointsStrategy: LEAGUE_POINTS_STRATEGY.GROUPED,
   status: STATUSES.ACTIVE
 }

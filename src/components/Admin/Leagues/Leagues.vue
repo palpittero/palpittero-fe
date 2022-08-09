@@ -76,6 +76,7 @@ import services from '@/services'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 import { clone } from 'lodash'
+import { parseLeagueInput, parseLeagues } from '@/helpers/leagues'
 
 const i18n = useI18n()
 const toast = useToast()
@@ -96,7 +97,7 @@ onMounted(() => loadLeagues())
 const loadLeagues = async () => {
   try {
     leagues.loading = true
-    leagues.data = await services.leagues.fetchLeagues()
+    leagues.data = parseLeagues(await services.leagues.fetchLeagues())
   } catch (error) {
     leagues.error = error.message
   } finally {
@@ -110,10 +111,12 @@ const handleNewLeague = () => {
 }
 
 const handleDetailsDialogSubmit = async (league) => {
+  const parsedLeague = parseLeagueInput(league)
+
   if (league.id) {
-    await services.leagues.updateLeague(league)
+    await services.leagues.updateLeague(parsedLeague)
   } else {
-    await services.leagues.createLeague(league)
+    await services.leagues.createLeague(parsedLeague)
   }
 
   toast.add({

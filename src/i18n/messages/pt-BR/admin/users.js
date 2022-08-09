@@ -23,5 +23,6 @@ export default {
     passwordsDontMatch: "Passwords don't match"
   },
   selectUsers: 'Selecione os usuários',
+  selectUser: 'Selecione um usuário',
   points: 'Pontos'
 }
