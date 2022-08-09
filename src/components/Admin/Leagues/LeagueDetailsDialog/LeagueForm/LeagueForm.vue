@@ -90,18 +90,14 @@
           :value="0"
           v-model="league.private"
         />
-        <label for="status-inactive">{{ $t('common.no') }}</label>
+        <label for="public">{{ $t('common.no') }}</label>
       </div>
     </div>
   </div>
 
   <div class="field">
     <label class="mb-3">{{ $t('admin.leagues.participants') }}</label>
-    <UsersSelect
-      v-model="league.users"
-      :filter-ids="filteredUsersIds"
-      :disabled="usersLeagues.loading"
-    />
+    <UsersSelect v-model="league.users" />
   </div>
 
   <div class="field">
@@ -112,14 +108,15 @@
 
 <script setup>
 import { computed, reactive, ref, watch } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+// import { useAuthStore } from '@/stores/auth'
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import UsersSelect from '@/components/Shared/Users/UsersSelect/UsersSelect.vue'
 
 import { LEAGUE_POINTS_STRATEGY } from '@/constants/leagues'
 import ChampionshipsPickList from '@/components/Admin/Championships/ChampionshipsPickList/ChampionshipsPickList.vue'
+// import { emit } from 'process'
 
-const authStore = useAuthStore()
+// const authStore = useAuthStore()
 
 const props = defineProps({
   modelValue: {
@@ -136,11 +133,6 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue'])
 const league = reactive(props.modelValue.value)
 const isBadgeLoaded = ref(false)
-const usersLeagues = reactive({
-  loading: false,
-  error: null,
-  data: []
-})
 
 watch(
   league,
@@ -154,8 +146,6 @@ const hasImageError = computed(() => league.badge && !isBadgeLoaded.value)
 
 const handleBadgeLoad = () => (isBadgeLoaded.value = true)
 const handleBadgeError = () => (isBadgeLoaded.value = false)
-
-const filteredUsersIds = [authStore.loggedUser.id]
 </script>
 
 <style lang="scss">

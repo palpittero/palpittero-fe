@@ -41,7 +41,9 @@ const selectedUsers = computed({
     emits('update:modelValue', value)
   },
   get() {
-    return props.modelValue.map(({ id, name }) => ({ id, name }))
+    return props.modelValue
+      .filter(({ id }) => !props.filterIds.includes(id))
+      .map(({ id, name }) => ({ id, name }))
   }
 })
 
