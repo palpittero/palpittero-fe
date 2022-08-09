@@ -45,7 +45,6 @@
           :leagues="leagues"
           @edit="handleEditLeague"
           @delete="handleDeleteLeague"
-          @manage-users="handleManageUsers"
         />
 
         <LeagueDetailsDialog
@@ -53,14 +52,6 @@
           :visible="isLeagueDetailsDialogVisible"
           @hide="handleDetailsDialogHide"
           @submit="handleDetailsDialogSubmit"
-        />
-
-        <LeagueUsersDialog
-          :league="league"
-          :visible="isLeagueUsersDialogVisible"
-          can-manage
-          @hide="handleUsersDialogHide"
-          @submit="handleUsersDialogSubmit"
         />
 
         <LeagueDeleteDialog
@@ -78,7 +69,6 @@
 import { reactive, ref, onMounted } from 'vue'
 import LeaguesDataTable from './LeaguesDataTable/LeaguesDataTable.vue'
 import LeagueDetailsDialog from './LeagueDetailsDialog/LeagueDetailsDialog.vue'
-import LeagueUsersDialog from '@/components/Shared/Leagues/LeagueUsersDialog/LeagueUsersDialog.vue'
 import LeagueDeleteDialog from './LeagueDeleteDialog/LeagueDeleteDialog.vue'
 
 import { LEAGUE_MODEL } from '@/constants/leagues'
@@ -99,7 +89,6 @@ const leagues = reactive({
 
 const isLeagueDetailsDialogVisible = ref(false)
 const isLeagueDeleteDialogOpen = ref(false)
-const isLeagueUsersDialogVisible = ref(false)
 const selectedLeagues = ref([])
 
 onMounted(() => loadLeagues())
@@ -178,20 +167,6 @@ const handleDeleteDialogSubmit = async (league) => {
       group: 'app'
     })
   }
-}
-
-const handleManageUsers = (row) => {
-  league.value = row
-  isLeagueUsersDialogVisible.value = true
-}
-
-const handleUsersDialogHide = (row) => {
-  league.value = row
-  isLeagueUsersDialogVisible.value = false
-}
-
-const handleUsersDialogSubmit = async (league) => {
-  console.log('submit', league)
 }
 </script>
 

@@ -34,7 +34,6 @@
       v-if="isLeagueUsersDialogVisible"
       :league="selectedLeague"
       :visible="isLeagueUsersDialogVisible"
-      :can-manage="canManage"
       @hide="handleUsersDialogHide"
       @submit="handleUsersDialogSubmit"
     />

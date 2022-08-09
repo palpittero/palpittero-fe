@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-3 flex" v-if="canManage">
+    <div class="mb-3 flex">
       <UsersSelect
         v-model="selectedUsers"
         :filter-ids="filteredUsersIds"
@@ -30,27 +30,13 @@
             </div>
           </template>
         </Column>
-        <Column
-          v-if="canManage"
-          field="email"
-          :header="$t('admin.users.email')"
-        />
+        <Column field="email" :header="$t('admin.users.email')" />
         <Column field="points" :header="$t('admin.users.points')" />
-        <Column field="status" :header="$t('common.status')" v-if="canManage">
+        <Column field="status" :header="$t('common.status')">
           <template #body="{ data }">
             <BaseStatus
               :status="data.status"
               :options="USERS_LEAGUES_STATUSES_LABELS"
-            />
-          </template>
-        </Column>
-        <Column headerStyle="min-width:10rem;" v-if="canManage">
-          <template #body="{ data }">
-            <Button
-              v-if="canRemoveUser(data)"
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger mr-2"
-              @click="handleRemoveUser(data)"
             />
           </template>
         </Column>
@@ -89,10 +75,7 @@ import UsersSelect from '@/components/Shared/Users/UsersSelect/UsersSelect.vue'
 import LeagueUserDeleteDialog from './LeagueUserDeleteDialog/LeagueUserDeleteDialog.vue'
 import LeagueUserAddDialog from './LeagueUserAddDialog/LeagueUserAddDialog.vue'
 
-import {
-  USERS_LEAGUES_STATUSES,
-  USERS_LEAGUES_STATUSES_LABELS
-} from '@/constants/leagues'
+import { USERS_LEAGUES_STATUSES_LABELS } from '@/constants/leagues'
 
 const toast = useToast()
 const i18n = useI18n()
@@ -105,8 +88,7 @@ const props = defineProps({
   league: {
     type: Object,
     required: true
-  },
-  canManage: Boolean
+  }
 })
 
 const leagueUsers = reactive({
@@ -118,7 +100,6 @@ const leagueUsers = reactive({
 const isLoading = ref(false)
 const selectedUsers = ref([])
 const user = ref({})
-const isLeagueUserDeleteDialogVisible = ref(false)
 const isLeagueUserAddDialogVisible = ref(false)
 
 onMounted(async () => loadUsersLeagues())
@@ -131,15 +112,9 @@ const loadUsersLeagues = async () => {
 
 const filteredUsersIds = computed(() => leagueUsers.data.map(({ id }) => id))
 
-const isInvited = (user) => user.status == USERS_LEAGUES_STATUSES.INVITED
 const isOwner = (user) => user.owner
-const canRemoveUser = (user) => !isOwner(user) && !isInvited(user)
 
 const handleAddUsers = () => (isLeagueUserAddDialogVisible.value = true)
-const handleRemoveUser = (selectedUser) => {
-  user.value = selectedUser
-  isLeagueUserDeleteDialogVisible.value = true
-}
 
 const handleLeagueUserAddHide = () =>
   (isLeagueUserAddDialogVisible.value = false)
@@ -160,27 +135,6 @@ const handleLeagueUserAddSubmit = async (selectedUsers) => {
     life: 4000
   })
   selectedUsers = []
-  loadUsersLeagues()
-}
-
-const handleLeagueUserDeleteHide = () =>
-  (isLeagueUserDeleteDialogVisible.value = false)
-
-const handleLeagueUserDeleteSubmit = async (user) => {
-  isLoading.value = true
-  await services.usersLeagues.deleteUser({
-    leagueId: props.league.id,
-    userId: user.id
-  })
-  isLoading.value = false
-  isLeagueUserDeleteDialogVisible.value = false
-
-  toast.add({
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.leagues.deleteUserSuccess'),
-    life: 4000
-  })
   loadUsersLeagues()
 }
 </script>

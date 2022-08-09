@@ -21,7 +21,7 @@ export const USERS_LEAGUES_STATUSES = {
 }
 
 export const USERS_LEAGUES_STATUSES_LABELS = {
-  [USERS_LEAGUES_STATUSES.invited]: {
+  [USERS_LEAGUES_STATUSES.INVITED]: {
     text: 'admin.leagues.status.invited',
     icon: 'pi pi-clock',
     iconStyle: { color: 'var(--blue-600)' }
