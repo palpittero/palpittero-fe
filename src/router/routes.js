@@ -8,6 +8,7 @@ import ActivateAccount from '@/pages/Auth/ActivateAccount.vue'
 import ForgotPassword from '@/pages/Auth/ForgotPassword.vue'
 
 import NotFound from '@/pages/Errors/NotFound.vue'
+import Forbidden from '@/pages/Errors/Forbidden.vue'
 
 import Admin from '@/pages/Admin/Admin.vue'
 import Users from '@/pages/Admin/Users.vue'
@@ -65,6 +66,12 @@ const routes = [
     name: 'NotFound',
     path: '/404',
     component: NotFound,
+    meta: { public: true }
+  },
+  {
+    name: 'Forbidden',
+    path: '/forbidden',
+    component: Forbidden,
     meta: { public: true }
   },
   {

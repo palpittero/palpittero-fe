@@ -10,8 +10,12 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   if (!to.meta.public) {
     try {
-      const authStore = useAuthStore()
-      await authStore.fetchLoggedUser()
+      const { isAdmin, fetchLoggedUser } = useAuthStore()
+      await fetchLoggedUser()
+
+      if (to.meta.admin && !isAdmin) {
+        next({ name: 'Forbidden' })
+      }
     } catch (error) {
       if (error.response.status === 401) {
         next({ name: 'Login' })

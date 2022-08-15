@@ -7,13 +7,13 @@
           <template v-slot:start>
             <div class="my-2">
               <Button
-                label="New"
+                :label="$t('admin.matches.newMatch')"
                 icon="pi pi-plus"
                 class="p-button-success mr-2"
                 @click="handleNewMatch"
               />
               <Button
-                label="Delete"
+                :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteMatches"
@@ -22,7 +22,7 @@
             </div>
           </template>
 
-          <template v-slot:end>
+          <!-- <template v-slot:end>
             <FileUpload
               mode="basic"
               accept="image/*"
@@ -37,7 +37,7 @@
               class="p-button-help"
               @click="exportCSV($event)"
             />
-          </template>
+          </template> -->
         </Toolbar>
 
         <MatchesDataTable

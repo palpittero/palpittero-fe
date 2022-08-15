@@ -7,13 +7,13 @@
           <template v-slot:start>
             <div class="my-2">
               <Button
-                label="New"
+                :label="$t('admin.championships.newChampionship')"
                 icon="pi pi-plus"
                 class="p-button-success mr-2"
                 @click="handleNewChampionship"
               />
               <Button
-                label="Delete"
+                :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteChampionships"
@@ -24,7 +24,7 @@
             </div>
           </template>
 
-          <template v-slot:end>
+          <!-- <template v-slot:end>
             <FileUpload
               mode="basic"
               accept="image/*"
@@ -39,7 +39,7 @@
               class="p-button-help"
               @click="exportCSV($event)"
             />
-          </template>
+          </template> -->
         </Toolbar>
 
         <ChampionshipsDataTable

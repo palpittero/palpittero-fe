@@ -24,5 +24,6 @@ export default {
   },
   selectUsers: 'Selecione os usuários',
   selectUser: 'Selecione um usuário',
-  points: 'Pontos'
+  points: 'Pontos',
+  newUser: 'Novo Usuário'
 }

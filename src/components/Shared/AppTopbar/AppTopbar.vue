@@ -25,7 +25,7 @@
       <i class="pi pi-ellipsis-v"></i>
     </button>
     <ul class="layout-topbar-menu hidden lg:flex origin-top gap-2">
-      <li>
+      <li v-if="isAdmin">
         <slot name="switch-app" />
       </li>
       <li class="block lg:hidden">
@@ -63,7 +63,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const i18n = useI18n()
-const { logout, loggedUser } = useAuthStore()
+const { logout, loggedUser, isAdmin } = useAuthStore()
 
 const emit = defineEmits(['menu-toggle', 'topbar-menu-toggle'])
 

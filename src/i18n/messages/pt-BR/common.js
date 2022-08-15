@@ -23,6 +23,7 @@ export default {
   success: 'Sucesso',
   error: 'Erro',
   warning: 'Atenção',
+  removeSelected: 'Remover selecionados',
   dataTable: {
     pageReport: 'Exibindo {first} a {last} de {totalRecords} {items}'
   },
@@ -40,6 +41,11 @@ export default {
   notFound: {
     title: 'Parece que você está perdido',
     message: 'A página que você está procurando não existe',
+    cta: 'Voltar para o início'
+  },
+  forbidden: {
+    title: 'Acesso não permitido',
+    message: 'Você não tem pode acessar esta página',
     cta: 'Voltar para o início'
   }
 }

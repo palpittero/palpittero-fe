@@ -7,13 +7,13 @@
           <template v-slot:start>
             <div class="my-2">
               <Button
-                label="New"
+                :label="$t('admin.leagues.newLeague')"
                 icon="pi pi-plus"
                 class="p-button-success mr-2"
                 @click="handleNewLeague"
               />
               <Button
-                label="Delete"
+                :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteLeagues"

@@ -27,5 +27,6 @@ export default {
     cancelled: 'Cancelada',
     finished: 'Concluída'
   },
-  setResult: 'Registrar Resultado / {name} - {championship}'
+  setResult: 'Registrar Resultado / {name} - {championship}',
+  newMatch: 'Nova Partida'
 }

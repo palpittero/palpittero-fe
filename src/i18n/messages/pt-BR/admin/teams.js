@@ -9,5 +9,6 @@ export default {
   saveSuccess: 'Time salvo com sucesso',
   validation: {
     name: 'Favor informar um nome'
-  }
+  },
+  newTeam: 'Novo Time'
 }

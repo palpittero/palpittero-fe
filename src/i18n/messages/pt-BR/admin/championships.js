@@ -18,5 +18,6 @@ export default {
   deleteSuccess: 'Campeonato removido com sucesso',
   saveSuccess: 'Campeonato salvo com sucesso',
   allChampionships: 'Todos os Campeonatos',
-  rounds: 'Rodadas'
+  rounds: 'Rodadas',
+  newChampionship: 'Novo Campeonato'
 }
