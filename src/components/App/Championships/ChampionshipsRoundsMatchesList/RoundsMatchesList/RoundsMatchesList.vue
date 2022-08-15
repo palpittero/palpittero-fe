@@ -42,9 +42,7 @@
               <div
                 class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
               >
-                <span
-                  :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
-                >
+                <span>
                   {{ match.homeTeam.name }}
                 </span>
                 <Avatar
@@ -67,13 +65,13 @@
                     handleUpdateRegularTimeGoals('homeTeam', match.id, value)
                 "
               />
-              <span
-                v-else
-                class="px-3 gap-2 flex font-large"
-                :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
-              >
+              <span v-else class="px-3 gap-2 flex font-large">
                 <span>
-                  {{ matchesGuesses[match.id].regularTimeHomeTeamGoals }}
+                  {{
+                    String(
+                      matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
+                    ) || '-'
+                  }}
                 </span>
               </span>
             </div>
@@ -102,7 +100,11 @@
                 :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
               >
                 <span>
-                  {{ matchesGuesses[match.id].regularTimeAwayTeamGoals }}
+                  {{
+                    String(
+                      matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
+                    ) || '-'
+                  }}
                 </span>
               </span>
               <div
@@ -140,7 +142,7 @@
 
 <script setup>
 import services from '@/services'
-import { reduce } from 'lodash/fp'
+import { reduce, isNil } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
 import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
 import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
@@ -235,7 +237,7 @@ const isMatchScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
 
 const isMatchFinished = (match) => match.status === MATCH_STATUSES.FINISHED
 
-const isGuessRegistered = (match) => match.guess.points !== null
+const isGuessRegistered = (match) => !isNil(match.guess.points)
 
 const handlePreviousRound = () => selectedRoundIndex.value--
 

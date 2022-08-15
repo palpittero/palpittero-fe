@@ -19,6 +19,6 @@ const props = defineProps({
 
 const style = computed(() => GUESS_POINTS_BADGE_STYLE[props.points])
 const label = computed(() =>
-  i18n.t('app.guesses.points', { points: props.points })
+  i18n.t('app.guesses.points', { points: props.points }, props.points)
 )
 </script>
