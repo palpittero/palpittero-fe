@@ -12,7 +12,7 @@
         <div class="flex align-items-center">
           <Avatar
             :image="item.badge"
-            size="large"
+            size="small"
             shape="circle"
             class="mr-2"
           />
