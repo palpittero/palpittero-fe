@@ -21,144 +21,107 @@
       <li
         v-for="match in matches.data"
         :key="match.id"
-        class="py-3 px-2 border-top-1 surface-border grid align-items-center"
+        class="border-top-1 surface-border"
       >
-        <div class="col">
-          <div class="grid align-items-center justify-content-end">
-            <div
-              class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
-            >
-              {{ match.homeTeam.name }}
-              <Avatar
-                :image="match.homeTeam.badge"
-                size="small"
-                shape="circle"
-              />
-            </div>
-            <InputNumber
-              v-if="isScheduled(match)"
-              :model-value="
-                matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
-              "
-              :step="1"
-              :min="0"
-              class="col-6"
-              :class="{ 'p-invalid': submitted && errors.year }"
-              @input="
-                ({ value }) =>
-                  handleUpdateRegularTimeGoals('homeTeam', match.id, value)
-              "
-            />
-            <span
-              v-else
-              class="px-3 gap-2 flex"
-              :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
-            >
-              <span>
-                {{ matchesGuesses[match.id].guess.homeTeamRegularTimeGoals }}
-              </span>
-              <span>
-                ({{ matchesGuesses[match.id].regularTimeHomeTeamGoals }})
-              </span>
-            </span>
-          </div>
+        <div class="py-3 flex align-items-center flex-column gap-2">
+          <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
+          <MatchStatusBadge :status="match.status" />
         </div>
-        <div class="col-1 text-center">
-          <span class="pi pi-times" />
-        </div>
-        <div class="col">
-          <div class="grid align-items-center">
-            <InputNumber
-              v-if="isScheduled(match)"
-              :step="1"
-              class="col-6"
-              :model-value="
-                matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
-              "
-              :class="{ 'p-invalid': submitted && errors.year }"
-              @input="
-                ({ value }) =>
-                  handleUpdateRegularTimeGoals('awayTeam', match.id, value)
-              "
-            />
-            <span
-              v-else
-              class="px-3 gap-2 flex"
-              :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
-            >
-              <span>
-                {{ matchesGuesses[match.id].guess.awayTeamRegularTimeGoals }}
-              </span>
-              <span>
-                ({{ matchesGuesses[match.id].regularTimeAwayTeamGoals }})
-              </span>
-            </span>
-            <div
-              class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
-            >
-              <Avatar
-                :image="match.awayTeam.badge"
-                size="small"
-                shape="circle"
+        <div class="py-3 px-2 grid align-items-center">
+          <div class="col">
+            <div class="grid align-items-center justify-content-end">
+              <div
+                class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
+              >
+                {{ match.homeTeam.name }}
+                <Avatar
+                  :image="match.homeTeam.badge"
+                  size="small"
+                  shape="circle"
+                />
+              </div>
+              <InputNumber
+                v-if="isScheduled(match)"
+                :model-value="
+                  matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
+                "
+                :step="1"
+                :min="0"
+                class="col-6"
+                :class="{ 'p-invalid': submitted && errors.year }"
+                @input="
+                  ({ value }) =>
+                    handleUpdateRegularTimeGoals('homeTeam', match.id, value)
+                "
               />
-              {{ match.awayTeam.name }}
+              <span
+                v-else
+                class="px-3 gap-2 flex"
+                :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
+              >
+                <span>
+                  {{ matchesGuesses[match.id].guess.homeTeamRegularTimeGoals }}
+                </span>
+                <span>
+                  ({{ matchesGuesses[match.id].regularTimeHomeTeamGoals }})
+                </span>
+              </span>
             </div>
           </div>
+          <div class="col-1 text-center">
+            <span class="pi pi-times" />
+          </div>
+          <div class="col">
+            <div class="grid align-items-center">
+              <InputNumber
+                v-if="isScheduled(match)"
+                :step="1"
+                class="col-6"
+                :model-value="
+                  matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
+                "
+                :class="{ 'p-invalid': submitted && errors.year }"
+                @input="
+                  ({ value }) =>
+                    handleUpdateRegularTimeGoals('awayTeam', match.id, value)
+                "
+              />
+              <span
+                v-else
+                class="px-3 gap-2 flex"
+                :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
+              >
+                <span>
+                  {{ matchesGuesses[match.id].guess.awayTeamRegularTimeGoals }}
+                </span>
+                <span>
+                  ({{ matchesGuesses[match.id].regularTimeAwayTeamGoals }})
+                </span>
+              </span>
+              <div
+                class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
+              >
+                <Avatar
+                  :image="match.awayTeam.badge"
+                  size="small"
+                  shape="circle"
+                />
+                {{ match.awayTeam.name }}
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- <div class="text-500 font-medium flex align-items-center gap-5"> -->
-        <!-- <Avatar :image="league.badge" size="large" shape="circle" /> -->
-        <!-- {{ league.name }} -->
-        <!-- </div> -->
-        <!-- <div class="flex flex-column md:flex-row">
-          <Button
-            v-if="!isParticipant(league)"
-            :label="$t('app.leagues.join')"
-            icon="pi pi-sign-in"
-            class="p-button-text"
-            @click="emits('join', league)"
-          />
-          <Button
-            v-if="isParticipant(league)"
-            :label="$t('app.leagues.ranking')"
-            icon="pi pi-list"
-            class="p-button-text"
-            @click="emits('ranking', league)"
-          />
-
-          <Button
-            v-if="isParticipant(league)"
-            :label="$t('app.leagues.participants')"
-            icon="pi pi-users"
-            class="p-button-text"
-            @click="emits('manage', league)"
-          />
-
-          <Button
-            v-if="isParticipant(league)"
-            :label="$t('app.leagues.guesses')"
-            icon="pi pi-user-edit"
-            class="p-button-text"
-            @click="emits('guesses', league)"
-          />
-
-          <Button
-            v-if="canLeave(league)"
-            :label="$t('app.leagues.leave')"
-            icon="pi pi-sign-out"
-            class="p-button-text"
-            @click="emits('leave', league)"
-          />
-        </div> -->
       </li>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { MATCH_RESULTS, MATCH_STATUSES } from '@/constants/matches'
 import services from '@/services'
 import { reduce } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
+import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
+import { MATCH_RESULTS, MATCH_STATUSES } from '@/constants/matches'
 
 const props = defineProps({
   modelValue: {
