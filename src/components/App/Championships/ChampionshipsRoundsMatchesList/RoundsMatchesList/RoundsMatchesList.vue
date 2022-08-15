@@ -23,9 +23,18 @@
         :key="match.id"
         class="border-top-1 surface-border"
       >
-        <div class="py-3 flex align-items-center flex-column gap-2">
-          <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
-          <MatchStatusBadge :status="match.status" />
+        <div class="flex flex-column align-items-center">
+          <div
+            class="py-3 flex justify-content-center align-items-center gap-2"
+          >
+            <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
+            <MatchStatusBadge :status="match.status" />
+            <GuessPointsBadge
+              v-if="isMatchFinished(match)"
+              class="rounds-matches-list__guess-points-badge"
+              :points="matchesGuesses[match.id].guess.points"
+            />
+          </div>
         </div>
         <div class="py-3 px-2 grid align-items-center">
           <div class="col">
@@ -33,7 +42,11 @@
               <div
                 class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
               >
-                {{ match.homeTeam.name }}
+                <span
+                  :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
+                >
+                  {{ match.homeTeam.name }}
+                </span>
                 <Avatar
                   :image="match.homeTeam.badge"
                   size="small"
@@ -41,7 +54,7 @@
                 />
               </div>
               <InputNumber
-                v-if="isScheduled(match)"
+                v-if="isMatchScheduled(match)"
                 :model-value="
                   matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
                 "
@@ -60,10 +73,7 @@
                 :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
               >
                 <span>
-                  {{ matchesGuesses[match.id].guess.homeTeamRegularTimeGoals }}
-                </span>
-                <span>
-                  ({{ matchesGuesses[match.id].regularTimeHomeTeamGoals }})
+                  {{ matchesGuesses[match.id].regularTimeHomeTeamGoals }}
                 </span>
               </span>
             </div>
@@ -74,7 +84,7 @@
           <div class="col">
             <div class="grid align-items-center">
               <InputNumber
-                v-if="isScheduled(match)"
+                v-if="isMatchScheduled(match)"
                 :step="1"
                 class="col-6"
                 :model-value="
@@ -92,10 +102,7 @@
                 :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
               >
                 <span>
-                  ({{ matchesGuesses[match.id].regularTimeAwayTeamGoals }})
-                </span>
-                <span>
-                  {{ matchesGuesses[match.id].guess.awayTeamRegularTimeGoals }}
+                  {{ matchesGuesses[match.id].regularTimeAwayTeamGoals }}
                 </span>
               </span>
               <div
@@ -106,11 +113,26 @@
                   size="small"
                   shape="circle"
                 />
-                {{ match.awayTeam.name }}
+                <span
+                  :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
+                >
+                  {{ match.awayTeam.name }}
+                </span>
               </div>
             </div>
           </div>
         </div>
+
+        <RoundMatchFinalResult
+          v-if="isGuessRegistered(matchesGuesses[match.id])"
+          :match-guess="matchesGuesses[match.id]"
+          :home-team-class-name="
+            getHomeTeamTeamScoreClass(matchesGuesses[match.id])
+          "
+          :away-team-class-name="
+            getAwayTeamTeamScoreClass(matchesGuesses[match.id])
+          "
+        />
       </li>
     </ul>
   </div>
@@ -121,6 +143,9 @@ import services from '@/services'
 import { reduce } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
 import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
+import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
+import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
+
 import { MATCH_RESULTS, MATCH_STATUSES } from '@/constants/matches'
 
 const props = defineProps({
@@ -206,7 +231,11 @@ watch(
   { immediate: true }
 )
 
-const isScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
+const isMatchScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
+
+const isMatchFinished = (match) => match.status === MATCH_STATUSES.FINISHED
+
+const isGuessRegistered = (match) => match.guess.points !== null
 
 const handlePreviousRound = () => selectedRoundIndex.value--
 
@@ -257,6 +286,17 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
 
   .grid {
     margin-top: 0;
+  }
+
+  &__guess-points-badge {
+    position: absolute;
+    right: 60px;
+  }
+
+  &__final-result {
+    .p-inline-message-icon {
+      display: none;
+    }
   }
 }
 </style>
