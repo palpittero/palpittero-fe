@@ -56,7 +56,7 @@
               />
               <span
                 v-else
-                class="px-3 gap-2 flex"
+                class="px-3 gap-2 flex font-large"
                 :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
               >
                 <span>
@@ -68,8 +68,8 @@
               </span>
             </div>
           </div>
-          <div class="col-1 text-center">
-            <span class="pi pi-times" />
+          <div class="col-1 text-center width-auto">
+            <span class="pi pi-times font-small" />
           </div>
           <div class="col">
             <div class="grid align-items-center">
@@ -88,14 +88,14 @@
               />
               <span
                 v-else
-                class="px-3 gap-2 flex"
+                class="px-3 gap-2 flex font-large"
                 :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
               >
                 <span>
-                  {{ matchesGuesses[match.id].guess.awayTeamRegularTimeGoals }}
+                  ({{ matchesGuesses[match.id].regularTimeAwayTeamGoals }})
                 </span>
                 <span>
-                  ({{ matchesGuesses[match.id].regularTimeAwayTeamGoals }})
+                  {{ matchesGuesses[match.id].guess.awayTeamRegularTimeGoals }}
                 </span>
               </span>
               <div
