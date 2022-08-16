@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :header="$t('admin.matches.setResult', match.round)"
+    :header="header"
     @submit="onSubmit"
     @hide="emits('hide')"
     :style="{ width: 'auto' }"
@@ -15,12 +15,15 @@
 </template>
 
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, computed } from 'vue'
 import { useForm } from 'vee-validate'
+import { useI18n } from 'vue-i18n'
 import * as yup from 'yup'
 
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import MatchSetResultForm from './MatchSetResultForm/MatchSetResultForm.vue'
+
+const i18n = useI18n()
 
 const props = defineProps({
   match: {
@@ -46,6 +49,15 @@ const { errors, handleSubmit, setValues } = useForm({
 setValues(props.match.value)
 
 watch(match, (value) => setValues(value), { deep: true })
+
+const header = computed(() => {
+  const { name, championship } = props.match.value.round
+
+  return i18n.t('admin.matches.setResult', {
+    name,
+    championship: championship.name
+  })
+})
 
 const onSubmit = handleSubmit(
   (match) => {

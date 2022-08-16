@@ -8,12 +8,18 @@
     <Column selectionMode="multiple" />
     <Column field="homeTeam" :header="$t('admin.matches.homeTeam')" sortable>
       <template #body="{ data }">
-        {{ data.homeTeam.name }}
+        <div class="flex align-items-center gap-2">
+          <Avatar :image="data.homeTeam.badge" shape="circle" size="small" />
+          {{ data.homeTeam.name }}
+        </div>
       </template>
     </Column>
     <Column field="awayTeam" :header="$t('admin.matches.awayTeam')" sortable>
       <template #body="{ data }">
-        {{ data.awayTeam.name }}
+        <div class="flex align-items-center gap-2">
+          <Avatar :image="data.awayTeam.badge" shape="circle" size="small" />
+          {{ data.awayTeam.name }}
+        </div>
       </template>
     </Column>
 
@@ -23,20 +29,25 @@
       sortable
     >
       <template #body="{ data }">
-        <span class="text-right">
-          {{ data.round.championship.name }}
-          {{ data.round.championship.year }}
-        </span>
+        <div>
+          <span class="text-right">
+            {{ data.round.championship.name }}
+            {{ data.round.championship.year }}
+          </span>
+        </div>
+        <small>
+          {{ data.round.name }}
+        </small>
       </template>
     </Column>
 
-    <Column field="round" :header="$t('admin.matches.round')" sortable>
+    <!-- <Column field="round" :header="$t('admin.matches.round')" sortable>
       <template #body="{ data }">
         <span class="text-right">
           {{ data.round.name }}
         </span>
       </template>
-    </Column>
+    </Column> -->
 
     <Column field="date" :header="$t('admin.matches.date')" sortable>
       <template #body="{ data }">

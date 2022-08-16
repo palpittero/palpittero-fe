@@ -1,6 +1,5 @@
 <template>
   <div class="field">
-    {{ match }}
     <label for="championship">{{ $t('admin.matches.championship') }}</label>
     <ChampionshipSelect
       v-model="championship"
