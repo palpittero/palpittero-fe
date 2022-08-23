@@ -8,7 +8,7 @@
       >
         <span class="pi pi-angle-left" />
       </Button>
-      {{ selectedRound.name }}
+      <span class="text-bold">{{ selectedRound.name }}</span>
       <Button
         class="p-button-text p-button-plain"
         :disabled="isCurrentLastRound"
@@ -18,124 +18,129 @@
       </Button>
     </div>
     <ul class="list-none p-0 m-0">
-      <li
-        v-for="match in matches.data"
-        :key="match.id"
-        class="border-top-1 surface-border"
-      >
-        <div class="flex flex-column align-items-center">
-          <div
-            class="py-3 flex justify-content-center align-items-center gap-2"
-          >
-            <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
-            <MatchStatusBadge :status="match.status" />
-            <GuessPointsBadge
-              v-if="isMatchFinished(match)"
-              class="rounds-matches-list__guess-points-badge"
-              :points="matchesGuesses[match.id].guess.points"
-            />
-          </div>
-        </div>
-        <div class="py-3 px-2 grid align-items-center">
-          <div class="col">
-            <div class="grid align-items-center justify-content-end">
-              <div
-                class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
-              >
-                <span>
-                  {{ match.homeTeam.name }}
-                </span>
-                <Avatar
-                  :image="match.homeTeam.badge"
-                  size="small"
-                  shape="circle"
-                />
-              </div>
-              <InputNumber
-                v-if="isMatchScheduled(match)"
-                :model-value="
-                  matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
-                "
-                :step="1"
-                :min="0"
-                class="col-6"
-                :class="{ 'p-invalid': submitted && errors.year }"
-                @input="
-                  ({ value }) =>
-                    handleUpdateRegularTimeGoals('homeTeam', match.id, value)
-                "
+      <template v-if="hasMatches">
+        <li
+          v-for="match in matches.data"
+          :key="match.id"
+          class="border-top-1 surface-border"
+        >
+          <div class="flex flex-column align-items-center">
+            <div
+              class="py-3 flex justify-content-center align-items-center gap-2"
+            >
+              <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
+              <MatchStatusBadge :status="match.status" />
+              <GuessPointsBadge
+                v-if="isGuessRegistered(match)"
+                class="rounds-matches-list__guess-points-badge"
+                :points="matchesGuesses[match.id].guess.points"
               />
-              <span v-else class="px-3 gap-2 flex font-large">
-                <span>
-                  {{
-                    String(
-                      matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
-                    ) || '-'
-                  }}
-                </span>
-              </span>
             </div>
           </div>
-          <div class="col-1 text-center width-auto">
-            <span class="pi pi-times font-small" />
-          </div>
-          <div class="col">
-            <div class="grid align-items-center">
-              <InputNumber
-                v-if="isMatchScheduled(match)"
-                :step="1"
-                class="col-6"
-                :model-value="
-                  matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
-                "
-                :class="{ 'p-invalid': submitted && errors.year }"
-                @input="
-                  ({ value }) =>
-                    handleUpdateRegularTimeGoals('awayTeam', match.id, value)
-                "
-              />
-              <span
-                v-else
-                class="px-3 gap-2 flex font-large"
-                :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
-              >
-                <span>
-                  {{
-                    String(
-                      matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
-                    ) || '-'
-                  }}
+          <div class="py-3 px-2 grid align-items-center">
+            <div class="col">
+              <div class="grid align-items-center justify-content-end">
+                <div
+                  class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
+                >
+                  <span>
+                    {{ match.homeTeam.name }}
+                  </span>
+                  <Avatar
+                    :image="match.homeTeam.badge"
+                    size="small"
+                    shape="circle"
+                  />
+                </div>
+                <InputNumber
+                  v-if="isMatchScheduled(match)"
+                  :model-value="
+                    matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
+                  "
+                  :step="1"
+                  :min="0"
+                  class="col-6"
+                  :class="{ 'p-invalid': submitted && errors.year }"
+                  @input="
+                    ({ value }) =>
+                      handleUpdateRegularTimeGoals('homeTeam', match.id, value)
+                  "
+                />
+                <span v-else class="px-3 gap-2 flex font-large">
+                  <span>
+                    {{
+                      String(
+                        matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
+                      ) || '-'
+                    }}
+                  </span>
                 </span>
-              </span>
-              <div
-                class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
-              >
-                <Avatar
-                  :image="match.awayTeam.badge"
-                  size="small"
-                  shape="circle"
+              </div>
+            </div>
+            <div class="col-1 text-center width-auto">
+              <span class="pi pi-times font-small" />
+            </div>
+            <div class="col">
+              <div class="grid align-items-center">
+                <InputNumber
+                  v-if="isMatchScheduled(match)"
+                  :step="1"
+                  class="col-6"
+                  :model-value="
+                    matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
+                  "
+                  :class="{ 'p-invalid': submitted && errors.year }"
+                  @input="
+                    ({ value }) =>
+                      handleUpdateRegularTimeGoals('awayTeam', match.id, value)
+                  "
                 />
                 <span
+                  v-else
+                  class="px-3 gap-2 flex font-large"
                   :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
                 >
-                  {{ match.awayTeam.name }}
+                  <span>
+                    {{
+                      String(
+                        matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
+                      ) || '-'
+                    }}
+                  </span>
                 </span>
+                <div
+                  class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
+                >
+                  <Avatar
+                    :image="match.awayTeam.badge"
+                    size="small"
+                    shape="circle"
+                  />
+                  <span
+                    :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
+                  >
+                    {{ match.awayTeam.name }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <RoundMatchFinalResult
-          v-if="isGuessRegistered(matchesGuesses[match.id])"
-          :match-guess="matchesGuesses[match.id]"
-          :home-team-class-name="
-            getHomeTeamTeamScoreClass(matchesGuesses[match.id])
-          "
-          :away-team-class-name="
-            getAwayTeamTeamScoreClass(matchesGuesses[match.id])
-          "
-        />
-      </li>
+          <RoundMatchFinalResult
+            v-if="isGuessRegistered(match)"
+            :match-guess="matchesGuesses[match.id]"
+            :home-team-class-name="
+              getHomeTeamTeamScoreClass(matchesGuesses[match.id])
+            "
+            :away-team-class-name="
+              getAwayTeamTeamScoreClass(matchesGuesses[match.id])
+            "
+          />
+        </li>
+      </template>
+      <div class="text-center">
+        {{ $t('app.guesses.noMatches') }}
+      </div>
     </ul>
   </div>
 </template>
@@ -144,11 +149,15 @@
 import services from '@/services'
 import { reduce, isNil } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
 import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
 import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
 
 import { MATCH_RESULTS, MATCH_STATUSES } from '@/constants/matches'
+
+const router = useRouter()
+const route = useRoute()
 
 const props = defineProps({
   modelValue: {
@@ -179,7 +188,13 @@ const guesses = reactive({
   data: []
 })
 
-const currentRound = computed(() => props.rounds.find((round) => round.current))
+const currentRound = computed(() =>
+  props.rounds.find((round) =>
+    route.params.round
+      ? round.id === parseInt(route.params.round)
+      : round.current
+  )
+)
 
 const isCurrentFirstRound = computed(() => selectedRound.value?.first)
 
@@ -214,6 +229,8 @@ const matchesGuesses = computed(() =>
   )
 )
 
+const hasMatches = computed(() => matches.data.length > 0)
+
 watch(
   selectedRound,
   async (value) => {
@@ -227,6 +244,14 @@ watch(
         roundId: value.id,
         leagueId: props.leagueId
       })
+
+      router.push({
+        ...route,
+        params: {
+          ...route.params,
+          round: value.id
+        }
+      })
       guesses.loading = false
     }
   },
@@ -237,7 +262,8 @@ const isMatchScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
 
 const isMatchFinished = (match) => match.status === MATCH_STATUSES.FINISHED
 
-const isGuessRegistered = (match) => !isNil(match.guess.points)
+const isGuessRegistered = (match) =>
+  isMatchFinished(match) && !isNil(matchesGuesses[match.id]?.guess?.points)
 
 const handlePreviousRound = () => selectedRoundIndex.value--
 

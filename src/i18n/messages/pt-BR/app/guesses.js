@@ -3,5 +3,6 @@ export default {
   guessesCreated: 'Palpites registrados com sucesso',
   noRounds: 'Nenhuma rodada encontrada para este campeonato',
   points: '{points} PONTO | {points} PONTOS',
-  finalResult: 'Placar final:'
+  finalResult: 'Placar final:',
+  noMatches: 'Nenhuma partida encontrada para esta rodada'
 }

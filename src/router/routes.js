@@ -30,7 +30,7 @@ const routes = [
   },
   {
     name: 'Guesses',
-    path: '/:leagueId/guesses',
+    path: '/:leagueId/guesses/:round?',
     component: Guesses
   },
   {

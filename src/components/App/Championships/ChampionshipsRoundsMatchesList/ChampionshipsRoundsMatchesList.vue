@@ -4,9 +4,9 @@
       <span class="font-medium text-3xl text-900">
         {{ championship.name }}
       </span>
-      <span>
+      <!-- <span>
         <Button class="p-button-text p-button-clear"> Ver Pontuação </Button>
-      </span>
+      </span> -->
     </div>
     <ul v-if="loading" class="m-0 p-0">
       <li class="mb-4">
