@@ -4,6 +4,7 @@
     :items="leagues"
     :title="$t('common.leagues')"
     class="leagues-data-table"
+    searchable
   >
     <Column selectionMode="multiple" headerStyle="width: 3rem" />
     <Column

@@ -3,22 +3,8 @@
     v-model="selectedChampionships"
     :items="championships"
     :title="$t('common.championships')"
+    searchable
   >
-    <template #header>
-      <div
-        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
-      >
-        <h5 class="m-0">{{ $t('common.championships') }}</h5>
-        <span class="block mt-2 md:mt-0 p-input-icon-left">
-          <i class="pi pi-search" />
-          <InputText
-            v-model="filters['global'].value"
-            :placeholder="$t('common.search')"
-          />
-        </span>
-      </div>
-    </template>
-
     <Column selectionMode="multiple" headerStyle="width: 3rem" />
     <Column
       field="name"
@@ -72,8 +58,7 @@
 </template>
 
 <script setup>
-import { FilterMatchMode } from 'primevue/api'
-import { computed, reactive } from 'vue'
+import { computed } from 'vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 
@@ -97,10 +82,6 @@ const selectedChampionships = computed({
   get() {
     return props.modelValue
   }
-})
-
-const filters = reactive({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
 
 const handleEditChampionship = (championship) => emits('edit', championship)

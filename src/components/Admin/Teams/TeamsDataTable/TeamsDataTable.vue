@@ -3,6 +3,7 @@
     v-model="selectedTeams"
     :items="teams"
     :title="$t('common.teams')"
+    searchable
   >
     <Column selectionMode="multiple" headerStyle="width: 3rem" />
     <Column

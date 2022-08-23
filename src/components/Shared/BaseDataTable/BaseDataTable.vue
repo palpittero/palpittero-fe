@@ -6,9 +6,11 @@
     data-key="id"
     paginator
     :rows="10"
-    :filters="filters"
+    v-model:filters="filters"
+    :global-filter-fields="globalFilterFields"
     responsiveLayout="stack"
     :loading="items.loading"
+    row-hover
     paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
     :rows-per-page-options="[5, 10, 25]"
     current-page-report-template="Showing {first} to {last} of {totalRecords} items"
@@ -22,7 +24,7 @@
           <span class="block mt-2 md:mt-0 p-input-icon-left" v-if="searchable">
             <i class="pi pi-search" />
             <InputText
-              v-model="filters['global'].value"
+              v-model="filters.global.value"
               :placeholder="$t('common.search')"
             />
           </span>
@@ -51,18 +53,18 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  globalFilterFields: {
+    type: Array,
+    default: () => ['name']
+  },
   searchable: Boolean
 })
 
 const emits = defineEmits(['edit', 'delete', 'update:modelValue'])
 
 const selectedItems = computed({
-  set(value) {
-    emits('update:modelValue', value)
-  },
-  get() {
-    return props.modelValue
-  }
+  set: (value) => emits('update:modelValue', value),
+  get: () => props.modelValue
 })
 
 const filters = reactive({

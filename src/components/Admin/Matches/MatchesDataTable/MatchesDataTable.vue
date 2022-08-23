@@ -4,6 +4,8 @@
     :items="matches"
     :title="$t('common.matches')"
     class="matches-data-table"
+    :global-filter-fields="globalFilterFields"
+    searchable
   >
     <Column selectionMode="multiple" />
     <Column field="homeTeam" :header="$t('admin.matches.homeTeam')" sortable>
@@ -129,6 +131,13 @@ const isFinished = (match) => match.status === MATCH_STATUSES.FINISHED
 const handleEditMatch = (match) => emits('edit', match)
 const handleDeleteMatch = (match) => emits('delete', match)
 const handleSetMatchResult = (match) => emits('set-result', match)
+
+const globalFilterFields = [
+  'homeTeam.name',
+  'awayTeam.name',
+  'round.name',
+  'round.championship.name'
+]
 </script>
 
 <style lang="scss">
