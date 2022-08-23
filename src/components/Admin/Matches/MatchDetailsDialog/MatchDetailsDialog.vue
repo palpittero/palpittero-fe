@@ -41,7 +41,8 @@ const { errors, handleSubmit, setValues } = useForm({
 })
 
 watch(props.match, (match) => setValues(match.value), {
-  deep: true
+  deep: true,
+  immediate: true
 })
 
 const onSubmit = handleSubmit(

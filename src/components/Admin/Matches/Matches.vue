@@ -88,7 +88,7 @@ import { MATCH_MODEL } from '@/constants/matches'
 import services from '@/services'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
-import { clone } from 'lodash'
+import { clone, pick } from 'lodash/fp'
 
 const i18n = useI18n()
 const toast = useToast()
@@ -145,7 +145,16 @@ const handleDetailsDialogHide = () => {
 }
 
 const handleEditMatch = (row) => {
-  match.value = { ...row }
+  const MATCH_FIELDS = ['id', 'name']
+  const CHAMPIONSHIP_FIELDS = ['id', 'name', 'year']
+
+  match.value = {
+    ...row,
+    round: pick(MATCH_FIELDS, row.round),
+    championship: pick(CHAMPIONSHIP_FIELDS, row.round.championship),
+    date: new Date(row.date)
+  }
+
   isMatchDetailsDialogVisible.value = true
 }
 

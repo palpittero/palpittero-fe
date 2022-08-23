@@ -8,7 +8,7 @@ export const LEAGUE_POINTS_STRATEGY = {
 export const LEAGUE_MODEL = {
   name: '',
   badge: '',
-  private: true,
+  private: false,
   users: [],
   championships: [],
   ownerId: null,

@@ -78,7 +78,7 @@
         <RadioButton
           id="private"
           name="private"
-          :value="1"
+          :value="true"
           v-model="league.private"
         />
         <label for="private">{{ $t('common.yes') }}</label>
@@ -87,7 +87,7 @@
         <RadioButton
           id="public"
           name="private"
-          :value="0"
+          :value="false"
           v-model="league.private"
         />
         <label for="public">{{ $t('common.no') }}</label>

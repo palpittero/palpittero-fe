@@ -58,6 +58,7 @@ export const MATCH_MODEL = {
   awayTeamId: null,
   date: '',
   result: '',
+  roundId: null,
   status: MATCH_STATUSES.SCHEDULED
 }
 

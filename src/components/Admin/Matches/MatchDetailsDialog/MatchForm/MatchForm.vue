@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import TeamSelect from '@/components/Admin/Teams/TeamSelect/TeamSelect.vue'
 import ChampionshipSelect from '@/components/Admin/Championships/ChampionshipSelect/ChampionshipSelect.vue'
 import RoundSelect from '@/components/Admin/Rounds/RoundSelect/RoundSelect.vue'
@@ -93,15 +93,9 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue'])
 const match = reactive(props.modelValue.value)
 const minDate = new Date()
-const championship = ref(null)
+const championship = reactive(props.modelValue.value.championship || null)
 
-watch(
-  match,
-  (value) => {
-    emits('update:modelValue', value)
-  },
-  { deep: true }
-)
+watch(match, (value) => emits('update:modelValue', value), { deep: true })
 
 const onFilterHomeTeam = (teams) =>
   teams.filter(({ id }) => id !== match.awayTeam?.id)
