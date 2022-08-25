@@ -1,6 +1,7 @@
 export default {
   join: 'Participar',
   ranking: 'Ranking',
+  rankingLeague: 'Ranking - {league}',
   leave: 'Sair',
   participants: 'Participantes',
   myLeagues: {

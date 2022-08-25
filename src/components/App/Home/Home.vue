@@ -30,6 +30,13 @@
       @join="handleJoinLeague"
     />
 
+    <LeagueRankingDialog
+      v-if="isLeagueRankingDialogVisible"
+      :league="selectedLeague"
+      :visible="isLeagueRankingDialogVisible"
+      @submit="handleLeagueRankingDialogSubmit"
+    />
+
     <LeagueUsersDialog
       v-if="isLeagueUsersDialogVisible"
       :league="selectedLeague"
@@ -69,16 +76,18 @@ import { useRouter } from 'vue-router'
 import LeaguesDescriptionList from '@/components/App/Leagues/LeaguesDescriptionList/LeaguesDescriptionList.vue'
 import LeagueUsersDialog from '@/components/Shared/Leagues/LeagueUsersDialog/LeagueUsersDialog.vue'
 import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
+import LeagueRankingDialog from '@/components/App/Leagues/LeagueRankingDialog/LeagueRankingDialog.vue'
 
 const authStore = useAuthStore()
 const i18n = useI18n()
 const router = useRouter()
 
-const canManage = ref(false)
+// const canManage = ref(false)
 const selectedLeague = ref({})
 const isLeagueUsersDialogVisible = ref(false)
 const isLeagueJoinDialogVisible = ref(false)
 const isLeagueLeaveDialogVisible = ref(false)
+const isLeagueRankingDialogVisible = ref(false)
 
 const leagueJoinDialog = computed(() => {
   const message = selectedLeague.value?.private
@@ -110,11 +119,11 @@ const publicLeagues = computed(() =>
   differenceBy('id', allPublicLeagues.data, myLeagues.data)
 )
 
-const isOwner = computed(() =>
-  selectedLeague.value.users?.find(
-    ({ id, owner }) => id === authStore.loggedUser.id && owner
-  )
-)
+// const isOwner = computed(() =>
+//   selectedLeague.value.users?.find(
+//     ({ id, owner }) => id === authStore.loggedUser.id && owner
+//   )
+// )
 
 onMounted(() => {
   loadMyLeagues()
@@ -137,14 +146,14 @@ const handleUsersDialogHide = () => (isLeagueUsersDialogVisible.value = false)
 
 const handleManageLeague = (league) => {
   selectedLeague.value = league
-  canManage.value = isOwner
+  // canManage.value = isOwner
   isLeagueUsersDialogVisible.value = true
 }
 
 const handleRankingLeague = (league) => {
   selectedLeague.value = league
-  canManage.value = false
-  isLeagueUsersDialogVisible.value = true
+  // canManage.value = false
+  isLeagueRankingDialogVisible.value = true
 }
 
 const handleJoinLeague = (league) => {
@@ -192,4 +201,7 @@ const handleGuessesLeague = (league) =>
   })
 
 const handleCreateLeague = () => console.log('should create league')
+
+const handleLeagueRankingDialogSubmit = () =>
+  (isLeagueRankingDialogVisible.value = false)
 </script>

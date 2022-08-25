@@ -17,6 +17,7 @@ router.beforeEach(async (to, from, next) => {
         next({ name: 'Forbidden' })
       }
     } catch (error) {
+      console.log(error)
       if (error.response.status === 401) {
         next({ name: 'Login' })
       }

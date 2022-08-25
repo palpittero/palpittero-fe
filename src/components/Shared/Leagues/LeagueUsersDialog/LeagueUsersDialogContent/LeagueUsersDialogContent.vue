@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="mb-3 flex">
+    <div class="mb-3 flex gap-2">
       <UsersSelect
         v-model="selectedUsers"
         :filter-ids="filteredUsersIds"
-        class="flex-1 mr-3"
+        class-name="flex-1"
       />
       <Button
         icon="pi pi-plus"
@@ -31,7 +31,6 @@
           </template>
         </Column>
         <Column field="email" :header="$t('admin.users.email')" />
-        <Column field="points" :header="$t('admin.users.points')" />
         <Column field="status" :header="$t('common.status')">
           <template #body="{ data }">
             <BaseStatus

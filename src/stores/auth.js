@@ -47,6 +47,6 @@ export const useAuthStore = defineStore('auth/user', {
     }
   },
   getters: {
-    isAdmin: (state) => state.loggedUser.role === USER_ROLES.ADMIN
+    isAdmin: (state) => state.loggedUser?.role === USER_ROLES.ADMIN
   }
 })

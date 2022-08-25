@@ -10,7 +10,7 @@
         filter
         display="chip"
         :placeholder="$t('admin.users.selectUsers')"
-        :class="{ 'p-invalid': invalid }"
+        :class="multiSelectClassName"
       />
     </template>
   </UsersFetcher>
@@ -29,6 +29,10 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  className: {
+    type: String,
+    default: ''
+  },
   invalid: Boolean,
   disabled: Boolean
 })
@@ -45,6 +49,11 @@ const selectedUsers = computed({
       .map(({ id, name }) => ({ id, name }))
   }
 })
+
+const multiSelectClassName = computed(() => [
+  props.className,
+  props.invalid && 'p-invalid'
+])
 
 const parseUsers = (users) =>
   users

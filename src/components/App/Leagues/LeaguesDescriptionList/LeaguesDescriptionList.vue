@@ -32,7 +32,7 @@
           :key="league.id"
           class="flex align-items-center justify-content-between w-full py-3 px-2 border-top-1 surface-border flex-wrap"
         >
-          <div class="text-500 font-medium flex align-items-center gap-5">
+          <div class="text-500 font-medium flex align-items-center gap-3">
             <Avatar :image="league.badge" size="large" shape="circle" />
             {{ league.name }}
             <span
@@ -58,7 +58,7 @@
             />
 
             <Button
-              v-if="isParticipant(league)"
+              v-if="isOwner(league)"
               :label="$t('app.leagues.participants')"
               icon="pi pi-users"
               class="p-button-text"
