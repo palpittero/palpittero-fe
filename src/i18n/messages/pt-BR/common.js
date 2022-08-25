@@ -47,5 +47,9 @@ export default {
     title: 'Acesso não permitido',
     message: 'Você não tem pode acessar esta página',
     cta: 'Voltar para o início'
+  },
+  logout: {
+    header: 'Confirmar logout',
+    message: 'Deseja realmente sair do sistema?'
   }
 }

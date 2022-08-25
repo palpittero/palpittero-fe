@@ -124,10 +124,12 @@ const isParticipant = (league) =>
   league.users.find(({ id }) => id === authStore.loggedUser.id)
 
 const isGuest = (league) =>
-  league.users.find(({ owner, id }) => id === authStore.loggedUser.id && !owner)
+  league.users.find(
+    ({ owner, id }) => id === authStore.loggedUser?.id && !owner
+  )
 
 const isOwner = (league) =>
-  league.users.find(({ owner, id }) => id === authStore.loggedUser.id && owner)
+  league.users.find(({ owner, id }) => id === authStore.loggedUser?.id && owner)
 
 const innerDescription = computed(() =>
   props.leagues.length > 0 ? props.description : props.emptyState

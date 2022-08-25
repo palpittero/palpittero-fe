@@ -53,17 +53,30 @@
       </li>
     </ul>
   </div>
+
+  <BaseConfirmDialog
+    v-if="isLogoutDialogVisible"
+    :header="$t('common.logout.header')"
+    :message="$t('common.logout.message')"
+    :visible="isLogoutDialogVisible"
+    @hide="handleLogoutDialogHide"
+    @submit="handleLogoutDialogSubmit"
+  />
 </template>
 
 <script setup>
 import { useAuthStore } from '@/stores/auth'
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+
+import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
 
 const router = useRouter()
 const i18n = useI18n()
 const { logout, loggedUser, isAdmin } = useAuthStore()
+
+const isLogoutDialogVisible = ref(false)
 
 const emit = defineEmits(['menu-toggle', 'topbar-menu-toggle'])
 
@@ -71,12 +84,7 @@ const onMenuToggle = (event) => {
   emit('menu-toggle', event)
 }
 
-const handleLogout = () => {
-  logout()
-  router.push({
-    name: 'Login'
-  })
-}
+const handleLogout = () => (isLogoutDialogVisible.value = true)
 
 const topbarImage = '/images/logo-dark.svg'
 
@@ -96,6 +104,18 @@ const items = [
 ]
 
 const loggedInMenuLabel = computed(() => i18n.t('common.menu.hi', loggedUser))
+
+const handleLogoutDialogHide = () => (isLogoutDialogVisible.value = false)
+
+const handleLogoutDialogSubmit = () => {
+  logout()
+  handleLogoutDialogHide()
+  router.push({
+    name: 'Login'
+  })
+}
+
+// const handleJoinDialogHide = () => isLogoutDialogVisible.value = false
 
 // const onTopbarMenuToggle = (event) => {
 //   emit('topbar-menu-toggle', event)
