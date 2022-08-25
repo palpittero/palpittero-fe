@@ -66,10 +66,10 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import LeaguesDataTable from './LeaguesDataTable/LeaguesDataTable.vue'
-import LeagueDetailsDialog from './LeagueDetailsDialog/LeagueDetailsDialog.vue'
-import LeagueDeleteDialog from './LeagueDeleteDialog/LeagueDeleteDialog.vue'
+import LeagueDetailsDialog from '@/components/Shared/Leagues/LeagueDetailsDialog/LeagueDetailsDialog.vue'
+import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
 
 import { LEAGUE_MODEL } from '@/constants/leagues'
 import services from '@/services'
@@ -81,8 +81,8 @@ import { parseLeagueInput, parseLeagues } from '@/helpers/leagues'
 const i18n = useI18n()
 const toast = useToast()
 
-const league = reactive({})
-const leagues = reactive({
+const league = ref({})
+const leagues = ref({
   loading: false,
   error: null,
   data: []
@@ -96,12 +96,12 @@ onMounted(() => loadLeagues())
 
 const loadLeagues = async () => {
   try {
-    leagues.loading = true
-    leagues.data = parseLeagues(await services.leagues.fetchLeagues())
+    leagues.value.loading = true
+    leagues.value.data = parseLeagues(await services.leagues.fetchLeagues())
   } catch (error) {
-    leagues.error = error.message
+    leagues.value.error = error.message
   } finally {
-    leagues.loading = false
+    leagues.value.loading = false
   }
 }
 

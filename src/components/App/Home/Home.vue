@@ -18,6 +18,7 @@
       @ranking="handleRankingLeague"
       @leave="handleLeaveLeague"
       @guesses="handleGuessesLeague"
+      @remove="handleRemoveLeague"
     />
     <LeaguesDescriptionList
       :leagues="publicLeagues"
@@ -35,6 +36,15 @@
       :league="selectedLeague"
       :visible="isLeagueRankingDialogVisible"
       @submit="handleLeagueRankingDialogSubmit"
+    />
+
+    <LeagueDetailsDialog
+      v-if="isLeagueDetailsDialogVisible"
+      v-model="selectedLeague"
+      :visible="isLeagueDetailsDialogVisible"
+      :owner-id="loggedUser.id"
+      @hide="handleDetailsDialogHide"
+      @submit="handleDetailsDialogSubmit"
     />
 
     <LeagueUsersDialog
@@ -62,25 +72,40 @@
       @hide="handleLeaveDialogHide"
       @submit="handleLeaveDialogSubmit"
     />
+
+    <LeagueDeleteDialog
+      :visible="isLeagueDeleteDialogVisible"
+      :leagues="[selectedLeague]"
+      @hide="handleDeleteDialogHide"
+      @submit="handleDeleteDialogSubmit"
+    />
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import differenceBy from 'lodash/fp/differenceBy'
 import services from '@/services'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { useToast } from 'primevue/usetoast'
+import { parseLeagueInput } from '@/helpers/leagues'
+import { clone } from 'lodash'
+
+import { LEAGUE_MODEL } from '@/constants/leagues'
 
 import LeaguesDescriptionList from '@/components/App/Leagues/LeaguesDescriptionList/LeaguesDescriptionList.vue'
 import LeagueUsersDialog from '@/components/Shared/Leagues/LeagueUsersDialog/LeagueUsersDialog.vue'
 import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
 import LeagueRankingDialog from '@/components/App/Leagues/LeagueRankingDialog/LeagueRankingDialog.vue'
+import LeagueDetailsDialog from '@/components/Shared/Leagues/LeagueDetailsDialog/LeagueDetailsDialog.vue'
+import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
 
-const authStore = useAuthStore()
+const { loggedUser } = useAuthStore()
 const i18n = useI18n()
 const router = useRouter()
+const toast = useToast()
 
 // const canManage = ref(false)
 const selectedLeague = ref({})
@@ -88,6 +113,8 @@ const isLeagueUsersDialogVisible = ref(false)
 const isLeagueJoinDialogVisible = ref(false)
 const isLeagueLeaveDialogVisible = ref(false)
 const isLeagueRankingDialogVisible = ref(false)
+const isLeagueDetailsDialogVisible = ref(false)
+const isLeagueDeleteDialogVisible = ref(false)
 
 const leagueJoinDialog = computed(() => {
   const message = selectedLeague.value?.private
@@ -105,18 +132,18 @@ const leagueLeaveDialog = computed(() => ({
   message: i18n.t('app.leagues.leaveConfirmation')
 }))
 
-const myLeagues = reactive({
+const myLeagues = ref({
   loading: false,
   data: []
 })
 
-const allPublicLeagues = reactive({
+const allPublicLeagues = ref({
   loading: false,
   data: []
 })
 
 const publicLeagues = computed(() =>
-  differenceBy('id', allPublicLeagues.data, myLeagues.data)
+  differenceBy('id', allPublicLeagues.value.data, myLeagues.value.data)
 )
 
 // const isOwner = computed(() =>
@@ -125,21 +152,23 @@ const publicLeagues = computed(() =>
 //   )
 // )
 
-onMounted(() => {
+const loadLeagues = () => {
   loadMyLeagues()
   loadPublicLeagues()
-})
+}
+
+onMounted(() => loadLeagues())
 
 const loadMyLeagues = async () => {
-  myLeagues.loading = true
-  myLeagues.data = await services.leagues.fetchMyLeagues()
-  myLeagues.loading = false
+  myLeagues.value.loading = true
+  myLeagues.value.data = await services.leagues.fetchMyLeagues()
+  myLeagues.value.loading = false
 }
 
 const loadPublicLeagues = async () => {
-  allPublicLeagues.loading = true
-  allPublicLeagues.data = await services.leagues.fetchPublicLeagues()
-  allPublicLeagues.loading = false
+  allPublicLeagues.value.loading = true
+  allPublicLeagues.value.data = await services.leagues.fetchPublicLeagues()
+  allPublicLeagues.value.loading = false
 }
 
 const handleUsersDialogHide = () => (isLeagueUsersDialogVisible.value = false)
@@ -165,12 +194,11 @@ const handleJoinDialogHide = () => (isLeagueJoinDialogVisible.value = false)
 
 const handleJoinDialogSubmit = async () => {
   const leagueId = selectedLeague.value.id
-  const users = [{ id: authStore.loggedUser.id }]
+  const users = [{ id: loggedUser.id }]
 
   await services.usersLeagues.inviteUsers({ leagueId, users })
 
-  loadMyLeagues()
-  loadPublicLeagues()
+  loadLeagues()
 
   isLeagueJoinDialogVisible.value = false
 }
@@ -184,12 +212,11 @@ const handleLeaveDialogHide = () => (isLeagueLeaveDialogVisible.value = false)
 
 const handleLeaveDialogSubmit = async () => {
   const leagueId = selectedLeague.value.id
-  const userId = authStore.loggedUser.id
+  const userId = loggedUser.id
 
   await services.usersLeagues.deleteUser({ leagueId, userId })
 
-  loadMyLeagues()
-  loadPublicLeagues()
+  loadLeagues()
 
   isLeagueLeaveDialogVisible.value = false
 }
@@ -200,8 +227,66 @@ const handleGuessesLeague = (league) =>
     params: { leagueId: league.id }
   })
 
-const handleCreateLeague = () => console.log('should create league')
+const handleCreateLeague = () => {
+  selectedLeague.value = clone({
+    ...LEAGUE_MODEL,
+    ownerId: loggedUser.id
+  })
+  isLeagueDetailsDialogVisible.value = true
+}
 
 const handleLeagueRankingDialogSubmit = () =>
   (isLeagueRankingDialogVisible.value = false)
+
+const handleDetailsDialogHide = () => {
+  selectedLeague.value = {}
+  isLeagueDetailsDialogVisible.value = false
+}
+
+const handleDetailsDialogSubmit = async (league) => {
+  const parsedLeague = parseLeagueInput(league)
+
+  await services.leagues.createLeague(parsedLeague)
+
+  toast.add({
+    severity: 'success',
+    summary: i18n.t('common.success'),
+    detail: i18n.t('admin.leagues.saveSuccess'),
+    life: 4000
+  })
+
+  handleDetailsDialogHide()
+  loadLeagues()
+}
+
+const handleRemoveLeague = (league) => {
+  selectedLeague.value = league
+  isLeagueDeleteDialogVisible.value = true
+}
+
+const handleDeleteDialogHide = () => (isLeagueDeleteDialogVisible.value = false)
+
+const handleDeleteDialogSubmit = async ([league]) => {
+  try {
+    await services.leagues.deleteLeague(league)
+
+    toast.add({
+      severity: 'success',
+      summary: i18n.t('common.success'),
+      detail: i18n.t('admin.leagues.deleteSuccess'),
+      life: 4000
+    })
+
+    handleDeleteDialogHide()
+    loadLeagues()
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: i18n.t('common.error'),
+      detail: i18n.t('admin.leagues.error.delete'),
+      life: 3000,
+      group: 'app'
+    })
+  }
+}
 </script>

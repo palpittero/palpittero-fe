@@ -21,5 +21,6 @@ export default {
   noJoinedLeagues: 'Você não faz parte ou é dono de nenhuma liga',
   guesses: 'Palpites',
   owner: 'Você é o proprietário',
-  create: 'Criar Liga'
+  create: 'Criar Liga',
+  remove: 'Remover Liga'
 }
