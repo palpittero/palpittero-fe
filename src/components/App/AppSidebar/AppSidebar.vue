@@ -35,7 +35,7 @@ const menu = reactive([
       },
       {
         label: i18n.t('common.menu.rules'),
-        icon: 'pi pi-fw pi-flag',
+        icon: 'pi pi-fw pi-book',
         to: { name: 'Rules' }
       }
       // {

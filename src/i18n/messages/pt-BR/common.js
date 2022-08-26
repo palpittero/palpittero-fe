@@ -55,5 +55,6 @@ export default {
   logout: {
     header: 'Confirmar logout',
     message: 'Deseja realmente sair do sistema?'
-  }
+  },
+  points: '0 ponto | 1 ponto | {points} pontos'
 }
