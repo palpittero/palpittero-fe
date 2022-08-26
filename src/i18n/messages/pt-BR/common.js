@@ -31,11 +31,15 @@ export default {
     adminPanel: 'Painel Administrativo',
     palpittero: 'Palpittero',
     logout: 'Sair',
-    myAccount: 'Minha Conta',
     hi: 'Olá, {name}',
     menu: 'Menu',
     leagues: 'Ligas',
-    rules: 'Regulamento'
+    rules: 'Regulamento',
+    myAccount: {
+      myAccount: 'Minha Conta',
+      profile: 'Meu Perfil',
+      changePassword: 'Alterar Senha'
+    }
   },
   selected: 'Selecionados',
   notFound: {

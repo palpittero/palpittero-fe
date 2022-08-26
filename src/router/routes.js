@@ -1,6 +1,8 @@
 import Home from '@/pages/App/Home.vue'
 import Guesses from '@/pages/App/Guesses.vue'
-// import MyAccount from '@/pages/App/MyAccount.vue'
+import MyAccount from '@/pages/App/MyAccount/MyAccount.vue'
+import ChangePassword from '@/pages/App/MyAccount/ChangePassword.vue'
+import Profile from '@/pages/App/MyAccount/Profile.vue'
 
 import Login from '@/pages/Auth/Login.vue'
 import SignUp from '@/pages/Auth/SignUp.vue'
@@ -25,8 +27,21 @@ const routes = [
   },
   {
     name: 'MyAccount',
+    component: MyAccount,
     path: '/my-account',
-    component: Guesses
+    redirect: '/my-account/profile',
+    children: [
+      {
+        name: 'Profile',
+        path: 'profile',
+        component: Profile
+      },
+      {
+        name: 'ChangePassword',
+        path: 'change-password',
+        component: ChangePassword
+      }
+    ]
   },
   {
     name: 'Guesses',

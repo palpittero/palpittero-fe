@@ -32,7 +32,7 @@
         <router-link :to="{ name: 'MyAccount' }">
           <button class="p-link layout-topbar-button p-3">
             <i class="pi pi-user" />
-            <span>{{ $t('common.menu.myAccount') }}</span>
+            <span>{{ $t('common.menu.myAccount.myAccount') }}</span>
           </button>
         </router-link>
       </li>
@@ -46,7 +46,6 @@
       <li>
         <SplitButton
           :label="loggedInMenuLabel"
-          icon="pi pi-check"
           :model="items"
           class="p-button-text p-button-plain mr-2 mb-2 hidden lg:flex"
         />
@@ -90,10 +89,10 @@ const topbarImage = '/images/logo-dark.svg'
 
 const items = [
   {
-    label: i18n.t('common.menu.myAccount'),
+    label: i18n.t('common.menu.myAccount.myAccount'),
     icon: 'pi pi-user',
     command() {
-      router.push({ name: 'MyAccount' })
+      router.push({ name: 'Profile' })
     }
   },
   {

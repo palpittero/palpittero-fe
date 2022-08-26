@@ -1,15 +1,13 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '30vw' }"
-    :header="header"
+    :style="{ width: '550px' }"
+    :header="$t('common.confirm')"
     modal
-    @submit="handleSubmit"
     @hide="handleHide"
   >
     <div class="flex align-items-center">
-      <!-- <i class="pi pi-sign-in mr-3" style="font-size: 2rem" /> -->
-      <span v-html="message" />
+      <span v-html="$t('app.myAccount.profile.removeAccount.message')" />
     </div>
     <template #footer>
       <Button
@@ -19,9 +17,9 @@
         @click="handleHide"
       />
       <Button
-        :label="$t('common.yes')"
+        :label="$t('app.myAccount.profile.removeAccount.title')"
         icon="pi pi-check"
-        class="p-button-text"
+        class="p-button-text p-button-danger"
         @click="handleSubmit"
       />
     </template>
@@ -32,15 +30,11 @@
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 
 defineProps({
-  header: String,
-  message: String,
-  visible: Boolean,
-  okButtonClass: String,
-  cancelButtonClass: String
+  visible: Boolean
 })
 
-const emits = defineEmits(['submit', 'hide'])
+const emits = defineEmits(['hide', 'submit'])
 
-const handleSubmit = () => emits('submit')
 const handleHide = () => emits('hide')
+const handleSubmit = () => emits('submit')
 </script>

@@ -9,7 +9,9 @@
       </router-link>
     </template>
     <template #sidebar="{ onMenuItemClick }">
-      <AppSidebar @menuitem-click="onMenuItemClick" />
+      <slot name="sidebar" :on-menu-item-click="onMenuItemClick">
+        <AppSidebar @menuitem-click="onMenuItemClick" />
+      </slot>
     </template>
     <slot />
   </Layout>
