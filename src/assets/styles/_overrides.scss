@@ -61,3 +61,7 @@ body {
 .p-divider.p-divider-vertical:before {
   border-left: 1px solid var(--surface-d);
 }
+
+.p-component-overlay {
+  z-index: 2;
+}
