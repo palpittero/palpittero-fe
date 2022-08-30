@@ -1,8 +1,6 @@
 <template>
   <div class="font-large">
-    <h1>Regulamento</h1>
-
-    <div class="surface-section p-5">
+    <div class="surface-section p-3">
       <h2>Pontuação</h2>
       <Divider />
       <p>

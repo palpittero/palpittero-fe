@@ -62,7 +62,8 @@ const user = reactive({
   name: '',
   email: '',
   password: '',
-  passwordConfirmation: ''
+  passwordConfirmation: '',
+  terms: false
 })
 
 const submitted = ref(false)
@@ -78,7 +79,8 @@ const { errors, handleSubmit, setValues } = useForm({
       .oneOf(
         [yup.ref('password')],
         i18n.t('admin.users.error.passwordsDontMatch')
-      )
+      ),
+    terms: yup.bool().oneOf([true])
   })
 })
 

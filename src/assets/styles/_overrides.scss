@@ -65,3 +65,9 @@ body {
 .p-component-overlay, .p-multiselect-panel {
   z-index: 2;
 }
+
+small, span {
+  &.p-invalid {
+    color: #f03631;
+  }
+}

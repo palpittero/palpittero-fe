@@ -68,6 +68,25 @@
         {{ $t('admin.auth.validation.passwordConfirmation') }}
       </small>
     </div>
+    <div class="mb-3 field-checkbox">
+      <Checkbox
+        input-id="terms"
+        v-model="user.terms"
+        binary
+        :class="{ 'p-invalid': submitted && errors.terms }"
+      />
+      <label for="terms">
+        <Button class="p-button-link pl-1" @click="handleTerms">
+          {{ $t('common.termsAndConditions') }}
+        </Button>
+      </label>
+      <div>
+        <small class="p-invalid" v-if="submitted && errors.terms">
+          {{ $t('admin.auth.validation.terms') }}
+        </small>
+      </div>
+    </div>
+
     <Button
       :label="$t('admin.auth.createAccount')"
       class="w-full p-3 text-xl"
@@ -85,11 +104,18 @@
         {{ $t('admin.auth.signIn') }}
       </router-link>
     </div>
+
+    <SignUpTermsDialog
+      :visible="isTermsDialogVisible"
+      @hide="handleTermsDialogHide"
+    />
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+
+import SignUpTermsDialog from './SignUpTermsDialog/SignUpTermsDialog.vue'
 
 const props = defineProps({
   modelValue: {
@@ -104,6 +130,8 @@ const props = defineProps({
   submitted: Boolean
 })
 
+const isTermsDialogVisible = ref(false)
+
 const emits = defineEmits(['update:modelValue', 'submit'])
 
 const user = computed({
@@ -114,6 +142,10 @@ const user = computed({
     return props.modelValue
   }
 })
+
+const handleTerms = () => (isTermsDialogVisible.value = true)
+
+const handleTermsDialogHide = () => (isTermsDialogVisible.value = false)
 
 const handleSubmit = () => emits('submit', user)
 </script>

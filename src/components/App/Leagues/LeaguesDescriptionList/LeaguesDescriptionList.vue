@@ -144,7 +144,7 @@ const emits = defineEmits([
 ])
 
 const isParticipant = (league) =>
-  league.users.find(({ id }) => id === authStore.loggedUser.id)
+  league.users.find(({ id }) => id === authStore.loggedUser?.id)
 
 const isGuest = (league) =>
   league.users.find(

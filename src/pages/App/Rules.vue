@@ -1,6 +1,7 @@
 <template>
   <AppLayout>
-    <Rules :league-id="leagueId" />
+    <h1>Regulamento</h1>
+    <Rules />
   </AppLayout>
 </template>
 

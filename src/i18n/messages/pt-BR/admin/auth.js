@@ -20,13 +20,14 @@ export default {
     name: 'Favor, informar um nome',
     email: 'Favor, informar um e-mail válido',
     password: 'Favor, informar uma senha',
-    passwordConfirmation: 'As senhas devem ser iguais'
+    passwordConfirmation: 'As senhas devem ser iguais',
+    terms: 'Você deve aceitar os Termos e Condições'
   },
   createAccount: 'Criar Conta',
   alreadyHaveAnAccount: 'Já possui uma conta?',
   stillNotRegistered: 'Ainda não é registrado?',
   signUp: {
-    title: 'Seja bem-vind@, {name}',
+    title: 'Seja bem-vindo(a), {name}',
     subtitle: 'Sua conta foi criada com sucesso',
     message:
       'Você receberá, em breve, um e-mail com instruções para a confirmação do seu cadastro',
