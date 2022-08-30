@@ -19,6 +19,7 @@
       @leave="handleLeaveLeague"
       @guesses="handleGuessesLeague"
       @remove="handleRemoveLeague"
+      @edit="handleEditLeague"
     />
     <LeaguesDescriptionList
       :leagues="publicLeagues"
@@ -73,6 +74,13 @@
       @submit="handleLeaveDialogSubmit"
     />
 
+    <LeagueEditDialog
+      :visible="isLeagueEditDialogVisible"
+      :league="selectedLeague"
+      @hide="handleEditDialogHide"
+      @submit="handleEditDialogSubmit"
+    />
+
     <LeagueDeleteDialog
       :visible="isLeagueDeleteDialogVisible"
       :leagues="[selectedLeague]"
@@ -101,6 +109,7 @@ import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirm
 import LeagueRankingDialog from '@/components/App/Leagues/LeagueRankingDialog/LeagueRankingDialog.vue'
 import LeagueDetailsDialog from '@/components/Shared/Leagues/LeagueDetailsDialog/LeagueDetailsDialog.vue'
 import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
+// import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
 
 const { loggedUser } = useAuthStore()
 const i18n = useI18n()
@@ -114,6 +123,7 @@ const isLeagueJoinDialogVisible = ref(false)
 const isLeagueLeaveDialogVisible = ref(false)
 const isLeagueRankingDialogVisible = ref(false)
 const isLeagueDetailsDialogVisible = ref(false)
+const isLeagueEditDialogVisible = ref(false)
 const isLeagueDeleteDialogVisible = ref(false)
 
 const leagueJoinDialog = computed(() => {
@@ -235,6 +245,11 @@ const handleCreateLeague = () => {
   isLeagueDetailsDialogVisible.value = true
 }
 
+const handleEditLeague = (league) => {
+  selectedLeague.value = league
+  isLeagueDetailsDialogVisible.value = true
+}
+
 const handleLeagueRankingDialogSubmit = () =>
   (isLeagueRankingDialogVisible.value = false)
 
@@ -246,7 +261,9 @@ const handleDetailsDialogHide = () => {
 const handleDetailsDialogSubmit = async (league) => {
   const parsedLeague = parseLeagueInput(league)
 
-  await services.leagues.createLeague(parsedLeague)
+  parsedLeague.id
+    ? await services.leagues.updateLeague(parsedLeague)
+    : await services.leagues.createLeague(parsedLeague)
 
   toast.add({
     severity: 'success',

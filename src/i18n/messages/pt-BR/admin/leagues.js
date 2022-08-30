@@ -22,7 +22,8 @@ export default {
     approved: 'Aprovado'
   },
   error: {
-    delete: 'Erro ao tentar remover liga'
+    delete: 'Erro ao tentar remover liga',
+    update: 'Erro ao tentar atualizar liga'
   },
   inviteUsers: 'Convidar Usuários',
   inviteUsersConfirmation:

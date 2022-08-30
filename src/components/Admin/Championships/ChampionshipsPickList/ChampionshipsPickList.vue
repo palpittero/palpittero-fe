@@ -27,8 +27,8 @@ import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRende
 
 const props = defineProps({
   modelValue: {
-    type: Number,
-    default: null
+    type: Array,
+    default: () => []
   },
   filter: {
     type: Function,

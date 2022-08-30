@@ -47,7 +47,7 @@ const { errors, handleSubmit, setValues } = useForm({
     badge: yup.string().nullable(),
     users: yup.array(),
     championships: yup.array().min(1),
-    private: yup.boolean(),
+    private: yup.number(),
     pointsStrategy: yup.string(),
     status: yup.string()
   })
@@ -61,7 +61,6 @@ watch(
   () => props.visible,
   async (visible) => {
     if (visible && props.modelValue.id) {
-      // league.value.users = await services.leagues.fetchUsers(league.value)
       league.value.championships = await services.leagues.fetchChampionships(
         league.value.id
       )

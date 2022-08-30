@@ -22,5 +22,6 @@ export default {
   guesses: 'Palpites',
   owner: 'Você é o proprietário',
   create: 'Criar Liga',
-  remove: 'Remover Liga'
+  remove: 'Remover Liga',
+  edit: 'Editar Liga'
 }

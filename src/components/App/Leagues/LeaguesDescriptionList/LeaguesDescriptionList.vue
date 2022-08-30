@@ -83,6 +83,14 @@
 
             <Button
               v-if="isOwner(league)"
+              icon="pi pi-cog"
+              class="p-button-text"
+              @click="emits('edit', league)"
+              v-tooltip.top="$t('app.leagues.edit')"
+            />
+
+            <Button
+              v-if="isOwner(league)"
               icon="pi pi-trash"
               class="p-button-text p-button-danger"
               @click="emits('remove', league)"
@@ -126,7 +134,14 @@ const props = defineProps({
   loading: Boolean
 })
 
-const emits = defineEmits(['manage', 'ranking', 'join', 'leave', 'remove'])
+const emits = defineEmits([
+  'manage',
+  'ranking',
+  'join',
+  'leave',
+  'edit',
+  'remove'
+])
 
 const isParticipant = (league) =>
   league.users.find(({ id }) => id === authStore.loggedUser.id)

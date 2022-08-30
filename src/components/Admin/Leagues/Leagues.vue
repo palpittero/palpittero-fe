@@ -48,6 +48,7 @@
         />
 
         <LeagueDetailsDialog
+          v-if="isLeagueDetailsDialogVisible"
           v-model="league"
           :visible="isLeagueDetailsDialogVisible"
           @hide="handleDetailsDialogHide"
@@ -55,6 +56,7 @@
         />
 
         <LeagueDeleteDialog
+          v-if="isLeagueDeleteDialogOpen"
           :visible="isLeagueDeleteDialogOpen"
           :leagues="league"
           @hide="handleDeleteDialogHide"
