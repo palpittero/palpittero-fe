@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-content-center pb-3">
-    <InlineMessage severity="info" class="rounds-matches-list__final-result">
+    <InlineMessage severity="info" class="round-match-final-result">
       <div class="flex flex-column gap-3 align-items-center">
         <div class="flex gap-2 align-items-center">
           <span>
@@ -37,3 +37,11 @@ defineProps({
   }
 })
 </script>
+
+<style lang="scss">
+.round-match-final-result {
+  .p-inline-message-icon {
+    display: none;
+  }
+}
+</style>

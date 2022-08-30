@@ -69,9 +69,9 @@
                 <span v-else class="px-3 gap-2 flex font-large">
                   <span>
                     {{
-                      String(
+                      parseMatchGoals(
                         matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
-                      ) || '-'
+                      )
                     }}
                   </span>
                 </span>
@@ -102,9 +102,9 @@
                 >
                   <span>
                     {{
-                      String(
+                      parseMatchGoals(
                         matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
-                      ) || '-'
+                      )
                     }}
                   </span>
                 </span>
@@ -136,9 +136,11 @@
               getAwayTeamTeamScoreClass(matchesGuesses[match.id])
             "
           />
+
+          <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
         </li>
       </template>
-      <div class="text-center">
+      <div v-else class="text-center">
         {{ $t('app.guesses.noMatches') }}
       </div>
     </ul>
@@ -153,8 +155,14 @@ import { useRouter, useRoute } from 'vue-router'
 import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
 import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
 import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
+import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
+import {
+  isMatchScheduled,
+  isMatchFinished,
+  matchHasNoResult
+} from '@/helpers/matches'
 
-import { MATCH_RESULTS, MATCH_STATUSES } from '@/constants/matches'
+import { MATCH_RESULTS } from '@/constants/matches'
 
 const router = useRouter()
 const route = useRoute()
@@ -258,10 +266,6 @@ watch(
   { immediate: true }
 )
 
-const isMatchScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
-
-const isMatchFinished = (match) => match.status === MATCH_STATUSES.FINISHED
-
 const isGuessRegistered = (match) =>
   isMatchFinished(match) && !isNil(matchesGuesses[match.id]?.guess?.points)
 
@@ -300,6 +304,8 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
 
   emits('update:modelValue', matchesGuesses.value)
 }
+
+const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
 </script>
 
 <style lang="scss">
@@ -319,12 +325,6 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
   &__guess-points-badge {
     position: absolute;
     right: 60px;
-  }
-
-  &__final-result {
-    .p-inline-message-icon {
-      display: none;
-    }
   }
 }
 </style>

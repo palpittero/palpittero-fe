@@ -65,8 +65,8 @@
     </Column>
     <Column :header="$t('admin.matches.score')" sortable>
       <template #body="{ data }">
-        <MatchScore v-if="isFinished(data)" :match="data" />
-        <span v-else>-</span>
+        <MatchNoResult v-if="matchHasNoResult(data)" />
+        <MatchScore v-else :match="data" />
       </template>
     </Column>
     <Column>
@@ -98,9 +98,12 @@
 
 <script setup>
 import { computed } from 'vue'
+import { matchHasNoResult } from '@/helpers/matches'
+
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
 import MatchScore from '@/components/Admin/Matches/MatchScore/MatchScore.vue'
+import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
 
 import { MATCH_STATUSES, MATCH_STATUSES_LABELS } from '@/constants/matches'
 
