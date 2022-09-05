@@ -12,13 +12,13 @@
                 class="p-button-success mr-2"
                 @click="handleNewMatch"
               />
-              <Button
+              <!-- <Button
                 :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteMatches"
                 :disabled="!selectedMatches || !selectedMatches?.length"
-              />
+              /> -->
             </div>
           </template>
 

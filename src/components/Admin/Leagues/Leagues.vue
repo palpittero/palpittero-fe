@@ -12,13 +12,13 @@
                 class="p-button-success mr-2"
                 @click="handleNewLeague"
               />
-              <Button
+              <!-- <Button
                 :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteLeagues"
                 :disabled="!selectedLeagues || !selectedLeagues?.length"
-              />
+              /> -->
             </div>
           </template>
 
