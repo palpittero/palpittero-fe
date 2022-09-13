@@ -10,6 +10,8 @@ const createUser = (user) => api.post(`${RESOURCE_URI}`, user)
 
 const updateUser = (user) => api.put(`${RESOURCE_URI}/${user.id}`, user)
 
+const deleteUser = (user) => api.delete(`${RESOURCE_URI}/${user.id}`)
+
 const deleteUsers = (ids) => api.post(`${RESOURCE_URI}/delete-many`, { ids })
 
 export default {
@@ -17,5 +19,6 @@ export default {
   fetchUserById,
   createUser,
   updateUser,
+  deleteUser,
   deleteUsers
 }

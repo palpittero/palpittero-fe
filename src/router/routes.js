@@ -10,6 +10,7 @@ import SignUp from '@/pages/Auth/SignUp.vue'
 import ActivateAccount from '@/pages/Auth/ActivateAccount.vue'
 import ResetPassword from '@/pages/Auth/ResetPassword.vue'
 import ForgotPassword from '@/pages/Auth/ForgotPassword.vue'
+import AccountRemoved from '@/pages/Auth/AccountRemoved.vue'
 
 import NotFound from '@/pages/Errors/NotFound.vue'
 import Forbidden from '@/pages/Errors/Forbidden.vue'
@@ -83,6 +84,12 @@ const routes = [
     name: 'ForgotPassword',
     path: '/forgot-password',
     component: ForgotPassword,
+    meta: { public: true }
+  },
+  {
+    name: 'AccountRemoved',
+    path: '/account-removed',
+    component: AccountRemoved,
     meta: { public: true }
   },
   {

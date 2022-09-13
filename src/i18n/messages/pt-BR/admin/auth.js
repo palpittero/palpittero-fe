@@ -55,12 +55,17 @@ export default {
   resetPassword: {
     title: 'Redefinir Senha',
     subtitle: 'Aguarde enquanto redefinimos a sua senha'
-    // message:
-    //   'Em breve sua conta estará ativada e você poderá realizar login na plataforma.'
   },
   passwordReset: {
     title: 'Redefinição de Senha',
     subtitle: 'Sua senha foi redefinida com sucesso',
     message: 'Clique no botão abaixo para realizar o seu login'
+  },
+  accountRemoved: {
+    title: 'É uma pena te ver partir :(',
+    subtitle: 'Conta removida com sucesso',
+    message:
+      'Caso queira voltar a fazer palpites, clique no botão abaixo para criar uma nova conta',
+    cta: 'Criar uma conta'
   }
 }
