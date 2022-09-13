@@ -8,6 +8,7 @@ import Profile from '@/pages/App/MyAccount/Profile.vue'
 import Login from '@/pages/Auth/Login.vue'
 import SignUp from '@/pages/Auth/SignUp.vue'
 import ActivateAccount from '@/pages/Auth/ActivateAccount.vue'
+import ResetPassword from '@/pages/Auth/ResetPassword.vue'
 import ForgotPassword from '@/pages/Auth/ForgotPassword.vue'
 
 import NotFound from '@/pages/Errors/NotFound.vue'
@@ -46,7 +47,7 @@ const routes = [
   },
   {
     name: 'Guesses',
-    path: '/:leagueId/guesses/:round?',
+    path: '/:leagueId/guesses',
     component: Guesses
   },
   {
@@ -70,6 +71,12 @@ const routes = [
     name: 'ActivateAccount',
     path: '/activate-account',
     component: ActivateAccount,
+    meta: { public: true }
+  },
+  {
+    name: 'ResetPassword',
+    path: '/reset-password',
+    component: ResetPassword,
     meta: { public: true }
   },
   {

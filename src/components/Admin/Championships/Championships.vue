@@ -12,7 +12,7 @@
                 class="p-button-success mr-2"
                 @click="handleNewChampionship"
               />
-              <!-- <Button
+              <Button
                 :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
@@ -20,7 +20,7 @@
                 :disabled="
                   !selectedChampionships || !selectedChampionships?.length
                 "
-              /> -->
+              />
             </div>
           </template>
 
@@ -151,9 +151,10 @@ const handleDeleteChampionships = () => {
 const handleDeleteDialogHide = () =>
   (isChampionshipDeleteDialogOpen.value = false)
 
-const handleDeleteDialogSubmit = async ([championship]) => {
+const handleDeleteDialogSubmit = async (championships) => {
   try {
-    await services.championships.deleteChampionship(championship)
+    const ids = championships.map(({ id }) => id)
+    await services.championships.deleteChampionships(ids)
 
     toast.add({
       severity: 'success',
@@ -162,7 +163,7 @@ const handleDeleteDialogSubmit = async ([championship]) => {
       life: 4000
     })
 
-    isChampionshipDeleteDialogOpen.value = false
+    handleDeleteDialogHide()
     loadChampionships()
   } catch (error) {
     toast.add({

@@ -13,6 +13,7 @@ export default {
   deleteSuccess: 'Partida removida com sucesso',
   saveSuccess: 'Partida salva com sucesso',
   validation: {
+    championship: 'Favor informar o campeonato',
     homeTeam: 'Favor informar o time da casa',
     awayTeam: 'Favor informar o time visitante',
     date: 'Favor informar a data',
@@ -25,7 +26,8 @@ export default {
     scheduled: 'Agendada',
     preparation: 'Pré-jogo',
     cancelled: 'Cancelada',
-    finished: 'Concluída'
+    finished: 'Concluída',
+    inProgress: 'Em Andamento'
   },
   setResult: 'Registrar Resultado - {championship} ({name})',
   newMatch: 'Nova Partida'

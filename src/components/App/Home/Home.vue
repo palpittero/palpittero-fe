@@ -9,8 +9,8 @@
       </Button>
     </div>
     <LeaguesDescriptionList
-      :leagues="myLeagues.data"
-      :loading="myLeagues.loading"
+      :leagues="joinedLeagues"
+      :loading="allMyLeagues.loading"
       :title="$t('app.leagues.myLeagues.title')"
       :description="$t('app.leagues.myLeagues.description')"
       :empty-state="$t('app.leagues.noJoinedLeagues')"
@@ -23,7 +23,7 @@
     />
     <LeaguesDescriptionList
       :leagues="publicLeagues"
-      :loading="publicLeagues.loading"
+      :loading="allPublicLeagues.loading"
       :title="$t('app.leagues.publicLeagues.title')"
       :description="$t('app.leagues.publicLeagues.description')"
       :empty-state="$t('app.leagues.noPublicLeaguesFound')"
@@ -92,7 +92,6 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import differenceBy from 'lodash/fp/differenceBy'
 import services from '@/services'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
@@ -100,6 +99,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import { parseLeagueInput } from '@/helpers/leagues'
 import { clone } from 'lodash'
+import { pipe, filter, uniqBy, differenceBy } from 'lodash/fp'
 
 import { LEAGUE_MODEL } from '@/constants/leagues'
 
@@ -142,7 +142,12 @@ const leagueLeaveDialog = computed(() => ({
   message: i18n.t('app.leagues.leaveConfirmation')
 }))
 
-const myLeagues = ref({
+// const myLeagues = ref({
+//   loading: false,
+//   data: []
+// })
+
+const allMyLeagues = ref({
   loading: false,
   data: []
 })
@@ -152,8 +157,15 @@ const allPublicLeagues = ref({
   data: []
 })
 
+const joinedLeagues = computed(() =>
+  pipe(
+    filter((league) => league.users.some((user) => user.id === loggedUser?.id)),
+    uniqBy('id')
+  )([...allMyLeagues.value.data, ...allPublicLeagues.value.data])
+)
+
 const publicLeagues = computed(() =>
-  differenceBy('id', allPublicLeagues.value.data, myLeagues.value.data)
+  differenceBy('id', allPublicLeagues.value.data, joinedLeagues.value)
 )
 
 // const isOwner = computed(() =>
@@ -170,9 +182,9 @@ const loadLeagues = () => {
 onMounted(() => loadLeagues())
 
 const loadMyLeagues = async () => {
-  myLeagues.value.loading = true
-  myLeagues.value.data = await services.leagues.fetchMyLeagues()
-  myLeagues.value.loading = false
+  allMyLeagues.value.loading = true
+  allMyLeagues.value.data = await services.leagues.fetchMyLeagues()
+  allMyLeagues.value.loading = false
 }
 
 const loadPublicLeagues = async () => {

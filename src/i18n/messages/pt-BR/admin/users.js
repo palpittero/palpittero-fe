@@ -11,7 +11,7 @@ export default {
   userDetails: 'Detalhes do Usuário',
   deleteConfirmation:
     'Tem certeza de que deseja remover o usuário <b>{name}</b>? | <p>Tem certeza de que deseja remover os usuários abaixo?</p> <p><b>{name}</b></p>',
-  deleteSuccess: 'Usuário removido com sucesso',
+  deleteSuccess: 'Usuário(s) removido(s) com sucesso',
   saveSuccess: 'Usuário salvo com sucesso',
   validation: {
     name: 'Favor informar um nome',

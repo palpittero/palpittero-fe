@@ -12,13 +12,13 @@
                 class="p-button-success mr-2"
                 @click="handleNewUser"
               />
-              <!-- <Button
+              <Button
                 :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteUsers"
                 :disabled="!selectedUsers || !selectedUsers?.length"
-              /> -->
+              />
             </div>
           </template>
 
@@ -161,7 +161,24 @@ const handleDeleteUsers = () => {
 
 const handleDeleteDialogHide = () => (isUserDeleteDialogOpen.value = false)
 
-const handleDeleteDialogSubmit = (user) => console.log('should delete', user)
+const handleDeleteDialogSubmit = async (users) => {
+  try {
+    const ids = users.map(({ id }) => id)
+    await services.users.deleteUsers(ids)
+
+    toast.add({
+      severity: 'success',
+      summary: i18n.t('common.success'),
+      detail: i18n.t('admin.users.deleteSuccess'),
+      life: 4000
+    })
+
+    handleDeleteDialogHide()
+    loadUsers()
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <style scoped lang="scss">

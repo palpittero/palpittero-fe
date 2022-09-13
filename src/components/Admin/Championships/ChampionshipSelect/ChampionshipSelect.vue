@@ -30,7 +30,7 @@ import { computed, reactive, onMounted } from 'vue'
 
 const props = defineProps({
   modelValue: {
-    type: Number,
+    type: Object,
     default: null
   },
   filter: {

@@ -155,8 +155,8 @@ onBeforeUpdate(() => {
 // }
 </script>
 
-<style lang="scss">
+<!-- <style lang="scss">
 .p-toast.p-toast-top-right {
   z-index: 1000;
 }
-</style>
+</style> -->

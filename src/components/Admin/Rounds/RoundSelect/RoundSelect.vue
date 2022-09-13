@@ -26,7 +26,7 @@
 
 <script setup>
 import services from '@/services'
-import { computed, reactive, onMounted } from 'vue'
+import { computed, reactive, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -60,10 +60,14 @@ const round = computed({
   }
 })
 
-onMounted(async () => {
-  const rows = await services.championships.fetchRounds(props.championshipId)
-  rounds.data = props.filter(rows)
-})
+watch(
+  () => props.championshipId,
+  async () => {
+    const rows = await services.championships.fetchRounds(props.championshipId)
+    rounds.data = props.filter(rows)
+  },
+  { immediate: true, deep: true }
+)
 
 const parsedRounds = computed(() =>
   rounds.data.map(({ id, name }) => ({ id, name }))

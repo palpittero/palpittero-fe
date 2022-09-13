@@ -12,13 +12,13 @@
                 class="p-button-success mr-2"
                 @click="handleNewLeague"
               />
-              <!-- <Button
+              <Button
                 :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteLeagues"
                 :disabled="!selectedLeagues || !selectedLeagues?.length"
-              /> -->
+              />
             </div>
           </template>
 
@@ -153,9 +153,10 @@ const handleDeleteLeagues = () => {
 
 const handleDeleteDialogHide = () => (isLeagueDeleteDialogOpen.value = false)
 
-const handleDeleteDialogSubmit = async (league) => {
+const handleDeleteDialogSubmit = async (leagues) => {
   try {
-    await services.leagues.deleteLeague(league)
+    const ids = leagues.map(({ id }) => id)
+    await services.leagues.deleteLeagues(ids)
 
     toast.add({
       severity: 'success',
@@ -163,6 +164,9 @@ const handleDeleteDialogSubmit = async (league) => {
       detail: i18n.t('admin.leagues.deleteSuccess'),
       life: 4000
     })
+
+    handleDeleteDialogHide()
+    loadLeagues()
   } catch (error) {
     toast.add({
       severity: 'error',

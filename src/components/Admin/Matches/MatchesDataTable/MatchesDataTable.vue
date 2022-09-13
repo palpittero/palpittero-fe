@@ -74,7 +74,7 @@
         <div class="justify-content-center">
           <Button
             icon="pi pi-pencil"
-            v-if="!isFinished(data)"
+            v-if="isScheduled(data)"
             class="p-button-rounded p-button-success mr-2"
             @click="handleEditMatch(data)"
           />
@@ -118,6 +118,13 @@ const props = defineProps({
   }
 })
 
+const globalFilterFields = [
+  'homeTeam.name',
+  'awayTeam.name',
+  'round.name',
+  'round.championship.name'
+]
+
 const emits = defineEmits(['edit', 'delete', 'set-result', 'update:modelValue'])
 
 const selectedMatches = computed({
@@ -129,18 +136,12 @@ const selectedMatches = computed({
   }
 })
 
+const isScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
 const isFinished = (match) => match.status === MATCH_STATUSES.FINISHED
 
 const handleEditMatch = (match) => emits('edit', match)
 const handleDeleteMatch = (match) => emits('delete', match)
 const handleSetMatchResult = (match) => emits('set-result', match)
-
-const globalFilterFields = [
-  'homeTeam.name',
-  'awayTeam.name',
-  'round.name',
-  'round.championship.name'
-]
 </script>
 
 <style lang="scss">

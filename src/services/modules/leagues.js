@@ -21,12 +21,15 @@ const fetchMyLeagues = () => api.get(`${RESOURCE_URI}/my`)
 
 const fetchPublicLeagues = () => api.get(`${RESOURCE_URI}/public`)
 
+const deleteLeagues = (ids) => api.post(`${RESOURCE_URI}/delete-many`, { ids })
+
 export default {
   fetchLeagues,
   fetchLeagueById,
   createLeague,
   updateLeague,
   deleteLeague,
+  deleteLeagues,
   fetchUsers,
   fetchChampionships,
   fetchMyLeagues,

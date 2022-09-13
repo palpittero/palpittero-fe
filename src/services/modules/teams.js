@@ -15,10 +15,13 @@ const updateTeam = (team) => api.put(`${RESOURCE_URI}/${team.id}`, team)
 
 const deleteTeam = (team) => api.delete(`${RESOURCE_URI}/${team.id}`)
 
+const deleteTeams = (ids) => api.post(`${RESOURCE_URI}/delete-many`, { ids })
+
 export default {
   fetchTeams,
   fetchTeamById,
   createTeam,
   updateTeam,
-  deleteTeam
+  deleteTeam,
+  deleteTeams
 }

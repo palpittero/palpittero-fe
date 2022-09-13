@@ -12,13 +12,13 @@
                 class="p-button-success mr-2"
                 @click="handleNewMatch"
               />
-              <!-- <Button
+              <Button
                 :label="$t('common.removeSelected')"
                 icon="pi pi-trash"
                 class="p-button-danger"
                 @click="handleDeleteMatches"
                 :disabled="!selectedMatches || !selectedMatches?.length"
-              /> -->
+              />
             </div>
           </template>
 
@@ -180,7 +180,30 @@ const handleDetailsDialogSubmit = async (match) => {
 
 const handleDeleteDialogHide = () => (isMatchDeleteDialogOpen.value = false)
 
-const handleDeleteDialogSubmit = (match) => console.log('should delete', match)
+const handleDeleteDialogSubmit = async (matches) => {
+  try {
+    const ids = matches.map(({ id }) => id)
+    await services.matches.deleteMatches(ids)
+
+    toast.add({
+      severity: 'success',
+      summary: i18n.t('common.success'),
+      detail: i18n.t('admin.matches.deleteSuccess'),
+      life: 4000
+    })
+
+    handleDeleteDialogHide()
+    loadMatches()
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: i18n.t('common.error'),
+      detail: i18n.t('admin.matches.error.delete'),
+      life: 3000,
+      group: 'app'
+    })
+  }
+}
 
 const handleSetResultDialogHide = () =>
   (isMatchSetResultDialogOpen.value = false)

@@ -76,7 +76,7 @@ onMounted(async () => {
     }
 
     await services.auth.activateAccount(token)
-    router.replace(omit(route, 'query'))
+    router.replace(omit('query', route))
 
     isSuccess.value = true
   } catch (error) {

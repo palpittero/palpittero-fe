@@ -23,11 +23,23 @@ const recoverPassword = ({ email }) =>
 
 const activateAccount = (token) => api.post(`${RESOURCE_URI}/activate/${token}`)
 
+const resetPassword = ({ token, password, passwordConfirmation }) =>
+  api.put(`${RESOURCE_URI}/resetPassword`, {
+    token,
+    password,
+    passwordConfirmation
+  })
+
+const validateToken = (token) =>
+  api.get(`${RESOURCE_URI}/validateToken/${token}`)
+
 export default {
   authenticate,
   refreshToken,
   fetchLoggedUser,
   signUp,
   recoverPassword,
-  activateAccount
+  activateAccount,
+  resetPassword,
+  validateToken
 }

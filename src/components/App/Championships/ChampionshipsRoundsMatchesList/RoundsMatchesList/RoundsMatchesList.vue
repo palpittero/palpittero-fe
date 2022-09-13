@@ -8,7 +8,7 @@
       >
         <span class="pi pi-angle-left" />
       </Button>
-      <span class="text-bold">{{ selectedRound.name }}</span>
+      <!-- <span class="text-bold">{{ selectedRound.name }}</span> -->
       <Button
         class="p-button-text p-button-plain"
         :disabled="isCurrentLastRound"
@@ -197,11 +197,11 @@ const guesses = reactive({
 })
 
 const currentRound = computed(() =>
-  props.rounds.find((round) =>
-    route.params.round
-      ? round.id === parseInt(route.params.round)
+  props.rounds.find((round) => {
+    return route.query[round.championshipId]
+      ? round.id === parseInt(route.query[round.championshipId])
       : round.current
-  )
+  })
 )
 
 const isCurrentFirstRound = computed(() => selectedRound.value?.first)
@@ -255,9 +255,9 @@ watch(
 
       router.push({
         ...route,
-        params: {
-          ...route.params,
-          round: value.id
+        query: {
+          ...route.query,
+          [value.championshipId]: value.id
         }
       })
       guesses.loading = false

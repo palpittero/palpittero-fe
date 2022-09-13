@@ -36,6 +36,8 @@ const { errors, handleSubmit, setValues } = useForm({
   validationSchema: yup.object().shape({
     homeTeamId: yup.number().required(),
     awayTeamId: yup.number().required(),
+    championshipId: yup.number().required(),
+    roundId: yup.number().required(),
     date: yup.date().required()
   })
 })

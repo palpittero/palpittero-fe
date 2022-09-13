@@ -19,6 +19,9 @@ const updateChampionship = (championship) =>
 const deleteChampionship = (championship) =>
   api.delete(`${RESOURCE_URI}/${championship.id}`)
 
+const deleteChampionships = (ids) =>
+  api.post(`${RESOURCE_URI}/delete-many`, { ids })
+
 export default {
   fetchChampionships,
   fetchRounds,
@@ -26,5 +29,6 @@ export default {
   createChampionship,
   updateChampionship,
   deleteChampionship,
+  deleteChampionships,
   fetchTeams
 }

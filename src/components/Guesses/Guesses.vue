@@ -88,7 +88,10 @@ onMounted(async () => {
 })
 
 const handleRegisterGuesses = async () => {
-  await services.guesses.registerGuesses(guesses.value)
+  const validGuesses = guesses.value.filter(
+    ({ leagueId, matchId }) => leagueId && matchId
+  )
+  await services.guesses.registerGuesses(validGuesses)
 
   toast.add({
     severity: 'success',

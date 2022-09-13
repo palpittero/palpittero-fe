@@ -4,8 +4,9 @@
     <ChampionshipSelect
       v-model="championship"
       :invalid="submitted && errors.championshipId"
+      @update:model-value="handleChampionshipUpdate"
     />
-    <small class="p-invalid" v-if="submitted && errors.championship">
+    <small class="p-invalid" v-if="submitted && errors.championshipId">
       {{ $t('admin.matches.validation.championship') }}
     </small>
   </div>
@@ -16,7 +17,7 @@
         v-model="match.round"
         :championship-id="championship.id"
         :invalid="submitted && errors.roundId"
-        @update:model-value="handleRound"
+        @update:model-value="handleRoundUpdate"
       />
       <small class="p-invalid" v-if="submitted && errors.roundId">
         {{ $t('admin.matches.validation.round') }}
@@ -73,7 +74,7 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue'
+import { watch, ref } from 'vue'
 import TeamSelect from '@/components/Admin/Teams/TeamSelect/TeamSelect.vue'
 import ChampionshipSelect from '@/components/Admin/Championships/ChampionshipSelect/ChampionshipSelect.vue'
 import RoundSelect from '@/components/Admin/Rounds/RoundSelect/RoundSelect.vue'
@@ -91,23 +92,43 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:modelValue'])
-const match = reactive(props.modelValue.value)
+const match = ref(props.modelValue.value)
+const championship = ref(match.value.championship || null)
 const minDate = new Date()
-const championship = reactive(props.modelValue.value.championship || null)
 
-watch(match, (value) => emits('update:modelValue', value), { deep: true })
+watch(
+  () => match.value,
+  (value) => {
+    emits('update:modelValue', value), { deep: true }
+  },
+  { deep: true, immediate: true }
+)
 
 const onFilterHomeTeam = (teams) =>
-  teams.filter(({ id }) => id !== match.awayTeam?.id)
+  teams.filter(({ id }) => id !== match.value.awayTeam?.id)
 
 const onFilterAwayTeam = (teams) =>
-  teams.filter(({ id }) => id !== match.homeTeam?.id)
+  teams.filter(({ id }) => id !== match.value.homeTeam?.id)
 
-const handleRound = (round) => (match.roundId = round.id)
+const handleChampionshipUpdate = (championship) => {
+  match.value.championshipId = championship.id
 
-const handleHomeTeamUpdate = (team) => (match.homeTeamId = team.id)
+  match.value.round = null
+  match.value.homeTeam = null
+  match.value.awayTeam = null
 
-const handleAwayTeamUpdate = (team) => (match.awayTeamId = team.id)
+  handleRoundUpdate()
+  handleHomeTeamUpdate()
+  handleAwayTeamUpdate()
+}
+
+const handleRoundUpdate = (round) => (match.value.roundId = round?.id ?? null)
+
+const handleHomeTeamUpdate = (team) =>
+  (match.value.homeTeamId = team?.id ?? null)
+
+const handleAwayTeamUpdate = (team) =>
+  (match.value.awayTeamId = team?.id ?? null)
 </script>
 
 <style lang="scss">

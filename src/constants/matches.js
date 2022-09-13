@@ -1,6 +1,7 @@
 export const MATCH_STATUSES = {
   SCHEDULED: 'scheduled',
   PREPARATION: 'preparation',
+  IN_PROGRESS: 'in_progress',
   REGULAR_TIME: 'regularTime',
   EXTRA_TIME: 'extraTime',
   PENALTIES: 'penalties',
@@ -22,6 +23,12 @@ export const MATCH_STATUSES_LABELS = {
     icon: 'pi pi-clock',
     iconStyle: { color: 'var(--warning-600)' },
     severity: 'warning'
+  },
+  [MATCH_STATUSES.IN_PROGRESS]: {
+    text: 'admin.matches.status.inProgress',
+    icon: 'pi pi-play',
+    iconStyle: { color: 'var(--warning-600)' },
+    severity: 'primary'
   },
   [MATCH_STATUSES.FINISHED]: {
     text: 'admin.matches.status.finished',
@@ -49,16 +56,23 @@ export const MATCH_STATUSES_OPTIONS = [
   {
     id: MATCH_STATUSES.FINISHED,
     name: 'matches.status.finished'
+  },
+  {
+    id: MATCH_STATUSES.IN_PROGRESS,
+    name: 'matches.status.in_progress'
   }
 ]
 
 export const MATCH_MODEL = {
-  name: '',
   homeTeamId: null,
   awayTeamId: null,
   date: '',
   result: '',
   roundId: null,
+  championship: null,
+  round: null,
+  homeTeam: null,
+  awayTeam: null,
   status: MATCH_STATUSES.SCHEDULED
 }
 

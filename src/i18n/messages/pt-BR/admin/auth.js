@@ -14,7 +14,8 @@ export default {
     userNotFound: 'Usuário não encontrado',
     invalidCredentials: 'Usuário ou senha inválidos',
     emailAlreadyInUse: 'Este e-mail já está sendo utilizado',
-    passwordsDontMatch: 'As senhas não são iguais'
+    passwordsDontMatch: 'As senhas não são iguais',
+    tokenInvalidOrExpired: 'Token inválido ou expirado'
   },
   validation: {
     name: 'Favor, informar um nome',
@@ -49,6 +50,17 @@ export default {
   accountActivated: {
     title: 'Ativação de Conta',
     subtitle: 'Sua conta foi ativada com sucesso',
+    message: 'Clique no botão abaixo para realizar o seu login'
+  },
+  resetPassword: {
+    title: 'Redefinir Senha',
+    subtitle: 'Aguarde enquanto redefinimos a sua senha'
+    // message:
+    //   'Em breve sua conta estará ativada e você poderá realizar login na plataforma.'
+  },
+  passwordReset: {
+    title: 'Redefinição de Senha',
+    subtitle: 'Sua senha foi redefinida com sucesso',
     message: 'Clique no botão abaixo para realizar o seu login'
   }
 }
