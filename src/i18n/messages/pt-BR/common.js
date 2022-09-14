@@ -14,6 +14,7 @@ export default {
   active: 'Ativo',
   inactive: 'Inativo',
   users: 'Usuários',
+  dashboard: 'Dashboard',
   teams: 'Times',
   leagues: 'Ligas',
   championships: 'Campeonatos',

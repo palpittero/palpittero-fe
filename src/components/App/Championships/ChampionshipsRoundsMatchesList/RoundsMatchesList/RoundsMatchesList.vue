@@ -8,7 +8,7 @@
       >
         <span class="pi pi-angle-left" />
       </Button>
-      <!-- <span class="text-bold">{{ selectedRound.name }}</span> -->
+      <span class="text-bold">{{ selectedRound.name }}</span>
       <Button
         class="p-button-text p-button-plain"
         :disabled="isCurrentLastRound"
@@ -43,7 +43,9 @@
                 <div
                   class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
                 >
-                  <span>
+                  <span
+                    :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
+                  >
                     {{ match.homeTeam.name }}
                   </span>
                   <Avatar
@@ -66,7 +68,11 @@
                       handleUpdateRegularTimeGoals('homeTeam', match.id, value)
                   "
                 />
-                <span v-else class="px-3 gap-2 flex font-large">
+                <span
+                  v-else
+                  class="px-3 gap-2 flex font-large"
+                  :class="getHomeTeamTeamScoreClass(matchesGuesses[match.id])"
+                >
                   <span>
                     {{
                       parseMatchGoals(
@@ -267,7 +273,8 @@ watch(
 )
 
 const isGuessRegistered = (match) =>
-  isMatchFinished(match) && !isNil(matchesGuesses[match.id]?.guess?.points)
+  isMatchFinished(match) &&
+  !isNil(matchesGuesses.value[match.id]?.guess?.points)
 
 const handlePreviousRound = () => selectedRoundIndex.value--
 

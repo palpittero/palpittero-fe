@@ -10,8 +10,11 @@ const fetchMyGuesses = (params = {}) =>
 const registerGuesses = (guesses) =>
   api.post(`${RESOURCE_URI}/register`, { guesses })
 
+const processGuesses = () => api.post(`${RESOURCE_URI}/process`)
+
 export default {
   fetchGuesses,
   fetchMyGuesses,
-  registerGuesses
+  registerGuesses,
+  processGuesses
 }

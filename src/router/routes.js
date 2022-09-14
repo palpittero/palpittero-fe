@@ -16,6 +16,7 @@ import NotFound from '@/pages/Errors/NotFound.vue'
 import Forbidden from '@/pages/Errors/Forbidden.vue'
 
 import Admin from '@/pages/Admin/Admin.vue'
+import Dashboard from '@/pages/Admin/Dashboard.vue'
 import Users from '@/pages/Admin/Users.vue'
 import Teams from '@/pages/Admin/Teams.vue'
 import Leagues from '@/pages/Admin/Leagues.vue'
@@ -110,6 +111,12 @@ const routes = [
     component: Admin,
     meta: { admin: true },
     children: [
+      {
+        name: 'AdminDashboard',
+        path: '',
+        component: Dashboard,
+        meta: { admin: true }
+      },
       {
         name: 'AdminUsers',
         path: 'users',

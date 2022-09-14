@@ -24,6 +24,11 @@ const menu = reactive([
     label: i18n.t('common.menu.adminPanel'),
     items: [
       {
+        label: i18n.t('common.dashboard'),
+        icon: 'pi pi-fw pi-chart-bar',
+        to: { name: 'AdminDashboard' }
+      },
+      {
         label: i18n.t('common.users'),
         icon: 'pi pi-fw pi-users',
         to: { name: 'AdminUsers' }
