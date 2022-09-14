@@ -67,5 +67,17 @@ export default {
     message:
       'Caso queira voltar a fazer palpites, clique no botão abaixo para criar uma nova conta',
     cta: 'Criar uma conta'
+  },
+  invitationAccepted: {
+    title: 'Convite Aceito',
+    subtitle: 'Você agora participa da liga {visibility} "{name}"',
+    message: 'Clique no botão abaixo para ver a suas ligas'
+  },
+  acceptInvitation: {
+    title: 'Aceitar Convite',
+    subtitle: 'Aguarde enquanto a sua aprovação é processada',
+    message:
+      'Em breve você fará parte da liga {visibility} <b>"{name}"</b> <small>(Proprietário: {owner})</small>',
+    cta: 'Ver minhas ligas'
   }
 }

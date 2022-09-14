@@ -175,27 +175,6 @@ const onSubmit = handleSubmit(
     submitted.value = true
   }
 )
-
-// onMounted(async () => {
-//   try {
-//     isLoading.value = true
-
-//     const { token } = route.query
-//     if (!token) {
-//       router.replace({ name: 'NotFound' })
-//       return
-//     }
-
-//     await services.auth.resetPassword(token)
-//     router.replace(omit('query', route))
-
-//     isSuccess.value = true
-//   } catch (error) {
-//     console.log(error)
-//   } finally {
-//     isLoading.value = false
-//   }
-// })
 </script>
 <style lang="scss">
 .login {

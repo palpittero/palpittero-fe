@@ -11,6 +11,7 @@ import ActivateAccount from '@/pages/Auth/ActivateAccount.vue'
 import ResetPassword from '@/pages/Auth/ResetPassword.vue'
 import ForgotPassword from '@/pages/Auth/ForgotPassword.vue'
 import AccountRemoved from '@/pages/Auth/AccountRemoved.vue'
+import AcceptInvitation from '@/pages/Auth/AcceptInvitation.vue'
 
 import NotFound from '@/pages/Errors/NotFound.vue'
 import Forbidden from '@/pages/Errors/Forbidden.vue'
@@ -91,6 +92,12 @@ const routes = [
     name: 'AccountRemoved',
     path: '/account-removed',
     component: AccountRemoved,
+    meta: { public: true }
+  },
+  {
+    name: 'AcceptInvitation',
+    path: '/accept-invitation',
+    component: AcceptInvitation,
     meta: { public: true }
   },
   {

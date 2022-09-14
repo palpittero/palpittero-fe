@@ -46,7 +46,7 @@ const selectedUsers = computed({
   get() {
     return props.modelValue
       .filter(({ id }) => !props.filterIds.includes(id))
-      .map(({ id, name }) => ({ id, name }))
+      .map(({ id, name, email }) => ({ id, name, email }))
   }
 })
 
@@ -58,7 +58,7 @@ const multiSelectClassName = computed(() => [
 const parseUsers = (users) =>
   users
     .filter(({ id }) => !props.filterIds.includes(id))
-    .map(({ id, name }) => ({ id, name }))
+    .map(({ id, name, email }) => ({ id, name, email }))
 
-const getOptionValue = ({ id, name }) => ({ id, name })
+const getOptionValue = ({ id, name, email }) => ({ id, name, email })
 </script>
