@@ -1,11 +1,11 @@
 import { isArray, isObject } from 'lodash/fp'
 
-const parseMultiPartFormData = (data) => {
+const parseMultiPartFormData = ({ data, ignore = [] }) => {
   const formData = new FormData()
 
   for (const key in data) {
     const value =
-      isArray(data[key]) || isObject(data[key])
+      !ignore.includes(key) && (isArray(data[key]) || isObject(data[key]))
         ? JSON.stringify(data[key])
         : data[key]
     formData.append(key, value)

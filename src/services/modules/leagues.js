@@ -9,12 +9,12 @@ const fetchLeagues = () => api.get(RESOURCE_URI)
 const fetchLeagueById = (id) => api.get(`${RESOURCE_URI}/${id}`)
 
 const createLeague = (league) => {
-  const formData = parseMultiPartFormData(league)
+  const formData = parseMultiPartFormData({ data: league, ignore: ['badge'] })
   return api.post(`${RESOURCE_URI}`, formData, HTTP_MULTIPART_CONFIG)
 }
 
 const updateLeague = (league) => {
-  const formData = parseMultiPartFormData(league)
+  const formData = parseMultiPartFormData({ data: league, ignore: ['badge'] })
   return api.put(
     `${RESOURCE_URI}/${league.id}`,
     formData,

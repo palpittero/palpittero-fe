@@ -12,12 +12,12 @@ const fetchTeams = (query = {}) =>
 const fetchTeamById = (id) => api.get(`${RESOURCE_URI}/${id}`)
 
 const createTeam = (team) => {
-  const formData = parseMultiPartFormData(team)
+  const formData = parseMultiPartFormData({ data: team, ignore: ['badge'] })
   return api.post(`${RESOURCE_URI}`, formData, HTTP_MULTIPART_CONFIG)
 }
 
 const updateTeam = (team) => {
-  const formData = parseMultiPartFormData(team)
+  const formData = parseMultiPartFormData({ data: team, ignore: ['badge'] })
   return api.put(`${RESOURCE_URI}/${team.id}`, formData, HTTP_MULTIPART_CONFIG)
 }
 

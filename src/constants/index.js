@@ -61,3 +61,5 @@ export const HTTP_MULTIPART_CONFIG = {
     'Content-Type': 'multipart/form-data'
   }
 }
+
+export const BADGE_AVATAR_PLACEHOLDER = '/images/image-placeholder.png'

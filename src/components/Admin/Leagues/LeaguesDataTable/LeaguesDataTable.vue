@@ -24,7 +24,7 @@
       headerStyle="width:14%; min-width:10rem;"
     >
       <template #body="{ data }">
-        <Avatar :image="data.badge" size="large" shape="circle" />
+        <BadgeAvatar :image="data.badge" />
       </template>
     </Column>
     <Column
@@ -68,6 +68,7 @@
 import { computed } from 'vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 import { BINARY_LABELS } from '@/constants'
 
@@ -93,8 +94,17 @@ const selectedLeagues = computed({
   }
 })
 
+// const badgesErrors = ref({})
+
 const handleEditLeague = (league) => emits('edit', league)
 const handleDeleteLeague = (league) => emits('delete', league)
+// const handleAvatarError = (league) => {
+//   console.log('error', league.name)
+//   badgesErrors.value[league.id] = true
+// }
+// const hasBadgeError = (league) => badgesErrors.value[league.id]
+// const getLeagueBadge = (league) =>
+//   badgesErrors.value[league.id] ? '/images/image-placeholder.png' : league.badge
 </script>
 
 <style lang="scss">

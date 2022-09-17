@@ -83,7 +83,6 @@
 import { computed } from 'vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
-import { TEAM_TYPES } from '@/constants/teams'
 
 const props = defineProps({
   modelValue: {

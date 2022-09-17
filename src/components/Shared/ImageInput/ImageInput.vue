@@ -25,6 +25,7 @@
       :image="image"
       :mime-type="mimeType"
       @submit="handleSubmit"
+      @hide="handleHide"
     />
   </div>
 </template>
@@ -101,6 +102,10 @@ const handleSubmit = (blob) => {
 const handleRemove = () => {
   croppedImage.value = null
   model.value = null
+}
+
+const handleHide = () => {
+  isImageCropperDialogOpen.value = false
 }
 </script>
 
