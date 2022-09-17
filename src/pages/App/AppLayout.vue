@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template #switch-app>
-      <router-link :to="{ name: 'Admin' }">
+      <router-link :to="{ name: 'AdminDashboard' }">
         <button class="p-link layout-topbar-button">
           <i class="pi pi-desktop" />
           <span>{{ $t('common.menu.adminPanel') }}</span>

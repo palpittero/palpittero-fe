@@ -19,5 +19,15 @@ export default {
   saveSuccess: 'Campeonato salvo com sucesso',
   allChampionships: 'Todos os Campeonatos',
   rounds: 'Rodadas',
-  newChampionship: 'Novo Campeonato'
+  newChampionship: 'Novo Campeonato',
+  simple: 'Simples',
+  detailed: 'Detalhado',
+  type: 'Tipo',
+  group: 'Grupo',
+  playoff: 'Playoff',
+  addRound: 'Adicionar rodada',
+  regularTime: 'Tempo Regular',
+  extraTime: 'Prorrogação',
+  penalties: 'Pênaltis',
+  noRounds: 'Este campeonato não possui nenhuma rodada'
 }

@@ -31,6 +31,17 @@
         {{ data.teams.length }}
       </template>
     </Column>
+
+    <Column
+      field="rounds"
+      :header="$t('admin.championships.rounds')"
+      sortable
+      headerStyle="width:14%; min-width:10rem;"
+    >
+      <template #body="{ data }">
+        {{ data.rounds.length }}
+      </template>
+    </Column>
     <Column
       field="status"
       :header="$t('common.status')"

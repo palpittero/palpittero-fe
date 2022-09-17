@@ -58,7 +58,7 @@
 import services from '@/services'
 import { onMounted, ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-// import { omit } from 'lodash/fp'
+import { omit } from 'lodash/fp'
 
 const route = useRoute()
 const router = useRouter()
@@ -76,7 +76,6 @@ onMounted(async () => {
   try {
     isLoading.value = true
     const { token, league: name, owner, visibility } = route.query
-    console.log({ token, league, owner, visibility })
 
     league.name = name
     league.owner = owner
@@ -88,7 +87,7 @@ onMounted(async () => {
     }
 
     await services.usersLeagues.acceptInvitation(token)
-    // router.replace(omit('query', route))
+    router.replace(omit('query', route))
 
     isSuccess.value = true
   } catch (error) {
