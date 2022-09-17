@@ -10,5 +10,13 @@ export default {
   validation: {
     name: 'Favor informar um nome'
   },
-  newTeam: 'Novo Time'
+  newTeam: 'Novo Time',
+  nationalTeam: 'Seleção Nacional',
+  club: 'Clube',
+  type: 'Tipo',
+  nationalDivision: 'Divisão nacional',
+  region: 'Região',
+  country: 'País',
+  selectCountry: 'Selecione o país',
+  division: 'Divisão'
 }

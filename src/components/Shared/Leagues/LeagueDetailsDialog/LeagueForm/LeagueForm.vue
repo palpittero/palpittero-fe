@@ -14,21 +14,7 @@
   </div>
   <div class="field">
     <label for="badge">{{ $t('admin.leagues.badge') }}</label>
-    <InputText
-      id="badge"
-      v-model.trim="league.badge"
-      :class="{ 'p-invalid': hasImageError }"
-    />
-    <img
-      v-show="isBadgeLoaded"
-      :src="league.badge"
-      class="league-form__badge my-2"
-      @error="handleBadgeError"
-      @load="handleBadgeLoad"
-    />
-    <span v-if="hasImageError">
-      {{ $t('admin.Erro ao carregar imagem') }}
-    </span>
+    <ImageInput v-model="league.badge" />
   </div>
 
   <div class="field">
@@ -112,13 +98,14 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import UsersSelect from '@/components/Shared/Users/UsersSelect/UsersSelect.vue'
 import UserSelect from '@/components/Shared/Users/UserSelect/UserSelect.vue'
 
 import { LEAGUE_POINTS_STRATEGY } from '@/constants/leagues'
 import ChampionshipsPickList from '@/components/Admin/Championships/ChampionshipsPickList/ChampionshipsPickList.vue'
+import ImageInput from '@/components/Shared/ImageInput/ImageInput.vue'
 
 const props = defineProps({
   modelValue: {
@@ -138,7 +125,6 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue'])
 const league = reactive(props.modelValue)
-const isBadgeLoaded = ref(false)
 
 watch(
   league,
@@ -147,11 +133,6 @@ watch(
   },
   { deep: true }
 )
-
-const hasImageError = computed(() => league.badge && !isBadgeLoaded.value)
-
-const handleBadgeLoad = () => (isBadgeLoaded.value = true)
-const handleBadgeError = () => (isBadgeLoaded.value = false)
 </script>
 
 <style lang="scss">

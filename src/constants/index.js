@@ -55,3 +55,9 @@ export const STATUSES_OPTIONS = [
     name: 'common.inactive'
   }
 ]
+
+export const HTTP_MULTIPART_CONFIG = {
+  header: {
+    'Content-Type': 'multipart/form-data'
+  }
+}

@@ -1,3 +1,5 @@
+import { HTTP_MULTIPART_CONFIG } from '@/constants'
+import { parseMultiPartFormData } from '@/helpers/form'
 import api from '@/services/api'
 
 const RESOURCE_URI = '/leagues'
@@ -6,9 +8,19 @@ const fetchLeagues = () => api.get(RESOURCE_URI)
 
 const fetchLeagueById = (id) => api.get(`${RESOURCE_URI}/${id}`)
 
-const createLeague = (league) => api.post(`${RESOURCE_URI}`, league)
+const createLeague = (league) => {
+  const formData = parseMultiPartFormData(league)
+  return api.post(`${RESOURCE_URI}`, formData, HTTP_MULTIPART_CONFIG)
+}
 
-const updateLeague = (league) => api.put(`${RESOURCE_URI}/${league.id}`, league)
+const updateLeague = (league) => {
+  const formData = parseMultiPartFormData(league)
+  return api.put(
+    `${RESOURCE_URI}/${league.id}`,
+    formData,
+    HTTP_MULTIPART_CONFIG
+  )
+}
 
 const deleteLeague = (league) => api.delete(`${RESOURCE_URI}/${league.id}`)
 

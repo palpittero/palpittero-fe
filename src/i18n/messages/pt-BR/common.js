@@ -6,6 +6,7 @@ export default {
   confirm: 'Confirmar',
   edit: 'Editar',
   remove: 'Remover',
+  cropImage: 'Cortar Imagem',
   delete: 'Remover',
   close: 'Fechar',
   yes: 'Sim',

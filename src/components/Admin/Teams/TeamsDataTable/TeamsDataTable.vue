@@ -11,12 +11,7 @@
       :header="$t('admin.teams.name')"
       sortable
       headerStyle="width:14%; min-width:10rem;"
-    >
-      <template #body="{ data }">
-        <!-- <span class="p-column-title">{{ $t('admin.teams.name') }}</span> -->
-        {{ data.name }}
-      </template>
-    </Column>
+    />
     <Column
       field="badge"
       :header="$t('admin.teams.badge')"
@@ -24,8 +19,37 @@
       headerStyle="width:14%; min-width:10rem;"
     >
       <template #body="{ data }">
-        <!-- <span class="p-column-title">{{ $t('admin.teams.badge') }}</span> -->
         <Avatar :image="data.badge" size="large" shape="circle" />
+      </template>
+    </Column>
+    <Column
+      field="type"
+      :header="$t('admin.teams.type')"
+      sortable
+      headerStyle="width:14%; min-width:10rem;"
+    >
+      <template #body="{ data }">
+        {{ $t(`admin.teams.${data.type}`) }}
+      </template>
+    </Column>
+    <Column
+      field="country"
+      :header="$t('admin.teams.country')"
+      sortable
+      headerStyle="width:14%; min-width:10rem;"
+    >
+      <template #body="{ data }">
+        <template v-if="data.country">
+          {{ data.country ? data.country.name : '-' }}
+          <div v-if="data.nationalDivision">
+            <small
+              >(<span v-if="data.region">{{ data.region }} / </span
+              >{{ $t('admin.teams.nationalDivision') }}
+              {{ data.nationalDivision }})</small
+            >
+          </div>
+        </template>
+        <template v-else> - </template>
       </template>
     </Column>
     <Column
@@ -35,7 +59,6 @@
       headerStyle="width:14%; min-width:10rem;"
     >
       <template #body="{ data }">
-        <!-- <span class="p-column-title">{{ $t('common.status') }}</span> -->
         <BaseStatus :status="data.status" />
       </template>
     </Column>
@@ -60,6 +83,7 @@
 import { computed } from 'vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
+import { TEAM_TYPES } from '@/constants/teams'
 
 const props = defineProps({
   modelValue: {
