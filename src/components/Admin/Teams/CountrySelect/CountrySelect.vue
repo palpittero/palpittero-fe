@@ -9,6 +9,7 @@
     :loading="loading"
     :disabled="disabled || countries.loading"
     :class="{ 'p-invalid': invalid }"
+    class="p-dropdown-sm"
   >
     <template #value="{ value, placeholder }">
       <div v-if="value" class="flex align-items-center gap-3">

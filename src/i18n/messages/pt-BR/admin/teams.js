@@ -1,4 +1,5 @@
 export default {
+  teams: 'Times',
   name: 'Nome',
   badge: 'Escudo/Bandeira',
   teamDetails: 'Detalhes do Time',
@@ -18,5 +19,10 @@ export default {
   region: 'Região',
   country: 'País',
   selectCountry: 'Selecione o país',
-  division: 'Divisão'
+  division: 'Divisão',
+  selectType: 'Selecione um tipo',
+  perType: 'Por Tipo',
+  perCountryRegion: 'Por País / Região',
+  advancedFilters: 'Filtros Avançados',
+  clearFilters: 'Limpar Filtros'
 }

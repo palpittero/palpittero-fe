@@ -25,3 +25,8 @@ export const TEAM_MODEL = {
   nationalDivision: null,
   status: STATUSES.ACTIVE
 }
+
+export const TEAM_FILTER_MODES = {
+  TYPE: 'type',
+  COUNTRY_REGION: 'countryRegion'
+}

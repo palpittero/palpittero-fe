@@ -70,6 +70,14 @@ small, span {
   }
 }
 
-.p-dialog-mask.p-component-overlay, .p-tooltip, .p-tieredmenu-overlay {
+.p-dialog-mask.p-component-overlay, .p-tieredmenu-overlay {
   z-index: 999;
+}
+
+.p-tooltip {
+  z-index: 1101
+}
+
+.p-dropdown-panel {
+  z-index: 1101; 
 }

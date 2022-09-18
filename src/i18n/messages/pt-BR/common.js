@@ -59,5 +59,6 @@ export default {
     message: 'Deseja realmente sair do sistema?'
   },
   points: '0 ponto | 1 ponto | {points} pontos',
-  termsAndConditions: 'Termos e Condições'
+  termsAndConditions: 'Termos e Condições',
+  clear: 'Limpar'
 }
