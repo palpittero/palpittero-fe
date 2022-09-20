@@ -5,7 +5,7 @@
     <div class="grid justify-content-center p-2 lg:p-0" style="min-width: 80%">
       <div class="col-12 mt-5 xl:mt-0 text-center">
         <img
-          src="layout/images/logo-dark.svg"
+          src="/images/logo-dark.svg"
           alt="Sakai logo"
           style="width: 81px; height: 60px"
         />

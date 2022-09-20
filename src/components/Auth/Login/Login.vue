@@ -5,7 +5,7 @@
     <div class="grid justify-content-center p-2 lg:p-0 login__container">
       <div class="col-12 mt-5 xl:mt-0 text-center">
         <img
-          src="layout/images/logo-dark.svg"
+          src="/images/logo-dark.svg"
           alt="Palpittero logo"
           class="mb-5 login__logo"
         />
