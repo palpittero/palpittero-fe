@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import viteCompression from 'vite-plugin-compression'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 
@@ -21,5 +22,5 @@ export default defineConfig({
       replacement: '@vue/runtime-core/dist/runtime-core.esm-bundler.js'
     }
   },
-  plugins: [vue()]
+  plugins: [vue(), viteCompression()]
 })
