@@ -22,7 +22,7 @@ export const TEAM_MODEL = {
   type: TEAM_TYPES.NATIONAL_TEAM,
   country: '',
   region: '',
-  nationalDivision: null,
+  nationalDivision: 0,
   status: STATUSES.ACTIVE
 }
 
