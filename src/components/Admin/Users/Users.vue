@@ -162,22 +162,18 @@ const handleDeleteUsers = () => {
 const handleDeleteDialogHide = () => (isUserDeleteDialogOpen.value = false)
 
 const handleDeleteDialogSubmit = async (users) => {
-  try {
-    const ids = users.map(({ id }) => id)
-    await services.users.deleteUsers(ids)
+  const ids = users.map(({ id }) => id)
+  await services.users.deleteUsers(ids)
 
-    toast.add({
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('admin.users.deleteSuccess'),
-      life: 4000
-    })
+  toast.add({
+    severity: 'success',
+    summary: i18n.t('common.success'),
+    detail: i18n.t('admin.users.deleteSuccess'),
+    life: 4000
+  })
 
-    handleDeleteDialogHide()
-    loadUsers()
-  } catch (error) {
-    console.log(error)
-  }
+  handleDeleteDialogHide()
+  loadUsers()
 }
 </script>
 

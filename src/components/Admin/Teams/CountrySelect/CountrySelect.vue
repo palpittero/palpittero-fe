@@ -54,7 +54,6 @@ const countries = reactive({
 
 const selectedCountry = computed({
   set(value) {
-    console.log(value)
     emits('update:modelValue', value)
   },
   get() {

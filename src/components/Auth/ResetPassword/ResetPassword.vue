@@ -143,6 +143,7 @@ onMounted(async () => {
         group: 'app'
       })
     }
+
     console.log(error)
   } finally {
     isLoading.value = false

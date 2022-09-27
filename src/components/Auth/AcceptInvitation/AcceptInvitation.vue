@@ -73,27 +73,22 @@ const league = reactive({
 })
 
 onMounted(async () => {
-  try {
-    isLoading.value = true
-    const { token, league: name, owner, visibility } = route.query
+  isLoading.value = true
+  const { token, league: name, owner, visibility } = route.query
 
-    league.name = name
-    league.owner = owner
-    league.visibility = visibility
+  league.name = name
+  league.owner = owner
+  league.visibility = visibility
 
-    if (!token) {
-      router.replace({ name: 'NotFound' })
-      return
-    }
-
-    await services.usersLeagues.acceptInvitation(token)
-    router.replace(omit('query', route))
-
-    isSuccess.value = true
-  } catch (error) {
-    console.log(error)
-  } finally {
-    isLoading.value = false
+  if (!token) {
+    router.replace({ name: 'NotFound' })
+    return
   }
+
+  await services.usersLeagues.acceptInvitation(token)
+  router.replace(omit('query', route))
+
+  isSuccess.value = true
+  isLoading.value = false
 })
 </script>
