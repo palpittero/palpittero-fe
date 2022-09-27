@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:staging": "vite build --mode staging",
+    "build": "node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build",
+    "build:staging": "cross-env NODE_ENV=staging node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build --mode staging",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -45,6 +45,7 @@
     "@vue/eslint-config-prettier": "^7.0.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.5",
+    "cross-env": "^7.0.3",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",

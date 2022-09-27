@@ -94,17 +94,8 @@ const selectedLeagues = computed({
   }
 })
 
-// const badgesErrors = ref({})
-
 const handleEditLeague = (league) => emits('edit', league)
 const handleDeleteLeague = (league) => emits('delete', league)
-// const handleAvatarError = (league) => {
-//   console.log('error', league.name)
-//   badgesErrors.value[league.id] = true
-// }
-// const hasBadgeError = (league) => badgesErrors.value[league.id]
-// const getLeagueBadge = (league) =>
-//   badgesErrors.value[league.id] ? '/images/image-placeholder.png' : league.badge
 </script>
 
 <style lang="scss">

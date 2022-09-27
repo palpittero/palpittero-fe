@@ -72,8 +72,8 @@ watch(
 )
 
 const uploader = (event) => {
-  console.log({ event })
   const file = event.files[0]
+
   if (file) {
     mimeType.value = file.type
 

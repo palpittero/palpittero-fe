@@ -171,7 +171,6 @@ watch(isRoundsTypeSimple, (current, previous) => {
 })
 
 const handleAddRound = () => {
-  console.log(championship)
   const name = `Rodada #${championship.rounds.length + 1}`
   championship.rounds = [...championship.rounds, newRound(name)]
 }
