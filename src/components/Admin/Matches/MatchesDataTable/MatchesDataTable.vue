@@ -65,8 +65,11 @@
     </Column>
     <Column :header="$t('admin.matches.score')" sortable>
       <template #body="{ data }">
-        <MatchNoResult v-if="matchHasNoResult(data)" />
-        <MatchScore v-else :match="data" />
+        <div v-if="isFinished(data)">
+          <MatchNoResult v-if="matchHasNoResult(data)" />
+          <MatchScore v-else :match="data" />
+        </div>
+        <span v-else>-</span>
       </template>
     </Column>
     <Column>
