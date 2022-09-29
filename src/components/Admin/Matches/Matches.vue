@@ -152,6 +152,7 @@ const handleEditMatch = (row) => {
     ...row,
     round: pick(MATCH_FIELDS, row.round),
     championship: pick(CHAMPIONSHIP_FIELDS, row.round.championship),
+    championshipId: row.round.championship.id,
     date: new Date(row.date)
   }
 
