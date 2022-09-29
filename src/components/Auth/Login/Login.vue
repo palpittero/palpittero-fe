@@ -31,6 +31,7 @@ import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 import { useForm } from 'vee-validate'
 import { useAuthStore } from '@/stores/auth'
+import { useRoute, useRouter } from 'vue-router'
 import * as yup from 'yup'
 
 import LoginForm from './LoginForm/LoginForm.vue'
@@ -38,8 +39,9 @@ import LoginForm from './LoginForm/LoginForm.vue'
 const toast = useToast()
 const i18n = useI18n()
 const isLoading = ref(false)
-
 const auth = useAuthStore()
+const router = useRouter()
+const route = useRoute()
 
 const credentials = reactive({
   email: '',
@@ -63,6 +65,7 @@ const onSubmit = handleSubmit(
     try {
       isLoading.value = true
       await auth.authenticate(credentials)
+      router.push(route.query.returnUrl || { name: 'Home' })
     } catch (error) {
       if (error.response.status === 404) {
         toast.add({

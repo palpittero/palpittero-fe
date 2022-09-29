@@ -97,8 +97,8 @@ const routes = [
   {
     name: 'AcceptInvitation',
     path: '/accept-invitation',
-    component: AcceptInvitation,
-    meta: { public: true }
+    component: AcceptInvitation
+    // meta: { public: true }
   },
   {
     name: 'NotFound',
