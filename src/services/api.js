@@ -8,10 +8,10 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use((config) => {
-  const { accessToken } = useAuthStore()
+  const auth = useAuthStore()
 
-  if (accessToken) {
-    config.headers['Authorization'] = `Bearer ${accessToken}`
+  if (auth.accessToken) {
+    config.headers['Authorization'] = `Bearer ${auth.accessToken}`
   }
 
   config.headers['Cache-Control'] = 'no-cache'

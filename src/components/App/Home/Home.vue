@@ -43,7 +43,7 @@
       v-if="isLeagueDetailsDialogVisible"
       v-model="selectedLeague"
       :visible="isLeagueDetailsDialogVisible"
-      :owner-id="loggedUser.id"
+      :owner-id="auth.loggedUser.id"
       @hide="handleDetailsDialogHide"
       @submit="handleDetailsDialogSubmit"
     />
@@ -111,7 +111,7 @@ import LeagueDetailsDialog from '@/components/Shared/Leagues/LeagueDetailsDialog
 import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
 // import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
 
-const { loggedUser } = useAuthStore()
+const auth = useAuthStore()
 const i18n = useI18n()
 const router = useRouter()
 const toast = useToast()
@@ -159,7 +159,9 @@ const allPublicLeagues = ref({
 
 const joinedLeagues = computed(() =>
   pipe(
-    filter((league) => league.users.some((user) => user.id === loggedUser?.id)),
+    filter((league) =>
+      league.users.some((user) => user.id === auth.loggedUser?.id)
+    ),
     uniqBy('id')
   )([...allMyLeagues.value.data, ...allPublicLeagues.value.data])
 )
@@ -216,7 +218,7 @@ const handleJoinDialogHide = () => (isLeagueJoinDialogVisible.value = false)
 
 const handleJoinDialogSubmit = async () => {
   const leagueId = selectedLeague.value.id
-  const users = [{ id: loggedUser.id }]
+  const users = [{ id: auth.loggedUser.id }]
 
   await services.usersLeagues.inviteUsers({ leagueId, users })
 
@@ -234,7 +236,7 @@ const handleLeaveDialogHide = () => (isLeagueLeaveDialogVisible.value = false)
 
 const handleLeaveDialogSubmit = async () => {
   const leagueId = selectedLeague.value.id
-  const userId = loggedUser.id
+  const userId = auth.loggedUser.id
 
   await services.usersLeagues.deleteUser({ leagueId, userId })
 
@@ -252,7 +254,7 @@ const handleGuessesLeague = (league) =>
 const handleCreateLeague = () => {
   selectedLeague.value = clone({
     ...LEAGUE_MODEL,
-    ownerId: loggedUser.id
+    ownerId: auth.loggedUser.id
   })
   isLeagueDetailsDialogVisible.value = true
 }

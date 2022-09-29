@@ -25,7 +25,7 @@
       <i class="pi pi-ellipsis-v"></i>
     </button>
     <ul class="layout-topbar-menu hidden lg:flex origin-top gap-2">
-      <li v-if="isAdmin">
+      <li v-if="auth.isAdmin">
         <slot name="switch-app" />
       </li>
       <li class="block lg:hidden">
@@ -73,7 +73,7 @@ import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirm
 
 const router = useRouter()
 const i18n = useI18n()
-const { logout, loggedUser, isAdmin } = useAuthStore()
+const auth = useAuthStore()
 
 const isLogoutDialogVisible = ref(false)
 
@@ -102,23 +102,17 @@ const items = [
   }
 ]
 
-const loggedInMenuLabel = computed(() => i18n.t('common.menu.hi', loggedUser))
+const loggedInMenuLabel = computed(() =>
+  i18n.t('common.menu.hi', auth.loggedUser)
+)
 
 const handleLogoutDialogHide = () => (isLogoutDialogVisible.value = false)
 
 const handleLogoutDialogSubmit = () => {
-  logout()
+  auth.logout()
   handleLogoutDialogHide()
   router.push({
     name: 'Login'
   })
 }
-
-// const handleJoinDialogHide = () => isLogoutDialogVisible.value = false
-
-// const onTopbarMenuToggle = (event) => {
-//   emit('topbar-menu-toggle', event)
-// }
-
-// const darkTheme = computed(() => '')
 </script>

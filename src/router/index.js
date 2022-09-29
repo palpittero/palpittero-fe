@@ -10,10 +10,10 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   if (!to.meta.public) {
     try {
-      const { isAdmin, fetchLoggedUser } = useAuthStore()
-      await fetchLoggedUser()
+      const auth = useAuthStore()
+      await auth.fetchLoggedUser()
 
-      if (to.meta.admin && !isAdmin) {
+      if (to.meta.admin && !auth.isAdmin) {
         next({ name: 'Forbidden' })
       }
     } catch (error) {

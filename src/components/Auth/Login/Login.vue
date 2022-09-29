@@ -39,7 +39,7 @@ const toast = useToast()
 const i18n = useI18n()
 const isLoading = ref(false)
 
-const { authenticate } = useAuthStore()
+const auth = useAuthStore()
 
 const credentials = reactive({
   email: '',
@@ -62,7 +62,7 @@ const onSubmit = handleSubmit(
     submitted.value = true
     try {
       isLoading.value = true
-      await authenticate(credentials)
+      await auth.authenticate(credentials)
     } catch (error) {
       if (error.response.status === 404) {
         toast.add({

@@ -75,7 +75,7 @@ import RemoveAccountDialog from './RemoveAccountDialog/RemoveAccountDialog.vue'
 const toast = useToast()
 const i18n = useI18n()
 const router = useRouter()
-const { logout, loggedUser } = useAuthStore()
+const auth = useAuthStore()
 
 const user = ref({
   loading: true,
@@ -122,6 +122,7 @@ const handleSubmit = async ({ id, name, email, avatar }) => {
       life: 4000,
       group: 'app'
     })
+    auth.fetchLoggedUser()
   } catch (error) {
     if (error.response.status === 409) {
       toast.add({
@@ -145,8 +146,8 @@ const handleRemoveAccountDialogHide = () =>
 
 const handleRemoveAccountDialogSubmit = async () => {
   isRemoveAccountDialogVisible.value = false
-  await services.users.deleteUser(loggedUser)
-  logout()
+  await services.users.deleteUser(auth.loggedUser)
+  auth.logout()
   router.push({ name: 'AccountRemoved' })
 }
 </script>
