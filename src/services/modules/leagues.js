@@ -1,5 +1,6 @@
 import { HTTP_MULTIPART_CONFIG } from '@/constants'
 import { parseMultiPartFormData } from '@/helpers/form'
+import { objectToSearchParams } from '@/helpers/utils'
 import api from '@/services/api'
 
 const RESOURCE_URI = '/leagues'
@@ -24,7 +25,11 @@ const updateLeague = (league) => {
 
 const deleteLeague = (league) => api.delete(`${RESOURCE_URI}/${league.id}`)
 
-const fetchUsers = (league) => api.get(`${RESOURCE_URI}/${league.id}/users`)
+const fetchUsers = ({ league, status }) => {
+  const searchParams = objectToSearchParams({ status })
+
+  return api.get(`${RESOURCE_URI}/${league.id}/users${searchParams}`)
+}
 
 const fetchChampionships = (id) =>
   api.get(`${RESOURCE_URI}/${id}/championships`)

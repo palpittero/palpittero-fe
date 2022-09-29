@@ -37,6 +37,7 @@ import services from '@/services'
 
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
+import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
 const i18n = useI18n()
 
@@ -58,7 +59,10 @@ onMounted(() => loadUsersLeagues())
 
 const loadUsersLeagues = async () => {
   leagueUsers.loading = true
-  leagueUsers.data = await services.leagues.fetchUsers(props.league)
+  leagueUsers.data = await services.leagues.fetchUsers({
+    league: props.league,
+    status: USERS_LEAGUES_STATUSES.APPROVED
+  })
   leagueUsers.loading = false
 }
 
