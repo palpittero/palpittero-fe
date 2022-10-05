@@ -1,6 +1,6 @@
 <template>
   <div
-    class="px-4 py-5 shadow-2 flex flex-column md:flex-row md:align-items-center justify-content-between mb-3 unprocessed-guesses-banner__process-guesses"
+    class="px-4 py-5 shadow-2 flex flex-column md:flex-row md:align-items-center justify-content-between mb-3 pending-leagues-invitations"
   >
     <div>
       <div class="text-white font-medium text-5xl">
@@ -20,51 +20,56 @@
   <PendingLeaguesInvitationsDialog
     :header="$t('app.leagues.pendingInvitations.header')"
     :visible="isPendingLeaguesInvitationsDialogOpen"
-    :leagues="leagues.data"
+    :loading="isLoading"
+    :leagues="leaguesInvitations"
     @hide="handlePendingLeaguesInvitationsDialogHide"
     @submit="handlePendingLeaguesInvitationsDialogSubmit"
   />
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 import services from '@/services'
 
 import PendingLeaguesInvitationsDialog from './PendingLeaguesInvitationsDialog/PendingLeaguesInvitationsDialog.vue'
-import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
+// import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
 const toast = useToast()
 const i18n = useI18n()
 
-defineProps({
-  total: {
-    type: Number,
-    default: 0
+const props = defineProps({
+  leaguesInvitations: {
+    type: Array,
+    default: () => []
   }
+  // total: {
+  //   type: Number,
+  //   default: 0
+  // }
 })
 
 const emits = defineEmits(['refresh'])
 
-const leagues = ref({
-  loading: false,
-  error: null,
-  data: []
-})
+// const leagues = ref({
+//   loading: false,
+//   error: null,
+//   data: []
+// })
 
 const isLoading = ref(false)
 const isPendingLeaguesInvitationsDialogOpen = ref(false)
 
-const loadPendingInvitations = async () => {
-  leagues.value.loading = true
-  leagues.value.data = await services.leagues.fetchMyLeagues({
-    status: USERS_LEAGUES_STATUSES.INVITED
-  })
-  leagues.value.loading = false
-}
+// const loadPendingInvitations = async () => {
+//   leagues.value.loading = true
+//   leagues.value.data = await services.leagues.fetchMyLeagues({
+//     status: USERS_LEAGUES_STATUSES.INVITED
+//   })
+//   leagues.value.loading = false
+// }
 
-onMounted(loadPendingInvitations)
+// onMounted(loadPendingInvitations)
 
 const handleViewPendingLeaguesInvitations = () =>
   (isPendingLeaguesInvitationsDialogOpen.value = true)
@@ -72,7 +77,7 @@ const handleViewPendingLeaguesInvitations = () =>
 const handlePendingLeaguesInvitationsDialogHide = () =>
   (isPendingLeaguesInvitationsDialogOpen.value = false)
 
-const total = computed(() => leagues.value.data.length)
+const total = computed(() => props.leaguesInvitations.length)
 
 const handlePendingLeaguesInvitationsDialogSubmit = async (invitations) => {
   isLoading.value = true
@@ -85,7 +90,7 @@ const handlePendingLeaguesInvitationsDialogSubmit = async (invitations) => {
     detail: i18n.t('app.leagues.pendingInvitations.updateSuccess'),
     life: 4000
   })
-  loadPendingInvitations()
+  // loadPendingInvitations()
   emits('refresh')
   isLoading.value = false
   handlePendingLeaguesInvitationsDialogHide()
@@ -93,8 +98,8 @@ const handlePendingLeaguesInvitationsDialogSubmit = async (invitations) => {
 </script>
 
 <style lang="scss" scoped>
-.unprocessed-guesses-banner {
-  &__process-guesses {
+.pending-leagues-invitations {
+  & {
     border-radius: 1rem;
     background: linear-gradient(
         0deg,

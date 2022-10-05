@@ -50,7 +50,7 @@
           icon="pi pi-check"
           class="p-button-text"
           @click="handleSubmit"
-          :disabled="!parsedInvitations.length"
+          :disabled="isSubmitDisabled"
         />
       </slot>
     </template>
@@ -65,11 +65,12 @@ import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import { isNil } from 'lodash/fp'
 
 const props = defineProps({
-  visible: Boolean,
   leagues: {
     type: Array,
     default: () => []
-  }
+  },
+  visible: Boolean,
+  loading: Boolean
 })
 
 const isReady = ref(false)
@@ -99,6 +100,10 @@ const emits = defineEmits(['hide', 'submit'])
 const parsedInvitations = computed(() =>
   Object.values(invitations.value).filter(({ status }) => !isNil(status))
 )
+
+const isSubmitDisabled = computed(() => {
+  return !parsedInvitations.value.length || props.loading
+})
 
 const handleHide = () => emits('hide')
 const handleSubmit = () => emits('submit', parsedInvitations.value)

@@ -60,7 +60,7 @@ body {
   border-left: 1px solid var(--surface-d);
 }
 
-.p-multiselect-panel {
+.p-multiselect-panel, .p-datepicker, .p-toast {
   z-index: 999;
 }
 

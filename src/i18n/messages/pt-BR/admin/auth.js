@@ -15,7 +15,12 @@ export default {
     invalidCredentials: 'Usuário ou senha inválidos',
     emailAlreadyInUse: 'Este e-mail já está sendo utilizado',
     passwordsDontMatch: 'As senhas não são iguais',
-    tokenInvalidOrExpired: 'Token inválido ou expirado'
+    tokenInvalidOrExpired: 'Token inválido ou expirado',
+    token: {
+      title: 'Erro',
+      message: 'Token inválido ou expirado',
+      cta: 'Voltar ao Início'
+    }
   },
   validation: {
     name: 'Favor, informar um nome',

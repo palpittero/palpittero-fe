@@ -11,7 +11,7 @@
         />
       </div>
       <div class="text-center">
-        <template v-if="isSuccess">
+        <template v-if="state.success">
           <span class="text-blue-500 font-bold text-3xl">
             {{ $t('admin.auth.accountActivated.title', user) }}
           </span>
@@ -25,6 +25,17 @@
             $t('admin.auth.accountActivated.message')
           }}</span></template
         >
+        <template v-else-if="state.error">
+          <span class="text-blue-500 font-bold text-3xl">
+            {{ $t('admin.auth.error.token.title') }}
+          </span>
+          <h1
+            class="text-900 font-bold text-3xl lg:text-5xl mb-2 flex align-items-center"
+          >
+            {{ $t('admin.auth.error.token.message') }}
+            <span class="pi pi-times text-red-500 text-3xl ml-3" />
+          </h1>
+        </template>
         <template v-else>
           <span class="text-blue-500 font-bold text-3xl">
             {{ $t('admin.auth.activateAccount.title', user) }}
@@ -38,6 +49,15 @@
         </template>
         <div class="flex align-items-center justify-content-center mt-5">
           <ProgressSpinner v-if="isLoading" />
+          <template v-else-if="state.error">
+            <span
+              class="pi pi-fw pi-home text-blue-500 mr-2"
+              style="vertical-align: center"
+            />
+            <router-link :to="{ name: 'Home' }" class="text-blue-500">
+              {{ $t('admin.auth.error.token.cta') }}
+            </router-link>
+          </template>
           <template v-else>
             <i
               class="pi pi-fw pi-sign-in text-blue-500 mr-2"
@@ -62,22 +82,30 @@ import { omit } from 'lodash/fp'
 const route = useRoute()
 const router = useRouter()
 
-const isLoading = ref(false)
-const isSuccess = ref(false)
+const state = ref({
+  loading: false,
+  success: false,
+  error: false
+})
 
 onMounted(async () => {
-  isLoading.value = true
+  try {
+    state.value.loading = true
 
-  const { token } = route.query
-  if (!token) {
-    router.replace({ name: 'NotFound' })
-    return
+    const { token } = route.query
+    if (!token) {
+      router.replace({ name: 'NotFound' })
+      return
+    }
+
+    await services.auth.activateAccount(token)
+
+    state.value.success = true
+  } catch (error) {
+    state.value.error = true
+  } finally {
+    router.replace(omit('query', route))
+    state.value.loading = false
   }
-
-  await services.auth.activateAccount(token)
-  router.replace(omit('query', route))
-
-  isSuccess.value = true
-  isLoading.value = false
 })
 </script>
