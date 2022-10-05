@@ -23,5 +23,14 @@ export default {
   owner: 'Você é o proprietário',
   create: 'Criar Liga',
   remove: 'Remover Liga',
-  edit: 'Editar Liga'
+  edit: 'Editar Liga',
+  pendingInvitations: {
+    title:
+      'Você possui {total} convite pendente | Você possui {total} convites pendentes',
+    cta: 'Ver convites',
+    header: 'Convites Pendentes',
+    approve: 'Aprovar',
+    reject: 'Rejeitar',
+    updateSuccess: 'Convites respondidos com sucesso.'
+  }
 }

@@ -18,8 +18,22 @@ export const LEAGUE_MODEL = {
 
 export const USERS_LEAGUES_STATUSES = {
   INVITED: 'invited',
-  APPROVED: 'approved'
+  APPROVED: 'approved',
+  REJECTED: 'rejected'
 }
+
+export const USERS_LEAGUES_INVITATIONS_OPTIONS = [
+  {
+    id: false,
+    name: 'app.leagues.pendingInvitations.reject',
+    icon: 'pi pi-times mr-2'
+  },
+  {
+    id: true,
+    name: 'app.leagues.pendingInvitations.approve',
+    icon: 'pi pi-check mr-2'
+  }
+]
 
 export const USERS_LEAGUES_STATUSES_LABELS = {
   [USERS_LEAGUES_STATUSES.INVITED]: {

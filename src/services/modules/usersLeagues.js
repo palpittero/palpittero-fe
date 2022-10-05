@@ -11,8 +11,15 @@ const acceptInvitation = (token) =>
 const deleteUser = ({ leagueId, userId }) =>
   api.delete(`${RESOURCE_URI}/${leagueId}/${userId}`, { leagueId, userId })
 
+const updateInvitations = (invitations) =>
+  api.post(`${RESOURCE_URI}/updateInvitations`, { invitations })
+
+const joinLeague = (leagueId) => api.post(`${RESOURCE_URI}/join/${leagueId}`)
+
 export default {
   inviteUsers,
   acceptInvitation,
-  deleteUser
+  deleteUser,
+  updateInvitations,
+  joinLeague
 }

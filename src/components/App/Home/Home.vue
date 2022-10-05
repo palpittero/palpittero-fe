@@ -1,5 +1,9 @@
 <template>
   <div>
+    <PendingLeaguesInvitations
+      :key="pendingLeaguesInvitationsKey"
+      @refresh="loadLeagues"
+    />
     <div class="flex justify-content-between align-items-center mb-3">
       <h1 class="mb-0">
         {{ $t('common.leagues') }}
@@ -101,7 +105,7 @@ import { parseLeagueInput, parseLeague } from '@/helpers/leagues'
 import { clone } from 'lodash'
 import { pipe, filter, uniqBy, differenceBy } from 'lodash/fp'
 
-import { LEAGUE_MODEL } from '@/constants/leagues'
+import { LEAGUE_MODEL, USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
 import LeaguesDescriptionList from '@/components/App/Leagues/LeaguesDescriptionList/LeaguesDescriptionList.vue'
 import LeagueUsersDialog from '@/components/Shared/Leagues/LeagueUsersDialog/LeagueUsersDialog.vue'
@@ -109,6 +113,7 @@ import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirm
 import LeagueRankingDialog from '@/components/App/Leagues/LeagueRankingDialog/LeagueRankingDialog.vue'
 import LeagueDetailsDialog from '@/components/Shared/Leagues/LeagueDetailsDialog/LeagueDetailsDialog.vue'
 import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
+import PendingLeaguesInvitations from './PendingLeaguesInvitations/PendingLeaguesInvitations.vue'
 
 const auth = useAuthStore()
 const i18n = useI18n()
@@ -136,15 +141,12 @@ const leagueJoinDialog = computed(() => {
   }
 })
 
+const pendingLeaguesInvitationsKey = ref(0)
+
 const leagueLeaveDialog = computed(() => ({
   header: i18n.t('common.confirm'),
   message: i18n.t('app.leagues.leaveConfirmation')
 }))
-
-// const myLeagues = ref({
-//   loading: false,
-//   data: []
-// })
 
 const allMyLeagues = ref({
   loading: false,
@@ -159,7 +161,11 @@ const allPublicLeagues = ref({
 const joinedLeagues = computed(() =>
   pipe(
     filter((league) =>
-      league.users.some((user) => user.id === auth.loggedUser?.id)
+      league.users.some(
+        (user) =>
+          user.id === auth.loggedUser?.id &&
+          user.status === USERS_LEAGUES_STATUSES.APPROVED
+      )
     ),
     uniqBy('id')
   )([...allMyLeagues.value.data, ...allPublicLeagues.value.data])
@@ -168,12 +174,6 @@ const joinedLeagues = computed(() =>
 const publicLeagues = computed(() =>
   differenceBy('id', allPublicLeagues.value.data, joinedLeagues.value)
 )
-
-// const isOwner = computed(() =>
-//   selectedLeague.value.users?.find(
-//     ({ id, owner }) => id === authStore.loggedUser.id && owner
-//   )
-// )
 
 const loadLeagues = () => {
   loadMyLeagues()
@@ -184,7 +184,9 @@ onMounted(() => loadLeagues())
 
 const loadMyLeagues = async () => {
   allMyLeagues.value.loading = true
-  allMyLeagues.value.data = await services.leagues.fetchMyLeagues()
+  allMyLeagues.value.data = await services.leagues.fetchMyLeagues({
+    status: USERS_LEAGUES_STATUSES.APPROVED
+  })
   allMyLeagues.value.loading = false
 }
 
@@ -220,11 +222,10 @@ const handleJoinDialogHide = () => (isLeagueJoinDialogVisible.value = false)
 
 const handleJoinDialogSubmit = async () => {
   const leagueId = selectedLeague.value.id
-  const users = [{ id: auth.loggedUser.id }]
-
-  await services.usersLeagues.inviteUsers({ leagueId, users })
+  await services.usersLeagues.joinLeague(leagueId)
 
   loadLeagues()
+  pendingLeaguesInvitationsKey.value++
 
   isLeagueJoinDialogVisible.value = false
 }
