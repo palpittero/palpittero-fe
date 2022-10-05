@@ -10,9 +10,6 @@
       </Button>
     </div>
     <div v-for="championship in championships.data" :key="championship.id">
-      <!-- <pre>
-        {{ matchesGuesses }}
-      </pre> -->
       <ChampionshipsRoundsMatchesList
         v-model="matchesGuesses[championship.id]"
         :championship="championship"
