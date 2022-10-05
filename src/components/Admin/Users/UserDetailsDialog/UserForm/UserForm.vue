@@ -16,9 +16,10 @@
     <label for="email">{{ $t('admin.users.email') }}</label>
     <InputText
       id="email"
-      v-model.trim="user.email"
+      :model-value="user.email"
       required
       :class="{ 'p-invalid': submitted && errors.email }"
+      @update:model-value="handleEmailUpdate"
     />
     <small class="p-invalid" v-if="submitted && errors.email">
       {{ $t('admin.users.validation.email') }}
@@ -107,4 +108,6 @@ watch(
   },
   { deep: true }
 )
+
+const handleEmailUpdate = (value) => (user.email = value.toLowerCase().trim())
 </script>

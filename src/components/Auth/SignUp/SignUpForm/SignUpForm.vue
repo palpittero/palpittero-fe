@@ -1,5 +1,6 @@
 <template>
   <div class="w-full md:w-10 mx-auto">
+    <pre>{{ user }}</pre>
     <label for="name" class="block text-900 text-xl font-medium mb-2">{{
       $t('admin.auth.name')
     }}</label>
@@ -21,10 +22,11 @@
       }}</label>
       <InputText
         id="email"
-        v-model="user.email"
+        :model-value="user.email"
         type="text"
         class="w-full login__input"
         :class="{ 'p-invalid': submitted && errors.email }"
+        @update:model-value="handleEmailUpdate"
       />
       <small class="p-invalid" v-if="submitted && errors.email">
         {{ $t('admin.auth.validation.email') }}
@@ -142,6 +144,9 @@ const user = computed({
     return props.modelValue
   }
 })
+
+const handleEmailUpdate = (value) =>
+  (user.value.email = value.toLowerCase().trim())
 
 const handleTerms = () => (isTermsDialogVisible.value = true)
 
