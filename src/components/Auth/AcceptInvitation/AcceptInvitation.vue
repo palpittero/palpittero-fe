@@ -11,7 +11,7 @@
         />
       </div>
       <div class="text-center">
-        <template v-if="isSuccess">
+        <template v-if="state.success">
           <span class="text-blue-500 font-bold text-3xl">
             {{ $t('admin.auth.invitationAccepted.title') }}
           </span>
@@ -24,6 +24,17 @@
           <span class="text-gray-600">
             {{ $t('admin.auth.invitationAccepted.message') }}
           </span>
+        </template>
+        <template v-else-if="state.error">
+          <span class="text-blue-500 font-bold text-3xl">
+            {{ $t('admin.auth.error.token.title') }}
+          </span>
+          <h1
+            class="text-900 font-bold text-3xl lg:text-5xl mb-2 flex align-items-center"
+          >
+            {{ $t('admin.auth.error.token.message') }}
+            <span class="pi pi-times text-red-500 text-3xl ml-3" />
+          </h1>
         </template>
         <template v-else>
           <span class="text-blue-500 font-bold text-3xl">
@@ -38,15 +49,24 @@
           />
         </template>
         <div class="flex align-items-center justify-content-center mt-5">
-          <ProgressSpinner v-if="isLoading" />
+          <ProgressSpinner v-if="state.loading" />
+          <template v-else-if="state.error">
+            <span
+              class="pi pi-fw pi-home text-blue-500 mr-2"
+              style="vertical-align: center"
+            />
+            <router-link :to="{ name: 'Home' }" class="text-blue-500">
+              {{ $t('admin.auth.error.token.cta') }}
+            </router-link>
+          </template>
           <template v-else>
-            <i
+            <span
               class="pi pi-fw pi-flag text-blue-500 mr-2"
               style="vertical-align: center"
-            ></i>
+            />
             <router-link :to="{ name: 'Home' }" class="text-blue-500">
-              {{ $t('admin.auth.acceptInvitation.cta') }}</router-link
-            >
+              {{ $t('admin.auth.acceptInvitation.cta') }}
+            </router-link>
           </template>
         </div>
       </div>
@@ -63,8 +83,11 @@ import { omit } from 'lodash/fp'
 const route = useRoute()
 const router = useRouter()
 
-const isLoading = ref(false)
-const isSuccess = ref(false)
+const state = ref({
+  loading: false,
+  success: false,
+  error: false
+})
 
 const league = reactive({
   name: '',
@@ -73,22 +96,27 @@ const league = reactive({
 })
 
 onMounted(async () => {
-  isLoading.value = true
-  const { token, league: name, owner, visibility } = route.query
+  try {
+    state.value.loading = true
+    const { token, league: name, owner, visibility } = route.query
 
-  league.name = name
-  league.owner = owner
-  league.visibility = visibility
+    league.name = name
+    league.owner = owner
+    league.visibility = visibility
 
-  if (!token) {
-    router.replace({ name: 'NotFound' })
-    return
+    if (!token) {
+      router.replace({ name: 'NotFound' })
+      return
+    }
+
+    await services.usersLeagues.acceptInvitation(token)
+
+    state.value.success = true
+  } catch (error) {
+    state.value.error = true
+  } finally {
+    router.replace(omit('query', route))
+    state.value.loading = false
   }
-
-  await services.usersLeagues.acceptInvitation(token)
-  router.replace(omit('query', route))
-
-  isSuccess.value = true
-  isLoading.value = false
 })
 </script>

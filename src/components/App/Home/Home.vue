@@ -1,7 +1,8 @@
 <template>
   <div>
     <PendingLeaguesInvitations
-      :key="pendingLeaguesInvitationsKey"
+      v-if="hasPendingLeaguesInvitations"
+      :leagues-invitations="pendingInvitationsLeagues.data"
       @refresh="loadLeagues"
     />
     <div class="flex justify-content-between align-items-center mb-3">
@@ -158,6 +159,11 @@ const allPublicLeagues = ref({
   data: []
 })
 
+const pendingInvitationsLeagues = ref({
+  loading: false,
+  data: []
+})
+
 const joinedLeagues = computed(() =>
   pipe(
     filter((league) =>
@@ -178,9 +184,10 @@ const publicLeagues = computed(() =>
 const loadLeagues = () => {
   loadMyLeagues()
   loadPublicLeagues()
+  loadPendingLeaguesInvitations()
 }
 
-onMounted(() => loadLeagues())
+onMounted(loadLeagues)
 
 const loadMyLeagues = async () => {
   allMyLeagues.value.loading = true
@@ -195,6 +202,18 @@ const loadPublicLeagues = async () => {
   allPublicLeagues.value.data = await services.leagues.fetchPublicLeagues()
   allPublicLeagues.value.loading = false
 }
+
+const loadPendingLeaguesInvitations = async () => {
+  pendingInvitationsLeagues.value.loading = true
+  pendingInvitationsLeagues.value.data = await services.leagues.fetchMyLeagues({
+    status: USERS_LEAGUES_STATUSES.INVITED
+  })
+  pendingInvitationsLeagues.value.loading = false
+}
+
+const hasPendingLeaguesInvitations = computed(
+  () => pendingInvitationsLeagues.value.data.length > 0
+)
 
 const handleUsersDialogHide = () => {
   console.log('oi')
