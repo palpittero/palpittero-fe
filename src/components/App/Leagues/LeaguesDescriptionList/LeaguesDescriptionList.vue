@@ -108,6 +108,7 @@
 </template>
 
 <script setup>
+import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 import { useAuthStore } from '@/stores/auth'
 
 import { computed } from 'vue'
@@ -144,11 +145,18 @@ const emits = defineEmits([
 ])
 
 const isParticipant = (league) =>
-  league.users.find(({ id }) => id === authStore.loggedUser?.id)
+  league.users.find(
+    ({ id, status }) =>
+      id === authStore.loggedUser?.id &&
+      status === USERS_LEAGUES_STATUSES.APPROVED
+  )
 
 const isGuest = (league) =>
   league.users.find(
-    ({ owner, id }) => id === authStore.loggedUser?.id && !owner
+    ({ owner, id, status }) =>
+      id === authStore.loggedUser?.id &&
+      !owner &&
+      status === USERS_LEAGUES_STATUSES.APPROVED
   )
 
 const isOwner = (league) =>

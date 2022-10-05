@@ -34,7 +34,11 @@ const fetchUsers = ({ league, status }) => {
 const fetchChampionships = (id) =>
   api.get(`${RESOURCE_URI}/${id}/championships`)
 
-const fetchMyLeagues = () => api.get(`${RESOURCE_URI}/my`)
+const fetchMyLeagues = ({ status } = {}) => {
+  const searchParams = objectToSearchParams({ status })
+
+  return api.get(`${RESOURCE_URI}/my${searchParams}`)
+}
 
 const fetchPublicLeagues = () => api.get(`${RESOURCE_URI}/public`)
 
