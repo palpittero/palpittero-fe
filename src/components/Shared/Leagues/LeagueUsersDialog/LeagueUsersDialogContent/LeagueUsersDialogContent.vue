@@ -105,7 +105,7 @@ onMounted(async () => loadUsersLeagues())
 
 const loadUsersLeagues = async () => {
   leagueUsers.loading = true
-  leagueUsers.data = await services.leagues.fetchUsers(props.league)
+  leagueUsers.data = await services.leagues.fetchUsers({ league: props.league })
   leagueUsers.loading = false
 }
 
@@ -124,7 +124,7 @@ const handleLeagueUserAddSubmit = async (selectedUsers) => {
     leagueId: props.league.id,
     users: selectedUsers
   })
-  isLoading.value = true
+  isLoading.value = false
   isLeagueUserAddDialogVisible.value = false
 
   toast.add({

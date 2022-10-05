@@ -8,6 +8,17 @@
     @hide="handleHide"
   >
     <LeagueUsersDialogContent v-model="users" :league="league" />
+
+    <template #footer>
+      <slot name="footer">
+        <Button
+          label="Ok"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="handleHide"
+        />
+      </slot>
+    </template>
   </BaseDialog>
 </template>
 
