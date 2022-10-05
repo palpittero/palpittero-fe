@@ -3,13 +3,15 @@ export const DASHBOARD_GENERAL_CARD = {
     id: 'users',
     title: 'admin.dashboard.users',
     icon: 'pi pi-users',
-    color: 'blue'
+    color: 'blue',
+    route: { name: 'AdminUsers' }
   },
   leagues: {
     id: 'leagues',
     title: 'admin.dashboard.leagues',
     icon: 'pi pi-flag',
-    color: 'orange'
+    color: 'orange',
+    route: { name: 'AdminLeagues' }
   },
   processedGuesses: {
     id: 'processedGuesses',
