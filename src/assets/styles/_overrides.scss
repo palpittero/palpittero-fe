@@ -60,9 +60,9 @@ body {
   border-left: 1px solid var(--surface-d);
 }
 
-// .p-component-overlay, .p-multiselect-panel {
-//   z-index: 2;
-// }
+.p-multiselect-panel {
+  z-index: 999;
+}
 
 small, span {
   &.p-invalid {

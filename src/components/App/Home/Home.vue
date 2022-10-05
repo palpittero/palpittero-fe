@@ -97,7 +97,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
-import { parseLeagueInput } from '@/helpers/leagues'
+import { parseLeagueInput, parseLeague } from '@/helpers/leagues'
 import { clone } from 'lodash'
 import { pipe, filter, uniqBy, differenceBy } from 'lodash/fp'
 
@@ -109,7 +109,6 @@ import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirm
 import LeagueRankingDialog from '@/components/App/Leagues/LeagueRankingDialog/LeagueRankingDialog.vue'
 import LeagueDetailsDialog from '@/components/Shared/Leagues/LeagueDetailsDialog/LeagueDetailsDialog.vue'
 import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
-// import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/LeagueDeleteDialog.vue'
 
 const auth = useAuthStore()
 const i18n = useI18n()
@@ -195,7 +194,10 @@ const loadPublicLeagues = async () => {
   allPublicLeagues.value.loading = false
 }
 
-const handleUsersDialogHide = () => (isLeagueUsersDialogVisible.value = false)
+const handleUsersDialogHide = () => {
+  console.log('oi')
+  isLeagueUsersDialogVisible.value = false
+}
 
 const handleManageLeague = (league) => {
   selectedLeague.value = league
@@ -259,8 +261,9 @@ const handleCreateLeague = () => {
   isLeagueDetailsDialogVisible.value = true
 }
 
-const handleEditLeague = (league) => {
-  selectedLeague.value = league
+const handleEditLeague = async ({ id }) => {
+  const league = await services.leagues.fetchLeagueById(id)
+  selectedLeague.value = parseLeague(league)
   isLeagueDetailsDialogVisible.value = true
 }
 

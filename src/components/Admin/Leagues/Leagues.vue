@@ -61,7 +61,7 @@ import services from '@/services'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 import { clone } from 'lodash'
-import { parseLeagueInput, parseLeagues } from '@/helpers/leagues'
+import { parseLeague, parseLeagueInput, parseLeagues } from '@/helpers/leagues'
 
 const i18n = useI18n()
 const toast = useToast()
@@ -119,8 +119,9 @@ const handleDetailsDialogHide = () => {
   isLeagueDetailsDialogVisible.value = false
 }
 
-const handleEditLeague = (row) => {
-  league.value = { ...row }
+const handleEditLeague = async ({ id }) => {
+  const parsedLeague = await services.leagues.fetchLeagueById(id)
+  league.value = parseLeague(parsedLeague)
   isLeagueDetailsDialogVisible.value = true
 }
 
