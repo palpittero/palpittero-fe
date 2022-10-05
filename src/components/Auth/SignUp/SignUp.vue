@@ -94,7 +94,7 @@ const onSubmit = handleSubmit(
       await services.auth.signUp(user)
       isSuccess.value = true
     } catch (error) {
-      if (error.response.status === 429) {
+      if (error.response.status === 409) {
         toast.add({
           severity: 'error',
           summary: i18n.t('common.error'),
