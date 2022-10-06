@@ -11,7 +11,7 @@
     <Column field="homeTeam" :header="$t('admin.matches.homeTeam')" sortable>
       <template #body="{ data }">
         <div class="flex align-items-center gap-2">
-          <Avatar :image="data.homeTeam.badge" shape="circle" size="small" />
+          <BadgeAvatar :image="data.homeTeam.badge" />
           {{ data.homeTeam.name }}
         </div>
       </template>
@@ -19,7 +19,7 @@
     <Column field="awayTeam" :header="$t('admin.matches.awayTeam')" sortable>
       <template #body="{ data }">
         <div class="flex align-items-center gap-2">
-          <Avatar :image="data.awayTeam.badge" shape="circle" size="small" />
+          <BadgeAvatar :image="data.awayTeam.badge" />
           {{ data.awayTeam.name }}
         </div>
       </template>
@@ -109,6 +109,7 @@ import MatchScore from '@/components/Admin/Matches/MatchScore/MatchScore.vue'
 import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
 
 import { MATCH_STATUSES, MATCH_STATUSES_LABELS } from '@/constants/matches'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   modelValue: {

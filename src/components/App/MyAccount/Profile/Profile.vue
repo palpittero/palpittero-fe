@@ -18,6 +18,7 @@
           v-model="user.data.avatar"
           :label="$t('common.edit')"
           select-button-class="p-button-text"
+          :placeholder="USER_AVATAR_PLACEHOLDER"
         />
       </div>
       <Divider layout="vertical" class="col-1" />
@@ -74,6 +75,8 @@ import services from '@/services'
 import UserProfileForm from './UserProfileForm/UserProfileForm.vue'
 import RemoveAccountDialog from './RemoveAccountDialog/RemoveAccountDialog.vue'
 import ImageInput from '@/components/Shared/ImageInput/ImageInput.vue'
+
+import { USER_AVATAR_PLACEHOLDER } from '@/constants'
 
 const toast = useToast()
 const i18n = useI18n()

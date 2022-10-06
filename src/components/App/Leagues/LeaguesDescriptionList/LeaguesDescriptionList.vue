@@ -33,7 +33,7 @@
           class="flex align-items-center justify-content-between w-full py-3 px-2 border-top-1 surface-border flex-wrap"
         >
           <div class="text-500 font-medium flex align-items-center gap-3">
-            <Avatar :image="league.badge" size="large" shape="circle" />
+            <BadgeAvatar :image="league.badge" />
             {{ league.name }}
             <span
               class="pi pi-id-card"
@@ -112,6 +112,7 @@ import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 import { useAuthStore } from '@/stores/auth'
 
 import { computed } from 'vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const authStore = useAuthStore()
 

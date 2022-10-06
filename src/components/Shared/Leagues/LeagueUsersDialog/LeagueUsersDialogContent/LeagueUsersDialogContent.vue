@@ -18,7 +18,8 @@
       <DataTable :value="leagueUsers.data" :loading="leagueUsers.loading">
         <Column field="name" :header="$t('admin.users.name')">
           <template #body="{ data }">
-            <div class="flex align-items-center">
+            <div class="flex align-items-center gap-2">
+              <BadgeAvatar :image="data.avatar" size="small" type="user" />
               <span class="mr-2">
                 {{ data.name }}
               </span>
@@ -75,6 +76,7 @@ import LeagueUserDeleteDialog from './LeagueUserDeleteDialog/LeagueUserDeleteDia
 import LeagueUserAddDialog from './LeagueUserAddDialog/LeagueUserAddDialog.vue'
 
 import { USERS_LEAGUES_STATUSES_LABELS } from '@/constants/leagues'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const toast = useToast()
 const i18n = useI18n()

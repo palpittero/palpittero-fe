@@ -11,20 +11,14 @@
       field="name"
       :header="$t('admin.leagues.name')"
       sortable
-      headerStyle="width:14%; min-width:10rem;"
+      headerStyle="width:30%; min-width:10rem;"
     >
       <template #body="{ data }">
-        {{ data.name }}
-      </template>
-    </Column>
-    <Column
-      field="badge"
-      :header="$t('admin.leagues.badge')"
-      sortable
-      headerStyle="width:14%; min-width:10rem;"
-    >
-      <template #body="{ data }">
-        <BadgeAvatar :image="data.badge" />
+        <div class="flex align-items-center gap-3">
+          <BadgeAvatar :image="data.badge" />
+
+          {{ data.name }}
+        </div>
       </template>
     </Column>
     <Column

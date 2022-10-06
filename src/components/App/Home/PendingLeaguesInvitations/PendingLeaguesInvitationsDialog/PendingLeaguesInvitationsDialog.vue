@@ -16,7 +16,7 @@
             class="flex align-items-center justify-content-between w-full py-3 px-2 border-top-1 surface-border flex-wrap"
           >
             <div class="text-500 font-medium flex align-items-center gap-3">
-              <Avatar :image="league.badge" size="large" shape="circle" />
+              <BadgeAvatar :image="league.badge" />
               {{ league.name }}
             </div>
             <div class="flex flex-column md:flex-row">
@@ -63,6 +63,7 @@ import { USERS_LEAGUES_INVITATIONS_OPTIONS } from '@/constants/leagues'
 
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import { isNil } from 'lodash/fp'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   leagues: {

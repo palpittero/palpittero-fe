@@ -215,10 +215,7 @@ const hasPendingLeaguesInvitations = computed(
   () => pendingInvitationsLeagues.value.data.length > 0
 )
 
-const handleUsersDialogHide = () => {
-  console.log('oi')
-  isLeagueUsersDialogVisible.value = false
-}
+const handleUsersDialogHide = () => (isLeagueUsersDialogVisible.value = false)
 
 const handleManageLeague = (league) => {
   selectedLeague.value = league

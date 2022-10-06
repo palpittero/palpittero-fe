@@ -1,23 +1,28 @@
 <template>
-  <Avatar :image="badge" size="large" shape="circle" @error="handleError" />
+  <Avatar :image="badge" :size="size" :shape="shape" @error="handleError" />
 </template>
 
 <script setup>
-import { BADGE_AVATAR_PLACEHOLDER } from '@/constants'
+import { USER_AVATAR_PLACEHOLDER, BADGE_AVATAR_PLACEHOLDER } from '@/constants'
 import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
   image: {
     type: String,
-    required: true
+    default: ''
   },
   size: {
     type: String,
-    default: 'large'
+    default: 'small'
   },
   shape: {
     type: String,
     default: 'circle'
+  },
+  type: {
+    type: String,
+    default: 'badge',
+    validator: (value) => ['avatar', 'badge'].includes(value)
   }
 })
 
@@ -32,9 +37,13 @@ watch(
   }
 )
 
+const placeholder = computed(() =>
+  props.type === 'user' ? USER_AVATAR_PLACEHOLDER : BADGE_AVATAR_PLACEHOLDER
+)
+
 const handleError = () => (hasError.value = true)
 
 const badge = computed(() =>
-  hasError.value ? BADGE_AVATAR_PLACEHOLDER : props.image
+  hasError.value || !props.image ? placeholder.value : props.image
 )
 </script>

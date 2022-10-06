@@ -45,10 +45,12 @@
       <li></li>
       <li>
         <SplitButton
-          :label="loggedInMenuLabel"
           :model="items"
-          class="p-button-text p-button-plain mr-2 mb-2 hidden lg:flex"
-        />
+          class="p-button-text p-button-plain mr-2 mb-2 hidden lg:flex align-items-center gap-2"
+        >
+          <BadgeAvatar :image="loggedInAvatar" size="small" type="user" />
+          {{ loggedInMenuLabel }}
+        </SplitButton>
       </li>
     </ul>
   </div>
@@ -70,6 +72,8 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
+import { USER_AVATAR_PLACEHOLDER } from '@/constants'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const router = useRouter()
 const i18n = useI18n()
@@ -104,6 +108,10 @@ const items = [
 
 const loggedInMenuLabel = computed(() =>
   i18n.t('common.menu.hi', auth.loggedUser)
+)
+
+const loggedInAvatar = computed(
+  () => auth.loggedUser.avatar || USER_AVATAR_PLACEHOLDER
 )
 
 const handleLogoutDialogHide = () => (isLogoutDialogVisible.value = false)

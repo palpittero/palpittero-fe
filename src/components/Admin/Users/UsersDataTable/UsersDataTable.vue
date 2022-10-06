@@ -14,8 +14,11 @@
       headerStyle="width:14%; min-width:10rem;"
     >
       <template #body="{ data }">
+        <div class="flex align-items-center gap-2">
+          <BadgeAvatar :image="data.avatar" />
+          {{ data.name }}
+        </div>
         <!-- <span class="p-column-title">{{ $t('admin.users.name') }}</span> -->
-        {{ data.name }}
       </template>
     </Column>
     <Column
@@ -71,6 +74,7 @@
 import { computed } from 'vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   modelValue: {

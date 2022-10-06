@@ -48,11 +48,7 @@
                   >
                     {{ match.homeTeam.name }}
                   </span>
-                  <Avatar
-                    :image="match.homeTeam.badge"
-                    size="small"
-                    shape="circle"
-                  />
+                  <BadgeAvatar :image="match.homeTeam.badge" />
                 </div>
                 <InputNumber
                   v-if="isMatchScheduled(match)"
@@ -117,11 +113,7 @@
                 <div
                   class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
                 >
-                  <Avatar
-                    :image="match.awayTeam.badge"
-                    size="small"
-                    shape="circle"
-                  />
+                  <BadgeAvatar :image="match.awayTeam.badge" />
                   <span
                     :class="getAwayTeamTeamScoreClass(matchesGuesses[match.id])"
                   >
@@ -162,6 +154,7 @@ import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
 import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
 import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
 import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 import {
   isMatchScheduled,
   isMatchFinished,
