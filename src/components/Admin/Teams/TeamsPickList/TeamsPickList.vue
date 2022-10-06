@@ -87,13 +87,8 @@
       </template>
       <template #targetheader> Selecionados </template>
       <template #item="{ item }">
-        <div class="flex align-items-center">
-          <Avatar
-            :image="item.badge"
-            size="small"
-            shape="circle"
-            class="mr-2"
-          />
+        <div class="flex align-items-center gap-3">
+          <BadgeAvatar :image="item.badge" />
           <span>{{ item.name }}</span>
         </div>
       </template>
@@ -108,6 +103,7 @@ import services from '@/services'
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
 import CountrySelect from '../CountrySelect/CountrySelect.vue'
 import { TEAM_TYPES_OPTIONS, TEAM_FILTER_MODES } from '@/constants/teams'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   modelValue: {

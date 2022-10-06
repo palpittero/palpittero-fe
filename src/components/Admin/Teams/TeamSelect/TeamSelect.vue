@@ -11,7 +11,7 @@
   >
     <template #value="{ value, placeholder }">
       <div v-if="value" class="flex align-items-center gap-3">
-        <Avatar :image="value.badge" shape="circle" />
+        <BadgeAvatar :image="value.badge" />
         <!-- <img :src="value.badge" /> -->
         <div>{{ value.name }}</div>
       </div>
@@ -21,7 +21,7 @@
     </template>
     <template #option="{ option }">
       <div class="flex align-items-center gap-3">
-        <Avatar :image="option.badge" shape="circle" />
+        <BadgeAvatar :image="option.badge" />
         <div>{{ option.name }}</div>
       </div>
     </template>
@@ -31,6 +31,7 @@
 <script setup>
 import services from '@/services'
 import { computed, reactive, onMounted } from 'vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   modelValue: {

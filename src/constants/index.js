@@ -63,3 +63,4 @@ export const HTTP_MULTIPART_CONFIG = {
 }
 
 export const BADGE_AVATAR_PLACEHOLDER = '/images/image-placeholder.png'
+export const USER_AVATAR_PLACEHOLDER = '/images/avatar-placeholder.jpeg'

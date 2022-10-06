@@ -50,8 +50,6 @@ const selectedUsers = computed({
   }
 })
 
-console.log(selectedUsers.value)
-
 const multiSelectClassName = computed(() => [
   props.className,
   props.invalid && 'p-invalid'

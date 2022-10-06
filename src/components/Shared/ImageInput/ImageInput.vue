@@ -1,10 +1,10 @@
 <template>
   <div>
     <div
-      class="image-input__cropped-image flex align-items-center"
+      class="image-input__cropped-image flex align-items-center gap-3"
       :class="className"
     >
-      <Avatar shape="circle" size="xlarge" :image="avatarImage" />
+      <BadgeAvatar size="xlarge" :image="avatarImage" />
       <div class="flex justify-content-center">
         <Button
           v-if="croppedImage && clearable"
@@ -36,10 +36,13 @@
 </template>
 
 <script setup>
-import ImageCropperDialog from '@/components/Shared/ImageCropperDialog/ImageCropperDialog.vue'
-import { BADGE_AVATAR_PLACEHOLDER } from '@/constants'
-import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { computed, ref, watch } from 'vue'
+
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+import ImageCropperDialog from '@/components/Shared/ImageCropperDialog/ImageCropperDialog.vue'
+
+import { BADGE_AVATAR_PLACEHOLDER } from '@/constants'
 
 const i18n = useI18n()
 
@@ -93,10 +96,7 @@ watch(
   { immediate: true }
 )
 
-const avatarImage = computed(() => {
-  console.log({ crop: croppedImage.value, place: props.placeholder })
-  return croppedImage.value || props.placeholder
-})
+const avatarImage = computed(() => croppedImage.value || props.placeholder)
 
 const label = computed(() =>
   croppedImage.value ? i18n.t('common.edit') : i18n.t('common.select')

@@ -81,3 +81,9 @@ small, span {
 .p-dropdown-panel {
   z-index: 1101; 
 }
+
+.p-avatar {
+  img {
+    object-fit: contain;
+  }
+}

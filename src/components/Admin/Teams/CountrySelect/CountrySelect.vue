@@ -13,7 +13,7 @@
   >
     <template #value="{ value, placeholder }">
       <div v-if="value" class="flex align-items-center gap-3">
-        <Avatar :image="value.flag" shape="circle" />
+        <BadgeAvatar :image="value.flag" />
         <div>{{ value.name }}</div>
       </div>
       <span v-else>
@@ -22,7 +22,7 @@
     </template>
     <template #option="{ option }">
       <div class="flex align-items-center gap-3">
-        <Avatar :image="option.flag" shape="circle" />
+        <BadgeAvatar :image="option.flag" />
         <div>{{ option.name }}</div>
       </div>
     </template>
@@ -32,6 +32,7 @@
 <script setup>
 import services from '@/services'
 import { computed, reactive, onMounted } from 'vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 // import countriesFetcher from '@/components/Shared/countries/countriesFetcher/countriesFetcher.vue'
 

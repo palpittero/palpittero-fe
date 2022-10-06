@@ -10,16 +10,13 @@
       field="name"
       :header="$t('admin.teams.name')"
       sortable
-      headerStyle="width:14%; min-width:10rem;"
-    />
-    <Column
-      field="badge"
-      :header="$t('admin.teams.badge')"
-      sortable
-      headerStyle="width:14%; min-width:10rem;"
+      headerStyle="width:20%; min-width:10rem;"
     >
       <template #body="{ data }">
-        <Avatar :image="data.badge" size="large" shape="circle" />
+        <div class="flex align-items-center gap-3">
+          <BadgeAvatar :image="data.badge" />
+          {{ data.name }}
+        </div>
       </template>
     </Column>
     <Column
@@ -83,6 +80,7 @@
 import { computed } from 'vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   modelValue: {

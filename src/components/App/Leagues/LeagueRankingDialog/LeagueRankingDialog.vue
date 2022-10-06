@@ -12,7 +12,13 @@
       <DataTable :value="leagueUsers.data" :loading="leagueUsers.loading">
         <Column field="name" :header="$t('admin.users.name')">
           <template #body="{ data }">
-            <div class="flex align-items-center">
+            <div class="flex align-items-center gap-2">
+              <BadgeAvatar
+                shape="circle"
+                size="small"
+                :image="data.avatar"
+                type="user"
+              />
               <span class="mr-2">
                 {{ data.name }}
               </span>
@@ -38,6 +44,7 @@ import services from '@/services'
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
 import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const i18n = useI18n()
 

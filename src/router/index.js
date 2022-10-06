@@ -18,7 +18,6 @@ router.beforeEach(async (to, from, next) => {
       }
     } catch (error) {
       if (error.response?.status === 401) {
-        // console.log(to)
         next({ name: 'Login', query: { returnUrl: to.fullPath } })
       }
     }
