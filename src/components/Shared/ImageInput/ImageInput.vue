@@ -1,25 +1,30 @@
 <template>
   <div>
-    <div v-if="croppedImage" class="image-input__cropped-image">
-      <img :src="croppedImage" />
+    <div
+      class="image-input__cropped-image flex align-items-center"
+      :class="className"
+    >
+      <Avatar shape="circle" size="xlarge" :image="avatarImage" />
       <div class="flex justify-content-center">
         <Button
+          v-if="croppedImage && clearable"
           class="p-button-text p-button-danger p-button-icon p-button-sm"
           @click="handleRemove"
         >
           <span class="pi pi-trash mr-2" /> {{ $t('common.remove') }}
         </Button>
+        <FileUpload
+          v-else
+          accept="image/*"
+          mode="basic"
+          auto
+          custom-upload
+          class="p-button-text"
+          :choose-label="label"
+          @uploader="uploader"
+        />
       </div>
     </div>
-    <!-- <span v-else> -->
-    <FileUpload
-      v-else
-      accept="image/*"
-      mode="basic"
-      auto
-      custom-upload
-      @uploader="uploader"
-    />
     <ImageCropperDialog
       :visible="isImageCropperDialogOpen"
       :image="image"
@@ -32,7 +37,11 @@
 
 <script setup>
 import ImageCropperDialog from '@/components/Shared/ImageCropperDialog/ImageCropperDialog.vue'
-import { ref, watch } from 'vue'
+import { BADGE_AVATAR_PLACEHOLDER } from '@/constants'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const i18n = useI18n()
 
 const props = defineProps({
   modelValue: {
@@ -42,7 +51,20 @@ const props = defineProps({
   validation: {
     type: [Object, Boolean],
     default: () => ({})
-  }
+  },
+  selectButtonClass: {
+    type: String,
+    default: ''
+  },
+  className: {
+    type: String,
+    default: ''
+  },
+  placeholder: {
+    type: String,
+    default: BADGE_AVATAR_PLACEHOLDER
+  },
+  clearable: Boolean
 })
 
 const isImageCropperDialogOpen = ref(false)
@@ -69,6 +91,15 @@ watch(
     }
   },
   { immediate: true }
+)
+
+const avatarImage = computed(() => {
+  console.log({ crop: croppedImage.value, place: props.placeholder })
+  return croppedImage.value || props.placeholder
+})
+
+const label = computed(() =>
+  croppedImage.value ? i18n.t('common.edit') : i18n.t('common.select')
 )
 
 const uploader = (event) => {
@@ -114,7 +145,7 @@ const handleHide = () => {
   &__cropped-image {
     width: 200px;
 
-    img {
+    .p-avatar img {
       max-width: 100%;
     }
   }
