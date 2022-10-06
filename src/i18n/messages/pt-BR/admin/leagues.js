@@ -5,7 +5,7 @@ export default {
   championships: 'Campeonatos',
   leagueDetails: 'Detalhes da Liga',
   deleteConfirmation:
-    'Tem certeza de que deseja remover a liga <b>{name}</b>? | <p>Tem certeza de que deseja remover as ligas abaixo?</p> <p><b>{name}</b></p>',
+    '<p>Ao remover esta liga, toda a pontuação conquistada por todos os participantes será perdida.</p> Tem certeza de que deseja remover a liga <b>{name}</b>?|<p>Ao remover estas ligas, toda a pontuação conquistada por todos os participantes será perdida.</p>  <p>Tem certeza de que deseja remover as ligas abaixo?</p> <p><b>{name}</b></p>',
   deleteSuccess: 'Liga removida com sucesso',
   saveSuccess: 'Liga salva com sucesso',
   validation: {

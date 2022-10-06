@@ -7,8 +7,7 @@
     @hide="handleHide"
   >
     <div class="flex align-items-center">
-      <!-- <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" /> -->
-      <span v-html="message" />
+      <span v-html="messageHTML" />
     </div>
     <template #footer>
       <Button
@@ -39,12 +38,16 @@ const props = defineProps({
     type: Array,
     required: true
   },
+  // message: {
+  //   type: String,
+  //   default: 'admin.leagues.deleteConfirmation'
+  // },
   visible: Boolean
 })
 
 const emits = defineEmits(['hide', 'submit'])
 
-const message = computed(() => {
+const messageHTML = computed(() => {
   const name = props.leagues.map(({ name }) => name).join('<br />')
 
   return i18n.t(
