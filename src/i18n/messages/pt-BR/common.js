@@ -60,5 +60,6 @@ export default {
   },
   points: '0 ponto | 1 ponto | {points} pontos',
   termsAndConditions: 'Termos e Condições',
-  clear: 'Limpar'
+  clear: 'Limpar',
+  select: 'Selecionar'
 }
