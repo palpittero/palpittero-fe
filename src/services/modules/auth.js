@@ -33,6 +33,9 @@ const resetPassword = ({ token, password, passwordConfirmation }) =>
 const validateToken = (token) =>
   api.get(`${RESOURCE_URI}/validateToken/${token}`)
 
+const updatePassword = ({ currentPassword, newPassword }) =>
+  api.post(`${RESOURCE_URI}/updatePassword`, { currentPassword, newPassword })
+
 export default {
   authenticate,
   refreshToken,
@@ -41,5 +44,6 @@ export default {
   recoverPassword,
   activateAccount,
   resetPassword,
-  validateToken
+  validateToken,
+  updatePassword
 }

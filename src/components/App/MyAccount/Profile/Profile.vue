@@ -110,6 +110,7 @@ const handleSubmit = async ({ id, name, email, avatar }) => {
       life: 4000,
       group: 'app'
     })
+
     auth.fetchLoggedUser()
   } catch (error) {
     if (error.response.status === 409) {

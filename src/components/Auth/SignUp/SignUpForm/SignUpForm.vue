@@ -1,6 +1,5 @@
 <template>
   <div class="w-full md:w-10 mx-auto">
-    <pre>{{ user }}</pre>
     <label for="name" class="block text-900 text-xl font-medium mb-2">{{
       $t('admin.auth.name')
     }}</label>
