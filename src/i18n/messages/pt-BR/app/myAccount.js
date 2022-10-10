@@ -12,5 +12,19 @@ export default {
         <p>As suas ligas <b>privadas</b> se tornarão <b>públicas</b> e permanecerão acessíveis aos outros usuários.</p>
         <p>Deseja realmente <b>Remover a sua conta?</b>`
     }
+  },
+  changePassword: {
+    currentPassword: 'Senha Atual',
+    newPassword: 'Nova Senha',
+    newPasswordConfirmation: 'Confirmação Nova Senha',
+    saved: 'Senha alterada com sucesso',
+    validation: {
+      currentPassword: 'Favor informar a Senha Atual',
+      newPassword: 'Favor informar a Nova Senha',
+      newPasswordConfirmation: 'As novas senhas não são iguais'
+    },
+    error: {
+      currentPassword: 'Sua senha atual está incorreta'
+    }
   }
 }
