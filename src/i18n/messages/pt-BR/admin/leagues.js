@@ -34,5 +34,7 @@ export default {
   deleteUserSuccess: 'Usuário removido da liga com sucesso',
   leagueOwner: 'Proprietário da liga',
   owner: 'Proprietário',
-  newLeague: 'Nova Liga'
+  newLeague: 'Nova Liga',
+  usersWithoutAccount:
+    'Usuários que não possuem conta na plataforma serão convidados a se registrarem para, então, receberem o convite para a liga'
 }

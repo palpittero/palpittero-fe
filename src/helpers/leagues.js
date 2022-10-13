@@ -1,4 +1,4 @@
-import { omit } from 'lodash/fp'
+import { omit, pick } from 'lodash/fp'
 
 const parseUsersLeagues = (usersLeagues) =>
   usersLeagues.map(({ id, name, email }) => ({
@@ -13,7 +13,9 @@ const parseLeague = (league) => ({
   ...league,
   users: league.users
     .filter(({ owner }) => !owner)
-    .map(({ id, name, email }) => ({ id, name, email })),
+    .map((user) => {
+      return user.id ? pick(['id', 'name', 'email', 'status'], user) : user
+    }),
   ownerId: league.users.find(({ owner }) => owner)?.id ?? null
 })
 

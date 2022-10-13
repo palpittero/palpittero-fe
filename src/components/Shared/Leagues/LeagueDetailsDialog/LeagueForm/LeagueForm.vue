@@ -88,7 +88,11 @@
 
   <div class="field">
     <label class="mb-3">{{ $t('admin.leagues.participants') }}</label>
-    <UsersSelect v-model="league.users" :filter-ids="[league.ownerId]" />
+    <UsersChips
+      v-model="league.users"
+      :not-allowed="[ownerId || league.ownerId]"
+      @not-allowed="handleNotAllowed"
+    />
   </div>
 
   <div class="field">
@@ -98,14 +102,14 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue'
+import { ref, watch } from 'vue'
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
-import UsersSelect from '@/components/Shared/Users/UsersSelect/UsersSelect.vue'
 import UserSelect from '@/components/Shared/Users/UserSelect/UserSelect.vue'
 
 import { LEAGUE_POINTS_STRATEGY } from '@/constants/leagues'
 import ChampionshipsPickList from '@/components/Admin/Championships/ChampionshipsPickList/ChampionshipsPickList.vue'
 import ImageInput from '@/components/Shared/ImageInput/ImageInput.vue'
+import UsersChips from '@/components/Shared/Users/UsersChips/UsersChips.vue'
 
 const props = defineProps({
   modelValue: {
@@ -124,7 +128,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:modelValue'])
-const league = reactive(props.modelValue)
+const league = ref(props.modelValue)
+console.log(league.value)
 
 watch(
   league,
