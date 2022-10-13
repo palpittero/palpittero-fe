@@ -17,7 +17,8 @@ export default {
     name: 'Favor informar um nome',
     email: 'Favor informar um e-mail válido',
     password: 'Favor informar uma senha',
-    passwordConfirmation: 'As senhas não são iguais'
+    passwordConfirmation: 'As senhas não são iguais',
+    userNotAllowed: 'Usuário não permitido'
   },
   error: {
     passwordsDontMatch: "Passwords don't match"
@@ -25,5 +26,9 @@ export default {
   selectUsers: 'Selecione os usuários',
   selectUser: 'Selecione um usuário',
   points: 'Pontos',
-  newUser: 'Novo Usuário'
+  newUser: 'Novo Usuário',
+  userHasAccount: 'Usuário possui conta na plataforma',
+  userDoesNotHaveAccount: 'Usuário não possui conta na plataforma',
+  invitationSent: 'Convite enviado (aguardando resposta)',
+  invitationAccepted: 'Convite aceito'
 }

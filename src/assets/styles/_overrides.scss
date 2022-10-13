@@ -61,7 +61,7 @@ body {
 }
 
 .p-multiselect-panel, .p-datepicker, .p-toast {
-  z-index: 999;
+  z-index: 1000;
 }
 
 small, span {
@@ -85,5 +85,12 @@ small, span {
 .p-avatar {
   img {
     object-fit: contain;
+  }
+}
+
+.p-chips-multiple-container {
+  gap: 5px;
+  .p-chips-token {
+    margin-right: 0 !important;
   }
 }
