@@ -83,7 +83,7 @@
 
   <div class="field" v-if="!ownerId">
     <label class="mb-3">{{ $t('admin.leagues.owner') }}</label>
-    <UserSelect v-model="league.ownerId" />
+    <UserSelect v-model="league.ownerId" :disabled="isEditing" />
   </div>
 
   <div class="field">
@@ -95,6 +95,18 @@
     />
   </div>
 
+  <div class="field-checkbox" v-if="isEditing">
+    <Checkbox
+      id="resend-invitations"
+      name="resent-invitations"
+      v-model="league.resendInvitations"
+      binary
+    />
+    <label for="resend-invitations">
+      {{ $t('admin.leagues.resendInvitations') }}
+    </label>
+  </div>
+
   <div class="field">
     <label class="mb-3">{{ $t('common.status') }}</label>
     <BaseStatusPartialForm v-model="league.status" />
@@ -102,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import UserSelect from '@/components/Shared/Users/UserSelect/UserSelect.vue'
 
@@ -138,6 +150,8 @@ watch(
   },
   { deep: true }
 )
+
+const isEditing = computed(() => !!league.value.id)
 </script>
 
 <style lang="scss">
