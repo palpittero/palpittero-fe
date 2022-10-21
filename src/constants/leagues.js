@@ -13,7 +13,8 @@ export const LEAGUE_MODEL = {
   championships: [],
   ownerId: null,
   pointsStrategy: LEAGUE_POINTS_STRATEGY.GROUPED,
-  status: STATUSES.ACTIVE
+  status: STATUSES.ACTIVE,
+  resendInvitations: false
 }
 
 export const USERS_LEAGUES_STATUSES = {
