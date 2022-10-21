@@ -91,7 +91,6 @@
     <UsersChips
       v-model="league.users"
       :not-allowed="[ownerId || league.ownerId]"
-      @not-allowed="handleNotAllowed"
     />
   </div>
 

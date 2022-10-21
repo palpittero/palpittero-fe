@@ -1,15 +1,23 @@
 <template>
   <div>
+    <!-- <pre>{{ STATUSES }}</pre> -->
     <div class="mb-3 flex gap-2">
-      <UsersSelect
+      <!-- <UsersSelect
         v-model="selectedUsers"
         :filter-ids="filteredUsersIds"
         class-name="flex-1"
+      /> -->
+
+      <UsersChips
+        v-model="selectedUsers"
+        :not-allowed="[ownerId]"
+        @not-allowed="handleNotAllowed"
+        class="flex-4"
       />
       <Button
         icon="pi pi-plus"
         :label="$t('admin.leagues.inviteUsers')"
-        class="p-button-primary"
+        class="p-button-primary align-self-start"
         @click="handleAddUsers"
         :disabled="selectedUsers.length === 0"
       />
@@ -21,7 +29,7 @@
             <div class="flex align-items-center gap-2">
               <BadgeAvatar :image="data.avatar" size="small" type="user" />
               <span class="mr-2">
-                {{ data.name }}
+                {{ data.name || $t('admin.users.userNotRegistered') }}
               </span>
               <span
                 class="pi pi-id-card"
@@ -34,10 +42,7 @@
         <Column field="email" :header="$t('admin.users.email')" />
         <Column field="status" :header="$t('common.status')">
           <template #body="{ data }">
-            <BaseStatus
-              :status="data.status"
-              :options="USERS_LEAGUES_STATUSES_LABELS"
-            />
+            <BaseStatus :status="data.status" :options="STATUSES" />
           </template>
         </Column>
       </DataTable>
@@ -47,7 +52,7 @@
       :users="selectedUsers"
       :league="league"
       :visible="isLeagueUserAddDialogVisible"
-      :disabled="isLoading"
+      :disabled="isSubmitting"
       @hide="handleLeagueUserAddHide"
       @submit="handleLeagueUserAddSubmit"
     />
@@ -56,7 +61,7 @@
       :user="user"
       :league="league"
       :visible="isLeagueUserDeleteDialogVisible"
-      :disabled="isLoading"
+      :disabled="isSubmitting"
       @hide="handleLeagueUserDeleteHide"
       @submit="handleLeagueUserDeleteSubmit"
     />
@@ -71,15 +76,23 @@ import services from '@/services'
 
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
-import UsersSelect from '@/components/Shared/Users/UsersSelect/UsersSelect.vue'
+import UsersChips from '@/components/Shared/Users/UsersChips/UsersChips.vue'
 import LeagueUserDeleteDialog from './LeagueUserDeleteDialog/LeagueUserDeleteDialog.vue'
 import LeagueUserAddDialog from './LeagueUserAddDialog/LeagueUserAddDialog.vue'
 
-import { USERS_LEAGUES_STATUSES_LABELS } from '@/constants/leagues'
+import {
+  USERS_LEAGUES_STATUSES_LABELS,
+  LEAGUES_INVITATIONS_STATUSES_LABELS
+} from '@/constants/leagues'
 import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const toast = useToast()
 const i18n = useI18n()
+
+const STATUSES = {
+  ...USERS_LEAGUES_STATUSES_LABELS,
+  ...LEAGUES_INVITATIONS_STATUSES_LABELS
+}
 
 const props = defineProps({
   modelValue: {
@@ -98,7 +111,7 @@ const leagueUsers = reactive({
   data: []
 })
 
-const isLoading = ref(false)
+const isSubmitting = ref(false)
 const selectedUsers = ref([])
 const user = ref({})
 const isLeagueUserAddDialogVisible = ref(false)
@@ -111,7 +124,9 @@ const loadUsersLeagues = async () => {
   leagueUsers.loading = false
 }
 
-const filteredUsersIds = computed(() => leagueUsers.data.map(({ id }) => id))
+const ownerId = computed(
+  () => props.league.users.find(({ owner }) => owner)?.id
+)
 
 const isOwner = (user) => user.owner
 
@@ -121,13 +136,13 @@ const handleLeagueUserAddHide = () =>
   (isLeagueUserAddDialogVisible.value = false)
 
 const handleLeagueUserAddSubmit = async (selectedUsers) => {
-  isLoading.value = true
+  isSubmitting.value = true
   await services.usersLeagues.inviteUsers({
     leagueId: props.league.id,
     users: selectedUsers
   })
-  isLoading.value = false
   isLeagueUserAddDialogVisible.value = false
+  isSubmitting.value = false
 
   toast.add({
     severity: 'success',

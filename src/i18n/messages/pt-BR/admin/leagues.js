@@ -18,8 +18,10 @@ export default {
   public: 'Pública',
   private: 'Privada',
   status: {
-    invited: 'Pendente',
-    approved: 'Aprovado'
+    invited: 'Convite enviado',
+    approved: 'Aprovado',
+    sent: 'Aguardando cadastro',
+    pending: 'Pendente'
   },
   error: {
     delete: 'Erro ao tentar remover liga',

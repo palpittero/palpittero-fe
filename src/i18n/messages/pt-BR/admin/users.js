@@ -29,6 +29,7 @@ export default {
   newUser: 'Novo Usuário',
   userHasAccount: 'Usuário possui conta na plataforma',
   userDoesNotHaveAccount: 'Usuário não possui conta na plataforma',
+  userNotRegistered: 'Usuário não cadastrado',
   invitationSent: 'Convite enviado (aguardando resposta)',
   invitationAccepted: 'Convite aceito'
 }
