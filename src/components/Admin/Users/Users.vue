@@ -50,7 +50,7 @@
         <UserDetailsDialog
           v-model="user"
           :visible="isUserDetailsDialogVisible"
-          :submitted="submitted"
+          :submitting="isSubmitting"
           @hide="handleDetailsDialogHide"
           @submit="handleDetailsDialogSubmit"
         />
@@ -58,6 +58,7 @@
         <UserDeleteDialog
           :visible="isUserDeleteDialogOpen"
           :users="user"
+          :submitting="isSubmitting"
           @hide="handleDeleteDialogHide"
           @submit="handleDeleteDialogSubmit"
         />
@@ -91,6 +92,7 @@ const users = reactive({
 const isUserDetailsDialogVisible = ref(false)
 const isUserDeleteDialogOpen = ref(false)
 const selectedUsers = ref([])
+const isSubmitting = ref(false)
 
 onMounted(() => loadUsers())
 
@@ -112,6 +114,7 @@ const handleNewUser = () => {
 
 const handleDetailsDialogSubmit = async (user) => {
   try {
+    isSubmitting.value = true
     if (user.id) {
       await services.users.updateUser(user)
     } else {
@@ -137,6 +140,8 @@ const handleDetailsDialogSubmit = async (user) => {
         group: 'app'
       })
     }
+  } finally {
+    isSubmitting.value = false
   }
 }
 
@@ -162,6 +167,7 @@ const handleDeleteUsers = () => {
 const handleDeleteDialogHide = () => (isUserDeleteDialogOpen.value = false)
 
 const handleDeleteDialogSubmit = async (users) => {
+  isSubmitting.value = true
   const ids = users.map(({ id }) => id)
   await services.users.deleteUsers(ids)
 
@@ -173,6 +179,7 @@ const handleDeleteDialogSubmit = async (users) => {
   })
 
   handleDeleteDialogHide()
+  isSubmitting.value = false
   loadUsers()
 }
 </script>

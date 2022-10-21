@@ -11,7 +11,7 @@
     <template #footer>
       <slot name="footer">
         <Button
-          label="Cancel"
+          :label="$t('common.cancel')"
           icon="pi pi-times"
           class="p-button-text"
           @click="handleHide"
@@ -19,7 +19,7 @@
           :disabled="disabled"
         />
         <Button
-          label="Ok"
+          :label="$t('common.ok')"
           icon="pi pi-check"
           class="p-button-text"
           :class="okButtonClass"

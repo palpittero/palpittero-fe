@@ -30,7 +30,7 @@ const props = defineProps({
     default: () => ({})
   },
   visible: Boolean,
-  submitted: Boolean
+  submitting: Boolean
 })
 
 const emits = defineEmits(['update:modelValue', 'submit', 'hide'])

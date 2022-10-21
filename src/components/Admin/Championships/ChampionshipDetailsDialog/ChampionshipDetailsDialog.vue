@@ -2,6 +2,7 @@
   <BaseDialog
     :visible="visible"
     :header="$t('admin.championships.championshipDetails')"
+    :disabled="submitting"
     @submit="onSubmit"
     @hide="emits('hide')"
   >
@@ -27,7 +28,8 @@ const props = defineProps({
     default: () => ({})
   },
   visible: Boolean,
-  submitted: Boolean
+  submitted: Boolean,
+  submitting: Boolean
 })
 
 const emits = defineEmits(['update:modelValue', 'submit', 'hide'])

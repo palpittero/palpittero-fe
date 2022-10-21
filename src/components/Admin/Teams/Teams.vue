@@ -50,7 +50,7 @@
         <TeamDetailsDialog
           v-model="team"
           :visible="isTeamDetailsDialogVisible"
-          :submitted="submitted"
+          :submitting="isSubmitting"
           @hide="handleDetailsDialogHide"
           @submit="handleDetailsDialogSubmit"
         />
@@ -58,6 +58,7 @@
         <TeamDeleteDialog
           :visible="isTeamDeleteDialogOpen"
           :teams="team"
+          :disabled="isSubmitting"
           @hide="handleDeleteDialogHide"
           @submit="handleDeleteDialogSubmit"
         />
@@ -91,6 +92,7 @@ const teams = reactive({
 const isTeamDetailsDialogVisible = ref(false)
 const isTeamDeleteDialogOpen = ref(false)
 const selectedTeams = ref([])
+const isSubmitting = ref(false)
 
 onMounted(() => loadTeams())
 
@@ -111,6 +113,7 @@ const handleNewTeam = () => {
 }
 
 const handleDetailsDialogSubmit = async (team) => {
+  isSubmitting.value = true
   if (team.id) {
     await services.teams.updateTeam(team)
   } else {
@@ -125,6 +128,7 @@ const handleDetailsDialogSubmit = async (team) => {
   })
 
   handleDetailsDialogHide()
+  isSubmitting.value = false
   loadTeams()
 }
 
@@ -151,6 +155,7 @@ const handleDeleteDialogHide = () => (isTeamDeleteDialogOpen.value = false)
 
 const handleDeleteDialogSubmit = async (teams) => {
   try {
+    isSubmitting.value = true
     const ids = teams.map(({ id }) => id)
     await services.teams.deleteTeams(ids)
 
@@ -171,6 +176,8 @@ const handleDeleteDialogSubmit = async (teams) => {
       life: 3000,
       group: 'app'
     })
+  } finally {
+    isSubmitting.value = false
   }
 }
 </script>

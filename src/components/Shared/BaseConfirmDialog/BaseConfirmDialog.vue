@@ -17,12 +17,14 @@
         icon="pi pi-times"
         class="p-button-text"
         @click="handleHide"
+        :disabled="disabled"
       />
       <Button
         :label="$t('common.yes')"
         icon="pi pi-check"
         class="p-button-text"
         @click="handleSubmit"
+        :disabled="disabled"
       />
     </template>
   </BaseDialog>
@@ -35,6 +37,7 @@ defineProps({
   header: String,
   message: String,
   visible: Boolean,
+  disabled: Boolean,
   okButtonClass: String,
   cancelButtonClass: String
 })
