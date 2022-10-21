@@ -23,6 +23,11 @@ export const USERS_LEAGUES_STATUSES = {
   REJECTED: 'rejected'
 }
 
+export const LEAGUES_INVITATIONS_STATUSES = {
+  PENDING: 'pending',
+  SENT: 'sent'
+}
+
 export const USERS_LEAGUES_INVITATIONS_OPTIONS = [
   {
     id: false,
@@ -46,5 +51,18 @@ export const USERS_LEAGUES_STATUSES_LABELS = {
     text: 'admin.leagues.status.approved',
     icon: 'pi pi-check',
     iconStyle: { color: 'var(--green-600)' }
+  }
+}
+
+export const LEAGUES_INVITATIONS_STATUSES_LABELS = {
+  [LEAGUES_INVITATIONS_STATUSES.PENDING]: {
+    text: 'admin.leagues.status.pending',
+    icon: 'pi pi-clock',
+    iconStyle: { color: 'var(--blue-600)' }
+  },
+  [LEAGUES_INVITATIONS_STATUSES.SENT]: {
+    text: 'admin.leagues.status.sent',
+    icon: 'pi pi-user-edit',
+    iconStyle: { color: 'var(--orange-600)' }
   }
 }
