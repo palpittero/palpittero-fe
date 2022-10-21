@@ -3,6 +3,7 @@
     :visible="visible"
     :header="$t('admin.teams.teamDetails')"
     @submit="onSubmit"
+    :disabled="submitting"
     @hide="emits('hide')"
   >
     <TeamForm
@@ -27,7 +28,7 @@ const props = defineProps({
     default: () => ({})
   },
   visible: Boolean,
-  submitted: Boolean
+  submitting: Boolean
 })
 
 const emits = defineEmits(['update:modelValue', 'submit', 'hide'])

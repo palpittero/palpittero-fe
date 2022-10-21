@@ -16,12 +16,14 @@
         icon="pi pi-times"
         class="p-button-text"
         @click="handleHide"
+        :disabled="disabled"
       />
       <Button
         :label="$t('common.yes')"
         icon="pi pi-check"
         class="p-button-text"
         @click="handleSubmit"
+        :disabled="disabled"
       />
     </template>
   </BaseDialog>
@@ -39,7 +41,8 @@ const props = defineProps({
     type: Array,
     required: true
   },
-  visible: Boolean
+  visible: Boolean,
+  disabled: Boolean
 })
 
 const emits = defineEmits(['hide', 'submit'])

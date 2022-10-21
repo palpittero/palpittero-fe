@@ -26,6 +26,7 @@
       @remove="handleRemoveLeague"
       @edit="handleEditLeague"
     />
+
     <LeaguesDescriptionList
       :leagues="publicLeagues"
       :loading="allPublicLeagues.loading"
@@ -48,6 +49,7 @@
       v-if="isLeagueDetailsDialogVisible"
       v-model="selectedLeague"
       :visible="isLeagueDetailsDialogVisible"
+      :submitting="isSubmitting"
       :owner-id="auth.loggedUser.id"
       @hide="handleDetailsDialogHide"
       @submit="handleDetailsDialogSubmit"
@@ -66,6 +68,7 @@
       :header="leagueJoinDialog.header"
       :message="leagueJoinDialog.message"
       :visible="isLeagueJoinDialogVisible"
+      :disabled="isSubmitting"
       @hide="handleJoinDialogHide"
       @submit="handleJoinDialogSubmit"
     />
@@ -75,19 +78,14 @@
       :header="leagueLeaveDialog.header"
       :message="leagueLeaveDialog.message"
       :visible="isLeagueLeaveDialogVisible"
+      :disabled="isSubmitting"
       @hide="handleLeaveDialogHide"
       @submit="handleLeaveDialogSubmit"
     />
 
-    <LeagueEditDialog
-      :visible="isLeagueEditDialogVisible"
-      :league="selectedLeague"
-      @hide="handleEditDialogHide"
-      @submit="handleEditDialogSubmit"
-    />
-
     <LeagueDeleteDialog
       :visible="isLeagueDeleteDialogVisible"
+      :submitting="isSubmitting"
       :leagues="[selectedLeague]"
       @hide="handleDeleteDialogHide"
       @submit="handleDeleteDialogSubmit"
@@ -128,8 +126,8 @@ const isLeagueJoinDialogVisible = ref(false)
 const isLeagueLeaveDialogVisible = ref(false)
 const isLeagueRankingDialogVisible = ref(false)
 const isLeagueDetailsDialogVisible = ref(false)
-const isLeagueEditDialogVisible = ref(false)
 const isLeagueDeleteDialogVisible = ref(false)
+const isSubmitting = ref(false)
 
 const leagueJoinDialog = computed(() => {
   const message = selectedLeague.value?.private
@@ -237,6 +235,7 @@ const handleJoinLeague = (league) => {
 const handleJoinDialogHide = () => (isLeagueJoinDialogVisible.value = false)
 
 const handleJoinDialogSubmit = async () => {
+  isSubmitting.value = true
   const leagueId = selectedLeague.value.id
   await services.usersLeagues.joinLeague(leagueId)
 
@@ -244,6 +243,7 @@ const handleJoinDialogSubmit = async () => {
   pendingLeaguesInvitationsKey.value++
 
   isLeagueJoinDialogVisible.value = false
+  isSubmitting.value = false
 }
 
 const handleLeaveLeague = (league) => {
@@ -254,6 +254,7 @@ const handleLeaveLeague = (league) => {
 const handleLeaveDialogHide = () => (isLeagueLeaveDialogVisible.value = false)
 
 const handleLeaveDialogSubmit = async () => {
+  isSubmitting.value = true
   const leagueId = selectedLeague.value.id
   const userId = auth.loggedUser.id
 
@@ -262,6 +263,7 @@ const handleLeaveDialogSubmit = async () => {
   loadLeagues()
 
   isLeagueLeaveDialogVisible.value = false
+  isSubmitting.value = false
 }
 
 const handleGuessesLeague = (league) =>
@@ -293,6 +295,7 @@ const handleDetailsDialogHide = () => {
 }
 
 const handleDetailsDialogSubmit = async (league) => {
+  isSubmitting.value = true
   const parsedLeague = parseLeagueInput(league)
 
   parsedLeague.id
@@ -307,6 +310,7 @@ const handleDetailsDialogSubmit = async (league) => {
   })
 
   handleDetailsDialogHide()
+  isSubmitting.value = false
   loadLeagues()
 }
 
@@ -319,6 +323,7 @@ const handleDeleteDialogHide = () => (isLeagueDeleteDialogVisible.value = false)
 
 const handleDeleteDialogSubmit = async ([league]) => {
   try {
+    isSubmitting.value = true
     await services.leagues.deleteLeague(league)
 
     toast.add({
@@ -338,6 +343,8 @@ const handleDeleteDialogSubmit = async ([league]) => {
       life: 3000,
       group: 'app'
     })
+  } finally {
+    isSubmitting.value = false
   }
 }
 </script>

@@ -8,12 +8,12 @@
       </div>
     </div>
     <div class="mt-4 mr-auto md:mt-0 md:mr-0">
-      <a
+      <Button
         @click="handleProcessGuesses"
         class="p-button font-bold px-5 py-3 p-button-warning p-button-rounded p-button-raised"
       >
         {{ $t('admin.dashboard.unprocessedGuesses.cta') }}
-      </a>
+      </Button>
     </div>
   </div>
 
@@ -21,6 +21,7 @@
     :header="$t('admin.dashboard.processGuesses.header')"
     :message="$t('admin.dashboard.processGuesses.message')"
     :visible="isConfirmDialogVisible"
+    :disabled="isSubmitting"
     @hide="handleConfirmDialogHide"
     @submit="handleConfirmDialogSubmit"
   />
@@ -46,7 +47,7 @@ defineProps({
 
 const emits = defineEmits(['refresh'])
 
-const isLoading = ref(false)
+const isSubmitting = ref(false)
 const isConfirmDialogVisible = ref(false)
 
 const handleProcessGuesses = () => (isConfirmDialogVisible.value = true)
@@ -54,7 +55,7 @@ const handleProcessGuesses = () => (isConfirmDialogVisible.value = true)
 const handleConfirmDialogHide = () => (isConfirmDialogVisible.value = false)
 
 const handleConfirmDialogSubmit = async () => {
-  isLoading.value = true
+  isSubmitting.value = true
   await services.guesses.processGuesses()
   toast.add({
     group: 'app',
@@ -65,7 +66,7 @@ const handleConfirmDialogSubmit = async () => {
   })
   emits('refresh')
   handleConfirmDialogHide()
-  isLoading.value = false
+  isSubmitting.value = false
 }
 </script>
 

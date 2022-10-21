@@ -34,6 +34,7 @@
           v-if="isLeagueDetailsDialogVisible"
           v-model="league"
           :visible="isLeagueDetailsDialogVisible"
+          :submitting="isSubmitting"
           @hide="handleDetailsDialogHide"
           @submit="handleDetailsDialogSubmit"
         />
@@ -41,6 +42,7 @@
         <LeagueDeleteDialog
           v-if="isLeagueDeleteDialogOpen"
           :visible="isLeagueDeleteDialogOpen"
+          :submitting="isSubmitting"
           :leagues="league"
           @hide="handleDeleteDialogHide"
           @submit="handleDeleteDialogSubmit"
@@ -72,6 +74,7 @@ const leagues = ref({
   error: null,
   data: []
 })
+const isSubmitting = ref(false)
 
 const isLeagueDetailsDialogVisible = ref(false)
 const isLeagueDeleteDialogOpen = ref(false)
@@ -96,6 +99,7 @@ const handleNewLeague = () => {
 }
 
 const handleDetailsDialogSubmit = async (league) => {
+  isSubmitting.value = true
   const parsedLeague = parseLeagueInput(league)
 
   if (league.id) {
@@ -112,6 +116,7 @@ const handleDetailsDialogSubmit = async (league) => {
   })
 
   handleDetailsDialogHide()
+  isSubmitting.value = false
   loadLeagues()
 }
 

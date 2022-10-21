@@ -53,22 +53,25 @@
           :match="match"
           :visible="isMatchDetailsDialogVisible"
           :submitted="submitted"
+          :submitting="isSubmitting"
           @hide="handleDetailsDialogHide"
           @submit="handleDetailsDialogSubmit"
         />
 
         <MatchDeleteDialog
           v-if="isMatchDeleteDialogOpen"
-          :visible="isMatchDeleteDialogOpen"
           :matches="match"
+          :visible="isMatchDeleteDialogOpen"
+          :disabled="isSubmitting"
           @hide="handleDeleteDialogHide"
           @submit="handleDeleteDialogSubmit"
         />
 
         <MatchSetResultDialog
           v-if="isMatchSetResultDialogOpen"
-          :visible="isMatchSetResultDialogOpen"
           :match="match"
+          :visible="isMatchSetResultDialogOpen"
+          :disabled="isSubmitting"
           @hide="handleSetResultDialogHide"
           @submit="handleSetResultDialogSubmit"
         />
@@ -104,6 +107,7 @@ const isMatchDetailsDialogVisible = ref(false)
 const isMatchDeleteDialogOpen = ref(false)
 const isMatchSetResultDialogOpen = ref(false)
 const selectedMatches = ref([])
+const isSubmitting = ref(false)
 
 onMounted(() => loadMatches())
 
@@ -124,6 +128,7 @@ const handleNewMatch = () => {
 }
 
 const saveMatch = async (match) => {
+  isSubmitting.value = true
   if (match.id) {
     await services.matches.updateMatch(match)
   } else {
@@ -142,6 +147,7 @@ const saveMatch = async (match) => {
 
 const handleDetailsDialogHide = () => {
   isMatchDetailsDialogVisible.value = false
+  isSubmitting.value = false
 }
 
 const handleEditMatch = (row) => {
@@ -183,6 +189,7 @@ const handleDeleteDialogHide = () => (isMatchDeleteDialogOpen.value = false)
 
 const handleDeleteDialogSubmit = async (matches) => {
   try {
+    isSubmitting.value = true
     const ids = matches.map(({ id }) => id)
     await services.matches.deleteMatches(ids)
 
@@ -203,6 +210,8 @@ const handleDeleteDialogSubmit = async (matches) => {
       life: 3000,
       group: 'app'
     })
+  } finally {
+    isSubmitting.value = false
   }
 }
 

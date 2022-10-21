@@ -15,12 +15,14 @@
         icon="pi pi-times"
         class="p-button-text"
         @click="handleHide"
+        :disabled="submitting"
       />
       <Button
         :label="$t('common.yes')"
         icon="pi pi-check"
         class="p-button-text"
         @click="handleSubmit"
+        :disabled="submitting"
       />
     </template>
   </BaseDialog>
@@ -42,7 +44,8 @@ const props = defineProps({
   //   type: String,
   //   default: 'admin.leagues.deleteConfirmation'
   // },
-  visible: Boolean
+  visible: Boolean,
+  submitting: Boolean
 })
 
 const emits = defineEmits(['hide', 'submit'])

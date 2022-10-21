@@ -52,13 +52,15 @@
         <ChampionshipDetailsDialog
           v-model="championship"
           :visible="isChampionshipDetailsDialogVisible"
+          :submitting="isSubmitting"
           @hide="handleDetailsDialogHide"
           @submit="handleDetailsDialogSubmit"
         />
 
         <ChampionshipDeleteDialog
-          :visible="isChampionshipDeleteDialogOpen"
           :championships="championship"
+          :visible="isChampionshipDeleteDialogOpen"
+          :disabled="isSubmitting"
           @hide="handleDeleteDialogHide"
           @submit="handleDeleteDialogSubmit"
         />
@@ -92,6 +94,7 @@ const championships = reactive({
 const isChampionshipDetailsDialogVisible = ref(false)
 const isChampionshipDeleteDialogOpen = ref(false)
 const selectedChampionships = ref([])
+const isSubmitting = ref(false)
 
 onMounted(() => loadChampionships())
 
@@ -112,6 +115,7 @@ const handleNewChampionship = () => {
 }
 
 const handleDetailsDialogSubmit = async (championship) => {
+  isSubmitting.value = true
   if (championship.id) {
     await services.championships.updateChampionship(championship)
   } else {
@@ -126,6 +130,7 @@ const handleDetailsDialogSubmit = async (championship) => {
   })
 
   handleDetailsDialogHide()
+  isSubmitting.value = false
   loadChampionships()
 }
 
@@ -153,6 +158,7 @@ const handleDeleteDialogHide = () =>
 
 const handleDeleteDialogSubmit = async (championships) => {
   try {
+    isSubmitting.value = true
     const ids = championships.map(({ id }) => id)
     await services.championships.deleteChampionships(ids)
 
@@ -173,6 +179,8 @@ const handleDeleteDialogSubmit = async (championships) => {
       life: 3000,
       group: 'app'
     })
+  } finally {
+    isSubmitting.value = false
   }
 }
 </script>
