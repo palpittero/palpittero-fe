@@ -147,7 +147,7 @@
 
 <script setup>
 import services from '@/services'
-import { reduce, isNil } from 'lodash/fp'
+import { reduce, isNil, isEmpty } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
@@ -252,7 +252,9 @@ watch(
         leagueId: props.leagueId
       })
 
-      router.push({
+      const action = isEmpty(route.query) ? 'replace' : 'push'
+
+      router[action]({
         ...route,
         query: {
           ...route.query,
