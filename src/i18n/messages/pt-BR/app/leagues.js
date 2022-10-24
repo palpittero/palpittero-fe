@@ -32,5 +32,9 @@ export default {
     approve: 'Aprovar',
     reject: 'Rejeitar',
     updateSuccess: 'Convites respondidos com sucesso.'
-  }
+  },
+  approveUserConfirmation:
+    'Deseja realmente aprovar a participação deste usuário?',
+  leagueUsers: 'Usuários - {leagueName}',
+  approveUsersSuccess: 'Usuário aprovado com sucesso'
 }

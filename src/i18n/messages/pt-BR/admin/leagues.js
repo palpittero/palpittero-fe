@@ -30,6 +30,8 @@ export default {
   inviteUsers: 'Convidar Usuários',
   inviteUsersConfirmation:
     'Deseja realmente convidar os usuários abaixo para a liga <b>{leagueName}</b>:',
+  approveUsersConfirmation:
+    'Deseja realmente aprovar manualmente a participação do usuário abaixo na liga <b>{leagueName}</b>:',
   inviteUsersSuccess: 'Convites enviados com sucesso',
   deleteUserConfirmation:
     'Deseja realmente remover o usuário <b>{userName}</b> da liga <b>{leagueName}</b>?',

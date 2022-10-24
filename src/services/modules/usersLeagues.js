@@ -16,10 +16,14 @@ const updateInvitations = (invitations) =>
 
 const joinLeague = (leagueId) => api.post(`${RESOURCE_URI}/join/${leagueId}`)
 
+const approveUsers = ({ leagueId, users }) =>
+  api.post(`${RESOURCE_URI}/approveUsers/${leagueId}`, { users })
+
 export default {
   inviteUsers,
   acceptInvitation,
   deleteUser,
   updateInvitations,
-  joinLeague
+  joinLeague,
+  approveUsers
 }
