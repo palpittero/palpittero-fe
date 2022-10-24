@@ -2,7 +2,7 @@
   <BaseDialog
     :visible="visible"
     :style="{ width: '55vw' }"
-    :header="$t('common.users')"
+    :header="$t('app.leagues.leagueUsers', { leagueName: league.name })"
     modal
     @submit="handleSubmit"
     @hide="handleHide"

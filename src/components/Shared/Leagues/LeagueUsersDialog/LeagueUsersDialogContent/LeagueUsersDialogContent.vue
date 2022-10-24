@@ -1,13 +1,6 @@
 <template>
   <div>
-    <!-- <pre>{{ STATUSES }}</pre> -->
     <div class="mb-3 flex gap-2">
-      <!-- <UsersSelect
-        v-model="selectedUsers"
-        :filter-ids="filteredUsersIds"
-        class-name="flex-1"
-      /> -->
-
       <UsersChips
         v-model="selectedUsers"
         :not-allowed="[ownerId]"
@@ -43,6 +36,34 @@
         <Column field="status" :header="$t('common.status')">
           <template #body="{ data }">
             <BaseStatus :status="data.status" :options="STATUSES" />
+            <div v-if="hasSentInvitation(data.status)">
+              <ConfirmPopup />
+              <ConfirmPopup group="demo">
+                <template #message="slotProps">
+                  <div class="flex p-4">
+                    <i
+                      :class="slotProps.message.icon"
+                      style="font-size: 1.5rem"
+                    ></i>
+                    <p class="pl-2">{{ slotProps.message.message }}</p>
+                  </div>
+                </template>
+              </ConfirmPopup>
+              <Button
+                @click="handleApproveUser($event, data)"
+                icon="pi pi-check"
+                :label="$t('app.leagues.pendingInvitations.approve')"
+                class="p-button-text p-button-clear p-button-success p-button-small px-0"
+              />
+            </div>
+            <!-- <Button
+              v-if="hasSentInvitation(data.status)"
+              @click="handleApproveUser(data)"
+              class="p-button-text p-button-clear p-button-success p-button-small px-0"
+              icon="pi pi-check"
+              :label="$t('app.leagues.pendingInvitations.approve')"
+            >
+            </Button> -->
           </template>
         </Column>
       </DataTable>
@@ -71,6 +92,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
+import { useConfirm } from 'primevue/useconfirm'
 import { useI18n } from 'vue-i18n'
 import services from '@/services'
 
@@ -82,11 +104,13 @@ import LeagueUserAddDialog from './LeagueUserAddDialog/LeagueUserAddDialog.vue'
 
 import {
   USERS_LEAGUES_STATUSES_LABELS,
-  LEAGUES_INVITATIONS_STATUSES_LABELS
+  LEAGUES_INVITATIONS_STATUSES_LABELS,
+  USERS_LEAGUES_STATUSES
 } from '@/constants/leagues'
 import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const toast = useToast()
+const confirm = useConfirm()
 const i18n = useI18n()
 
 const STATUSES = {
@@ -135,22 +159,56 @@ const handleAddUsers = () => (isLeagueUserAddDialogVisible.value = true)
 const handleLeagueUserAddHide = () =>
   (isLeagueUserAddDialogVisible.value = false)
 
-const handleLeagueUserAddSubmit = async (selectedUsers) => {
+const handleLeagueUserAddSubmit = async (users) => {
   isSubmitting.value = true
   await services.usersLeagues.inviteUsers({
     leagueId: props.league.id,
-    users: selectedUsers
+    users: users
   })
   isLeagueUserAddDialogVisible.value = false
   isSubmitting.value = false
 
   toast.add({
+    group: 'app',
     severity: 'success',
     summary: i18n.t('common.success'),
     detail: i18n.t('admin.leagues.inviteUsersSuccess'),
     life: 4000
   })
-  selectedUsers = []
+  selectedUsers.value = []
   loadUsersLeagues()
+}
+
+const hasSentInvitation = (status) => status === USERS_LEAGUES_STATUSES.INVITED
+
+const handleApproveUser = (event, user) => {
+  const { id: leagueId } = props.league
+
+  confirm.require({
+    target: event.currentTarget,
+    message: i18n.t('app.leagues.approveUserConfirmation'),
+    icon: 'pi pi-check',
+    accept: async () => {
+      const users = [
+        {
+          id: user.id,
+          status: USERS_LEAGUES_STATUSES.APPROVED
+        }
+      ]
+
+      await services.usersLeagues.approveUsers({ leagueId, users })
+
+      toast.add({
+        group: 'app',
+        severity: 'success',
+        summary: i18n.t('common.success'),
+        detail: i18n.t('app.leagues.approveUsersSuccess'),
+        life: 4000
+      })
+
+      loadUsersLeagues()
+    },
+    reject: () => {}
+  })
 }
 </script>
