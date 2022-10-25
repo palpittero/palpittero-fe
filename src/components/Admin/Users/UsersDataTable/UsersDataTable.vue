@@ -56,16 +56,18 @@
     </Column>
     <Column headerStyle="min-width:10rem;">
       <template #body="{ data }">
-        <Button
-          icon="pi pi-pencil"
-          class="p-button-rounded p-button-success mr-2"
-          @click="handleEditUser(data)"
-        />
-        <Button
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-warning mt-2"
-          @click="handleDeleteUser(data)"
-        />
+        <div v-if="isCommonUser(data)">
+          <Button
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success mr-2"
+            @click="handleEditUser(data)"
+          />
+          <Button
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-warning mt-2"
+            @click="handleDeleteUser(data)"
+          />
+        </div>
       </template> </Column
   ></BaseDataTable>
 </template>
@@ -75,6 +77,7 @@ import { computed } from 'vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+import { USER_ROLES } from '@/constants/users'
 
 const props = defineProps({
   modelValue: {
@@ -97,6 +100,8 @@ const selectedUsers = computed({
     return props.modelValue
   }
 })
+
+const isCommonUser = (user) => Object.values(USER_ROLES).includes(user.role)
 
 const handleEditUser = (user) => emits('edit', user)
 const handleDeleteUser = (user) => emits('delete', user)
