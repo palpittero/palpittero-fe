@@ -1,6 +1,8 @@
 <template>
   <div>
-    <ProgressSpinner v-if="state.loading" class="flex align-items-center" />
+    <slot name="loading" v-if="state.loading" :state="loading">
+      <ProgressSpinner class="flex align-items-center" />
+    </slot>
     <Message v-else-if="state.error" severity="error">
       {{ state.error }}
     </Message>
