@@ -10,6 +10,16 @@
   >
     <BaseDataRenderer :state="leagueUsers">
       <DataTable :value="leagueUsers.data" :loading="leagueUsers.loading">
+        <Column
+          :header="$t('app.leagues.position')"
+          headerStyle="width:10%; min-width:5rem;"
+        >
+          <template #body="{ data }">
+            <span v-if="showMedal">
+              {{ getRankingMedal(data) }}
+            </span></template
+          >
+        </Column>
         <Column field="name" :header="$t('admin.users.name')">
           <template #body="{ data }">
             <div class="flex align-items-center gap-2">
@@ -80,4 +90,16 @@ const header = computed(() =>
 )
 
 const handleSubmit = () => emits('submit')
+
+const showMedal = computed(() =>
+  leagueUsers.data.some(({ points }) => points > 0)
+)
+
+const medals = ['🥇', '🥈', '🥉']
+
+const getRankingMedal = (user) => {
+  const index = leagueUsers.data.findIndex(({ id }) => id === user.id)
+
+  return medals[index] || index + 1
+}
 </script>

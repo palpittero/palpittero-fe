@@ -36,5 +36,6 @@ export default {
   approveUserConfirmation:
     'Deseja realmente aprovar a participação deste usuário?',
   leagueUsers: 'Usuários - {leagueName}',
-  approveUsersSuccess: 'Usuário aprovado com sucesso'
+  approveUsersSuccess: 'Usuário aprovado com sucesso',
+  position: 'Posição'
 }
