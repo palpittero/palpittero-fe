@@ -30,11 +30,21 @@
             >
               <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
               <MatchStatusBadge :status="match.status" />
-              <GuessPointsBadge
-                v-if="isGuessRegistered(match)"
+              as
+              <div
                 class="rounds-matches-list__guess-points-badge"
-                :points="matchesGuesses[match.id].guess.points"
-              />
+                v-if="isGuessRegistered(match)"
+              >
+                <GuessPointsBadge
+                  :points="matchesGuesses[match.id].guess.points"
+                />
+                <Button
+                  @click="goToUserMatchGuessRoute(match)"
+                  v-tooltip.top="$t('app.guesses.seeOtherGuesses')"
+                  class="p-button-link p-button-clear p-button-small"
+                  icon="pi pi-search"
+                />
+              </div>
             </div>
           </div>
           <div class="py-3 px-2 grid align-items-center">
@@ -136,6 +146,7 @@
           />
 
           <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
+          <div class="flex justify-content-end"></div>
         </li>
       </template>
       <div v-else class="text-center">
@@ -308,6 +319,16 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
 }
 
 const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
+
+const goToUserMatchGuessRoute = (match) => {
+  router.push({
+    name: 'UserMatchGuesses',
+    params: {
+      leagueId: matchesGuesses.value[match.id].guess.leagueId,
+      matchId: matchesGuesses.value[match.id].guess.matchId
+    }
+  })
+}
 </script>
 
 <style lang="scss">
@@ -326,6 +347,9 @@ const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
 
   &__guess-points-badge {
     position: absolute;
+    display: flex;
+    gap: 5px;
+    align-items: center;
     right: 60px;
   }
 }

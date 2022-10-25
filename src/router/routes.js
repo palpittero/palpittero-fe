@@ -1,5 +1,6 @@
 import Home from '@/pages/App/Home.vue'
 import Guesses from '@/pages/App/Guesses.vue'
+import UserMatchGuesses from '@/pages/App/UserMatchGuesses.vue'
 import Rules from '@/pages/App/Rules.vue'
 import MyAccount from '@/pages/App/MyAccount/MyAccount.vue'
 import ChangePassword from '@/pages/App/MyAccount/ChangePassword.vue'
@@ -47,6 +48,11 @@ const routes = [
         component: ChangePassword
       }
     ]
+  },
+  {
+    name: 'UserMatchGuesses',
+    path: '/:leagueId/guesses/users/:matchId',
+    component: UserMatchGuesses
   },
   {
     name: 'Guesses',

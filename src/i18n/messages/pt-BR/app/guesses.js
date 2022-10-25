@@ -5,5 +5,6 @@ export default {
   points: '{points} PONTO | {points} PONTOS',
   finalResult: 'Placar final:',
   noMatches: 'Nenhuma partida encontrada para esta rodada',
-  matchHasNoResult: 'Resultado final não registrado'
+  matchHasNoResult: 'Resultado final não registrado',
+  seeOtherGuesses: 'Ver outros palpites'
 }
