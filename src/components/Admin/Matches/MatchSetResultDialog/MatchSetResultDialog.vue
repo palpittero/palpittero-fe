@@ -1,6 +1,7 @@
 <template>
   <BaseDialog
     :visible="visible"
+    :disabled="disabled"
     :header="header"
     @submit="onSubmit"
     @hide="emits('hide')"
@@ -31,7 +32,8 @@ const props = defineProps({
     default: () => ({})
   },
   visible: Boolean,
-  submitted: Boolean
+  submitted: Boolean,
+  disabled: Boolean
 })
 
 const emits = defineEmits(['submit', 'hide'])
