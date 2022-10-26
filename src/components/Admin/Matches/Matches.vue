@@ -142,6 +142,7 @@ const saveMatch = async (match) => {
     life: 4000
   })
 
+  isSubmitting.value = false
   loadMatches()
 }
 
