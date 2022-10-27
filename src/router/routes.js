@@ -19,6 +19,8 @@ import Forbidden from '@/pages/Errors/Forbidden.vue'
 
 import Admin from '@/pages/Admin/Admin.vue'
 import Dashboard from '@/pages/Admin/Dashboard.vue'
+import UnprocessedGuessesLeagues from '@/pages/Admin/Guesses/UnprocessedGuessesLeagues.vue'
+import UnprocessedGuesses from '@/pages/Admin/Guesses/UnprocessedGuesses.vue'
 import Users from '@/pages/Admin/Users.vue'
 import Teams from '@/pages/Admin/Teams.vue'
 import Leagues from '@/pages/Admin/Leagues.vue'
@@ -127,6 +129,18 @@ const routes = [
         name: 'AdminDashboard',
         path: '',
         component: Dashboard,
+        meta: { admin: true }
+      },
+      {
+        name: 'AdminUnprocessedGuessesLeagues',
+        path: 'unprocessed-guesses/leagues',
+        component: UnprocessedGuessesLeagues,
+        meta: { admin: true }
+      },
+      {
+        name: 'AdminUnprocessedGuesses',
+        path: 'unprocessed-guesses/leagues/:leagueId',
+        component: UnprocessedGuesses,
         meta: { admin: true }
       },
       {

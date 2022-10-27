@@ -15,7 +15,7 @@
     :rows-per-page-options="[5, 10, 25]"
     current-page-report-template="Showing {first} to {last} of {totalRecords} items"
   >
-    <template #header>
+    <template #header v-if="showHeader">
       <slot name="header">
         <div
           class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
@@ -38,7 +38,7 @@
 
 <script setup>
 import { FilterMatchMode } from 'primevue/api'
-import { computed, reactive } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -67,7 +67,9 @@ const selectedItems = computed({
   get: () => props.modelValue
 })
 
-const filters = reactive({
+const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 })
+
+const showHeader = computed(() => props.title || props.searchable)
 </script>
