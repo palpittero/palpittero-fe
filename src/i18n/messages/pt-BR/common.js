@@ -62,5 +62,6 @@ export default {
   termsAndConditions: 'Termos e Condições',
   clear: 'Limpar',
   select: 'Selecionar',
-  guess: 'Palpite'
+  guess: 'Palpite',
+  unprocessedGuesses: 'Palpites não processados'
 }

@@ -1,40 +1,35 @@
 <template>
-  <UnprocessedGuessesBanner
-    v-if="hasUnprocessedGuesses"
-    :total="unprocessedGuesses"
-    @refresh="loadData"
-  />
-  <GeneralStats :general-stats="generalStats" />
+  <UnprocessedGuessesFetcher>
+    <template #default="{ data: unprocessedGuesses, fetch }">
+      <UnprocessedGuessesBanner
+        v-if="unprocessedGuesses.length > 0"
+        :guesses="unprocessedGuesses"
+        @refresh="fetch"
+      />
+    </template>
+  </UnprocessedGuessesFetcher>
+
+  <GeneralStats :general-stats="generalStats.data" />
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
-
-import UnprocessedGuessesBanner from './UnprocessedGuessesBanner/UnprocessedGuessesBanner.vue'
-import GeneralStats from './GeneralStats/GeneralStats.vue'
-import services from '@/services'
-
+import { onMounted, ref } from 'vue'
 import dashboard from '@/services/modules/dashboard'
 
-const isLoading = ref(false)
-const generalStats = ref({})
-const unprocessedGuesses = ref(0)
+import UnprocessedGuessesFetcher from '../Guesses/UnprocessedGuessesFetcher/UnprocessedGuessesFetcher.vue'
+import UnprocessedGuessesBanner from '@/components/Admin/Guesses/UnprocessedGuessesBanner/UnprocessedGuessesBanner.vue'
+import GeneralStats from './GeneralStats/GeneralStats.vue'
 
-const loadData = async () => {
-  isLoading.value = true
+const generalStats = ref({
+  loading: false,
+  error: null,
+  data: {}
+})
 
-  const [generalStatsResult, unprocessedGuessesResult] = await Promise.all([
-    await dashboard.fetchGeneralStats(),
-    await services.dashboard.fetchUnprocessedGuesses()
-  ])
+onMounted(async () => {
+  generalStats.value.loading = true
+  generalStats.value.data = await dashboard.fetchGeneralStats()
 
-  generalStats.value = generalStatsResult
-  unprocessedGuesses.value = unprocessedGuessesResult
-
-  isLoading.value = false
-}
-
-onMounted(loadData)
-
-const hasUnprocessedGuesses = computed(() => unprocessedGuesses.value > 0)
+  generalStats.value.loading = true
+})
 </script>

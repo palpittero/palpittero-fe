@@ -5,7 +5,7 @@ export default {
   unprocessedGuesses: {
     title:
       'Existe {total} palpite não processado | Existem {total} palpites não processados',
-    cta: 'Processar palpites'
+    cta: 'Ver Detalhes'
   },
   guessesProcessedSuccess: 'Palpites processados com sucesso',
   processGuesses: {

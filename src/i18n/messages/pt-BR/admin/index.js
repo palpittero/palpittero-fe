@@ -6,6 +6,7 @@ import users from './users'
 import championships from './championships'
 import rounds from './rounds'
 import dashboard from './dashboard'
+import guesses from './guesses'
 
 export default {
   auth,
@@ -15,5 +16,6 @@ export default {
   users,
   championships,
   rounds,
-  dashboard
+  dashboard,
+  guesses
 }

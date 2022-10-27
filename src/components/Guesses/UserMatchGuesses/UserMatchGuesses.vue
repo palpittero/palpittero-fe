@@ -13,36 +13,12 @@
           </h5>
         </div>
         <MatchCard :match="match.data" />
-        <BaseDataTable
-          :items="guesses"
-          :searchable="false"
-          :title="$t('common.guesses')"
-        >
-          <Column field="user" :header="$t('common.player')">
-            <template #body="{ data }">
-              {{ data.user.name }}
-            </template>
-          </Column>
-          <Column
-            field="guess"
-            :header="$t('common.guess')"
-            headerClass="flex justify-content-center"
-          >
-            <template #body="{ data }">
-              <MatchScore :match="parseMatchGuess(data)" />
-            </template>
-          </Column>
-          <Column field="homeTeam" :header="$t('common.points', 2)">
-            <template #body="{ data }">
-              <GuessPointsBadge :points="data.points" />
-            </template>
-          </Column>
-        </BaseDataTable>
+        <UsersGuessesMatchDataTable :match="match.data" :guesses="guesses" />
       </div>
       <!-- <UserMatchGuess v-for="userMatchGuess in userMatchGuesses" /> -->
     </BaseDataRenderer>
 
-    <BaseDataRenderer :state="{}"></BaseDataRenderer>
+    <!-- <BaseDataRenderer :state="{}"></BaseDataRenderer> -->
     <!-- <template>
       <div>
         
@@ -65,10 +41,11 @@ import services from '@/services'
 // import { reduce, flatMap, pipe, map, filter } from 'lodash/fp'
 import { onMounted, ref } from 'vue'
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
-import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
+// import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
 import MatchCard from '@/components/Shared/Matches/MatchCard/MatchCard.vue'
-import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
-import GuessPointsBadge from '@/components/App/Championships/ChampionshipsRoundsMatchesList/RoundsMatchesList/GuessPointsBadge/GuessPointsBadge.vue'
+// import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
+// import GuessPointsBadge from '@/components/App/Championships/ChampionshipsRoundsMatchesList/RoundsMatchesList/GuessPointsBadge/GuessPointsBadge.vue'
+import UsersGuessesMatchDataTable from '@/components/Shared/Guesses/UsersGuessesMatchDataTable/UsersGuessesMatchDataTable.vue'
 // import { useToast } from 'primevue/usetoast'
 // import { useI18n } from 'vue-i18n'
 
@@ -159,11 +136,11 @@ onMounted(async () => {
   // )
 })
 
-const parseMatchGuess = (guess) => ({
-  ...match.value.data,
-  regularTimeHomeTeamGoals: guess.homeTeamRegularTimeGoals,
-  regularTimeAwayTeamGoals: guess.awayTeamRegularTimeGoals
-})
+// const parseMatchGuess = (guess) => ({
+//   ...match.value.data,
+//   regularTimeHomeTeamGoals: guess.homeTeamRegularTimeGoals,
+//   regularTimeAwayTeamGoals: guess.awayTeamRegularTimeGoals
+// })
 
 // const handleRegisterGuesses = async () => {
 //   const validGuesses = guesses.value.filter(

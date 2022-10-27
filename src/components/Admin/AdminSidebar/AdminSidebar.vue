@@ -26,32 +26,44 @@ const menu = reactive([
       {
         label: i18n.t('common.dashboard'),
         icon: 'pi pi-fw pi-chart-bar',
-        to: { name: 'AdminDashboard' }
+        to: { name: 'AdminDashboard' },
+        exact: true
+      },
+      {
+        label: i18n.t('common.unprocessedGuesses'),
+        icon: 'pi pi-fw pi-chart-bar',
+        to: { name: 'AdminUnprocessedGuessesLeagues' },
+        exact: false
       },
       {
         label: i18n.t('common.users'),
         icon: 'pi pi-fw pi-users',
-        to: { name: 'AdminUsers' }
+        to: { name: 'AdminUsers' },
+        exact: true
       },
       {
         label: i18n.t('common.leagues'),
         icon: 'pi pi-fw pi-flag',
-        to: { name: 'AdminLeagues' }
+        to: { name: 'AdminLeagues' },
+        exact: true
       },
       {
         label: i18n.t('common.teams'),
         icon: 'pi pi-fw pi-shield',
-        to: { name: 'AdminTeams' }
+        to: { name: 'AdminTeams' },
+        exact: true
       },
       {
         label: i18n.t('common.championships'),
         icon: 'pi pi-fw pi-ticket',
-        to: { name: 'AdminChampionships' }
+        to: { name: 'AdminChampionships' },
+        exact: true
       },
       {
         label: i18n.t('common.matches'),
         icon: 'pi pi-fw pi-ticket',
-        to: { name: 'AdminMatches' }
+        to: { name: 'AdminMatches' },
+        exact: true
       }
     ]
   }

@@ -42,64 +42,65 @@
             />
           </div>
           <div class="flex flex-column md:flex-row">
-            <Button
-              v-if="!isParticipant(league)"
-              :label="$t('app.leagues.join')"
-              icon="pi pi-sign-in"
-              class="p-button-text"
-              @click="emits('join', league)"
-            />
-            <Button
-              v-if="isParticipant(league)"
-              :label="$t('app.leagues.ranking')"
-              icon="pi pi-list"
-              class="p-button-text"
-              @click="emits('ranking', league)"
-            />
+            <slot name="actions" :league="league">
+              <Button
+                v-if="!isParticipant(league)"
+                :label="$t('app.leagues.join')"
+                icon="pi pi-sign-in"
+                class="p-button-text"
+                @click="emits('join', league)"
+              />
+              <Button
+                v-if="isParticipant(league)"
+                :label="$t('app.leagues.ranking')"
+                icon="pi pi-list"
+                class="p-button-text"
+                @click="emits('ranking', league)"
+              />
 
-            <Button
-              v-if="isOwner(league)"
-              :label="$t('app.leagues.participants')"
-              icon="pi pi-users"
-              class="p-button-text"
-              @click="emits('manage', league)"
-            />
+              <Button
+                v-if="isOwner(league)"
+                :label="$t('app.leagues.participants')"
+                icon="pi pi-users"
+                class="p-button-text"
+                @click="emits('manage', league)"
+              />
 
-            <Button
-              v-if="isParticipant(league)"
-              :label="$t('app.leagues.guesses')"
-              icon="pi pi-user-edit"
-              class="p-button-text"
-              @click="emits('guesses', league)"
-            />
+              <Button
+                v-if="isParticipant(league)"
+                :label="$t('app.leagues.guesses')"
+                icon="pi pi-user-edit"
+                class="p-button-text"
+                @click="emits('guesses', league)"
+              />
 
-            <Button
-              v-if="canLeave(league)"
-              :label="$t('app.leagues.leave')"
-              icon="pi pi-sign-out"
-              class="p-button-text p-button-danger"
-              @click="emits('leave', league)"
-            />
+              <Button
+                v-if="canLeave(league)"
+                :label="$t('app.leagues.leave')"
+                icon="pi pi-sign-out"
+                class="p-button-text p-button-danger"
+                @click="emits('leave', league)"
+              />
 
-            <Button
-              v-if="isOwner(league)"
-              icon="pi pi-cog"
-              class="p-button-text"
-              @click="emits('edit', league)"
-              v-tooltip.top="$t('app.leagues.edit')"
-            />
+              <Button
+                v-if="isOwner(league)"
+                icon="pi pi-cog"
+                class="p-button-text"
+                @click="emits('edit', league)"
+                v-tooltip.top="$t('app.leagues.edit')"
+              />
 
-            <Button
-              v-if="isOwner(league)"
-              icon="pi pi-trash"
-              class="p-button-text p-button-danger"
-              @click="emits('remove', league)"
-              v-tooltip.top="$t('app.leagues.remove')"
-            />
+              <Button
+                v-if="isOwner(league)"
+                icon="pi pi-trash"
+                class="p-button-text p-button-danger"
+                @click="emits('remove', league)"
+                v-tooltip.top="$t('app.leagues.remove')"
+              />
+            </slot>
           </div>
         </li>
       </ul>
-
       <div v-else class="text-500 mb-5">
         {{ innerDescription }}
       </div>
@@ -146,14 +147,14 @@ const emits = defineEmits([
 ])
 
 const isParticipant = (league) =>
-  league.users.find(
+  league?.users?.find(
     ({ id, status }) =>
       id === authStore.loggedUser?.id &&
       status === USERS_LEAGUES_STATUSES.APPROVED
   )
 
 const isGuest = (league) =>
-  league.users.find(
+  league?.users?.find(
     ({ owner, id, status }) =>
       id === authStore.loggedUser?.id &&
       !owner &&
@@ -161,7 +162,9 @@ const isGuest = (league) =>
   )
 
 const isOwner = (league) =>
-  league.users.find(({ owner, id }) => id === authStore.loggedUser?.id && owner)
+  league?.users?.find(
+    ({ owner, id }) => id === authStore.loggedUser?.id && owner
+  )
 
 const innerDescription = computed(() =>
   props.leagues.length > 0 ? props.description : props.emptyState
