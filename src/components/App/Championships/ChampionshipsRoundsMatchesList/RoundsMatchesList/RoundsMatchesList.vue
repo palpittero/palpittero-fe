@@ -33,7 +33,7 @@
               as
               <div
                 class="rounds-matches-list__guess-points-badge"
-                v-if="isGuessRegistered(match)"
+                v-if="isMatchFinished(match)"
               >
                 <GuessPointsBadge
                   :points="matchesGuesses[match.id].guess.points"
@@ -135,7 +135,7 @@
           </div>
 
           <RoundMatchFinalResult
-            v-if="isGuessRegistered(match)"
+            v-if="isMatchFinished(match)"
             :match-guess="matchesGuesses[match.id]"
             :home-team-class-name="
               getHomeTeamTeamScoreClass(matchesGuesses[match.id])
@@ -278,10 +278,6 @@ watch(
   { immediate: true }
 )
 
-const isGuessRegistered = (match) =>
-  isMatchFinished(match) &&
-  !isNil(matchesGuesses.value[match.id]?.guess?.points)
-
 const handlePreviousRound = () => selectedRoundIndex.value--
 
 const handleNextRound = () => selectedRoundIndex.value++
@@ -321,11 +317,12 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
 const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
 
 const goToUserMatchGuessRoute = (match) => {
+  console.log(matchesGuesses.value[match.id].guess)
   router.push({
     name: 'UserMatchGuesses',
     params: {
-      leagueId: matchesGuesses.value[match.id].guess.leagueId,
-      matchId: matchesGuesses.value[match.id].guess.matchId
+      leagueId: props.leagueId,
+      matchId: match.id
     }
   })
 }

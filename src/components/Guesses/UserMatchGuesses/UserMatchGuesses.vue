@@ -1,20 +1,20 @@
 <template>
   <div>
     <BaseDataRenderer :state="{ ...match, loading }">
-      <div v-if="match.data">
-        <div class="mb-3">
-          <h1 class="mb-0">
-            {{ league.data.name }} - Partida #{{ match.data.id }}
-          </h1>
-          <h5 class="mt-2">
-            {{ match.data.round.championship.name }}
-            {{ match.data.round.championship.year }}
-            // {{ match.data.round.name }}
-          </h5>
-        </div>
-        <MatchCard :match="match.data" />
-        <UsersGuessesMatchDataTable :match="match.data" :guesses="guesses" />
+      <!-- <div v-if="match.data"> -->
+      <div class="mb-3">
+        <h1 class="mb-0">
+          {{ league.data.name }} - Partida #{{ match.data.id }}
+        </h1>
+        <h5 class="mt-2">
+          {{ match.data.round.championship.name }}
+          {{ match.data.round.championship.year }}
+          // {{ match.data.round.name }}
+        </h5>
       </div>
+      <MatchCard :match="match.data" />
+      <UsersGuessesMatchDataTable :match="match.data" :guesses="guesses" />
+      <!-- </div> -->
       <!-- <UserMatchGuess v-for="userMatchGuess in userMatchGuesses" /> -->
     </BaseDataRenderer>
 
@@ -91,7 +91,7 @@ const guesses = ref({
   data: []
 })
 
-const loading = ref(false)
+const loading = ref(true)
 
 // const matchesGuesses = ref(null)
 
