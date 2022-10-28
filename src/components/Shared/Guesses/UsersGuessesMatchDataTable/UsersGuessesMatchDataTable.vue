@@ -1,7 +1,7 @@
 <template>
   <BaseDataTable
-    v-if="hasGuesses"
-    :items="guesses"
+    v-if="hasFilteredGuesses"
+    :items="{ data: filteredGuesses }"
     :searchable="false"
     :title="$t('common.guesses')"
   >
@@ -21,7 +21,7 @@
     </Column>
     <Column field="homeTeam" :header="$t('common.points', 2)">
       <template #body="{ data }">
-        <GuessPointsBadge :points="data.points" />
+        <GuessPointsBadge :guess="data" />
       </template>
     </Column>
   </BaseDataTable>
@@ -35,10 +35,13 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
 import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
 import GuessPointsBadge from '@/components/App/Championships/ChampionshipsRoundsMatchesList/RoundsMatchesList/GuessPointsBadge/GuessPointsBadge.vue'
+
+const authStore = useAuthStore()
 
 const props = defineProps({
   match: {
@@ -46,13 +49,12 @@ const props = defineProps({
     required: true
   },
   guesses: {
-    type: Object,
-    required: true
+    type: Array,
+    default: () => []
   }
 })
 
 const parseMatchGuess = (guess) => {
-  console.log(props.match)
   return {
     ...props.match,
     regularTimeHomeTeamGoals: guess.homeTeamRegularTimeGoals,
@@ -60,5 +62,8 @@ const parseMatchGuess = (guess) => {
   }
 }
 
-const hasGuesses = computed(() => props.guesses.length > 0)
+const filteredGuesses = computed(() =>
+  props.guesses.filter(({ userId }) => userId !== authStore.loggedUser?.id)
+)
+const hasFilteredGuesses = computed(() => props.guesses.length > 0)
 </script>

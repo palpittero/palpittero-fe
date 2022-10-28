@@ -30,17 +30,14 @@
             >
               <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
               <MatchStatusBadge :status="match.status" />
-              as
               <div
                 class="rounds-matches-list__guess-points-badge"
                 v-if="isMatchFinished(match)"
               >
-                <GuessPointsBadge
-                  :points="matchesGuesses[match.id].guess.points"
-                />
+                <GuessPointsBadge :guess="matchesGuesses[match.id]" />
                 <Button
                   @click="goToUserMatchGuessRoute(match)"
-                  v-tooltip.top="$t('app.guesses.seeOtherGuesses')"
+                  v-tooltip.top="$t('app.guesses.viewOtherGuesses')"
                   class="p-button-link p-button-clear p-button-small"
                   icon="pi pi-search"
                 />
@@ -63,7 +60,7 @@
                 <InputNumber
                   v-if="isMatchScheduled(match)"
                   :model-value="
-                    matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
+                    matchesGuesses[match.id].homeTeamRegularTimeGoals
                   "
                   :step="1"
                   :min="0"
@@ -82,7 +79,7 @@
                   <span>
                     {{
                       parseMatchGoals(
-                        matchesGuesses[match.id].guess.homeTeamRegularTimeGoals
+                        matchesGuesses[match.id].homeTeamRegularTimeGoals
                       )
                     }}
                   </span>
@@ -99,7 +96,7 @@
                   :step="1"
                   class="col-6"
                   :model-value="
-                    matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
+                    matchesGuesses[match.id].awayTeamRegularTimeGoals
                   "
                   :class="{ 'p-invalid': submitted && errors.year }"
                   @input="
@@ -115,7 +112,7 @@
                   <span>
                     {{
                       parseMatchGoals(
-                        matchesGuesses[match.id].guess.awayTeamRegularTimeGoals
+                        matchesGuesses[match.id].awayTeamRegularTimeGoals
                       )
                     }}
                   </span>
@@ -136,7 +133,7 @@
 
           <RoundMatchFinalResult
             v-if="isMatchFinished(match)"
-            :match-guess="matchesGuesses[match.id]"
+            :guess="matchesGuesses[match.id]"
             :home-team-class-name="
               getHomeTeamTeamScoreClass(matchesGuesses[match.id])
             "
@@ -237,8 +234,8 @@ const matchesGuesses = computed(() =>
       return {
         ...result,
         [match.id]: {
-          ...match,
-          guess
+          ...guess,
+          match
         }
       }
     },
@@ -317,7 +314,7 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
 const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
 
 const goToUserMatchGuessRoute = (match) => {
-  console.log(matchesGuesses.value[match.id].guess)
+  console.log(matchesGuesses.value[match.id])
   router.push({
     name: 'UserMatchGuesses',
     params: {

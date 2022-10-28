@@ -7,13 +7,13 @@
             {{ $t('app.guesses.finalResult') }}
           </span>
           <span :class="homeTeamClassName" class="flex gap-2">
-            <span>{{ matchGuess.homeTeam.name }}</span>
-            {{ matchGuess.regularTimeHomeTeamGoals }}
+            <span>{{ guess.match.homeTeam.name }}</span>
+            {{ guess.match.regularTimeHomeTeamGoals }}
           </span>
-          <span class="pi pi-times font-small" />
+          <span class="pi pi-times" />
           <span :class="awayTeamClassName" class="flex gap-2">
-            <span>{{ matchGuess.regularTimeAwayTeamGoals }}</span>
-            {{ matchGuess.awayTeam.name }}
+            <span>{{ guess.match.regularTimeAwayTeamGoals }}</span>
+            {{ guess.match.awayTeam.name }}
           </span>
         </div>
       </div>
@@ -22,8 +22,9 @@
 </template>
 
 <script setup>
-defineProps({
-  matchGuess: {
+import { onMounted } from 'vue'
+const props = defineProps({
+  guess: {
     type: Object,
     required: true
   },
@@ -35,6 +36,10 @@ defineProps({
     type: String,
     default: ''
   }
+})
+
+onMounted(() => {
+  console.log('guess', props.guess)
 })
 </script>
 

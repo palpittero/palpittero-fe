@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full md:w-10 mx-auto">
+  <form class="w-full md:w-10 mx-auto" novalidate @submit.prevent>
     <label for="name" class="block text-900 text-xl font-medium mb-2">{{
       $t('admin.auth.name')
     }}</label>
@@ -93,6 +93,7 @@
       class="w-full p-3 text-xl"
       icon="pi pi-user-edit"
       @click="handleSubmit"
+      type="submit"
       :loading="loading"
     />
     <div class="flex align-items-center justify-content-center my-3">
@@ -110,7 +111,7 @@
       :visible="isTermsDialogVisible"
       @hide="handleTermsDialogHide"
     />
-  </div>
+  </form>
 </template>
 
 <script setup>
