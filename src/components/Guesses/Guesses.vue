@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="flex justify-content-between align-items-center mb-3">
+    <div
+      class="flex justify-content-between align-items-center mb-3 guesses__top-bar"
+    >
       <h1 class="mb-0">
         {{ league.data.name }}
       </h1>
@@ -72,6 +74,19 @@ const guesses = computed(() =>
 
 const hasNoGuess = computed(() => guesses.value.length === 0)
 
+const attachScrollEvent = () => {
+  window.onscroll = () => {
+    const DISTANCE_FROM_TOP = 70
+    const topBar = document.querySelector('.guesses__top-bar')
+
+    const action =
+      topBar.getBoundingClientRect().top === DISTANCE_FROM_TOP
+        ? 'add'
+        : 'remove'
+    topBar.classList[action]('guesses__top-bar--is-pinned')
+  }
+}
+
 onMounted(async () => {
   league.data = await services.leagues.fetchLeagueById(props.leagueId)
   championships.data = await services.leagues.fetchChampionships(props.leagueId)
@@ -82,6 +97,8 @@ onMounted(async () => {
     }),
     {}
   )
+
+  attachScrollEvent()
 })
 
 const handleRegisterGuesses = async () => {
@@ -99,3 +116,18 @@ const handleRegisterGuesses = async () => {
   })
 }
 </script>
+
+<style lang="scss">
+.guesses {
+  &__top-bar {
+    background-color: #fafafa;
+    position: sticky;
+    top: 70px;
+    z-index: 1;
+
+    &--is-pinned {
+      padding: 20px 0;
+    }
+  }
+}
+</style>
