@@ -1,13 +1,11 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '550px' }"
     :header="$t('common.confirm')"
     modal
     @hide="handleHide"
   >
     <div class="flex align-items-center">
-      <!-- <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" /> -->
       <span v-html="message" />
     </div>
     <template #footer>

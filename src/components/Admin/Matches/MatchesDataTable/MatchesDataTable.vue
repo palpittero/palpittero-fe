@@ -8,22 +8,26 @@
     searchable
   >
     <Column selectionMode="multiple" />
-    <Column field="homeTeam" :header="$t('admin.matches.homeTeam')" sortable>
+    <Column field="homeTeam" :header="$t('common.score')" sortable>
       <template #body="{ data }">
-        <div class="flex align-items-center gap-2">
+        <MatchScore :match="data" />
+        <!-- <div v-if="isFinished(data)"> -->
+        <!-- <MatchScore v-else :match="data" /> -->
+        <!-- </div> -->
+        <!-- <div class="flex align-items-center gap-2">
           <BadgeAvatar :image="data.homeTeam.badge" />
           {{ data.homeTeam.name }}
-        </div>
+        </div> -->
       </template>
     </Column>
-    <Column field="awayTeam" :header="$t('admin.matches.awayTeam')" sortable>
+    <!-- <Column field="awayTeam" :header="$t('admin.matches.awayTeam')" sortable>
       <template #body="{ data }">
         <div class="flex align-items-center gap-2">
           <BadgeAvatar :image="data.awayTeam.badge" />
           {{ data.awayTeam.name }}
         </div>
       </template>
-    </Column>
+    </Column> -->
 
     <Column
       field="championship"
@@ -32,14 +36,16 @@
     >
       <template #body="{ data }">
         <div>
-          <span class="text-right">
-            {{ data.round.championship.name }}
-            {{ data.round.championship.year }}
-          </span>
+          <div>
+            <span class="text-right">
+              {{ data.round.championship.name }}
+              {{ data.round.championship.year }}
+            </span>
+          </div>
+          <small>
+            {{ data.round.name }}
+          </small>
         </div>
-        <small>
-          {{ data.round.name }}
-        </small>
       </template>
     </Column>
 
@@ -60,10 +66,13 @@
     </Column>
     <Column field="status" :header="$t('common.status')" sortable>
       <template #body="{ data }">
-        <BaseStatus :status="data.status" :options="MATCH_STATUSES_LABELS" />
+        <div class="flex flex-column gap-2">
+          <BaseStatus :status="data.status" :options="MATCH_STATUSES_LABELS" />
+          <MatchNoResult v-if="matchHasNoResult(data)" />
+        </div>
       </template>
     </Column>
-    <Column :header="$t('admin.matches.score')" sortable>
+    <!-- <Column :header="$t('admin.matches.score')" sortable>
       <template #body="{ data }">
         <div v-if="isFinished(data)">
           <MatchNoResult v-if="matchHasNoResult(data)" />
@@ -71,26 +80,30 @@
         </div>
         <span v-else>-</span>
       </template>
-    </Column>
+    </Column> -->
     <Column>
       <template #body="{ data }">
-        <div class="justify-content-center">
+        <div>
           <Button
             icon="pi pi-pencil"
             v-if="isScheduled(data)"
-            class="p-button-rounded p-button-success mr-2"
+            class="p-button p-button-info p-button-sm mr-2"
+            :label="$t('common.edit')"
             @click="handleEditMatch(data)"
           />
+
           <Button
             v-if="isFinished(data)"
             icon="pi pi-check-square"
-            class="p-button-rounded p-button-info mr-2"
+            class="p-button p-button-primary p-button-sm"
+            :label="$t('admin.matches.updateResult')"
             @click="handleSetMatchResult(data)"
           />
           <Button
-            v-if="!isFinished(data)"
+            v-else
             icon="pi pi-trash"
-            class="p-button-rounded p-button-warning"
+            class="p-button p-button-danger p-button-sm"
+            :label="$t('common.remove')"
             @click="handleDeleteMatch(data)"
           />
         </div>
@@ -105,11 +118,11 @@ import { matchHasNoResult } from '@/helpers/matches'
 
 import BaseStatus from '@/components/Shared/BaseStatus/BaseStatus.vue'
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
-import MatchScore from '@/components/Admin/Matches/MatchScore/MatchScore.vue'
+import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
 import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
 
 import { MATCH_STATUSES, MATCH_STATUSES_LABELS } from '@/constants/matches'
-import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+// import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   modelValue: {
@@ -155,5 +168,7 @@ const handleSetMatchResult = (match) => emits('set-result', match)
       height: auto;
     }
   }
+
+  // @media screen and (max-width: 960px) {}
 }
 </style>

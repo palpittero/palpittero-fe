@@ -5,7 +5,7 @@
     :header="header"
     @submit="onSubmit"
     @hide="emits('hide')"
-    :style="{ width: 'auto' }"
+    type="dynamic"
   >
     <MatchSetResultForm
       :model-value="match"

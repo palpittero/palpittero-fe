@@ -2,7 +2,6 @@
   <BaseDialog
     :visible="visible"
     :disabled="disabled"
-    :style="{ width: '600px' }"
     :header="$t('common.confirm')"
     modal
     @hide="handleHide"

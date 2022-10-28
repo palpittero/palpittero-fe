@@ -1,11 +1,11 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '55vw' }"
     :header="$t('app.leagues.leagueUsers', { leagueName: league.name })"
     modal
     @submit="handleSubmit"
     @hide="handleHide"
+    type="dynamic"
   >
     <LeagueUsersDialogContent v-model="users" :league="league" />
 

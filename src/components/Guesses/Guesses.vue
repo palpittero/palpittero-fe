@@ -79,6 +79,8 @@ const attachScrollEvent = () => {
     const DISTANCE_FROM_TOP = 70
     const topBar = document.querySelector('.guesses__top-bar')
 
+    console.log(topBar.getBoundingClientRect().top)
+
     const action =
       topBar.getBoundingClientRect().top === DISTANCE_FROM_TOP
         ? 'add'

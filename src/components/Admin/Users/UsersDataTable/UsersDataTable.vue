@@ -18,7 +18,6 @@
           <BadgeAvatar :image="data.avatar" />
           {{ data.name }}
         </div>
-        <!-- <span class="p-column-title">{{ $t('admin.users.name') }}</span> -->
       </template>
     </Column>
     <Column
@@ -28,7 +27,6 @@
       headerStyle="width:14%; min-width:10rem;"
     >
       <template #body="{ data }">
-        <!-- <span class="p-column-title">{{ $t('admin.users.email') }}</span> -->
         {{ data.email }}
       </template>
     </Column>
@@ -39,7 +37,6 @@
       headerStyle="width:14%; min-width:10rem;"
     >
       <template #body="{ data }">
-        <!-- <span class="p-column-title">{{ $t('admin.users.role') }}</span> -->
         {{ data.role }}
       </template>
     </Column>
@@ -56,15 +53,17 @@
     </Column>
     <Column headerStyle="min-width:10rem;">
       <template #body="{ data }">
-        <div v-if="isCommonUser(data)">
+        <div class="flex gap-2" v-if="isCommonUser(data)">
           <Button
             icon="pi pi-pencil"
-            class="p-button-rounded p-button-success mr-2"
+            class="p-button p-button-info p-button-sm mr-2"
+            :label="$t('common.edit')"
             @click="handleEditUser(data)"
           />
           <Button
             icon="pi pi-trash"
-            class="p-button-rounded p-button-warning mt-2"
+            class="p-button p-button-danger p-button-sm"
+            :label="$t('common.remove')"
             @click="handleDeleteUser(data)"
           />
         </div>

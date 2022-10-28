@@ -23,32 +23,68 @@ const rules = [
     examples: [
       {
         guess: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
         },
         result: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 3
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 3
         },
         result: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 3
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 3
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 0
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 0
         },
         result: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 0
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 0
         }
       }
     ]
@@ -60,32 +96,68 @@ const rules = [
     examples: [
       {
         guess: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
         },
         result: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 0
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 0
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 4
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 4
         },
         result: {
-          homeTeamRegularTimeGoals: 1,
-          awayTeamRegularTimeGoals: 4
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 4
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 1,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 1
         },
         result: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 2
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 2
         }
       }
     ]
@@ -97,22 +169,46 @@ const rules = [
     examples: [
       {
         guess: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
         },
         result: {
-          homeTeamRegularTimeGoals: 3,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 3,
+          regularTimeAwayTeamGoals: 1
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 4
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 4
         },
         result: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 1
         }
       }
     ]
@@ -124,22 +220,46 @@ const rules = [
     examples: [
       {
         guess: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
         },
         result: {
-          homeTeamRegularTimeGoals: 4,
-          awayTeamRegularTimeGoals: 0
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 4,
+          regularTimeAwayTeamGoals: 0
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 2
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 2
         },
         result: {
-          homeTeamRegularTimeGoals: 1,
-          awayTeamRegularTimeGoals: 3
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 3
         }
       }
     ]
@@ -150,42 +270,90 @@ const rules = [
     examples: [
       {
         guess: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
         },
         result: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 3
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 3
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 2
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 2
         },
         result: {
-          homeTeamRegularTimeGoals: 5,
-          awayTeamRegularTimeGoals: 3
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 3
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 0,
-          awayTeamRegularTimeGoals: 0
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 0
         },
         result: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
         }
       },
       {
         guess: {
-          homeTeamRegularTimeGoals: 2,
-          awayTeamRegularTimeGoals: 0
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 0
         },
         result: {
-          homeTeamRegularTimeGoals: 1,
-          awayTeamRegularTimeGoals: 1
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 1
         }
       }
     ]

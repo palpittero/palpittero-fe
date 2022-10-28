@@ -29,6 +29,7 @@ export default {
     finished: 'Concluída',
     inProgress: 'Em Andamento'
   },
-  setResult: 'Registrar Resultado - {championship} ({name})',
+  setResult: 'Atualizar Resultado - {championship} ({name})',
+  updateResult: 'Atualizar Resultado',
   newMatch: 'Nova Partida'
 }

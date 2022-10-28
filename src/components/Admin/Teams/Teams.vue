@@ -5,11 +5,11 @@
         <Toast />
         <Toolbar class="mb-4">
           <template v-slot:start>
-            <div class="my-2">
+            <div class="flex gap-2 flex-column md:flex-row">
               <Button
                 :label="$t('admin.teams.newTeam')"
                 icon="pi pi-plus"
-                class="p-button-success mr-2"
+                class="p-button-success"
                 @click="handleNewTeam"
               />
               <Button

@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '50vw' }"
+    type="dynamic"
     :header="$t('common.menu.rules')"
     modal
     @hide="emits('hide')"

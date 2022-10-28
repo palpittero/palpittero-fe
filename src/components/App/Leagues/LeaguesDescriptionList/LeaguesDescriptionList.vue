@@ -30,9 +30,11 @@
         <li
           v-for="league in leagues"
           :key="league.id"
-          class="flex align-items-center justify-content-between w-full py-3 px-2 border-top-1 surface-border flex-wrap"
+          class="flex flex-row align-items-start md:align-items-center justify-content-between w-full py-3 px-2 border-top-1 surface-border flex-wrap"
         >
-          <div class="text-500 font-medium flex align-items-center gap-3">
+          <div
+            class="text-500 font-medium flex align-items-center md:align-items-center justify-content-start gap-3 py-2 px-3"
+          >
             <BadgeAvatar :image="league.badge" />
             {{ league.name }}
             <span
@@ -41,8 +43,19 @@
               v-tooltip.top="$t('app.leagues.owner')"
             />
           </div>
-          <div class="flex flex-column md:flex-row">
-            <slot name="actions" :league="league">
+          <slot name="actions" :league="league">
+            <span class="flex md:hidden">
+              <Button
+                icon="pi pi-cog"
+                class="p-button-text"
+                @click="(event) => toggleMenu(event, league)"
+                aria-haspopup="true"
+                aria-controls="overlay_menu"
+              />
+            </span>
+            <div
+              class="md:flex flex-column align-items-start md:flex-row flex-wrap hidden"
+            >
               <Button
                 v-if="!isParticipant(league)"
                 :label="$t('app.leagues.join')"
@@ -84,21 +97,21 @@
 
               <Button
                 v-if="isOwner(league)"
-                icon="pi pi-cog"
+                icon="pi pi-pencil"
                 class="p-button-text"
+                :label="$t('common.edit')"
                 @click="emits('edit', league)"
-                v-tooltip.top="$t('app.leagues.edit')"
               />
 
               <Button
                 v-if="isOwner(league)"
                 icon="pi pi-trash"
+                :label="$t('common.remove')"
                 class="p-button-text p-button-danger"
                 @click="emits('remove', league)"
-                v-tooltip.top="$t('app.leagues.remove')"
               />
-            </slot>
-          </div>
+            </div>
+          </slot>
         </li>
       </ul>
       <div v-else class="text-500 mb-5">
@@ -106,16 +119,20 @@
       </div>
     </div>
   </div>
+  <Menu ref="menu" :model="menuItems" popup />
 </template>
 
 <script setup>
-import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useI18n } from 'vue-i18n'
 
-import { computed } from 'vue'
 import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
+import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
+
 const authStore = useAuthStore()
+const i18n = useI18n()
 
 const props = defineProps({
   title: {
@@ -146,6 +163,8 @@ const emits = defineEmits([
   'remove'
 ])
 
+const currentLeague = ref()
+
 const isParticipant = (league) =>
   league?.users?.find(
     ({ id, status }) =>
@@ -171,14 +190,57 @@ const innerDescription = computed(() =>
 )
 
 const canLeave = (league) => isParticipant(league) && isGuest(league)
-</script>
+const menu = ref()
 
-<style lang="scss">
-.leagues-description-list {
-  .p-button-label {
-    @media screen and (max-width: 767px) {
-      display: none;
-    }
-  }
+const toggleMenu = async (event, league) => {
+  currentLeague.value = league
+  menu.value.toggle(event)
 }
-</style>
+
+const menuItems = computed(() => [
+  {
+    label: i18n.t('app.leagues.join'),
+    icon: 'pi pi-sign-in',
+    visible: () => !isParticipant(currentLeague.value),
+    command: () => emits('join', currentLeague.value)
+  },
+  {
+    label: i18n.t('app.leagues.ranking'),
+    icon: 'pi pi-list',
+    visible: () => isParticipant(currentLeague.value),
+    command: () => emits('ranking', currentLeague.value)
+  },
+  {
+    label: i18n.t('app.leagues.participants'),
+    icon: 'pi pi-users',
+    visible: () => isOwner(currentLeague.value),
+    command: () => emits('manage', currentLeague.value)
+  },
+  {
+    label: i18n.t('app.leagues.guesses'),
+    icon: 'pi pi-user-edit',
+    visible: () => isParticipant(currentLeague.value),
+    command: () => emits('guesses', currentLeague.value)
+  },
+  {
+    label: i18n.t('app.leagues.leave'),
+    icon: 'pi pi-sign-out',
+    visible: () => canLeave(currentLeague.value),
+    command: () => emits('leave', currentLeague.value),
+    class: 'p-button-danger'
+  },
+  {
+    label: i18n.t('common.edit'),
+    icon: 'pi pi-pencil',
+    visible: () => isOwner(currentLeague.value),
+    command: () => emits('edit', currentLeague.value)
+  },
+  {
+    label: i18n.t('common.remove'),
+    icon: 'pi pi-trash',
+    visible: () => isOwner(currentLeague.value),
+    command: () => emits('remove', currentLeague.value),
+    class: 'p-button-danger'
+  }
+])
+</script>
