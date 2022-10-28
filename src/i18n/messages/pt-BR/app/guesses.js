@@ -6,5 +6,7 @@ export default {
   finalResult: 'Placar final:',
   noMatches: 'Nenhuma partida encontrada para esta rodada',
   matchHasNoResult: 'Resultado final não registrado',
-  seeOtherGuesses: 'Ver outros palpites'
+  seeOtherGuesses: 'Ver outros palpites',
+  notRegistered: 'Palpite não registrado',
+  noGuesses: 'Ninguém registrou palpites para esta partida'
 }

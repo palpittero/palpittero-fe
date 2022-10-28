@@ -1,5 +1,6 @@
 <template>
   <BaseDataTable
+    v-if="hasGuesses"
     :items="guesses"
     :searchable="false"
     :title="$t('common.guesses')"
@@ -24,9 +25,17 @@
       </template>
     </Column>
   </BaseDataTable>
+  <div
+    v-else
+    class="text-center p-5 mt-2 font-medium text-2xl text-gray-500 mb-3 text-center"
+  >
+    {{ $t('app.guesses.noGuesses') }}
+  </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
 import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
 import GuessPointsBadge from '@/components/App/Championships/ChampionshipsRoundsMatchesList/RoundsMatchesList/GuessPointsBadge/GuessPointsBadge.vue'
@@ -50,4 +59,6 @@ const parseMatchGuess = (guess) => {
     regularTimeAwayTeamGoals: guess.awayTeamRegularTimeGoals
   }
 }
+
+const hasGuesses = computed(() => props.guesses.length > 0)
 </script>

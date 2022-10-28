@@ -3,6 +3,7 @@
 </template>
 
 <script setup>
+import { isNil } from 'lodash/fp'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 
@@ -17,8 +18,11 @@ const props = defineProps({
   }
 })
 
-const style = computed(() => GUESS_POINTS_BADGE_STYLE[props.points])
-const label = computed(() =>
-  i18n.t('app.guesses.points', { points: props.points }, props.points)
-)
+const style = computed(() => GUESS_POINTS_BADGE_STYLE[props.points || 'none'])
+const label = computed(() => {
+  const { points } = props
+  return isNil(points)
+    ? i18n.t('app.guesses.notRegistered')
+    : i18n.t('app.guesses.points', { points }, points)
+})
 </script>
