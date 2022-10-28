@@ -5,11 +5,11 @@
         <Toast />
         <Toolbar class="mb-4">
           <template v-slot:start>
-            <div class="my-2">
+            <div class="flex gap-2 flex-column md:flex-row">
               <Button
                 :label="$t('admin.matches.newMatch')"
                 icon="pi pi-plus"
-                class="p-button-success mr-2"
+                class="p-button-success"
                 @click="handleNewMatch"
               />
               <Button
@@ -177,7 +177,11 @@ const handleDeleteMatches = () => {
 }
 
 const handleSetResultMatch = (row) => {
-  match.value = { ...row }
+  match.value = {
+    ...row,
+    regularTimeHomeTeamGoals: row.regularTimeHomeTeamGoals || 0,
+    regularTimeAwayTeamGoals: row.regularTimeAwayTeamGoals || 0
+  }
   isMatchSetResultDialogOpen.value = true
 }
 

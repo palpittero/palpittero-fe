@@ -5,14 +5,14 @@
     v-model:selection="selectedItems"
     data-key="id"
     paginator
-    :rows="10"
+    :rows="50"
     v-model:filters="filters"
     :global-filter-fields="globalFilterFields"
     responsiveLayout="stack"
     :loading="items.loading"
     row-hover
     paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-    :rows-per-page-options="[5, 10, 25]"
+    :rows-per-page-options="[5, 10, 25, 50]"
     current-page-report-template="Showing {first} to {last} of {totalRecords} items"
   >
     <template #header v-if="showHeader">

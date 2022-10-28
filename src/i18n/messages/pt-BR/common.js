@@ -19,12 +19,14 @@ export default {
   teams: 'Times',
   leagues: 'Ligas',
   championships: 'Campeonatos',
+  match: 'Partida',
   matches: 'Partidas',
   guesses: 'Palpites',
   search: 'Pesquisar...',
   success: 'Sucesso',
   error: 'Erro',
   warning: 'Atenção',
+  score: 'Placar',
   removeSelected: 'Remover selecionados',
   dataTable: {
     pageReport: 'Exibindo {first} a {last} de {totalRecords} {items}'
@@ -63,5 +65,6 @@ export default {
   clear: 'Limpar',
   select: 'Selecionar',
   guess: 'Palpite',
-  unprocessedGuesses: 'Palpites não processados'
+  unprocessedGuesses: 'Palpites não processados',
+  options: 'Opções'
 }

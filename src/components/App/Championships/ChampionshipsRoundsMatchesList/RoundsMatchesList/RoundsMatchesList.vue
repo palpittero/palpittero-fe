@@ -26,12 +26,12 @@
         >
           <div class="flex flex-column align-items-center">
             <div
-              class="py-3 flex justify-content-center align-items-center gap-2"
+              class="py-3 flex flex-column md:flex-row justify-content-center align-items-center gap-2"
             >
               <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
               <MatchStatusBadge :status="match.status" />
               <div
-                class="rounds-matches-list__guess-points-badge"
+                class="rounds-matches-list__guess-points-badge rounds-matches-list__guess-points-badge--top"
                 v-if="isMatchFinished(match)"
               >
                 <GuessPointsBadge :guess="matchesGuesses[match.id]" />
@@ -143,7 +143,18 @@
           />
 
           <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
-          <div class="flex justify-content-end"></div>
+          <div
+            class="rounds-matches-list__guess-points-badge rounds-matches-list__guess-points-badge--bottom"
+            v-if="isMatchFinished(match)"
+          >
+            <GuessPointsBadge :guess="matchesGuesses[match.id]" />
+            <Button
+              @click="goToUserMatchGuessRoute(match)"
+              v-tooltip.top="$t('app.guesses.viewOtherGuesses')"
+              class="p-button-link p-button-clear p-button-small"
+              icon="pi pi-search"
+            />
+          </div>
         </li>
       </template>
       <div v-else class="text-center">
@@ -340,11 +351,31 @@ const goToUserMatchGuessRoute = (match) => {
   }
 
   &__guess-points-badge {
-    position: absolute;
     display: flex;
     gap: 5px;
     align-items: center;
     right: 60px;
+
+    &--top {
+      position: absolute;
+
+      @media screen and (max-width: 960px) {
+        display: none;
+      }
+    }
+
+    &--bottom {
+      display: none;
+
+      @media screen and (max-width: 960px) {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    // @media screen and (max-width: 960px) {
+    //   display: none;
+    // }
   }
 }
 </style>

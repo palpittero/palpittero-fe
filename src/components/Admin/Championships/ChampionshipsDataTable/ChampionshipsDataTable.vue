@@ -54,16 +54,20 @@
     </Column>
     <Column headerStyle="min-width:10rem;">
       <template #body="{ data }">
-        <Button
-          icon="pi pi-pencil"
-          class="p-button-rounded p-button-success mr-2"
-          @click="handleEditChampionship(data)"
-        />
-        <Button
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-warning mt-2"
-          @click="handleDeleteChampionship(data)"
-        />
+        <div>
+          <Button
+            icon="pi pi-pencil"
+            class="p-button p-button-info p-button-sm mr-2"
+            :label="$t('common.edit')"
+            @click="handleEditChampionship(data)"
+          />
+          <Button
+            icon="pi pi-trash"
+            class="p-button p-button-danger p-button-sm"
+            :label="$t('common.remove')"
+            @click="handleDeleteChampionship(data)"
+          />
+        </div>
       </template> </Column
   ></BaseDataTable>
 </template>

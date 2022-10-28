@@ -5,6 +5,7 @@
     :disabled="submitting"
     @submit="onSubmit"
     @hide="emits('hide')"
+    type="dynamic"
   >
     <ChampionshipForm
       :model-value="props.modelValue"

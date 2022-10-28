@@ -1,11 +1,11 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '750px' }"
     :header="$t('app.leagues.pendingInvitations.header')"
     modal
     @submit="handleSubmit"
     @hide="handleHide"
+    type="dynamic"
   >
     <div class="leagues-description-list">
       <div class="surface-section p-5">

@@ -4,6 +4,7 @@
     :header="$t('common.cropImage')"
     @submit="handleSubmit"
     @hide="emits('hide')"
+    type="dynamic"
   >
     <vue-cropper
       ref="cropper"

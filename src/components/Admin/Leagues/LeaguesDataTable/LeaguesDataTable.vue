@@ -41,18 +41,32 @@
         <BaseStatus :status="data.status" />
       </template>
     </Column>
-    <Column headerStyle="min-width:10rem;">
+    <Column
+      field="status"
+      :header="$t('common.status')"
+      sortable
+      headerStyle="width:14%; min-width:10rem;"
+    >
       <template #body="{ data }">
-        <Button
-          icon="pi pi-pencil"
-          class="p-button-rounded p-button-success mr-2"
-          @click="handleEditLeague(data)"
-        />
-        <Button
-          icon="pi pi-trash"
-          class="p-button-rounded p-button-warning mt-2"
-          @click="handleDeleteLeague(data)"
-        />
+        <BaseStatus :status="data.status" />
+      </template>
+    </Column>
+    <Column>
+      <template #body="{ data }">
+        <div>
+          <Button
+            icon="pi pi-pencil"
+            class="p-button p-button-info p-button-sm mr-2"
+            :label="$t('common.edit')"
+            @click="handleEditLeague(data)"
+          />
+          <Button
+            icon="pi pi-trash"
+            class="p-button p-button-danger p-button-sm"
+            :label="$t('common.remove')"
+            @click="handleDeleteLeague(data)"
+          />
+        </div>
       </template>
     </Column>
   </BaseDataTable>

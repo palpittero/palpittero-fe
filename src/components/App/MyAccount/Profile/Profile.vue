@@ -3,8 +3,8 @@
     <h1>
       {{ $t('common.menu.myAccount.profile') }}
     </h1>
-    <div class="surface-section grid p-5">
-      <div class="col-3 justify-content-center flex">
+    <div class="surface-section flex flex-column md:flex-row md:grid p-5">
+      <div class="col-12 md:col-3 justify-content-center flex">
         <Skeleton
           v-if="user.loading"
           shape="circle"
@@ -21,8 +21,9 @@
           :placeholder="USER_AVATAR_PLACEHOLDER"
         />
       </div>
-      <Divider layout="vertical" class="col-1" />
-      <div class="col-7">
+      <Divider layout="vertical" class="col-1 hidden md:block" />
+      <Divider layout="horizontal" class="col md:hidden" />
+      <div class="col-12 md:col-7">
         <template v-if="user.loading">
           <Skeleton width="30%" height="10%" class="mb-3" />
           <Skeleton width="100%" height="10%" class="mb-3" />

@@ -6,6 +6,7 @@
     modal
     @hide="handleHide"
     @update:visible="handleUpdateVisible"
+    :class="`base-dialog--${type}`"
   >
     <slot />
     <template #footer>
@@ -35,12 +36,26 @@
 defineProps({
   visible: Boolean,
   disabled: Boolean,
-  header: String,
-  okButtonClass: String,
-  cancelButtonClass: String,
+  header: {
+    type: String,
+    default: ''
+  },
+  okButtonClass: {
+    type: String,
+    default: ''
+  },
+  cancelButtonClass: {
+    type: String,
+    default: ''
+  },
   style: {
     type: Object,
-    default: () => ({ width: '60vw' })
+    default: () => ({})
+  },
+  type: {
+    type: String,
+    validator: (value) => ['prompt', 'dynamic'].includes(value),
+    default: 'prompt'
   }
 })
 
@@ -51,3 +66,14 @@ const handleUpdateVisible = (visible) => !visible && emits('hide')
 const handleHide = () => emits('hide')
 const handleSubmit = () => emits('submit')
 </script>
+
+<style lang="scss">
+.base-dialog {
+  &--dynamic {
+    @media screen and (max-width: 960px) {
+      width: 90vw;
+    }
+    width: 50vw;
+  }
+}
+</style>

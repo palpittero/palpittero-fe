@@ -1,16 +1,21 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '55vw' }"
     :header="header"
     cancel-button-class="hidden"
     modal
     @hide="handleSubmit"
+    type="dynamic"
     @submit="handleSubmit"
   >
     <BaseDataRenderer :state="leagueUsers">
-      <DataTable :value="leagueUsers.data" :loading="leagueUsers.loading">
-        <Column
+      <DataTable
+        class="league-ranking-dialog__data-table"
+        :value="leagueUsers.data"
+        :loading="leagueUsers.loading"
+        responsiveLayout="scroll"
+      >
+        <!-- <Column
           :header="$t('app.leagues.position')"
           headerStyle="width:10%; min-width:5rem;"
         >
@@ -19,10 +24,16 @@
               {{ getRankingMedal(data) }}
             </span></template
           >
-        </Column>
-        <Column field="name" :header="$t('admin.users.name')">
+        </Column> -->
+        <Column
+          field="name"
+          :header="`${$t('app.leagues.position')} / ${$t('admin.users.name')}`"
+        >
           <template #body="{ data }">
             <div class="flex align-items-center gap-2">
+              <span v-if="showMedal">
+                {{ getRankingMedal(data) }}
+              </span>
               <BadgeAvatar
                 shape="circle"
                 size="small"
@@ -95,7 +106,7 @@ const showMedal = computed(() =>
   leagueUsers.data.some(({ points }) => points > 0)
 )
 
-const medals = ['🥇', '🥈', '🥉']
+const medals = ['🥇', '🥈']
 
 const getRankingMedal = (user) => {
   const index = leagueUsers.data.findIndex(({ id }) => id === user.id)

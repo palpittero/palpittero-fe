@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mb-3 flex gap-2">
+    <div class="mb-3 flex flex-column md:flex-row gap-2">
       <UsersChips
         v-model="selectedUsers"
         :not-allowed="[ownerId]"

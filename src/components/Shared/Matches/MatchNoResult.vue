@@ -1,6 +1,6 @@
 <template>
-  <div class="flex pb-3" :class="alignClass">
-    <InlineMessage class="flex pb-3">
+  <div class="flex p-0" :class="alignClass">
+    <InlineMessage class="flex p-2">
       <div class="flex flex-column gap-3 align-items-center">
         <div class="flex gap-2 align-items-center">
           <small>

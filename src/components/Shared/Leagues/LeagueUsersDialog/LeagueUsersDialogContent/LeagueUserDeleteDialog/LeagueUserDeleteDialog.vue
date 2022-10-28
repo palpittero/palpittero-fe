@@ -1,7 +1,6 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '550px' }"
     :header="$t('common.confirm')"
     modal
     @hide="handleHide"

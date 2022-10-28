@@ -1,7 +1,6 @@
 <template>
   <BaseDialog
     :visible="visible"
-    :style="{ width: '30vw' }"
     :header="header"
     modal
     @submit="handleSubmit"

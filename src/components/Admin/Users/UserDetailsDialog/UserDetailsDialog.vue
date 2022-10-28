@@ -4,6 +4,7 @@
     :header="$t('admin.users.userDetails')"
     @submit="onSubmit"
     @hide="emits('hide')"
+    type="dynamic"
   >
     <UserForm
       :model-value="props.modelValue"

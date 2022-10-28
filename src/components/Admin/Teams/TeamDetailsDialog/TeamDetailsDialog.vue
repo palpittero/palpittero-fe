@@ -5,6 +5,7 @@
     @submit="onSubmit"
     :disabled="submitting"
     @hide="emits('hide')"
+    type="dynamic"
   >
     <TeamForm
       :model-value="props.modelValue"

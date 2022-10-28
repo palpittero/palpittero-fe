@@ -3,6 +3,7 @@
     :visible="visible"
     :header="$t('admin.matches.matchDetails')"
     @submit="onSubmit"
+    type="dynamic"
     @hide="emits('hide')"
   >
     <MatchForm :model-value="match" :submitted="submitted" :errors="errors" />

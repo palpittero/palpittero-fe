@@ -1,5 +1,5 @@
 <template>
-  <Card class="card mb-5">
+  <Card class="card mb-5 p-0">
     <template #title>
       <div class="flex align-items-center justify-content-between mb-0">
         <h5>
@@ -14,22 +14,22 @@
       <DataTable :value="rule.examples">
         <Column field="guess" header="Seu Palpite">
           <template #body="{ data }">
-            Time da casa <b>{{ data.guess.homeTeamRegularTimeGoals }}</b> x
-            <b>{{ data.guess.awayTeamRegularTimeGoals }}</b> Time Visitante
+            <MatchScore :match="data.guess" />
           </template>
         </Column>
         <Column field="result" header="Resultado Final">
           <template #body="{ data }">
-            Time da casa <b>{{ data.result.homeTeamRegularTimeGoals }}</b> x
-            <b>{{ data.result.awayTeamRegularTimeGoals }}</b> Time Visitante
-          </template></Column
-        >
+            <MatchScore :match="data.result" />
+          </template>
+        </Column>
       </DataTable>
     </template>
   </Card>
 </template>
 
 <script setup>
+import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
+
 defineProps({
   rule: {
     type: Object,
