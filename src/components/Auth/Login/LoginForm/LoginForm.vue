@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full md:w-10 mx-auto">
+  <form class="w-full md:w-10 mx-auto" novalidate @submit.prevent>
     <div class="mb-3">
       <label for="email" class="block text-900 text-xl font-medium mb-2">{{
         $t('admin.auth.email')
@@ -49,6 +49,7 @@
       icon="pi pi-sign-in"
       @click="handleSubmit"
       :loading="loading"
+      type="submit"
     />
     <div class="flex align-items-center justify-content-center my-3">
       {{ $t('admin.auth.stillNotRegistered') }}
@@ -60,7 +61,7 @@
         {{ $t('admin.auth.createAnAccount') }}
       </router-link>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup>

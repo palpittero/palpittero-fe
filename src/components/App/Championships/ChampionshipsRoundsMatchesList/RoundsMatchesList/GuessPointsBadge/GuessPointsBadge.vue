@@ -12,17 +12,28 @@ import { GUESS_POINTS_BADGE_STYLE } from '@/constants/guesses'
 const i18n = useI18n()
 
 const props = defineProps({
-  points: {
-    type: Number,
+  guess: {
+    type: Object,
     required: true
   }
 })
 
-const style = computed(() => GUESS_POINTS_BADGE_STYLE[props.points || 'none'])
+const style = computed(() => {
+  const key = props.guess.id
+    ? props.guess.points || 'processing'
+    : 'notRegistered'
+  return GUESS_POINTS_BADGE_STYLE[key]
+})
+
 const label = computed(() => {
-  const { points } = props
-  return isNil(points)
-    ? i18n.t('app.guesses.notRegistered')
-    : i18n.t('app.guesses.points', { points }, points)
+  const { id, points } = props.guess
+
+  if (id) {
+    return isNil(points)
+      ? i18n.t('app.guesses.processing')
+      : i18n.t('app.guesses.points', { points }, points)
+  }
+
+  return i18n.t('app.guesses.notRegistered')
 })
 </script>
