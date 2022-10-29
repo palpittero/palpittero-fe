@@ -2,23 +2,21 @@
   <UnprocessedGuessesFetcher>
     <BaseDataRenderer :state="{ loading: isLoading }">
       <div
-        class="flex justify-content-between align-items-center mb-3 unprocessed-guesses__top-bar"
+        class="flex flex-wrap justify-content-between align-items-center mb-3 unprocessed-guesses__top-bar"
       >
-        <h1 class="mb-0">
-          {{ $t('common.unprocessedGuesses') }} - {{ league.name }}
-        </h1>
+        <h1 class="mb-0">{{ league.name }}</h1>
 
         <Button v-if="hasGuesses" @click="handleProcessGuesses">
           {{ $t('admin.guesses.processGuesses') }}
         </Button>
       </div>
-      <template v-if="hasGuesses">
+      <div class="flex flex-column gap-3" v-if="hasGuesses">
         <ChampionshipMatchesList
           v-for="championship in championships"
           :key="championship.id"
           :championship="championship"
         />
-      </template>
+      </div>
       <div
         v-else
         class="bg-green-100 text-center p-5 mt-2 font-medium text-2xl text-green-700 mb-3 text-center"
@@ -61,27 +59,11 @@ const props = defineProps({
 })
 
 const league = ref([])
-
 const guesses = ref([])
-
-// const championships = ref([])
 const isLoading = ref(true)
 
 const isSubmitting = ref(false)
 const isConfirmDialogVisible = ref(false)
-
-const attachScrollEvent = () => {
-  window.onscroll = () => {
-    const DISTANCE_FROM_TOP = 70
-    const topBar = document.querySelector('.unprocessed-guesses__top-bar')
-
-    const action =
-      topBar.getBoundingClientRect().top === DISTANCE_FROM_TOP
-        ? 'add'
-        : 'remove'
-    topBar.classList[action]('unprocessed-guesses__top-bar--is-pinned')
-  }
-}
 
 onMounted(async () => {
   isLoading.value = true
@@ -91,7 +73,6 @@ onMounted(async () => {
   await loadGuesses()
 
   isLoading.value = false
-  attachScrollEvent()
 })
 
 const loadGuesses = async () => {
@@ -100,7 +81,7 @@ const loadGuesses = async () => {
   guesses.value = await services.dashboard.fetchUnprocessedGuesses({
     leagueId
   })
-  isLoading.value = true
+  isLoading.value = false
 }
 
 const championships = computed(() => parseGuessesChampionships(guesses.value))
@@ -131,12 +112,22 @@ const hasGuesses = computed(() => guesses.value.length > 0)
 .unprocessed-guesses {
   &__top-bar {
     background-color: #fafafa;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -o-sticky;
+    position: -ms-sticky;
     position: sticky;
     top: 70px;
     z-index: 1;
 
     &--is-pinned {
       padding: 20px 0;
+
+      @media screen and (max-width: 960px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
     }
   }
 }
