@@ -37,8 +37,8 @@
                 <GuessPointsBadge :guess="matchesGuesses[match.id]" />
                 <Button
                   @click="goToUserMatchGuessRoute(match)"
-                  v-tooltip.top="$t('app.guesses.viewOtherGuesses')"
-                  class="p-button-link p-button-clear p-button-small"
+                  :label="$t('app.guesses.viewOtherGuesses')"
+                  class="p-button-link p-button-clear p-button-sm"
                   icon="pi pi-search"
                 />
               </div>
@@ -150,8 +150,8 @@
             <GuessPointsBadge :guess="matchesGuesses[match.id]" />
             <Button
               @click="goToUserMatchGuessRoute(match)"
-              v-tooltip.top="$t('app.guesses.viewOtherGuesses')"
-              class="p-button-link p-button-clear p-button-small"
+              :label="$t('app.guesses.viewOtherGuesses')"
+              class="p-button-link p-button-clear p-button-sm"
               icon="pi pi-search"
             />
           </div>

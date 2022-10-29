@@ -31,8 +31,8 @@
         >
           <template #body="{ data }">
             <div class="flex align-items-center gap-2">
-              <span v-if="showMedal">
-                {{ getRankingMedal(data) }}
+              <span :class="getRankingPositionClass(data)">
+                {{ getRankingPosition(data) }}
               </span>
               <BadgeAvatar
                 shape="circle"
@@ -102,15 +102,38 @@ const header = computed(() =>
 
 const handleSubmit = () => emits('submit')
 
-const showMedal = computed(() =>
-  leagueUsers.data.some(({ points }) => points > 0)
-)
+const medals = ['🥇', '🥈', '🥉']
 
-const medals = ['🥇', '🥈']
-
-const getRankingMedal = (user) => {
+const getRankingPosition = (user) => {
+  const showMedal = leagueUsers.data.some(({ points }) => points > 0)
   const index = leagueUsers.data.findIndex(({ id }) => id === user.id)
 
-  return medals[index] || index + 1
+  return showMedal ? medals[index] || index + 1 : '-'
+}
+
+const getRankingPositionClass = (user) => {
+  const position = getRankingPosition(user)
+
+  return [
+    !medals.includes(position) && 'league-ranking-dialog__position--number'
+  ]
 }
 </script>
+
+<style lang="scss">
+.league-ranking-dialog {
+  &__position {
+    &--number {
+      width: 8px;
+      height: 8px;
+      background: transparent;
+      text-align: center;
+      border-radius: 50%;
+      padding: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+</style>

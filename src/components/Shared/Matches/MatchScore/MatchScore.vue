@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-column gap-3">
+  <div class="match-score flex flex-column gap-3">
     <div class="flex align-items-center justify-content-around gap-2">
       <div class="flex align-items-center gap-2 w-full">
         <BadgeAvatar

@@ -1,14 +1,18 @@
 <template>
   <div>
     <div
-      class="flex justify-content-between align-items-center mb-3 guesses__top-bar"
+      class="flex flex-wrap justify-content-between align-items-center guesses__top-bar guesses__top-bar--is-pinned gap-2"
     >
       <h1 class="mb-0">
         {{ league.data.name }}
       </h1>
-      <!-- {{ guesses }} -->
-      <Button @click="handleRegisterGuesses" :disabled="hasNoGuess">
+      <Button
+        @click="handleRegisterGuesses"
+        :disabled="hasNoGuesses"
+        class="p-button-sm md:p-button-md"
+      >
         {{ $t('app.guesses.register') }}
+        <span id="test"></span>
       </Button>
     </div>
     <div v-for="championship in championships.data" :key="championship.id">
@@ -20,12 +24,11 @@
       />
     </div>
   </div>
-  <!-- <h1>Guesses</h1> -->
 </template>
 
 <script setup>
 import services from '@/services'
-import { reduce, flatMap, pipe, map, filter } from 'lodash/fp'
+import { reduce, flatMap, pipe, map, filter, isNil } from 'lodash/fp'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
@@ -64,30 +67,27 @@ const guesses = computed(() =>
       (result, matchGuess) => [...result, ...flatMap((it) => it, matchGuess)],
       []
     ),
-    map(({ guess }) => ({
+    map((guess) => ({
       ...guess,
       leagueId: props.leagueId
     })),
-    filter(({ match }) => !match || match?.status === MATCH_STATUSES.SCHEDULED)
+    filter(
+      ({ match, leagueId, matchId }) =>
+        leagueId &&
+        matchId &&
+        (!match || match?.status === MATCH_STATUSES.SCHEDULED)
+    )
   )(matchesGuesses.value)
 )
 
-const hasNoGuess = computed(() => guesses.value.length === 0)
-
-const attachScrollEvent = () => {
-  window.onscroll = () => {
-    const DISTANCE_FROM_TOP = 70
-    const topBar = document.querySelector('.guesses__top-bar')
-
-    console.log(topBar.getBoundingClientRect().top)
-
-    const action =
-      topBar.getBoundingClientRect().top === DISTANCE_FROM_TOP
-        ? 'add'
-        : 'remove'
-    topBar.classList[action]('guesses__top-bar--is-pinned')
-  }
-}
+const hasNoGuesses = computed(
+  () =>
+    guesses.value.length === 0 ||
+    guesses.value.some(
+      ({ homeTeamRegularTimeGoals, awayTeamRegularTimeGoals }) =>
+        isNil(homeTeamRegularTimeGoals) || isNil(awayTeamRegularTimeGoals)
+    )
+)
 
 onMounted(async () => {
   league.data = await services.leagues.fetchLeagueById(props.leagueId)
@@ -99,20 +99,16 @@ onMounted(async () => {
     }),
     {}
   )
-
-  attachScrollEvent()
 })
 
 const handleRegisterGuesses = async () => {
-  const validGuesses = guesses.value.filter(
-    ({ leagueId, matchId }) => leagueId && matchId
-  )
-  await services.guesses.registerGuesses(validGuesses)
+  await services.guesses.registerGuesses(guesses.value)
+  const total = guesses.value.length
 
   toast.add({
     severity: 'success',
     summary: i18n.t('common.success'),
-    detail: i18n.t('app.guesses.guessesCreated'),
+    detail: i18n.t('app.guesses.guessesCreated', { total }, total),
     life: 3000,
     group: 'app'
   })
@@ -123,12 +119,22 @@ const handleRegisterGuesses = async () => {
 .guesses {
   &__top-bar {
     background-color: #fafafa;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -o-sticky;
+    position: -ms-sticky;
     position: sticky;
     top: 70px;
     z-index: 1;
 
     &--is-pinned {
       padding: 20px 0;
+
+      @media screen and (max-width: 960px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+      }
     }
   }
 }

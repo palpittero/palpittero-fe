@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-1">
+  <div class="match-score flex gap-1">
     <span :class="{ 'match-score__winner': isHomeTeamWinner }">
       {{ match.homeTeam.name }} {{ match.regularTimeHomeTeamGoals }}
     </span>
