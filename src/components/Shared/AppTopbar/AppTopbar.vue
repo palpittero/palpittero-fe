@@ -111,7 +111,7 @@ const loggedInMenuLabel = computed(() =>
 )
 
 const loggedInAvatar = computed(
-  () => auth.loggedUser.avatar || USER_AVATAR_PLACEHOLDER
+  () => auth.loggedUser?.avatar || USER_AVATAR_PLACEHOLDER
 )
 
 const handleLogoutDialogHide = () => (isLogoutDialogVisible.value = false)

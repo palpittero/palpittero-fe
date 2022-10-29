@@ -17,7 +17,7 @@ import RuleCard from './RuleCard/RuleCard.vue'
 
 const rules = [
   {
-    points: 4,
+    points: 5,
     hint: 'pontuação máxima por palpite',
     description: 'Caso você acerte o placar <b>exato</b>',
     examples: [
@@ -90,7 +90,7 @@ const rules = [
     ]
   },
   {
-    points: 3,
+    points: 4,
     description:
       'Caso você acerte empate com o placar incorreto <b>ou</b> acerte o vencedor e seu respectivo número de gols',
     examples: [
@@ -163,7 +163,7 @@ const rules = [
     ]
   },
   {
-    points: 2,
+    points: 3,
     description:
       'Caso você acerte o vencedor, errando seu número exato de gols <b>e</b> acerte o número de gols do perdedor',
     examples: [
@@ -214,7 +214,7 @@ const rules = [
     ]
   },
   {
-    points: 1,
+    points: 2,
     hint: 'pontuação mínima por palpite',
     description: 'Caso você acerte o vencedor porém erre o placar',
     examples: [
@@ -260,6 +260,80 @@ const rules = [
           },
           regularTimeHomeTeamGoals: 1,
           regularTimeAwayTeamGoals: 3
+        }
+      }
+    ]
+  },
+  {
+    points: 1,
+    hint: 'pontuação máxima por palpite',
+    description:
+      'Caso você acerte o <b>número de gols</b> de pelo menos um dos times',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 1
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 2
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 3
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 0
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 0
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 1
         }
       }
     ]
