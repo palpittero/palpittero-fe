@@ -6,22 +6,20 @@
       <h1 class="mb-0">
         {{ league.data.name }}
       </h1>
-      <Button
-        @click="handleRegisterGuesses"
-        :disabled="hasNoGuesses"
-        class="p-button-sm md:p-button-md"
-      >
+      <Button @click="handleRegisterGuesses" :disabled="hasNoGuesses">
         {{ $t('app.guesses.register') }}
         <span id="test"></span>
       </Button>
     </div>
-    <div v-for="championship in championships.data" :key="championship.id">
-      <ChampionshipsRoundsMatchesList
-        v-model="matchesGuesses[championship.id]"
-        :championship="championship"
-        :league-id="leagueId"
-        empty-state="app.guesses.noRounds"
-      />
+    <div class="flex flex-column gap-3">
+      <div v-for="championship in championships.data" :key="championship.id">
+        <ChampionshipsRoundsMatchesList
+          v-model="matchesGuesses[championship.id]"
+          :championship="championship"
+          :league-id="leagueId"
+          empty-state="app.guesses.noRounds"
+        />
+      </div>
     </div>
   </div>
 </template>
