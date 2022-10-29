@@ -3,7 +3,7 @@
     <template #title>
       <div class="flex align-items-center justify-content-between mb-0">
         <h5>
-          <b>{{ $t('common.points', rule, rule.points) }}</b>
+          <b>{{ $t('app.guesses.points', rule, rule.points) }}</b>
           <i v-if="rule.hint" class="ml-2">({{ rule.hint }})</i>
         </h5>
       </div>

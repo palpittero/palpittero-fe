@@ -60,7 +60,7 @@ export default {
     header: 'Confirmar logout',
     message: 'Deseja realmente sair do sistema?'
   },
-  points: '0 ponto | 1 ponto | {points} pontos',
+  points: 'Ponto | Pontos',
   termsAndConditions: 'Termos e Condições',
   clear: 'Limpar',
   select: 'Selecionar',

@@ -1,13 +1,8 @@
 <template>
-  <div>
+  <div class="user-match-guesses">
     <BaseDataRenderer :state="{ loading }">
       <div class="mb-3">
-        <h1 class="mb-0">{{ league.name }} - Partida #{{ match.id }}</h1>
-        <h5 class="mt-2">
-          {{ match.round.championship.name }}
-          {{ match.round.championship.year }}
-          // {{ match.round.name }}
-        </h5>
+        <h1 class="mb-0">{{ league.name }}</h1>
       </div>
       <MatchCard :match="match" />
       <UsersGuessesMatchDataTable :match="match" :guesses="guesses" />

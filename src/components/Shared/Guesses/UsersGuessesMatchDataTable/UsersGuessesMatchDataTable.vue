@@ -16,7 +16,7 @@
       headerClass="flex justify-content-center"
     >
       <template #body="{ data }">
-        <MatchScore :match="parseMatchGuess(data)" />
+        <MatchCenterScore :match="parseMatchGuess(data)" />
       </template>
     </Column>
     <Column field="homeTeam" :header="$t('common.points', 2)">
@@ -38,7 +38,7 @@ import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
-import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
+import MatchCenterScore from '@/components/Shared/Matches/MatchCenterScore/MatchCenterScore.vue'
 import GuessPointsBadge from '@/components/App/Championships/ChampionshipsRoundsMatchesList/RoundsMatchesList/GuessPointsBadge/GuessPointsBadge.vue'
 
 const authStore = useAuthStore()
