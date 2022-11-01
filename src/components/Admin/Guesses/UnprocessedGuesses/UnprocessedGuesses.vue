@@ -17,10 +17,7 @@
           :championship="championship"
         />
       </div>
-      <div
-        v-else
-        class="bg-green-100 text-center p-5 mt-2 font-medium text-2xl text-green-700 mb-3 text-center"
-      >
+      <div v-else class="surface-section p-5">
         {{ $t('admin.guesses.allGuessesWereProcessed') }}
       </div>
     </BaseDataRenderer>
@@ -47,9 +44,11 @@ import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRende
 import UnprocessedGuessesFetcher from '../UnprocessedGuessesFetcher/UnprocessedGuessesFetcher.vue'
 import ChampionshipMatchesList from '@/components/Admin/Championships/ChampionshipMatchesList/ChampionshipMatchesList.vue'
 import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
+import { useRouter } from 'vue-router'
 
 const toast = useToast()
 const i18n = useI18n()
+const router = useRouter()
 
 const props = defineProps({
   leagueId: {
@@ -81,6 +80,11 @@ const loadGuesses = async () => {
   guesses.value = await services.dashboard.fetchUnprocessedGuesses({
     leagueId
   })
+  if (guesses.value.length === 0) {
+    router.push({
+      name: 'AdminUnprocessedGuessesLeagues'
+    })
+  }
   isLoading.value = false
 }
 

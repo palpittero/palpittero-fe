@@ -3,9 +3,9 @@
     <template #default="{ data: unprocessedGuesses }">
       <LeaguesDescriptionList
         :leagues="parseGuessesLeagues(unprocessedGuesses)"
-        :title="$t('app.leagues.myLeagues.title')"
-        :description="$t('app.leagues.myLeagues.description')"
-        :empty-state="$t('app.leagues.noJoinedLeagues')"
+        :title="$t('common.unprocessedGuesses')"
+        :description="$t('common.unprocessedGuesses')"
+        :empty-state="$t('admin.guesses.allGuessesWereProcessed')"
       >
         <template #actions="{ league }">
           <Button
