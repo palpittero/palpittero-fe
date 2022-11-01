@@ -44,6 +44,7 @@
           :model-value="matchesGuesses"
           :rounds="rounds.data"
           :league-id="leagueId"
+          :memory-registered-guesses="memoryRegisteredGuesses"
           @update:model-value="handleUpdateMatchesGuesses"
         />
 
@@ -80,6 +81,10 @@ const props = defineProps({
   emptyState: {
     type: String,
     default: ''
+  },
+  memoryRegisteredGuesses: {
+    type: Array,
+    default: () => []
   },
   isOpen: Boolean
 })
