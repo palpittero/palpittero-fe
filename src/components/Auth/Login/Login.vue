@@ -82,7 +82,17 @@ const onSubmit = handleSubmit(
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.invalidCredentials'),
-          life: 999999999,
+          life: 3000,
+          group: 'app'
+        })
+      }
+
+      if (error.response.status === 403) {
+        toast.add({
+          severity: 'error',
+          summary: i18n.t('common.error'),
+          detail: i18n.t('admin.auth.error.unverifiedAccount'),
+          life: 3000,
           group: 'app'
         })
       }

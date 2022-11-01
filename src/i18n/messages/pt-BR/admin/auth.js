@@ -16,6 +16,7 @@ export default {
     emailAlreadyInUse: 'Este e-mail já está sendo utilizado',
     passwordsDontMatch: 'As senhas não são iguais',
     tokenInvalidOrExpired: 'Token inválido ou expirado',
+    unverifiedAccount: 'Esta conta não foi verificada',
     token: {
       title: 'Erro',
       message: 'Token inválido ou expirado',
