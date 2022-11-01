@@ -23,6 +23,7 @@
           v-for="match in matches.data"
           :key="match.id"
           class="border-top-1 surface-border"
+          :class="getMatchClass(matchesGuesses[match.id])"
         >
           <div class="flex flex-column align-items-center">
             <div
@@ -166,7 +167,7 @@
 
 <script setup>
 import services from '@/services'
-import { reduce, isNil, isEmpty } from 'lodash/fp'
+import { reduce, isNil, isEmpty, uniqueId } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
@@ -197,6 +198,10 @@ const props = defineProps({
   leagueId: {
     type: Number,
     required: true
+  },
+  memoryRegisteredGuesses: {
+    type: Array,
+    default: () => []
   }
 })
 
@@ -239,7 +244,8 @@ const matchesGuesses = computed(() =>
         (guess) => guess.matchId === match.id
       ) || {
         homeTeamRegularTimeGoals: null,
-        awayTeamRegularTimeGoals: null
+        awayTeamRegularTimeGoals: null,
+        uuid: uniqueId('unregistered-guess--')
       }
 
       return {
@@ -325,7 +331,6 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
 const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
 
 const goToUserMatchGuessRoute = (match) => {
-  console.log(matchesGuesses.value[match.id])
   router.push({
     name: 'UserMatchGuesses',
     params: {
@@ -334,6 +339,12 @@ const goToUserMatchGuessRoute = (match) => {
     }
   })
 }
+
+const getMatchClass = (guess) => [
+  !guess.id &&
+    !props.memoryRegisteredGuesses.includes(guess.matchId) &&
+    'rounds-matches-list-unregistered-guess'
+]
 </script>
 
 <style lang="scss">
@@ -376,6 +387,10 @@ const goToUserMatchGuessRoute = (match) => {
     // @media screen and (max-width: 960px) {
     //   display: none;
     // }
+  }
+
+  &-unregistered-guess {
+    background: #fff9e5;
   }
 }
 </style>

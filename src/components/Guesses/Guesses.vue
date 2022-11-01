@@ -21,6 +21,7 @@
           :is-open="isChampionshipRoundsMatchesListOpen(index)"
           :championship="championship"
           :league-id="leagueId"
+          :memory-registered-guesses="memoryRegisteredGuesses"
           empty-state="app.guesses.noRounds"
         />
       </div>
@@ -60,6 +61,8 @@ const league = reactive({
   error: null,
   data: {}
 })
+
+const memoryRegisteredGuesses = ref([])
 
 const matchesGuesses = ref(null)
 
@@ -104,6 +107,8 @@ onMounted(async () => {
 })
 
 const handleRegisterGuesses = async () => {
+  memoryRegisteredGuesses.value = guesses.value.map(({ matchId }) => matchId)
+
   await services.guesses.registerGuesses(guesses.value)
   const total = guesses.value.length
 
