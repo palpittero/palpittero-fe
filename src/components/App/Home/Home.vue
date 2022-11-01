@@ -19,6 +19,7 @@
       :title="$t('app.leagues.myLeagues.title')"
       :description="$t('app.leagues.myLeagues.description')"
       :empty-state="$t('app.leagues.noJoinedLeagues')"
+      :on-get-route="handleGetRoute"
       @manage="handleManageLeague"
       @ranking="handleRankingLeague"
       @leave="handleLeaveLeague"
@@ -33,6 +34,7 @@
       :title="$t('app.leagues.publicLeagues.title')"
       :description="$t('app.leagues.publicLeagues.description')"
       :empty-state="$t('app.leagues.noPublicLeaguesFound')"
+      :on-get-route="handleGetRoute"
       @manage="handleManageLeague"
       @ranking="handleRankingLeague"
       @join="handleJoinLeague"
@@ -347,4 +349,9 @@ const handleDeleteDialogSubmit = async ([league]) => {
     isSubmitting.value = false
   }
 }
+
+const handleGetRoute = (league) => ({
+  name: 'Guesses',
+  params: { leagueId: league.id }
+})
 </script>

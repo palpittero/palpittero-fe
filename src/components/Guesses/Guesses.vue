@@ -12,9 +12,13 @@
       </Button>
     </div>
     <div class="flex flex-column gap-3">
-      <div v-for="championship in championships.data" :key="championship.id">
+      <div
+        v-for="(championship, index) in championships.data"
+        :key="championship.id"
+      >
         <ChampionshipsRoundsMatchesList
           v-model="matchesGuesses[championship.id]"
+          :is-open="isChampionshipRoundsMatchesListOpen(index)"
           :championship="championship"
           :league-id="leagueId"
           empty-state="app.guesses.noRounds"
@@ -111,6 +115,8 @@ const handleRegisterGuesses = async () => {
     group: 'app'
   })
 }
+
+const isChampionshipRoundsMatchesListOpen = (index) => index === 0
 </script>
 
 <style lang="scss">

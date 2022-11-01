@@ -36,7 +36,12 @@
             class="text-500 font-medium flex align-items-center md:align-items-center justify-content-start gap-3 py-2 px-3"
           >
             <BadgeAvatar :image="league.badge" />
-            {{ league.name }}
+            <router-link v-if="onGetRoute(league)" :to="onGetRoute(league)">
+              {{ league.name }}
+            </router-link>
+            <span v-else>
+              {{ league.name }}
+            </span>
             <span
               class="pi pi-id-card"
               v-show="isOwner(league)"
@@ -150,6 +155,10 @@ const props = defineProps({
   leagues: {
     type: Array,
     default: () => []
+  },
+  onGetRoute: {
+    type: Function,
+    default: () => null
   },
   loading: Boolean
 })
