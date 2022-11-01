@@ -105,22 +105,22 @@ const handleSubmit = async ({ id, name, email, avatar }) => {
     await services.users.updateUser({ id, name, email, avatar })
 
     toast.add({
+      group: 'app',
       severity: 'success',
       summary: i18n.t('common.success'),
       detail: i18n.t('app.myAccount.profile.saved'),
-      life: 4000,
-      group: 'app'
+      life: 4000
     })
 
     auth.fetchLoggedUser()
   } catch (error) {
     if (error.response.status === 409) {
       toast.add({
+        group: 'app',
         severity: 'error',
         summary: i18n.t('common.error'),
         detail: i18n.t('admin.auth.error.emailAlreadyInUse'),
-        life: 3000,
-        group: 'app'
+        life: 4000
       })
     }
   } finally {

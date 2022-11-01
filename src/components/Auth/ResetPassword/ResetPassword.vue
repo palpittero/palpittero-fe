@@ -130,7 +130,7 @@ onMounted(async () => {
         severity: 'error',
         summary: i18n.t('common.error'),
         detail: i18n.t('admin.auth.error.tokenInvalidOrExpired'),
-        life: 3000,
+        life: 4000,
         group: 'app'
       })
     }
@@ -139,7 +139,7 @@ onMounted(async () => {
         severity: 'error',
         summary: i18n.t('common.error'),
         detail: i18n.t('admin.auth.error.userNotFound'),
-        life: 3000,
+        life: 4000,
         group: 'app'
       })
     }
@@ -162,7 +162,7 @@ const onSubmit = handleSubmit(
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.userNotFound'),
-          life: 3000,
+          life: 4000,
           group: 'app'
         })
       }

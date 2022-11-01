@@ -117,63 +117,6 @@ const props = defineProps({
   invalid: Boolean
 })
 
-const menu = ref()
-
-const items = ref([
-  {
-    label: 'Options',
-    items: [
-      {
-        label: 'Update',
-        icon: 'pi pi-refresh',
-        command: () => {
-          // toast.add({
-          //   severity: 'success',
-          //   summary: 'Updated',
-          //   detail: 'Data Updated',
-          //   life: 3000
-          // })
-        }
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-times',
-        command: () => {
-          // toast.add({
-          //   severity: 'warn',
-          //   summary: 'Delete',
-          //   detail: 'Data Deleted',
-          //   life: 3000
-          // })
-        }
-      }
-    ]
-  },
-  {
-    label: 'Navigate',
-    items: [
-      {
-        label: 'Vue Website',
-        icon: 'pi pi-external-link',
-        command: () => {
-          // window.location.hash = '/fileupload'
-        }
-      },
-      {
-        label: 'Router',
-        icon: 'pi pi-upload',
-        command: () => {
-          // window.location.hash = '/fileupload'
-        }
-      }
-    ]
-  }
-])
-
-const toggle = (event) => {
-  menu.value.toggle(event)
-}
-
 const emits = defineEmits(['update:modelValue'])
 
 const teams = reactive({

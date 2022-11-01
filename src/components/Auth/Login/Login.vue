@@ -69,31 +69,31 @@ const onSubmit = handleSubmit(
     } catch (error) {
       if (error.response.status === 404) {
         toast.add({
+          group: 'app',
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.userNotFound'),
-          life: 3000,
-          group: 'app'
+          life: 4000
         })
       }
 
       if (error.response.status === 401) {
         toast.add({
+          group: 'app',
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.invalidCredentials'),
-          life: 3000,
-          group: 'app'
+          life: 4000
         })
       }
 
       if (error.response.status === 403) {
         toast.add({
+          group: 'app',
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.unverifiedAccount'),
-          life: 3000,
-          group: 'app'
+          life: 4000
         })
       }
     } finally {

@@ -116,7 +116,7 @@ const handleRegisterGuesses = async () => {
     severity: 'success',
     summary: i18n.t('common.success'),
     detail: i18n.t('app.guesses.guessesCreated', { total }, total),
-    life: 3000,
+    life: 4000,
     group: 'app'
   })
 }

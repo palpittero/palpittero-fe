@@ -16,29 +16,11 @@
       </Button>
     </div>
   </div>
-
-  <!-- <BaseConfirmDialog
-    :header="$t('admin.dashboard.processGuesses.header')"
-    :message="$t('admin.dashboard.processGuesses.message')"
-    :visible="isConfirmDialogVisible"
-    :disabled="isSubmitting"
-    @hide="handleConfirmDialogHide"
-    @submit="handleConfirmDialogSubmit"
-  /> -->
 </template>
 
 <script setup>
-// import { computed, ref } from 'vue'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-// import { useToast } from 'primevue/usetoast'
-// import { useI18n } from 'vue-i18n'
-// import services from '@/services'
-
-// import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
-
-// const toast = useToast()
-// const i18n = useI18n()
 const router = useRouter()
 
 const props = defineProps({
@@ -48,34 +30,12 @@ const props = defineProps({
   }
 })
 
-// const emits = defineEmits(['refresh'])
-
-// const isSubmitting = ref(false)
-// const isConfirmDialogVisible = ref(false)
-
 const total = computed(() => props.guesses.length)
 
 const goToUnprocessedGuessesLeagues = () =>
   router.push({
     name: 'AdminUnprocessedGuessesLeagues'
   })
-
-// const handleConfirmDialogHide = () => (isConfirmDialogVisible.value = false)
-
-// const handleConfirmDialogSubmit = async () => {
-//   isSubmitting.value = true
-//   await services.guesses.processGuesses()
-//   toast.add({
-//     group: 'app',
-//     severity: 'success',
-//     summary: i18n.t('common.success'),
-//     detail: i18n.t('admin.dashboard.guessesProcessedSuccess'),
-//     life: 4000
-//   })
-//   emits('refresh')
-//   handleConfirmDialogHide()
-//   isSubmitting.value = false
-// }
 </script>
 
 <style lang="scss" scoped>

@@ -6,7 +6,18 @@
     type="dynamic"
     @hide="emits('hide')"
   >
-    <MatchForm :model-value="match" :submitted="submitted" :errors="errors" />
+    <MatchUpdateForm
+      v-if="match.id"
+      :model-value="match"
+      :submitted="submitted"
+      :errors="errors"
+    />
+    <MatchCreateForm
+      v-else
+      :model-value="match"
+      :submitted="submitted"
+      :errors="errors"
+    />
   </BaseDialog>
 </template>
 
@@ -16,7 +27,8 @@ import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
-import MatchForm from './MatchForm/MatchForm.vue'
+import MatchUpdateForm from './MatchUpdateForm/MatchUpdateForm.vue'
+import MatchCreateForm from './MatchCreateForm/MatchCreateForm.vue'
 import { clone } from 'lodash'
 
 const props = defineProps({
@@ -35,27 +47,36 @@ const submitted = ref(false)
 
 const { errors, handleSubmit, setValues } = useForm({
   validationSchema: yup.object().shape({
-    homeTeamId: yup.number().required(),
-    awayTeamId: yup.number().required(),
     championshipId: yup.number().required(),
-    roundId: yup.number().required(),
-    date: yup.date().required()
+    roundId: yup.mixed().required(),
+    details: yup
+      .array()
+      .of(
+        yup.object().shape({
+          homeTeamId: yup.number().required(),
+          awayTeamId: yup.number().required(),
+          date: yup.date().required()
+        })
+      )
+      .min(1)
   })
 })
 
-watch(props.match, (match) => setValues(match.value), {
-  deep: true,
-  immediate: true
-})
+watch(
+  () => match.value,
+  (match) => {
+    setValues(match)
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 
 const onSubmit = handleSubmit(
   (match) => {
     submitted.value = true
-    emits('submit', {
-      ...match,
-      homeTeamId: match.homeTeam?.id,
-      awayTeamId: match.awayTeam?.id
-    })
+    emits('submit', match)
   },
   () => (submitted.value = true)
 )

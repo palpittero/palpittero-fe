@@ -2,7 +2,6 @@
   <div class="grid">
     <div class="col-12">
       <div class="card">
-        <Toast />
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="flex gap-2 flex-column md:flex-row">
@@ -81,23 +80,23 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import MatchesDataTable from './MatchesDataTable/MatchesDataTable.vue'
 import MatchDetailsDialog from './MatchDetailsDialog/MatchDetailsDialog.vue'
 import MatchDeleteDialog from './MatchDeleteDialog/MatchDeleteDialog.vue'
 import MatchSetResultDialog from './MatchSetResultDialog/MatchSetResultDialog.vue'
 
-import { MATCH_MODEL } from '@/constants/matches'
+import { MATCH_MODEL, MATCH_DETAIL_MODEL } from '@/constants/matches'
 import services from '@/services'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
-import { clone, pick } from 'lodash/fp'
+import { clone, pick, uniqueId } from 'lodash/fp'
 
 const i18n = useI18n()
 const toast = useToast()
 
-const match = reactive({})
-const matches = reactive({
+let match = ref({})
+const matches = ref({
   loading: false,
   error: null,
   data: []
@@ -113,17 +112,25 @@ onMounted(() => loadMatches())
 
 const loadMatches = async () => {
   try {
-    matches.loading = true
-    matches.data = await services.matches.fetchMatches()
+    matches.value.loading = true
+    matches.value.data = await services.matches.fetchMatches()
   } catch (error) {
-    matches.error = error.message
+    matches.value.error = error.message
   } finally {
-    matches.loading = false
+    matches.value.loading = false
   }
 }
 
 const handleNewMatch = () => {
-  match.value = clone(MATCH_MODEL)
+  match.value = clone({
+    ...MATCH_MODEL,
+    details: [
+      {
+        ...MATCH_DETAIL_MODEL,
+        uuid: uniqueId()
+      }
+    ]
+  })
   isMatchDetailsDialogVisible.value = true
 }
 
@@ -132,10 +139,11 @@ const saveMatch = async (match) => {
   if (match.id) {
     await services.matches.updateMatch(match)
   } else {
-    await services.matches.createMatch(match)
+    await services.matches.createMatches(match)
   }
 
   toast.add({
+    group: 'app',
     severity: 'success',
     summary: i18n.t('common.success'),
     detail: i18n.t('admin.matches.saveSuccess'),
@@ -199,6 +207,7 @@ const handleDeleteDialogSubmit = async (matches) => {
     await services.matches.deleteMatches(ids)
 
     toast.add({
+      group: 'app',
       severity: 'success',
       summary: i18n.t('common.success'),
       detail: i18n.t('admin.matches.deleteSuccess'),
@@ -209,11 +218,11 @@ const handleDeleteDialogSubmit = async (matches) => {
     loadMatches()
   } catch (error) {
     toast.add({
+      group: 'app',
       severity: 'error',
       summary: i18n.t('common.error'),
       detail: i18n.t('admin.matches.error.delete'),
-      life: 3000,
-      group: 'app'
+      life: 4000
     })
   } finally {
     isSubmitting.value = false

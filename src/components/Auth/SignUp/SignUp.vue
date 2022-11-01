@@ -99,7 +99,7 @@ const onSubmit = handleSubmit(
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.emailAlreadyInUse'),
-          life: 3000,
+          life: 4000,
           group: 'app'
         })
       }
@@ -109,7 +109,7 @@ const onSubmit = handleSubmit(
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.passwordsDontMatch'),
-          life: 3000,
+          life: 4000,
           group: 'app'
         })
       }

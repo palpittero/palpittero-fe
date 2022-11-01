@@ -40,21 +40,21 @@ const handleSubmit = async ({ currentPassword, newPassword }) => {
     await services.auth.updatePassword({ currentPassword, newPassword })
 
     toast.add({
+      group: 'app',
       severity: 'success',
       summary: i18n.t('common.success'),
       detail: i18n.t('app.myAccount.changePassword.saved'),
-      life: 4000,
-      group: 'app'
+      life: 4000
     })
   } catch (error) {
     console.log(error)
     if (error.response.status === 400) {
       toast.add({
+        group: 'app',
         severity: 'error',
         summary: i18n.t('common.error'),
         detail: i18n.t('app.myAccount.changePassword.error.currentPassword'),
-        life: 999999999,
-        group: 'app'
+        life: 4000
       })
     }
   } finally {

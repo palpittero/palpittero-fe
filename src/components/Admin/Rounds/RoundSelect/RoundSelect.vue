@@ -7,6 +7,7 @@
     filter
     :placeholder="$t('admin.rounds.selectRound')"
     :class="{ 'p-invalid': invalid }"
+    :disabled="disabled"
   >
     <!-- <template #value="{ value, placeholder }">
       <div v-if="value" class="flex align-items-center gap-3">
@@ -30,7 +31,7 @@ import { computed, reactive, watch } from 'vue'
 
 const props = defineProps({
   modelValue: {
-    type: Number,
+    type: Object,
     default: null
   },
   filter: {
@@ -41,7 +42,8 @@ const props = defineProps({
     type: Number,
     required: true
   },
-  invalid: Boolean
+  invalid: Boolean,
+  disabled: Boolean
 })
 
 const emits = defineEmits(['update:modelValue'])

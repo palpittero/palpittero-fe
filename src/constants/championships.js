@@ -9,10 +9,15 @@ export const CHAMPIONSHIP_MODEL = {
   name: '',
   year: null,
   teams: [],
-  rounds: null,
+  rounds: 1,
   roundsType: CHAMPIONSHIPS_ROUNDS.SIMPLE,
   status: STATUSES.ACTIVE
 }
+
+// export const CHAMPIONSHIP_ROUND_MODEL = {
+//   name: 'Rodada #1',
+//   type: CHAMPIONSHIPS_ROUND_TYPE.REGULAR_TIME
+// }
 
 export const CHAMPIONSHIPS_ROUND_TYPE = {
   // GROUP: 'group',
