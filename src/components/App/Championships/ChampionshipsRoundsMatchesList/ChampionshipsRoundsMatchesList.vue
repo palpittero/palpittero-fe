@@ -80,7 +80,8 @@ const props = defineProps({
   emptyState: {
     type: String,
     default: ''
-  }
+  },
+  isOpen: Boolean
 })
 
 const emits = defineEmits(['update:modelValue'])
@@ -91,7 +92,7 @@ const rounds = ref({
   data: []
 })
 
-const isOpen = ref(false)
+const isOpen = ref(props.isOpen)
 
 const matchesGuesses = ref(props.modelValue)
 
