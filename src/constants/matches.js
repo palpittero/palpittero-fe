@@ -63,17 +63,24 @@ export const MATCH_STATUSES_OPTIONS = [
   }
 ]
 
-export const MATCH_MODEL = {
+export const MATCH_DETAIL_MODEL = {
   homeTeamId: null,
   awayTeamId: null,
-  date: '',
+  date: ''
+}
+
+export const MATCH_MODEL = {
+  // homeTeamId: null,
+  // awayTeamId: null,
+  // date: '',
   result: '',
   roundId: null,
   championship: null,
   round: null,
   homeTeam: null,
   awayTeam: null,
-  status: MATCH_STATUSES.SCHEDULED
+  status: MATCH_STATUSES.SCHEDULED,
+  details: []
 }
 
 export const MATCH_RESULTS = {

@@ -11,28 +11,6 @@
         {{ toggle.label }} <span :class="toggle.icon" />
       </span>
     </div>
-    <!-- <ul v-if="loading" class="m-0 p-0">
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-    </ul> -->
 
     <Transition name="championships-matches-list">
       <UsersGuessesDataTable
@@ -41,10 +19,6 @@
         :guesses="championship.guesses"
       />
     </Transition>
-
-    <!-- <div v-else class="text-500 mb-5">
-      {{ $t(emptyState) }}
-    </div> -->
   </div>
 </template>
 
@@ -78,26 +52,6 @@ const toggle = computed(() => {
 })
 
 const handleToggle = () => (isOpen.value = !isOpen.value)
-// const emits = defineEmits(['update:modelValue'])
-
-// const rounds = reactive({
-//   loading: false,
-//   error: null,
-//   data: []
-// })
-
-// const matchesGuesses = ref(props.modelValue)
-
-// onMounted(
-//   async () =>
-//     (rounds.data = await services.championships.fetchRounds(
-//       props.championship.id
-//     ))
-// )
-
-// const loading = computed(() => rounds.loading)
-
-// const handleUpdateMatchesGuesses = (value) => emits('update:modelValue', value)
 </script>
 
 <style lang="scss">

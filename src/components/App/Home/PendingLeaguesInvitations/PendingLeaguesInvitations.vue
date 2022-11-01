@@ -90,7 +90,7 @@ const handlePendingLeaguesInvitationsDialogSubmit = async (invitations) => {
     detail: i18n.t('app.leagues.pendingInvitations.updateSuccess'),
     life: 4000
   })
-  // loadPendingInvitations()
+
   emits('refresh')
   isLoading.value = false
   handlePendingLeaguesInvitationsDialogHide()

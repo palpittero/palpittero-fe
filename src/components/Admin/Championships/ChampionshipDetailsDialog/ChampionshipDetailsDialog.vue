@@ -8,7 +8,7 @@
     type="dynamic"
   >
     <ChampionshipForm
-      :model-value="props.modelValue"
+      :model-value="championship"
       :submitted="submitted"
       :errors="errors"
     />
@@ -22,9 +22,10 @@ import * as yup from 'yup'
 
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import ChampionshipForm from './ChampionshipForm/ChampionshipForm.vue'
+import { clone } from 'lodash'
 
 const props = defineProps({
-  modelValue: {
+  championship: {
     type: Object,
     default: () => ({})
   },
@@ -35,6 +36,7 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'submit', 'hide'])
 
+const championship = ref(clone(props.championship))
 const submitted = ref(false)
 
 const { errors, handleSubmit, setValues } = useForm({
@@ -45,9 +47,16 @@ const { errors, handleSubmit, setValues } = useForm({
   })
 })
 
-watch(props.modelValue, (championship) => setValues(championship.value), {
-  deep: true
-})
+watch(
+  () => championship.value,
+  (championship) => {
+    setValues(championship)
+  },
+  {
+    deep: true,
+    immediate: true
+  }
+)
 
 const onSubmit = handleSubmit(
   (championship) => {

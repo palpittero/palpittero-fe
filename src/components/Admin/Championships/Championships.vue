@@ -2,7 +2,6 @@
   <div class="grid">
     <div class="col-12">
       <div class="card">
-        <Toast />
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="flex gap-2 flex-column md:flex-row">
@@ -23,23 +22,6 @@
               />
             </div>
           </template>
-
-          <!-- <template v-slot:end>
-            <FileUpload
-              mode="basic"
-              accept="image/*"
-              :maxFileSize="1000000"
-              label="Import"
-              chooseLabel="Import"
-              class="mr-2 inline-block"
-            />
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-            />
-          </template> -->
         </Toolbar>
 
         <ChampionshipsDataTable
@@ -50,7 +32,8 @@
         />
 
         <ChampionshipDetailsDialog
-          v-model="championship"
+          v-if="isChampionshipDetailsDialogVisible"
+          :championship="championship"
           :visible="isChampionshipDetailsDialogVisible"
           :submitting="isSubmitting"
           @hide="handleDetailsDialogHide"
@@ -70,7 +53,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import ChampionshipsDataTable from './ChampionshipsDataTable/ChampionshipsDataTable.vue'
 import ChampionshipDetailsDialog from './ChampionshipDetailsDialog/ChampionshipDetailsDialog.vue'
 import ChampionshipDeleteDialog from './ChampionshipDeleteDialog/ChampionshipDeleteDialog.vue'
@@ -84,8 +67,8 @@ import { clone } from 'lodash'
 const i18n = useI18n()
 const toast = useToast()
 
-const championship = reactive({})
-const championships = reactive({
+const championship = ref({})
+const championships = ref({
   loading: false,
   error: null,
   data: []
@@ -100,12 +83,12 @@ onMounted(() => loadChampionships())
 
 const loadChampionships = async () => {
   try {
-    championships.loading = true
-    championships.data = await services.championships.fetchChampionships()
+    championships.value.loading = true
+    championships.value.data = await services.championships.fetchChampionships()
   } catch (error) {
-    championships.error = error.message
+    championships.value.error = error.message
   } finally {
-    championships.loading = false
+    championships.value.loading = false
   }
 }
 
@@ -123,6 +106,7 @@ const handleDetailsDialogSubmit = async (championship) => {
   }
 
   toast.add({
+    group: 'app',
     severity: 'success',
     summary: i18n.t('common.success'),
     detail: i18n.t('admin.championships.saveSuccess'),
@@ -163,6 +147,7 @@ const handleDeleteDialogSubmit = async (championships) => {
     await services.championships.deleteChampionships(ids)
 
     toast.add({
+      group: 'app',
       severity: 'success',
       summary: i18n.t('common.success'),
       detail: i18n.t('admin.championships.deleteSuccess'),
@@ -173,11 +158,11 @@ const handleDeleteDialogSubmit = async (championships) => {
     loadChampionships()
   } catch (error) {
     toast.add({
+      group: 'app',
       severity: 'error',
       summary: i18n.t('common.error'),
       detail: i18n.t('admin.championships.error.delete'),
-      life: 3000,
-      group: 'app'
+      life: 4000
     })
   } finally {
     isSubmitting.value = false

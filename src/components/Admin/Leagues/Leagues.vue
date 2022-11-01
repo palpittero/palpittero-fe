@@ -2,7 +2,6 @@
   <div class="grid">
     <div class="col-12">
       <div class="card">
-        <Toast />
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="flex gap-2 flex-column md:flex-row">
@@ -109,6 +108,7 @@ const handleDetailsDialogSubmit = async (league) => {
   }
 
   toast.add({
+    group: 'app',
     severity: 'success',
     summary: i18n.t('common.success'),
     detail: i18n.t('admin.leagues.saveSuccess'),
@@ -148,6 +148,7 @@ const handleDeleteDialogSubmit = async (leagues) => {
     await services.leagues.deleteLeagues(ids)
 
     toast.add({
+      group: 'app',
       severity: 'success',
       summary: i18n.t('common.success'),
       detail: i18n.t('admin.leagues.deleteSuccess'),
@@ -158,11 +159,11 @@ const handleDeleteDialogSubmit = async (leagues) => {
     loadLeagues()
   } catch (error) {
     toast.add({
+      group: 'app',
       severity: 'error',
       summary: i18n.t('common.error'),
       detail: i18n.t('admin.leagues.error.delete'),
-      life: 3000,
-      group: 'app'
+      life: 4000
     })
   }
 }

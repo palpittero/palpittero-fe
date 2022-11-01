@@ -74,7 +74,7 @@
       <div
         class="grid p-fluid"
         v-for="(round, index) of championship.rounds"
-        :key="round._id || round.id"
+        :key="round.uuid || round.id"
       >
         <div class="col-6">
           <InputText
@@ -115,7 +115,7 @@
 <script setup>
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import TeamsPickList from '@/components/Admin/Teams/TeamsPickList/TeamsPickList.vue'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import {
   CHAMPIONSHIPS_ROUNDS,
   CHAMPIONSHIPS_ROUND_TYPE
@@ -136,10 +136,11 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:modelValue'])
-const championship = reactive(props.modelValue.value)
+const championship = ref(props.modelValue)
+// console.log(championship.value, props.modelValue, props.modelValue.value)
 
 const newRound = (name) => ({
-  _id: uniqueId(),
+  uuid: uniqueId(),
   name: name || '',
   type: CHAMPIONSHIPS_ROUND_TYPE.REGULAR_TIME
 })
@@ -147,36 +148,40 @@ const newRound = (name) => ({
 let rounds = ref([newRound('Rodada #1')])
 
 watch(
-  championship,
+  () => championship.value,
   (value) => {
     emits('update:modelValue', value)
   },
-  { deep: true }
+  { deep: true, immediate: true }
 )
 
 const isRoundsTypeSimple = computed(
-  () => championship.roundsType === CHAMPIONSHIPS_ROUNDS.SIMPLE
+  () => championship.value.roundsType === CHAMPIONSHIPS_ROUNDS.SIMPLE
 )
 
-const isCreating = computed(() => !championship.id)
+const isCreating = computed(() => !championship.value.id)
 
-const hasNoRounds = computed(() => championship.rounds.length === 0)
+const hasNoRounds = computed(() => championship.value.rounds?.length === 0)
 
-watch(isRoundsTypeSimple, (current, previous) => {
-  if (previous === false) {
-    championship.rounds = championship.rounds.length
-  } else {
-    championship.rounds = rounds.value
+watch(
+  isRoundsTypeSimple,
+  (current) => {
+    if (current) {
+      championship.value.rounds = championship.value.rounds.length
+    } else if (!championship.value.id) {
+      championship.value.rounds = rounds.value
+    }
   }
-})
+  // { immediate: true }
+)
 
 const handleAddRound = () => {
-  const name = `Rodada #${championship.rounds.length + 1}`
-  championship.rounds = [...championship.rounds, newRound(name)]
+  const name = `Rodada #${championship.value.rounds.length + 1}`
+  championship.value.rounds = [...championship.value.rounds, newRound(name)]
 }
 
 const handleRemoveRound = (round) =>
-  (championship.rounds = championship.rounds.filter(
-    ({ _id, id }) => id !== round.id || _id !== round._id
+  (championship.value.rounds = championship.value.rounds.filter(
+    ({ uuid, id }) => id !== round.id || uuid !== round.uuid
   ))
 </script>
