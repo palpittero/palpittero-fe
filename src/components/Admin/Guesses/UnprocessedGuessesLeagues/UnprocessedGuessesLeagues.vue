@@ -14,8 +14,9 @@
             class="p-button-text"
             @click="handleViewGuesses(league.id)"
           />
-        </template> </LeaguesDescriptionList
-    ></template>
+        </template>
+      </LeaguesDescriptionList>
+    </template>
   </UnprocessedGuessesLeaguesFetcher>
 </template>
 

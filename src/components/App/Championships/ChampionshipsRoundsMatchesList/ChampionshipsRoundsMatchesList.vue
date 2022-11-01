@@ -1,54 +1,68 @@
 <template>
   <div class="surface-section p-5">
-    <div class="flex justify-content-between mb-3">
+    <div
+      class="flex justify-content-between cursor-pointer"
+      @click="handleToggle"
+    >
       <span class="font-medium text-3xl text-900">
         {{ championship.name }}
+      </span>
+      <span class="flex align-items-center gap-3">
+        {{ toggle.label }} <span :class="toggle.icon" />
       </span>
       <!-- <span>
         <Button class="p-button-text p-button-clear"> Ver Pontuação </Button>
       </span> -->
     </div>
-    <ul v-if="loading" class="m-0 p-0">
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-      <li class="mb-4">
-        <Skeleton width="100%" class="mb-2" />
-        <Skeleton width="75%" />
-      </li>
-    </ul>
-    <RoundMatchesList
-      v-else-if="rounds.data.length"
-      :model-value="matchesGuesses"
-      :rounds="rounds.data"
-      :league-id="leagueId"
-      @update:model-value="handleUpdateMatchesGuesses"
-    />
+    <Transition name="championships-rounds-matches-list">
+      <div v-show="isOpen" class="mt-3">
+        <!-- <Divider /> -->
+        <ul v-if="loading" class="m-0 p-0">
+          <li class="mb-4">
+            <Skeleton width="100%" class="mb-2" />
+            <Skeleton width="75%" />
+          </li>
+          <li class="mb-4">
+            <Skeleton width="100%" class="mb-2" />
+            <Skeleton width="75%" />
+          </li>
+          <li class="mb-4">
+            <Skeleton width="100%" class="mb-2" />
+            <Skeleton width="75%" />
+          </li>
+          <li class="mb-4">
+            <Skeleton width="100%" class="mb-2" />
+            <Skeleton width="75%" />
+          </li>
+          <li class="mb-4">
+            <Skeleton width="100%" class="mb-2" />
+            <Skeleton width="75%" />
+          </li>
+        </ul>
+        <RoundMatchesList
+          v-else-if="rounds.data.length"
+          :model-value="matchesGuesses"
+          :rounds="rounds.data"
+          :league-id="leagueId"
+          @update:model-value="handleUpdateMatchesGuesses"
+        />
 
-    <div v-else class="text-500 mb-5">
-      {{ $t(emptyState) }}
-    </div>
+        <div v-else class="text-500 mb-5">
+          {{ $t(emptyState) }}
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import services from '@/services'
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import RoundMatchesList from './RoundsMatchesList/RoundsMatchesList.vue'
+
+const i18n = useI18n()
 
 const props = defineProps({
   modelValue: {
@@ -71,22 +85,51 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue'])
 
-const rounds = reactive({
+const rounds = ref({
   loading: false,
   error: null,
   data: []
 })
 
-const matchesGuesses = reactive(props.modelValue)
+const isOpen = ref(false)
+
+const matchesGuesses = ref(props.modelValue)
 
 onMounted(
   async () =>
-    (rounds.data = await services.championships.fetchRounds(
+    (rounds.value.data = await services.championships.fetchRounds(
       props.championship.id
     ))
 )
 
-const loading = computed(() => rounds.loading)
+const loading = computed(() => rounds.value.loading)
 
 const handleUpdateMatchesGuesses = (value) => emits('update:modelValue', value)
+
+const toggle = computed(() => {
+  return isOpen.value
+    ? {
+        icon: 'pi pi-angle-down',
+        label: i18n.t('common.seeLess')
+      }
+    : {
+        icon: 'pi pi-angle-right',
+        label: i18n.t('common.seeMore')
+      }
+})
+
+const handleToggle = () => (isOpen.value = !isOpen.value)
 </script>
+
+<style lang="scss">
+.championships-rounds-matches-list-enter-active,
+.championships-rounds-matches-list-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.championships-rounds-matches-list-enter-from,
+.championships-rounds-matches-list-leave-to {
+  transform: translateX(30px);
+  opacity: 0;
+}
+</style>
