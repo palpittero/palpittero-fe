@@ -19,6 +19,7 @@
         </h6>
         <div class="field px-5">
           <InputNumber
+            id="regular-time-home-team-goals"
             :value="match.regularTimeHomeTeamGoals"
             show-buttons
             :min="0"
@@ -78,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -99,14 +100,18 @@ const handleInput = ({ value }, key) => {
   match.value[key] = parseInt(value)
   emits('update:modelValue', match.value)
 }
+
+onMounted(() => {
+  document.getElementById('regular-time-home-team-goals').focus()
+})
 </script>
 
 <style lang="scss">
 .match-set-result-form__team {
   &-image {
-    width: 40%;
-    border-radius: 50%;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
   }
 
   .p-inputtext {

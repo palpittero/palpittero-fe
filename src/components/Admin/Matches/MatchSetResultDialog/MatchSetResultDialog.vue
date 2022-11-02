@@ -39,7 +39,7 @@ const props = defineProps({
 const emits = defineEmits(['submit', 'hide'])
 
 const submitted = ref(false)
-const match = ref(props.match.value)
+const match = ref(props.match)
 
 const { errors, handleSubmit, setValues } = useForm({
   validationSchema: yup.object().shape({
@@ -48,12 +48,12 @@ const { errors, handleSubmit, setValues } = useForm({
   })
 })
 
-setValues(props.match.value)
+setValues(props.match)
 
 watch(match, (value) => setValues(value), { deep: true })
 
 const header = computed(() => {
-  const { name, championship } = props.match.value.round
+  const { name, championship } = props.match.round
 
   return i18n.t('admin.matches.setResult', {
     name,

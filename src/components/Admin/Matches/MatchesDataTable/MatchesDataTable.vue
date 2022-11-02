@@ -3,7 +3,6 @@
     v-model="selectedMatches"
     :items="matches"
     :title="$t('common.matches')"
-    class="matches-data-table"
     :global-filter-fields="globalFilterFields"
     searchable
   >
@@ -11,24 +10,8 @@
     <Column field="homeTeam" :header="$t('common.score')" sortable>
       <template #body="{ data }">
         <MatchScore :match="data" />
-        <!-- <div v-if="isFinished(data)"> -->
-        <!-- <MatchScore v-else :match="data" /> -->
-        <!-- </div> -->
-        <!-- <div class="flex align-items-center gap-2">
-          <BadgeAvatar :image="data.homeTeam.badge" />
-          {{ data.homeTeam.name }}
-        </div> -->
       </template>
     </Column>
-    <!-- <Column field="awayTeam" :header="$t('admin.matches.awayTeam')" sortable>
-      <template #body="{ data }">
-        <div class="flex align-items-center gap-2">
-          <BadgeAvatar :image="data.awayTeam.badge" />
-          {{ data.awayTeam.name }}
-        </div>
-      </template>
-    </Column> -->
-
     <Column
       field="championship"
       :header="$t('admin.matches.championship')"
@@ -48,15 +31,6 @@
         </div>
       </template>
     </Column>
-
-    <!-- <Column field="round" :header="$t('admin.matches.round')" sortable>
-      <template #body="{ data }">
-        <span class="text-right">
-          {{ data.round.name }}
-        </span>
-      </template>
-    </Column> -->
-
     <Column field="date" :header="$t('admin.matches.date')" sortable>
       <template #body="{ data }">
         <span class="text-right">
@@ -72,15 +46,6 @@
         </div>
       </template>
     </Column>
-    <!-- <Column :header="$t('admin.matches.score')" sortable>
-      <template #body="{ data }">
-        <div v-if="isFinished(data)">
-          <MatchNoResult v-if="matchHasNoResult(data)" />
-          <MatchScore v-else :match="data" />
-        </div>
-        <span v-else>-</span>
-      </template>
-    </Column> -->
     <Column>
       <template #body="{ data }">
         <div>
@@ -160,15 +125,3 @@ const handleEditMatch = (match) => emits('edit', match)
 const handleDeleteMatch = (match) => emits('delete', match)
 const handleSetMatchResult = (match) => emits('set-result', match)
 </script>
-
-<style lang="scss">
-.matches-data-table {
-  .p-avatar {
-    img {
-      height: auto;
-    }
-  }
-
-  // @media screen and (max-width: 960px) {}
-}
-</style>
