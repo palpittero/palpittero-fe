@@ -1,6 +1,7 @@
 <template>
   <div
-    class="match-center-score flex align-items-center justify-content-center gap-3"
+    class="match-center-score flex align-items-center gap-3"
+    :class="`justify-content-${align}`"
   >
     <div class="flex align-items-center justify-content-around gap-2">
       <div class="flex align-items-center gap-2 w-full">
@@ -44,6 +45,11 @@ const props = defineProps({
   match: {
     type: Object,
     required: true
+  },
+  align: {
+    type: String,
+    default: 'center',
+    validator: (value) => ['center', 'start'].includes(value)
   }
 })
 

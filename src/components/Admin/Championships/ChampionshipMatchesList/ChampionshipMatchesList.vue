@@ -43,11 +43,11 @@ const toggle = computed(() => {
   return isOpen.value
     ? {
         icon: 'pi pi-angle-down',
-        label: i18n.t('common.seeLess')
+        label: i18n.t('common.hide')
       }
     : {
         icon: 'pi pi-angle-right',
-        label: i18n.t('common.seeMore')
+        label: i18n.t('common.show')
       }
 })
 

@@ -1,5 +1,18 @@
 <template>
   <div class="grid align-items-center">
+    <div class="col field" v-if="championship.hasGroups">
+      <label for="group">{{ $t('admin.matches.group') }}</label>
+      <GroupSelect
+        v-model="detail.group"
+        :championship-id="championship.id"
+        :invalid="submitted && parsedErrors.groupId"
+        :extra-fields="['teams']"
+        @update:model-value="handleGroupUpdate"
+      />
+      <small class="p-invalid" v-if="submitted && parsedErrors.awayTeamId">
+        {{ $t('admin.matches.validation.group') }}
+      </small>
+    </div>
     <div class="col field">
       <label for="homeTeam">{{ $t('admin.matches.homeTeam') }}</label>
       <TeamSelect
@@ -62,6 +75,7 @@ import { computed } from 'vue'
 import { get } from 'lodash/fp'
 
 import TeamSelect from '@/components/Admin/Teams/TeamSelect/TeamSelect.vue'
+import GroupSelect from '@/components/Shared/Championships/GroupSelect/GroupSelect.vue'
 
 const props = defineProps({
   modelValue: {
@@ -96,11 +110,27 @@ const detail = computed({
   }
 })
 
+const groupTeamsId = computed(
+  () => detail.value.group?.teams?.map(({ id }) => id) || []
+)
+
 const onFilterHomeTeam = (teams) =>
-  teams.filter(({ id }) => id !== detail.value.awayTeam?.id)
+  teams.filter(
+    ({ id }) =>
+      (!props.championship.hasGroups ||
+        (props.championship.hasGroups && groupTeamsId.value.includes(id))) &&
+      id !== detail.value.awayTeam?.id
+  )
 
 const onFilterAwayTeam = (teams) =>
-  teams.filter(({ id }) => id !== detail.value.homeTeam?.id)
+  teams.filter(
+    ({ id }) =>
+      (!props.championship.hasGroups ||
+        (props.championship.hasGroups && groupTeamsId.value.includes(id))) &&
+      id !== detail.value.homeTeam?.id
+  )
+
+const handleGroupUpdate = (group) => (detail.value.groupId = group?.id ?? null)
 
 const handleHomeTeamUpdate = (team) =>
   (detail.value.homeTeamId = team?.id ?? null)

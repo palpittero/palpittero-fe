@@ -4,6 +4,7 @@
     <ChampionshipSelect
       v-model="championship"
       :invalid="submitted && errors.championshipId"
+      :extra-fields="['hasGroups']"
       @update:model-value="handleChampionshipUpdate"
     />
     <small class="p-invalid" v-if="submitted && errors.championshipId">
@@ -110,7 +111,6 @@ const handleUpdateDetail = (detail, index) =>
   (match.value.details[index] = detail)
 
 const handleRemoveDetail = (uuid) => {
-  console.log(uuid)
   match.value.details = match.value.details.filter(
     (detail) => detail.uuid !== uuid
   )

@@ -1,16 +1,16 @@
 <template>
   <Dropdown
-    v-model="championship"
-    :options="parsedChampionships"
+    v-model="group"
+    :options="groups.data"
     optionLabel="name"
     :optionValue="getOptionValue"
     filter
-    :placeholder="$t('admin.championships.selectChampionship')"
+    :placeholder="$t('admin.championships.group')"
     :class="{ 'p-invalid': invalid }"
   >
     <template #value="{ value, placeholder }">
       <div v-if="value" class="flex align-items-center gap-3">
-        <div>{{ value.name }} {{ value.year }}</div>
+        <div>{{ value.name }}</div>
       </div>
       <span v-else>
         {{ placeholder }}
@@ -18,15 +18,15 @@
     </template>
     <template #option="{ option }">
       <div class="flex align-items-center gap-3">
-        <div>{{ option.name }} {{ option.year }}</div>
+        <div>{{ option.name }}</div>
       </div>
     </template>
   </Dropdown>
 </template>
 
 <script setup>
+import { computed, ref, onMounted } from 'vue'
 import { pick } from 'lodash/fp'
-import { computed, reactive, onMounted } from 'vue'
 
 import services from '@/services'
 
@@ -35,9 +35,9 @@ const props = defineProps({
     type: Object,
     default: null
   },
-  filter: {
-    type: Function,
-    default: (championships) => championships
+  championshipId: {
+    type: Number,
+    default: null
   },
   extraFields: {
     type: Array,
@@ -47,13 +47,13 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:modelValue'])
-const championships = reactive({
+const groups = ref({
   loading: false,
   error: null,
   data: []
 })
 
-const championship = computed({
+const group = computed({
   set(value) {
     emits('update:modelValue', value)
   },
@@ -62,15 +62,13 @@ const championship = computed({
   }
 })
 
-onMounted(async () => {
-  const rows = await services.championships.fetchChampionships()
-  championships.data = props.filter(rows)
-})
-
-const getOptionValue = (championship) =>
-  pick(['id', 'name', 'year', ...props.extraFields], championship)
-
-const parsedChampionships = computed(() =>
-  championships.data.map(getOptionValue)
+onMounted(
+  async () =>
+    (groups.value.data = await services.championships.fetchGroups(
+      props.championshipId
+    ))
 )
+
+const getOptionValue = (group) =>
+  pick(['id', 'name', ...props.extraFields], group)
 </script>

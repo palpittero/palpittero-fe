@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-content-center pb-3">
+  <div class="flex justify-content-center">
     <InlineMessage severity="info" class="round-match-final-result">
       <div class="flex flex-column gap-3 align-items-center">
         <div class="flex gap-2 align-items-center">
@@ -10,7 +10,7 @@
             <span>{{ guess.match.homeTeam.name }}</span>
             {{ guess.match.regularTimeHomeTeamGoals }}
           </span>
-          <span class="pi pi-times" />
+          <span>X</span>
           <span :class="awayTeamClassName" class="flex gap-2">
             <span>{{ guess.match.regularTimeAwayTeamGoals }}</span>
             {{ guess.match.awayTeam.name }}
@@ -22,8 +22,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-const props = defineProps({
+defineProps({
   guess: {
     type: Object,
     required: true
@@ -36,10 +35,6 @@ const props = defineProps({
     type: String,
     default: ''
   }
-})
-
-onMounted(() => {
-  console.log('guess', props.guess)
 })
 </script>
 

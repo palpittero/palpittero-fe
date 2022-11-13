@@ -19,15 +19,19 @@
     >
       <template #body="{ data }">
         <div>
-          <div>
-            <span class="text-right">
-              {{ data.round.championship.name }}
-              {{ data.round.championship.year }}
-            </span>
+          <div class="flex flex-column gap-3">
+            <div>
+              <span class="text-right">
+                {{ data.round.championship.name }}
+                {{ data.round.championship.year }}
+              </span>
+            </div>
+            <small v-if="data.group">
+              {{ data.group.name }}
+            </small>
           </div>
-          <small>
-            {{ data.round.name }}
-          </small>
+
+          <small> {{ data.round.name }} </small>
         </div>
       </template>
     </Column>
@@ -51,7 +55,6 @@
         <div>
           <Button
             icon="pi pi-pencil"
-            v-if="isScheduled(data)"
             class="p-button p-button-info p-button-sm mr-2"
             :label="$t('common.edit')"
             @click="handleEditMatch(data)"
@@ -87,7 +90,6 @@ import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
 import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
 
 import { MATCH_STATUSES, MATCH_STATUSES_LABELS } from '@/constants/matches'
-// import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
 const props = defineProps({
   modelValue: {
@@ -118,7 +120,6 @@ const selectedMatches = computed({
   }
 })
 
-const isScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
 const isFinished = (match) => match.status === MATCH_STATUSES.FINISHED
 
 const handleEditMatch = (match) => emits('edit', match)

@@ -140,7 +140,6 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue'])
 const league = ref(props.modelValue)
-console.log(league.value)
 
 watch(
   league,

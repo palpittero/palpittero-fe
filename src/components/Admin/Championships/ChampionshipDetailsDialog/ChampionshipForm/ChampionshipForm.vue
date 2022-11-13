@@ -72,25 +72,21 @@
 
     <template v-else>
       <div
-        class="grid p-fluid"
-        v-for="(round, index) of championship.rounds"
+        class="flex gap-2 mb-2 align-items-center"
+        v-for="round of championship.rounds"
         :key="round.uuid || round.id"
       >
-        <div class="col-6">
-          <InputText
-            v-model="round.name"
-            :placeholder="$t('admin.championships.name')"
-          />
-        </div>
-        <div class="col-5">
-          <RoundTypeSelect v-model="round.type" />
-        </div>
-        <div class="col" v-if="index > 0">
-          <span
-            class="pi pi-trash p-button p-button-text p-button-danger"
-            @click="handleRemoveRound(round)"
-          />
-        </div>
+        <InputText
+          v-model="round.name"
+          class="w-full"
+          :placeholder="$t('admin.championships.name')"
+        />
+        <RoundTypeSelect class="w-full" v-model="round.type" />
+
+        <span
+          class="pi pi-trash p-button p-button-text p-button-danger"
+          @click="handleRemoveRound(round)"
+        />
       </div>
       <InlineMessage severity="warn" v-if="hasNoRounds">
         {{ $t('admin.championships.noRounds') }}
@@ -102,6 +98,50 @@
       >
         <span class="pi pi-plus mr-2" />
         {{ $t('admin.championships.addRound') }}
+      </Button>
+    </template>
+  </div>
+
+  <div class="field">
+    <div class="flex align-items-center gap-3 mb-3">
+      {{ $t('admin.championships.setGroups') }}
+      <InputSwitch v-model="championship.hasGroups" />
+    </div>
+    <hr />
+
+    <template v-if="championship.hasGroups">
+      <div
+        class="flex align-items-start gap-2 mb-2"
+        v-for="group of championship.groups"
+        :key="group.uuid || group.id"
+      >
+        <InputText
+          class="w-full"
+          v-model="group.name"
+          :placeholder="$t('admin.championships.name')"
+        />
+        <TeamsAutoComplete
+          v-model="group.teams"
+          class="w-full"
+          :on-filter="getOnFilterTeams(group, championship.groups)"
+          :teams="championship.teams"
+        />
+
+        <span
+          class="pi pi-trash p-button p-button-text p-button-danger"
+          @click="handleRemoveGroup(group)"
+        />
+      </div>
+      <InlineMessage severity="warn" v-if="hasNoGroups">
+        {{ $t('admin.championships.noGroups') }}
+      </InlineMessage>
+      <hr />
+      <Button
+        class="p-button p-button-icon justify-content-center"
+        @click="handleAddGroup"
+      >
+        <span class="pi pi-plus mr-2" />
+        {{ $t('admin.championships.addGroup') }}
       </Button>
     </template>
   </div>
@@ -122,6 +162,7 @@ import {
 } from '@/constants/championships'
 import { uniqueId } from 'lodash'
 import RoundTypeSelect from '@/components/Admin/Rounds/RoundTypeSelect/RoundTypeSelect.vue'
+import TeamsAutoComplete from '@/components/Shared/Teams/TeamsAutoComplete/TeamsAutoComplete.vue'
 
 const props = defineProps({
   modelValue: {
@@ -137,7 +178,6 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue'])
 const championship = ref(props.modelValue)
-// console.log(championship.value, props.modelValue, props.modelValue.value)
 
 const newRound = (name) => ({
   uuid: uniqueId(),
@@ -145,7 +185,14 @@ const newRound = (name) => ({
   type: CHAMPIONSHIPS_ROUND_TYPE.REGULAR_TIME
 })
 
+const newGroup = (name) => ({
+  uuid: uniqueId(),
+  name: name || '',
+  teams: []
+})
+
 let rounds = ref([newRound('Rodada #1')])
+let groups = ref([newGroup('Grupo A')])
 
 watch(
   () => championship.value,
@@ -163,16 +210,21 @@ const isCreating = computed(() => !championship.value.id)
 
 const hasNoRounds = computed(() => championship.value.rounds?.length === 0)
 
+watch(isRoundsTypeSimple, (current) => {
+  if (current) {
+    championship.value.rounds = championship.value.rounds.length
+  } else if (!championship.value.id) {
+    championship.value.rounds = rounds.value
+  }
+})
+
 watch(
-  isRoundsTypeSimple,
+  () => isCreating.value && championship.value.hasGroups,
   (current) => {
     if (current) {
-      championship.value.rounds = championship.value.rounds.length
-    } else if (!championship.value.id) {
-      championship.value.rounds = rounds.value
+      championship.value.groups = groups.value
     }
   }
-  // { immediate: true }
 )
 
 const handleAddRound = () => {
@@ -184,4 +236,23 @@ const handleRemoveRound = (round) =>
   (championship.value.rounds = championship.value.rounds.filter(
     ({ uuid, id }) => id !== round.id || uuid !== round.uuid
   ))
+
+const handleAddGroup = () => {
+  const name = `Grupo ${championship.value.groups.length + 1}`
+  championship.value.groups = [...championship.value.groups, newGroup(name)]
+}
+
+const handleRemoveGroup = (group) =>
+  (championship.value.groups = championship.value.groups.filter(
+    ({ uuid, id }) => id !== group.id || uuid !== group.uuid
+  ))
+
+const getOnFilterTeams = (group, groups) => (team) => {
+  const selectedTeams = groups.reduce(
+    (acc, group) => [...acc, ...group.teams.map(({ id }) => id)],
+    []
+  )
+
+  return !selectedTeams.includes(team.id)
+}
 </script>
