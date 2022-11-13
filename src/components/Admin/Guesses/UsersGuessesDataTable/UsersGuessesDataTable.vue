@@ -6,14 +6,10 @@
           {{ data.user.name }}
         </template>
       </Column>
-      <Column
-        field="guess"
-        :header="$t('common.guess')"
-        headerClass="flex justify-content-center"
-      >
+      <Column field="guess" :header="$t('common.guess')" headerClass="flex">
         <template #body="{ data }">
           <MatchScore :match="parseMatchGuess(data)" />
-          <MatchCenterScore :match="parseMatchGuess(data)" />
+          <MatchCenterScore :match="parseMatchGuess(data)" align="start" />
         </template>
       </Column>
     </BaseDataTable>

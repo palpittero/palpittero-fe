@@ -103,8 +103,6 @@ const handleAdd = async ({ value }) => {
 
   const user = users.value.data.find((user) => user.email === email)
 
-  console.log('is unique', isUserUnique(email))
-
   selectedUsers.value = selectedUsers.value.filter(
     (selectedUser) => (selectedUser?.email || selectedUser) !== email
   )

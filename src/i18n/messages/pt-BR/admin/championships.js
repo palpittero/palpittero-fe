@@ -29,5 +29,9 @@ export default {
   regularTime: 'Tempo Regular',
   extraTime: 'Prorrogação',
   penalties: 'Pênaltis',
-  noRounds: 'Este campeonato não possui nenhuma rodada'
+  noRounds: 'Este campeonato não possui nenhuma rodada',
+  addGroup: 'Adicionar grupo',
+  groups: 'Grupos',
+  setGroups: 'Definir grupos',
+  noGroups: 'Sem grupos'
 }

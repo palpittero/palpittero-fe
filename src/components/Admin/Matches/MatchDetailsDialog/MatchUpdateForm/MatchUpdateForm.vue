@@ -4,6 +4,7 @@
     <ChampionshipSelect
       v-model="championship"
       :invalid="submitted && errors.championshipId"
+      :extra-fields="['hasGroups']"
       @update:model-value="handleChampionshipUpdate"
     />
     <small class="p-invalid" v-if="submitted && errors.championshipId">
@@ -21,6 +22,19 @@
       />
       <small class="p-invalid" v-if="submitted && errors.roundId">
         {{ $t('admin.matches.validation.round') }}
+      </small>
+    </div>
+    <div class="field" v-if="championship.hasGroups">
+      <label for="championship">{{ $t('admin.matches.group') }}</label>
+      <GroupSelect
+        v-model="match.group"
+        :championship-id="championship.id"
+        :invalid="submitted && errors.groupId"
+        :extra-fields="['teams']"
+        @update:model-value="handleGroupUpdate"
+      />
+      <small class="p-invalid" v-if="submitted && errors.groupId">
+        {{ $t('admin.matches.validation.group') }}
       </small>
     </div>
     <div class="field">
@@ -74,10 +88,11 @@
 </template>
 
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, computed } from 'vue'
 import TeamSelect from '@/components/Admin/Teams/TeamSelect/TeamSelect.vue'
 import ChampionshipSelect from '@/components/Admin/Championships/ChampionshipSelect/ChampionshipSelect.vue'
 import RoundSelect from '@/components/Admin/Rounds/RoundSelect/RoundSelect.vue'
+import GroupSelect from '@/components/Shared/Championships/GroupSelect/GroupSelect.vue'
 
 const props = defineProps({
   modelValue: {
@@ -92,7 +107,7 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:modelValue'])
-const match = ref(props.modelValue.value)
+const match = ref(props.modelValue)
 const championship = ref(match.value.championship || null)
 const minDate = new Date()
 
@@ -104,11 +119,36 @@ watch(
   { deep: true, immediate: true }
 )
 
+watch(
+  () => match.value.group,
+  () => {
+    match.value.homeTeam = null
+    match.value.awayTeam = null
+
+    handleHomeTeamUpdate()
+    handleAwayTeamUpdate()
+  }
+)
+
+const groupTeamsId = computed(
+  () => match.value.group?.teams?.map(({ id }) => id) || []
+)
+
 const onFilterHomeTeam = (teams) =>
-  teams.filter(({ id }) => id !== match.value.awayTeam?.id)
+  teams.filter(
+    ({ id }) =>
+      (!championship.value.hasGroups ||
+        (championship.value.hasGroups && groupTeamsId.value.includes(id))) &&
+      id !== match.value.awayTeam?.id
+  )
 
 const onFilterAwayTeam = (teams) =>
-  teams.filter(({ id }) => id !== match.value.homeTeam?.id)
+  teams.filter(
+    ({ id }) =>
+      (!championship.value.hasGroups ||
+        (championship.value.hasGroups && groupTeamsId.value.includes(id))) &&
+      id !== match.value.homeTeam?.id
+  )
 
 const handleChampionshipUpdate = (championship) => {
   match.value.championshipId = championship.id

@@ -2,7 +2,7 @@
   <UnprocessedGuessesFetcher>
     <BaseDataRenderer :state="{ loading: isLoading }">
       <div
-        class="flex flex-wrap justify-content-between align-items-center mb-3 unprocessed-guesses__top-bar"
+        class="flex flex-wrap justify-content-between align-items-center guesses__top-bar--is-pinned unprocessed-guesses__top-bar"
       >
         <h1 class="mb-0">{{ league.name }}</h1>
 
@@ -128,8 +128,16 @@ const hasGuesses = computed(() => guesses.value.length > 0)
       padding: 20px 0;
 
       @media screen and (max-width: 960px) {
+        padding: 10px;
+
         h1 {
-          font-size: 1.5rem;
+          font-size: 1.1rem;
+          font-weight: bold;
+        }
+
+        .p-button {
+          padding: 8px;
+          font-size: 0.9rem;
         }
       }
     }

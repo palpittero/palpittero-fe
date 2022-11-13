@@ -47,7 +47,6 @@ const handleSubmit = async ({ currentPassword, newPassword }) => {
       life: 4000
     })
   } catch (error) {
-    console.log(error)
     if (error.response.status === 400) {
       toast.add({
         group: 'app',

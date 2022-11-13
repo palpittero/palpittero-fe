@@ -47,15 +47,15 @@ const props = defineProps({
 const emits = defineEmits(['hide', 'submit'])
 
 const message = computed(() => {
-  const name = props.championships.value.map(({ name }) => name).join('<br />')
+  const name = props.championships.map(({ name }) => name).join('<br />')
 
   return i18n.t(
     'admin.championships.deleteConfirmation',
     { name },
-    props.championships.value.length
+    props.championships.length
   )
 })
 
 const handleHide = () => emits('hide')
-const handleSubmit = () => emits('submit', props.championships.value)
+const handleSubmit = () => emits('submit', props.championships)
 </script>

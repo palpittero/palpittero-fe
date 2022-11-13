@@ -22,30 +22,44 @@
         <li
           v-for="match in matches.data"
           :key="match.id"
-          class="border-top-1 surface-border"
+          class="flex flex-column gap-3 border-top-1 surface-border p-3"
           :class="getMatchClass(matchesGuesses[match.id])"
         >
-          <div class="flex flex-column align-items-center">
+          <div
+            class="flex flex-column md:flex-row align-items-start justify-content-between"
+          >
+            <div class="w-full text-bold text-center md:text-left">
+              {{ match.group.name }}
+              <Button
+                type="button"
+                class="absolute md:hidden p-button-text p-0 rounds-matches-list__mobile-menu-button"
+                icon="pi pi-ellipsis-v"
+                @click="(event) => toggleMenu(event, match)"
+                aria-haspopup="true"
+                aria-controls="overlay_menu"
+              />
+            </div>
             <div
-              class="py-3 flex flex-column md:flex-row justify-content-center align-items-center gap-2"
+              class="flex flex-column md:flex-row justify-content-center align-items-center w-full gap-2"
             >
-              <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
-              <MatchStatusBadge :status="match.status" />
-              <div
-                class="rounds-matches-list__guess-points-badge rounds-matches-list__guess-points-badge--top"
-                v-if="isMatchFinished(match)"
-              >
+              <div class="flex flex-column align-items-center gap-2">
+                <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
+                <MatchStatusBadge :status="match.status" />
+              </div>
+            </div>
+            <div class="w-full gap-2 hidden md:flex md:justify-content-end">
+              <template v-if="isMatchFinished(match)">
                 <GuessPointsBadge :guess="matchesGuesses[match.id]" />
                 <Button
                   @click="goToUserMatchGuessRoute(match)"
                   :label="$t('app.guesses.viewOtherGuesses')"
-                  class="p-button-link p-button-clear p-button-sm"
+                  class="p-button-link p-button-clear p-button-sm p-0"
                   icon="pi pi-search"
                 />
-              </div>
+              </template>
             </div>
           </div>
-          <div class="py-3 px-2 grid align-items-center">
+          <div class="px-2 grid align-items-center">
             <div class="col">
               <div class="grid align-items-center justify-content-end">
                 <div
@@ -88,7 +102,8 @@
               </div>
             </div>
             <div class="col-1 text-center width-auto">
-              <span class="pi pi-times font-small" />
+              <!-- <span class="pi pi-times font-small" /> -->
+              x
             </div>
             <div class="col">
               <div class="grid align-items-center">
@@ -132,29 +147,31 @@
             </div>
           </div>
 
-          <RoundMatchFinalResult
-            v-if="isMatchFinished(match)"
-            :guess="matchesGuesses[match.id]"
-            :home-team-class-name="
-              getHomeTeamTeamScoreClass(matchesGuesses[match.id])
-            "
-            :away-team-class-name="
-              getAwayTeamTeamScoreClass(matchesGuesses[match.id])
-            "
-          />
+          <template v-if="isMatchFinished(match)">
+            <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
+            <RoundMatchFinalResult
+              v-else
+              :guess="matchesGuesses[match.id]"
+              :home-team-class-name="
+                getHomeTeamTeamScoreClass(matchesGuesses[match.id])
+              "
+              :away-team-class-name="
+                getAwayTeamTeamScoreClass(matchesGuesses[match.id])
+              "
+            />
+          </template>
 
-          <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
           <div
-            class="rounds-matches-list__guess-points-badge rounds-matches-list__guess-points-badge--bottom"
+            class="flex flex-column align-items-center md:hidden"
             v-if="isMatchFinished(match)"
           >
             <GuessPointsBadge :guess="matchesGuesses[match.id]" />
-            <Button
+            <!-- <Button
               @click="goToUserMatchGuessRoute(match)"
               :label="$t('app.guesses.viewOtherGuesses')"
               class="p-button-link p-button-clear p-button-sm"
               icon="pi pi-search"
-            />
+            /> -->
           </div>
         </li>
       </template>
@@ -163,6 +180,7 @@
       </div>
     </ul>
   </div>
+  <Menu ref="menu" :model="menuItems" popup />
 </template>
 
 <script setup>
@@ -170,6 +188,7 @@ import services from '@/services'
 import { reduce, isNil, isEmpty, uniqueId } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
 import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
 import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
@@ -185,6 +204,7 @@ import { MATCH_RESULTS } from '@/constants/matches'
 
 const router = useRouter()
 const route = useRoute()
+const i18n = useI18n()
 
 const props = defineProps({
   modelValue: {
@@ -345,6 +365,21 @@ const getMatchClass = (guess) => [
     !props.memoryRegisteredGuesses.includes(guess.matchId) &&
     'rounds-matches-list-unregistered-guess'
 ]
+
+const currentMatch = ref()
+const menu = ref()
+
+const toggleMenu = async (event, match) => {
+  currentMatch.value = match
+  menu.value.toggle(event)
+}
+
+const menuItems = computed(() => [
+  {
+    label: i18n.t('app.guesses.viewOtherGuesses'),
+    command: () => goToUserMatchGuessRoute(currentMatch.value)
+  }
+])
 </script>
 
 <style lang="scss">
@@ -362,13 +397,13 @@ const getMatchClass = (guess) => [
   }
 
   &__guess-points-badge {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    right: 60px;
+    // display: flex;
+    // gap: 5px;
+    // align-items: center;
+    // right: 60px;
 
     &--top {
-      position: absolute;
+      // position: absolute;
 
       @media screen and (max-width: 960px) {
         display: none;
@@ -391,6 +426,14 @@ const getMatchClass = (guess) => [
 
   &-unregistered-guess {
     background: #fff9e5;
+  }
+
+  &__mobile-menu-button {
+    right: 0;
+
+    &:hover {
+      background: transparent !important;
+    }
   }
 }
 </style>

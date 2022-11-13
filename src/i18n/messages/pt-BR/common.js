@@ -67,6 +67,6 @@ export default {
   guess: 'Palpite',
   unprocessedGuesses: 'Palpites não processados',
   options: 'Opções',
-  seeMore: 'Ver mais',
-  seeLess: 'Ver menos'
+  show: 'Exibir',
+  hide: 'Esconder'
 }

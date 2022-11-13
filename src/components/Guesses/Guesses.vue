@@ -140,8 +140,16 @@ const isChampionshipRoundsMatchesListOpen = (index) => index === 0
       padding: 20px 0;
 
       @media screen and (max-width: 960px) {
+        padding: 10px;
+
         h1 {
-          font-size: 1.5rem;
+          font-size: 1.1rem;
+          font-weight: bold;
+        }
+
+        .p-button {
+          padding: 8px;
+          font-size: 0.9rem;
         }
       }
     }

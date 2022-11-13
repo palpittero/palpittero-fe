@@ -99,6 +99,7 @@ const handleNewChampionship = () => {
 
 const handleDetailsDialogSubmit = async (championship) => {
   isSubmitting.value = true
+
   if (championship.id) {
     await services.championships.updateChampionship(championship)
   } else {

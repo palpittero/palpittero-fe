@@ -25,7 +25,7 @@
       field="teams"
       :header="$t('admin.championships.teams')"
       sortable
-      headerStyle="width:14%; min-width:10rem;"
+      headerStyle="min-width:5rem;"
     >
       <template #body="{ data }">
         {{ data.teams.length }}
@@ -33,10 +33,21 @@
     </Column>
 
     <Column
+      field="groups"
+      :header="$t('admin.championships.groups')"
+      sortable
+      headerStyle="min-width:5rem;"
+    >
+      <template #body="{ data }">
+        {{ data.hasGroups ? data.groups.length : '-' }}
+      </template>
+    </Column>
+
+    <Column
       field="rounds"
       :header="$t('admin.championships.rounds')"
       sortable
-      headerStyle="width:14%; min-width:10rem;"
+      headerStyle="min-width:5rem;"
     >
       <template #body="{ data }">
         {{ data.rounds.length }}

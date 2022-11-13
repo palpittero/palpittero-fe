@@ -102,3 +102,23 @@ small, span {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.p-autocomplete-multiple-container {
+  .p-autocomplete-token {
+    margin-right: 0 !important;
+  }
+
+  &.p-component.p-inputtext {
+    gap: 5px;
+  }
+}
+
+.p-badge {
+  height: auto;
+}
+
+.layout-main-container {
+  @media screen and (max-width: 960px) {
+    padding: 0 !important;
+  }
+}

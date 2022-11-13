@@ -10,6 +10,8 @@ const fetchRounds = (id) => api.get(`${RESOURCE_URI}/${id}/rounds`)
 
 const fetchTeams = (id) => api.get(`${RESOURCE_URI}/${id}/teams`)
 
+const fetchGroups = (id) => api.get(`${RESOURCE_URI}/${id}/groups`)
+
 const createChampionship = (championship) =>
   api.post(`${RESOURCE_URI}`, championship)
 
@@ -25,6 +27,7 @@ const deleteChampionships = (ids) =>
 export default {
   fetchChampionships,
   fetchRounds,
+  fetchGroups,
   fetchChampionshipById,
   createChampionship,
   updateChampionship,

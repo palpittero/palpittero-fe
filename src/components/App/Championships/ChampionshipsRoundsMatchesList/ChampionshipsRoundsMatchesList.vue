@@ -1,7 +1,7 @@
 <template>
-  <div class="surface-section p-5">
+  <div class="surface-section">
     <div
-      class="flex justify-content-between cursor-pointer"
+      class="flex justify-content-between cursor-pointer p-3"
       @click="handleToggle"
     >
       <span class="font-medium text-3xl text-900">
@@ -15,7 +15,7 @@
       </span> -->
     </div>
     <Transition name="championships-rounds-matches-list">
-      <div v-show="isOpen" class="mt-3">
+      <div v-show="isOpen">
         <!-- <Divider /> -->
         <ul v-if="loading" class="m-0 p-0">
           <li class="mb-4">
@@ -116,11 +116,11 @@ const toggle = computed(() => {
   return isOpen.value
     ? {
         icon: 'pi pi-angle-down',
-        label: i18n.t('common.seeLess')
+        label: i18n.t('common.hide')
       }
     : {
         icon: 'pi pi-angle-right',
-        label: i18n.t('common.seeMore')
+        label: i18n.t('common.show')
       }
 })
 
