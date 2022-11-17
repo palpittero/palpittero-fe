@@ -28,7 +28,7 @@
     </small>
   </div>
 
-  <div class="field">
+  <!-- <div class="field">
     <label class="mb-3">{{ $t('admin.leagues.pointsStrategy') }}</label>
     <div class="grid">
       <div class="field-radiobutton col-6">
@@ -54,7 +54,7 @@
         }}</label>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="field">
     <label class="mb-3">{{ $t('admin.leagues.private') }}</label>
@@ -117,7 +117,7 @@ import { computed, ref, watch } from 'vue'
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import UserSelect from '@/components/Shared/Users/UserSelect/UserSelect.vue'
 
-import { LEAGUE_POINTS_STRATEGY } from '@/constants/leagues'
+// import { LEAGUE_POINTS_STRATEGY } from '@/constants/leagues'
 import ChampionshipsPickList from '@/components/Admin/Championships/ChampionshipsPickList/ChampionshipsPickList.vue'
 import ImageInput from '@/components/Shared/ImageInput/ImageInput.vue'
 import UsersChips from '@/components/Shared/Users/UsersChips/UsersChips.vue'
