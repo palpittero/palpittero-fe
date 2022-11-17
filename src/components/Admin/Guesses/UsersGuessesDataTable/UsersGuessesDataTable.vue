@@ -19,7 +19,7 @@
           />
 
           <div class="flex md:hidden flex-column align-items-end gap-2">
-            <small class="text-bold">
+            <small v-if="match.group" class="text-bold">
               {{ data.match.group.name }}
             </small>
             <small>

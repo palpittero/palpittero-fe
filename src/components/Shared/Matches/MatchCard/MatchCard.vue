@@ -6,7 +6,7 @@
           <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
           <MatchStatusBadge :status="match.status" />
         </div>
-        <small class="text-bold">
+        <small v-if="match.group" class="text-bold">
           {{ match.group.name }}
         </small>
       </div>
