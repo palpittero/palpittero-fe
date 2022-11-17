@@ -1,6 +1,6 @@
 <template>
   <div class="grid align-items-center">
-    <div class="col field" v-if="championship.hasGroups">
+    <div class="col-12 field" v-if="championship.hasGroups">
       <label for="group">{{ $t('admin.matches.group') }}</label>
       <GroupSelect
         v-model="detail.group"
@@ -13,58 +13,63 @@
         {{ $t('admin.matches.validation.group') }}
       </small>
     </div>
-    <div class="col field">
-      <label for="homeTeam">{{ $t('admin.matches.homeTeam') }}</label>
-      <TeamSelect
-        v-model="detail.homeTeam"
-        :filter="onFilterHomeTeam"
-        :championship-id="championship.id"
-        :invalid="submitted && parsedErrors.homeTeamId"
-        @update:model-value="handleHomeTeamUpdate"
-      />
-      <small class="p-invalid" v-if="submitted && parsedErrors.homeTeamId">
-        {{ $t('admin.matches.validation.homeTeam') }}
-      </small>
-    </div>
 
-    <div class="col field">
-      <label for="awayTeam">{{ $t('admin.matches.awayTeam') }}</label>
-      <TeamSelect
-        v-model="detail.awayTeam"
-        :filter="onFilterAwayTeam"
-        :championship-id="championship.id"
-        :invalid="submitted && parsedErrors.awayTeamId"
-        @update:model-value="handleAwayTeamUpdate"
-      />
-      <small class="p-invalid" v-if="submitted && parsedErrors.awayTeamId">
-        {{ $t('admin.matches.validation.awayTeam') }}
-      </small>
-    </div>
+    <template v-if="showTeams">
+      <div class="col-6 lg:col-6 field">
+        <label for="homeTeam">{{ $t('admin.matches.homeTeam') }}</label>
+        <TeamSelect
+          v-model="detail.homeTeam"
+          :filter="onFilterHomeTeam"
+          :championship-id="championship.id"
+          :invalid="submitted && parsedErrors.homeTeamId"
+          @update:model-value="handleHomeTeamUpdate"
+        />
+        <small class="p-invalid" v-if="submitted && parsedErrors.homeTeamId">
+          {{ $t('admin.matches.validation.homeTeam') }}
+        </small>
+      </div>
 
-    <div class="col field">
-      <label for="date">{{ $t('admin.matches.date') }}</label>
-      <Calendar
-        id="date"
-        v-model="detail.date"
-        :min-date="minDate"
-        show-time
-        :show-seconds="false"
-        dateFormat="D, d/mm/yy"
-        :stepMinute="15"
-        show-button-bar
-        hide-on-date-time-select
-        :manual-input="false"
-        :class="{ 'p-invalid': submitted && parsedErrors.date }"
+      <div class="col-6 lg:col-6 field">
+        <label for="awayTeam">{{ $t('admin.matches.awayTeam') }}</label>
+        <TeamSelect
+          v-model="detail.awayTeam"
+          :filter="onFilterAwayTeam"
+          :championship-id="championship.id"
+          :invalid="submitted && parsedErrors.awayTeamId"
+          @update:model-value="handleAwayTeamUpdate"
+        />
+        <small class="p-invalid" v-if="submitted && parsedErrors.awayTeamId">
+          {{ $t('admin.matches.validation.awayTeam') }}
+        </small>
+      </div>
+
+      <div class="col-12 field">
+        <label for="date">{{ $t('admin.matches.date') }}</label>
+        <Calendar
+          id="date"
+          v-model="detail.date"
+          show-time
+          :show-seconds="false"
+          dateFormat="D, d/mm/yy"
+          :stepMinute="15"
+          show-button-bar
+          hide-on-date-time-select
+          :manual-input="false"
+          :class="{ 'p-invalid': submitted && parsedErrors.date }"
+        />
+        <small class="p-invalid" v-if="submitted && parsedErrors.date">
+          {{ $t('admin.matches.validation.date') }}
+        </small>
+      </div>
+    </template>
+    <div class="w-full flex justify-content-end mb-2">
+      <Button
+        icon="pi pi-trash"
+        :label="$t('admin.matches.removeMatch')"
+        class="p-button-text p-button-sm p-button-danger mb-2"
+        @click="handleRemoveDetail"
       />
-      <small class="p-invalid" v-if="submitted && parsedErrors.date">
-        {{ $t('admin.matches.validation.date') }}
-      </small>
     </div>
-    <Button
-      icon="pi pi-trash"
-      class="col-1 p-button-text p-button-danger mt-2"
-      @click="handleRemoveDetail"
-    />
     <!-- <div class="col-1"> -->
     <!-- </div> -->
   </div>
@@ -99,7 +104,7 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'remove'])
 
-const minDate = new Date()
+// const minDate = new Date()
 
 const detail = computed({
   set(value) {
@@ -130,7 +135,13 @@ const onFilterAwayTeam = (teams) =>
       id !== detail.value.homeTeam?.id
   )
 
-const handleGroupUpdate = (group) => (detail.value.groupId = group?.id ?? null)
+const handleGroupUpdate = (group) => {
+  detail.value.groupId = group?.id ?? null
+  detail.value.homeTeam = null
+  handleHomeTeamUpdate()
+  detail.value.awayTeam = null
+  handleAwayTeamUpdate()
+}
 
 const handleHomeTeamUpdate = (team) =>
   (detail.value.homeTeamId = team?.id ?? null)
@@ -151,4 +162,10 @@ const parsedErrors = computed(() => {
     date
   }
 })
+
+const showTeams = computed(
+  () =>
+    !props.championship.hasGroups ||
+    (props.championship.hasGroups && detail.value.group)
+)
 </script>

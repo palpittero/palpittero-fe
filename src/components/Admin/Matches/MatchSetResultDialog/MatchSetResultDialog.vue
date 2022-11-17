@@ -23,6 +23,7 @@ import * as yup from 'yup'
 
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import MatchSetResultForm from './MatchSetResultForm/MatchSetResultForm.vue'
+import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
 
 const i18n = useI18n()
 
@@ -41,10 +42,40 @@ const emits = defineEmits(['submit', 'hide'])
 const submitted = ref(false)
 const match = ref(props.match)
 
+const isPenaltiesRoundType = computed(() =>
+  [
+    CHAMPIONSHIPS_ROUND_TYPE.EXTRA_TIME,
+    CHAMPIONSHIPS_ROUND_TYPE.PENALTIES
+  ].includes(match.value.round.type)
+)
+
+const showPenaltiesResults = computed(
+  () =>
+    isPenaltiesRoundType.value &&
+    match.value.regularTimeHomeTeamGoals ===
+      match.value.regularTimeAwayTeamGoals
+)
+
+const penaltiesFieldsValidationSchema = computed(() =>
+  showPenaltiesResults.value
+    ? {
+        penaltiesTimeHomeTeamGoals: yup
+          .number()
+          .required()
+          .notOneOf([yup.ref('penaltiesTimeAwayTeamGoals')], 'message'),
+        penaltiesTimeAwayTeamGoals: yup
+          .number()
+          .required()
+          .notOneOf([yup.ref('penaltiesTimeHomeTeamGoals')], 'message')
+      }
+    : {}
+)
+
 const { errors, handleSubmit, setValues } = useForm({
   validationSchema: yup.object().shape({
     regularTimeHomeTeamGoals: yup.number().required(),
-    regularTimeAwayTeamGoals: yup.number().required()
+    regularTimeAwayTeamGoals: yup.number().required(),
+    ...penaltiesFieldsValidationSchema.value
   })
 })
 

@@ -6,12 +6,15 @@
           v-if="match.homeTeam.badge"
           :image="match.homeTeam.badge"
         />
-        <span :class="homeTeamTeamScoreClass">
+        <span :class="homeTeamRegularTimeScoreClass">
           {{ match.homeTeam.name }}
         </span>
       </div>
-      <span :class="homeTeamTeamScoreClass">
+      <span :class="homeTeamRegularTimeScoreClass">
         {{ parseMatchGoals(match.regularTimeHomeTeamGoals) }}
+      </span>
+      <span v-if="isPenaltiesRound" :class="homeTeamPenaltiesTimeScoreClass">
+        ({{ parseMatchGoals(match.penaltiesTimeHomeTeamGoals) }})
       </span>
     </div>
 
@@ -21,32 +24,35 @@
           v-if="match.awayTeam.badge"
           :image="match.awayTeam.badge"
         />
-        <span :class="awayTeamTeamScoreClass">
+        <span :class="awayTeamRegularTimeScoreClass">
           {{ match.awayTeam.name }}
         </span>
       </div>
-      <span :class="awayTeamTeamScoreClass">
+      <span :class="awayTeamRegularTimeScoreClass">
         {{ parseMatchGoals(match.regularTimeAwayTeamGoals) }}
+      </span>
+      <span v-if="isPenaltiesRound" :class="awayTeamPenaltiesTimeScoreClass">
+        ({{ parseMatchGoals(match.penaltiesTimeAwayTeamGoals) }})
       </span>
     </div>
   </div>
   <!-- <div class="flex align-items-center gap-2">
     <div class="flex align-items-center gap-2">
-      <span :class="homeTeamTeamScoreClass">
+      <span :class="homeTeamRegularTimeScoreClass">
         {{ match.homeTeam.name }}
       </span>
       <BadgeAvatar :image="match.homeTeam.badge" />
-      <span :class="homeTeamTeamScoreClass">
+      <span :class="homeTeamRegularTimeScoreClass">
         {{ parseMatchGoals(match.regularTimeHomeTeamGoals) }}
       </span>
     </div>
     <span class="pi pi-times font-small" />
     <div class="flex align-items-center gap-2">
-      <span :class="awayTeamTeamScoreClass">
+      <span :class="awayTeamRegularTimeScoreClass">
         {{ parseMatchGoals(match.regularTimeAwayTeamGoals) }}
       </span>
       <BadgeAvatar :image="match.awayTeam.badge" />
-      <span :class="awayTeamTeamScoreClass">
+      <span :class="awayTeamRegularTimeScoreClass">
         {{ match.awayTeam.name }}
       </span>
     </div>
@@ -58,14 +64,14 @@
         <div
           class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
         >
-          <span :class="homeTeamTeamScoreClass">
+          <span :class="homeTeamRegularTimeScoreClass">
             {{ match.homeTeam.name }}
           </span>
           <BadgeAvatar :image="match.homeTeam.badge" />
         </div>
         <span
           class="px-3 gap-2 flex font-large"
-          :class="homeTeamTeamScoreClass"
+          :class="homeTeamRegularTimeScoreClass"
         >
           <span>
             {{ parseMatchGoals(match.regularTimeHomeTeamGoals) }}
@@ -80,7 +86,7 @@
       <div class="grid align-items-center">
         <span
           class="px-3 gap-2 flex font-large"
-          :class="awayTeamTeamScoreClass"
+          :class="awayTeamRegularTimeScoreClass"
         >
           <span>
             {{ parseMatchGoals(match.regularTimeAwayTeamGoals) }}
@@ -90,7 +96,7 @@
           class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
         >
           <BadgeAvatar :image="match.awayTeam.badge" />
-          <span :class="awayTeamTeamScoreClass">
+          <span :class="awayTeamRegularTimeScoreClass">
             {{ match.awayTeam.name }}
           </span>
         </div>
@@ -104,6 +110,7 @@ import { isNil } from 'lodash/fp'
 import { computed } from 'vue'
 
 import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
 
 const props = defineProps({
   match: {
@@ -112,16 +119,35 @@ const props = defineProps({
   }
 })
 
-const homeTeamTeamScoreClass = computed(
+const homeTeamRegularTimeScoreClass = computed(
   () =>
     props.match?.regularTimeHomeTeamGoals >
       props.match?.regularTimeAwayTeamGoals && 'text-bold'
 )
 
-const awayTeamTeamScoreClass = computed(
+const awayTeamRegularTimeScoreClass = computed(
   () =>
     props.match?.regularTimeAwayTeamGoals >
       props.match?.regularTimeHomeTeamGoals && 'text-bold'
+)
+
+const homeTeamPenaltiesTimeScoreClass = computed(
+  () =>
+    props.match?.penaltiesTimeHomeTeamGoals >
+      props.match?.penaltiesTimeAwayTeamGoals && 'text-bold'
+)
+
+const awayTeamPenaltiesTimeScoreClass = computed(
+  () =>
+    props.match?.penaltiesTimeAwayTeamGoals >
+      props.match?.penaltiesTimeHomeTeamGoals && 'text-bold'
+)
+
+const isPenaltiesRound = computed(() =>
+  [
+    CHAMPIONSHIPS_ROUND_TYPE.EXTRA_TIME,
+    CHAMPIONSHIPS_ROUND_TYPE.PENALTIES
+  ].includes(props.match.round.type)
 )
 
 const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)

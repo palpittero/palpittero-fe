@@ -32,5 +32,6 @@ export default {
   setResult: 'Atualizar Resultado - {championship} ({name})',
   updateResult: 'Atualizar Resultado',
   newMatch: 'Criar Partidas',
-  group: 'Grupo'
+  group: 'Grupo',
+  removeMatch: 'Remover partida'
 }

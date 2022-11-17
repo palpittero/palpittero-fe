@@ -6,10 +6,27 @@
           {{ data.user.name }}
         </template>
       </Column>
-      <Column field="guess" :header="$t('common.guess')" headerClass="flex">
+      <Column
+        field="guess"
+        :header="$t('common.guess')"
+        headerClass="flex justify-content-center"
+      >
         <template #body="{ data }">
-          <MatchScore :match="parseMatchGuess(data)" />
-          <MatchCenterScore :match="parseMatchGuess(data)" align="start" />
+          <MatchCard
+            class="hidden md:block"
+            :match="parseMatchGuess(data)"
+            variant=""
+          />
+
+          <div class="flex md:hidden flex-column align-items-end gap-2">
+            <small class="text-bold">
+              {{ data.match.group.name }}
+            </small>
+            <small>
+              {{ data.match.round.name }}
+            </small>
+            <MatchScore :match="parseMatchGuess(data)" />
+          </div>
         </template>
       </Column>
     </BaseDataTable>
@@ -18,8 +35,10 @@
 
 <script setup>
 import BaseDataTable from '@/components/Shared/BaseDataTable/BaseDataTable.vue'
+import MatchCard from '@/components/Shared/Matches/MatchCard/MatchCard.vue'
 import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
-import MatchCenterScore from '@/components/Shared/Matches/MatchCenterScore/MatchCenterScore.vue'
+// import MatchCenterScore from '@/components/Shared/Matches/MatchCenterScore/MatchCenterScore.vue'
+// import MatchStatusBadge from '@/components/App/Championships/ChampionshipsRoundsMatchesList/RoundsMatchesList/MatchStatusBadge/MatchStatusBadge.vue'
 
 defineProps({
   guesses: {
@@ -31,25 +50,21 @@ defineProps({
 const parseMatchGuess = (guess) => ({
   ...guess.match,
   regularTimeHomeTeamGoals: guess.homeTeamRegularTimeGoals,
-  regularTimeAwayTeamGoals: guess.awayTeamRegularTimeGoals
+  regularTimeAwayTeamGoals: guess.awayTeamRegularTimeGoals,
+  penaltiesTimeHomeTeamGoals: guess.homeTeamPenaltiesTimeGoals,
+  penaltiesTimeAwayTeamGoals: guess.awayTeamPenaltiesTimeGoals
 })
 </script>
 
 <style lang="scss">
 .users-guesses-data-table {
-  .match-score {
-    display: none !important;
+  .match-card {
+    &.p-card {
+      box-shadow: none;
 
-    @media screen and (max-width: 960px) {
-      display: flex !important;
-    }
-  }
-
-  .match-center-score {
-    display: none !important;
-
-    @media screen and (min-width: 960px) {
-      display: flex !important;
+      .p-card-body {
+        padding: 0 !important;
+      }
     }
   }
 }

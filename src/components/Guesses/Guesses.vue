@@ -6,7 +6,7 @@
       <h1 class="mb-0">
         {{ league.data.name }}
       </h1>
-      <Button @click="handleRegisterGuesses" :disabled="hasNoGuesses">
+      <Button @click="handleRegisterGuesses" :disabled="hasInvalidGuesses">
         {{ $t('app.guesses.register') }}
         <span id="test"></span>
       </Button>
@@ -39,6 +39,7 @@ import { useI18n } from 'vue-i18n'
 import ChampionshipsRoundsMatchesList from '@/components/App/Championships/ChampionshipsRoundsMatchesList/ChampionshipsRoundsMatchesList.vue'
 
 import { MATCH_STATUSES } from '@/constants/matches'
+import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
 
 const toast = useToast()
 const i18n = useI18n()
@@ -85,12 +86,38 @@ const guesses = computed(() =>
   )(matchesGuesses.value)
 )
 
-const hasNoGuesses = computed(
+const hasInvalidGuesses = computed(
   () =>
     guesses.value.length === 0 ||
     guesses.value.some(
-      ({ homeTeamRegularTimeGoals, awayTeamRegularTimeGoals }) =>
-        isNil(homeTeamRegularTimeGoals) || isNil(awayTeamRegularTimeGoals)
+      ({
+        homeTeamRegularTimeGoals,
+        awayTeamRegularTimeGoals,
+        homeTeamPenaltiesTimeGoals,
+        awayTeamPenaltiesTimeGoals,
+        match
+      }) => {
+        const isPenaltiesRound = [
+          CHAMPIONSHIPS_ROUND_TYPE.EXTRA_TIME,
+          CHAMPIONSHIPS_ROUND_TYPE.PENALTIES
+        ].includes(match.round.type)
+
+        const hasInvalidPenaltiesGuesses =
+          (isPenaltiesRound &&
+            !isNil(homeTeamPenaltiesTimeGoals) &&
+            isNil(awayTeamPenaltiesTimeGoals)) ||
+          (!isNil(awayTeamPenaltiesTimeGoals) &&
+            isNil(homeTeamPenaltiesTimeGoals)) ||
+          (homeTeamPenaltiesTimeGoals &&
+            awayTeamPenaltiesTimeGoals &&
+            homeTeamPenaltiesTimeGoals === awayTeamPenaltiesTimeGoals)
+
+        return (
+          isNil(homeTeamRegularTimeGoals) ||
+          isNil(awayTeamRegularTimeGoals) ||
+          hasInvalidPenaltiesGuesses
+        )
+      }
     )
 )
 

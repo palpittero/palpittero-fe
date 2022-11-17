@@ -27,7 +27,7 @@
       </small>
     </div>
     <template v-if="match.round">
-      <h5>Partidas</h5>
+      <h5>{{ $t('common.matches') }}</h5>
       <Divider />
       <div>
         <template v-for="(detail, index) in match.details" :key="detail.uuid">
