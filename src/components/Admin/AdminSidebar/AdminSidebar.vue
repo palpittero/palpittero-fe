@@ -31,7 +31,7 @@ const menu = reactive([
       },
       {
         label: i18n.t('common.unprocessedGuesses'),
-        icon: 'pi pi-fw pi-chart-bar',
+        icon: 'pi pi-fw pi-clock',
         to: { name: 'AdminUnprocessedGuessesLeagues' },
         exact: false
       },
@@ -55,13 +55,13 @@ const menu = reactive([
       },
       {
         label: i18n.t('common.championships'),
-        icon: 'pi pi-fw pi-ticket',
+        icon: 'pi pi-fw pi-list',
         to: { name: 'AdminChampionships' },
         exact: true
       },
       {
         label: i18n.t('common.matches'),
-        icon: 'pi pi-fw pi-ticket',
+        icon: 'pi pi-fw pi-money-bill',
         to: { name: 'AdminMatches' },
         exact: true
       }

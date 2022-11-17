@@ -1,7 +1,7 @@
 <template>
   <BaseDialog
     :visible="visible"
-    type="dynamic"
+    type="prompt"
     :header="$t('common.menu.rules')"
     modal
     @hide="emits('hide')"
@@ -11,8 +11,8 @@
     </div>
     <template #footer>
       <Button
-        :label="$t('common.close')"
-        icon="pi pi-times"
+        :label="$t('common.ok')"
+        icon="pi pi-check"
         class="p-button-text"
         @click="emits('hide')"
       />

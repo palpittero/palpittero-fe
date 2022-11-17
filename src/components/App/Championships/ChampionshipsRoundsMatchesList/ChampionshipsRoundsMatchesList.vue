@@ -10,13 +10,9 @@
       <span class="flex align-items-center gap-3">
         {{ toggle.label }} <span :class="toggle.icon" />
       </span>
-      <!-- <span>
-        <Button class="p-button-text p-button-clear"> Ver Pontuação </Button>
-      </span> -->
     </div>
     <Transition name="championships-rounds-matches-list">
       <div v-show="isOpen">
-        <!-- <Divider /> -->
         <ul v-if="loading" class="m-0 p-0">
           <li class="mb-4">
             <Skeleton width="100%" class="mb-2" />
