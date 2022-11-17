@@ -17,7 +17,7 @@
             <MatchScore :match="data.guess" />
           </template>
         </Column>
-        <Column field="result" header="Resultado Final">
+        <Column field="result" :header="header">
           <template #body="{ data }">
             <MatchScore :match="data.result" />
           </template>
@@ -33,6 +33,10 @@ import MatchScore from '@/components/Shared/Matches/MatchScore/MatchScore.vue'
 defineProps({
   rule: {
     type: Object,
+    required: true
+  },
+  header: {
+    type: String,
     required: true
   }
 })

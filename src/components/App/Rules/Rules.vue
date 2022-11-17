@@ -1,13 +1,37 @@
 <template>
-  <div class="font-large">
+  <div class="flex flex-column gap-3 font-large">
     <div class="surface-section p-3">
-      <h2>Pontuação</h2>
+      <h2>Pontuação - Tempo Regular</h2>
       <Divider />
       <p>
-        A pontuação padrão da plataforma de palpites segue as seguintes regras:
+        A pontuação padrão da segue as seguintes regras para palpites do
+        resultaods de tempo regular de jogo:
       </p>
 
-      <RuleCard v-for="(rule, index) in rules" :key="index" :rule="rule" />
+      <RuleCard
+        v-for="(rule, index) in rules"
+        :key="index"
+        header="Resultado do Tempo Regular"
+        :rule="rule"
+      />
+    </div>
+    <Divider />
+    <div class="surface-section p-3">
+      <h2>Pontuação - BÔNUS (Pênaltis)*</h2>
+      <Divider />
+      <p>
+        A pontuação bônus segue as seguintes regras para palpites de resultados
+        de disputas de pênaltis:
+      </p>
+
+      <RuleCard
+        v-for="(rule, index) in penaltiesRules"
+        :key="index"
+        header="Resultado da Disputa de Pênaltis"
+        :rule="rule"
+      />
+
+      <em>* disputas de pênaltis nunca terminarão empatadas</em>
     </div>
   </div>
 </template>
@@ -215,7 +239,6 @@ const rules = [
   },
   {
     points: 2,
-    hint: 'pontuação mínima por palpite',
     description: 'Caso você acerte o vencedor porém erre o placar',
     examples: [
       {
@@ -266,7 +289,7 @@ const rules = [
   },
   {
     points: 1,
-    hint: 'pontuação máxima por palpite',
+    hint: 'pontuação mínima por palpite',
     description:
       'Caso você acerte o <b>número de gols</b> de pelo menos um dos times',
     examples: [
@@ -340,7 +363,8 @@ const rules = [
   },
   {
     points: 0,
-    description: 'Caso você erre o vencedor e placar',
+    description:
+      'Caso você erre o vencedor e placar do resultado do tempo regular',
     examples: [
       {
         guess: {
@@ -428,6 +452,315 @@ const rules = [
           },
           regularTimeHomeTeamGoals: 1,
           regularTimeAwayTeamGoals: 1
+        }
+      }
+    ]
+  }
+]
+
+const penaltiesRules = [
+  {
+    points: 5,
+    hint: 'pontuação máxima por palpite',
+    description:
+      'Caso você acerte o placar <b>exato</b> da disputa de pênaltis',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 4
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 3,
+          regularTimeAwayTeamGoals: 1
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 3
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 0,
+          regularTimeAwayTeamGoals: 3
+        }
+      }
+    ]
+  },
+  {
+    points: 4,
+    description: 'Caso você acerte o vencedor e seu respectivo número de gols',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 4
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 2
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 3,
+          regularTimeAwayTeamGoals: 4
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 4
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 1
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 2
+        }
+      }
+    ]
+  },
+  {
+    points: 3,
+    description:
+      'Caso você acerte o vencedor, errando seu número exato de gols <b>e</b> acerte o número de gols do perdedor',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 4,
+          regularTimeAwayTeamGoals: 3
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 3
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 3,
+          regularTimeAwayTeamGoals: 4
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 3,
+          regularTimeAwayTeamGoals: 5
+        }
+      }
+    ]
+  },
+  {
+    points: 2,
+    description: 'Caso você acerte o vencedor porém erre o placar',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 4
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 4,
+          regularTimeAwayTeamGoals: 3
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 3
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 3,
+          regularTimeAwayTeamGoals: 5
+        }
+      }
+    ]
+  },
+  {
+    points: 1,
+    hint: 'pontuação mínima por palpite',
+    description:
+      'Caso você acerte o <b>número de gols</b> de pelo menos um dos times',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 3
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 3
+        }
+      }
+    ]
+  },
+  {
+    points: 0,
+    description:
+      'Caso você erre o vencedor e placar final da disputa de pênaltis',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 4
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 1,
+          regularTimeAwayTeamGoals: 3
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 2,
+          regularTimeAwayTeamGoals: 4
+        },
+        result: {
+          homeTeam: {
+            name: 'Time da Casa'
+          },
+          awayTeam: {
+            name: 'Time Visitante'
+          },
+          regularTimeHomeTeamGoals: 5,
+          regularTimeAwayTeamGoals: 3
         }
       }
     ]
