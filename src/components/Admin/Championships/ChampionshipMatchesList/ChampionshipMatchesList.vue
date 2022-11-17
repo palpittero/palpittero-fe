@@ -5,7 +5,7 @@
       @click="handleToggle"
     >
       <span class="font-medium text-3xl text-900">
-        {{ championship.name }}
+        {{ championship.name }} {{ championship.year }}
       </span>
       <span class="flex align-items-center gap-3">
         {{ toggle.label }} <span :class="toggle.icon" />

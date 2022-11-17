@@ -57,7 +57,6 @@
     <Calendar
       id="date"
       v-model="match.date"
-      :min-date="minDate"
       show-time
       :show-seconds="false"
       dateFormat="D, d/mm/yy"
@@ -94,7 +93,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue'])
 const match = ref(props.modelValue.value)
 const championship = ref(match.value.championship || null)
-const minDate = new Date()
+// const minDate = new Date()
 
 watch(
   () => match.value,

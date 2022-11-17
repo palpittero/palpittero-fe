@@ -188,7 +188,9 @@ const handleSetResultMatch = (row) => {
   match.value = {
     ...row,
     regularTimeHomeTeamGoals: row.regularTimeHomeTeamGoals || 0,
-    regularTimeAwayTeamGoals: row.regularTimeAwayTeamGoals || 0
+    regularTimeAwayTeamGoals: row.regularTimeAwayTeamGoals || 0,
+    penaltiesTimeHomeTeamGoals: row.penaltiesTimeHomeTeamGoals || 0,
+    penaltiesTimeAwayTeamGoals: row.penaltiesTimeAwayTeamGoals || 0
   }
   isMatchSetResultDialogOpen.value = true
 }
