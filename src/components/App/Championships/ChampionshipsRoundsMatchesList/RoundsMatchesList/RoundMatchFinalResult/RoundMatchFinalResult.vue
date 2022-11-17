@@ -2,8 +2,8 @@
   <div class="flex justify-content-center">
     <InlineMessage severity="info" class="round-match-final-result">
       <div class="flex flex-column gap-1 align-items-center">
+        <small> {{ $t('app.guesses.finalResult') }}</small>
         <div class="flex gap-2 align-items-center">
-          <span class="text-bold"> {{ $t('app.guesses.finalResult') }}: </span>
           <span :class="homeTeamRegularTimeClassName" class="flex gap-2">
             <span>{{ guess.match.homeTeam.name }}</span>
             {{ guess.match.regularTimeHomeTeamGoals }}
@@ -11,7 +11,7 @@
           <span
             v-if="isPenaltiesRoundType"
             :class="homeTeamPenaltiesTimeClassName"
-            class="flex gap-2"
+            class="flex gap-2 align-items-center"
           >
             ({{ guess.match.penaltiesTimeHomeTeamGoals }})
           </span>
@@ -22,7 +22,10 @@
           >
             ({{ guess.match.penaltiesTimeAwayTeamGoals }})
           </span>
-          <span :class="awayTeamRegularTimeClassName" class="flex gap-2">
+          <span
+            :class="awayTeamRegularTimeClassName"
+            class="flex gap-2 align-items-center"
+          >
             <span>{{ guess.match.regularTimeAwayTeamGoals }}</span>
             {{ guess.match.awayTeam.name }}
           </span>

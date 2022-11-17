@@ -73,7 +73,10 @@
                   <div
                     class="col-10 md:col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
                   >
-                    <span :class="getHomeTeamRegularTimeScoreClass(match)">
+                    <span
+                      :class="getHomeTeamRegularTimeScoreClass(match)"
+                      class="text-center"
+                    >
                       {{ match.homeTeam.name }}
                     </span>
                     <BadgeAvatar :image="match.homeTeam.badge" />
@@ -187,6 +190,7 @@
                   >
                     <BadgeAvatar :image="match.awayTeam.badge" />
                     <span
+                      class="text-center"
                       :class="
                         getAwayTeamRegularTimeScoreClass(
                           matchesGuesses[match.id]
@@ -300,6 +304,12 @@
           </div>
 
           <template v-if="isMatchFinished(match)">
+            <div
+              class="flex flex-column align-items-center md:hidden"
+              v-if="isMatchFinished(match)"
+            >
+              <GuessPointsBadge :guess="matchesGuesses[match.id]" />
+            </div>
             <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
             <RoundMatchFinalResult
               v-else
@@ -318,13 +328,6 @@
               "
             />
           </template>
-
-          <div
-            class="flex flex-column align-items-center md:hidden"
-            v-if="isMatchFinished(match)"
-          >
-            <GuessPointsBadge :guess="matchesGuesses[match.id]" />
-          </div>
         </li>
       </template>
       <div v-else class="text-center">
