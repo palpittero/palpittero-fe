@@ -71,7 +71,7 @@
                 <div class="grid align-items-center justify-content-end">
                   <!-- Home team name and badge -->
                   <div
-                    class="col-10 md:col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
+                    class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
                   >
                     <span
                       :class="getHomeTeamRegularTimeScoreClass(match)"
@@ -89,7 +89,7 @@
                       "
                       :step="1"
                       :min="0"
-                      class="col-10 md:col-6 text-center"
+                      class="col-6 text-center"
                       :class="{ 'p-invalid': submitted && errors.year }"
                       @input="
                         ({ value }) =>
@@ -134,7 +134,7 @@
                   <template v-if="isMatchScheduled(match)">
                     <InputNumber
                       :step="1"
-                      class="col-10 md:col-6 text-center"
+                      class="col-6 text-center"
                       :model-value="
                         matchesGuesses[match.id].awayTeamRegularTimeGoals
                       "
@@ -186,7 +186,7 @@
                     </span>
                   </span>
                   <div
-                    class="col-10 md:col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
+                    class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
                   >
                     <BadgeAvatar :image="match.awayTeam.badge" />
                     <span
@@ -228,7 +228,7 @@
                         "
                         :step="1"
                         :min="0"
-                        class="col-10 md:col-6 text-center"
+                        class="col-6 text-center"
                         :class="{ 'p-invalid': submitted && errors.year }"
                         @input="
                           ({ value }) =>
@@ -265,7 +265,7 @@
                     <template v-if="isMatchScheduled(match)">
                       <InputNumber
                         :step="1"
-                        class="col-10 md:col-6 text-center"
+                        class="col-6 text-center"
                         :model-value="
                           matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
                         "
