@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      VITE_API_URL: https://palpittero.com.br/api
+      VITE_API_URL: https://api.palpittero.com.br/api
       VITE_API_TIMEOUT: 60000
 
     steps:
