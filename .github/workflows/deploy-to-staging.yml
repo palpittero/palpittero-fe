@@ -12,6 +12,7 @@ jobs:
     env:
       VITE_API_URL: https://staging-api.palpittero.com.br/api
       VITE_API_TIMEOUT: 60000
+      VITE_ENV: staging
 
     steps:
       - uses: actions/checkout@v3

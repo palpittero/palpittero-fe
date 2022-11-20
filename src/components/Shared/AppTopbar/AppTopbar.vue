@@ -2,13 +2,13 @@
   <div class="layout-topbar">
     <router-link to="/" class="layout-topbar-logo">
       <img alt="Logo" :src="topbarImage" />
-      <span>Palpittero</span>
+      <span class="flex flex-column"> Palpittero </span>
     </router-link>
     <button
       class="p-link layout-menu-button layout-topbar-button"
       @click="onMenuToggle"
     >
-      <i class="pi pi-bars"></i>
+      <span class="pi pi-bars" />
     </button>
 
     <button
@@ -53,6 +53,21 @@
         </SplitButton>
       </li>
     </ul>
+  </div>
+  <div
+    v-if="!isProduction"
+    class="app-top-bar text-white flex flex-column justify-content-center align-items-center gap-2 w-full p-2 absolute text-bold"
+  >
+    <div class="flex justify-content-center align-items-center gap-2">
+      <span class="pi pi-exclamation-triangle" />
+      {{ $t('common.env') }}
+    </div>
+    <span>
+      <a class="text-white" href="https://palpittero.com.br">{{
+        $t('common.clickHere')
+      }}</a>
+      {{ $t('common.accessRightVersion') }}
+    </span>
   </div>
 
   <BaseConfirmDialog
@@ -123,4 +138,18 @@ const handleLogoutDialogSubmit = () => {
     name: 'Login'
   })
 }
+
+const isProduction = computed(() => import.meta.env.VITE_ENV === 'production')
 </script>
+
+<style lang="scss">
+.app-top-bar {
+  background-color: red;
+  font-size: 16px;
+  top: 4.5rem;
+
+  a {
+    text-decoration: underline;
+  }
+}
+</style>

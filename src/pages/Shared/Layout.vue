@@ -9,7 +9,7 @@
       <slot name="sidebar" :onMenuItemClick="onMenuItemClick" :menu="menu" />
     </div>
 
-    <div class="layout-main-container">
+    <div class="layout-main-container" :class="layoutClass">
       <div class="layout-main">
         <slot />
       </div>
@@ -145,6 +145,10 @@ onBeforeUpdate(() => {
   else removeClass(document.body, 'body-overflow-hidden')
 })
 
+const layoutClass = computed(() => [
+  import.meta.env.VITE_ENV !== 'production' && 'layout-env-warning'
+])
+
 // export default {
 // watch: {
 //   $route() {
@@ -154,6 +158,12 @@ onBeforeUpdate(() => {
 // },
 // }
 </script>
+
+<style lang="scss">
+.layout-env-warning {
+  padding-top: 11rem !important;
+}
+</style>
 
 <!-- <style lang="scss">
 .p-toast.p-toast-top-right {
