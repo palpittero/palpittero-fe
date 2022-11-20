@@ -25,7 +25,6 @@
           class="flex flex-column gap-3 border-top-1 surface-border p-3"
           :class="getMatchClass(matchesGuesses[match.id])"
         >
-          <!-- <pre>{{ matchesGuesses[match.id] }}</pre> -->
           <div
             class="flex flex-column md:flex-row align-items-start justify-content-between"
           >
@@ -83,23 +82,26 @@
                   </div>
                   <!-- Home team regular time input -->
                   <template v-if="isMatchScheduled(match)">
-                    <InputNumber
-                      :model-value="
-                        matchesGuesses[match.id].homeTeamRegularTimeGoals
-                      "
-                      :step="1"
-                      :min="0"
-                      class="col-6 text-center"
-                      :class="{ 'p-invalid': submitted && errors.year }"
-                      @input="
-                        ({ value }) =>
-                          handleUpdateRegularTimeGoals(
-                            'homeTeam',
-                            match.id,
-                            value
-                          )
-                      "
-                    />
+                    <span
+                      class="col-6 p-component p-inputnumber p-inputwrapper"
+                    >
+                      <input
+                        type="number"
+                        :value="
+                          matchesGuesses[match.id].homeTeamRegularTimeGoals
+                        "
+                        :min="0"
+                        class="p-inputtext p-component p-inputnumber-input"
+                        @input="
+                          (event) =>
+                            handleUpdateRegularTimeGoals(
+                              'homeTeam',
+                              match.id,
+                              event.target.value
+                            )
+                        "
+                      />
+                    </span>
                   </template>
                   <!-- Home team goals -->
                   <span v-else>
@@ -132,22 +134,27 @@
                 <div class="grid align-items-center">
                   <!-- Away team regular time input -->
                   <template v-if="isMatchScheduled(match)">
-                    <InputNumber
-                      :step="1"
-                      class="col-6 text-center"
-                      :model-value="
-                        matchesGuesses[match.id].awayTeamRegularTimeGoals
-                      "
-                      :class="{ 'p-invalid': submitted && errors.year }"
-                      @input="
-                        ({ value }) =>
-                          handleUpdateRegularTimeGoals(
-                            'awayTeam',
-                            match.id,
-                            value
-                          )
-                      "
-                    />
+                    <span
+                      class="col-6 p-component p-inputnumber p-inputwrapper"
+                    >
+                      <input
+                        type="number"
+                        :value="
+                          matchesGuesses[match.id].awayTeamRegularTimeGoals
+                        "
+                        :step="1"
+                        :min="0"
+                        class="p-inputtext p-component p-inputnumber-input text-center"
+                        @input="
+                          (event) =>
+                            handleUpdateRegularTimeGoals(
+                              'awayTeam',
+                              match.id,
+                              event.target.value
+                            )
+                        "
+                      />
+                    </span>
                   </template>
                   <!-- Away team goals -->
                   <span v-else class="gap-3 px-2 flex font-large">
@@ -222,7 +229,29 @@
                 <div class="col">
                   <div class="grid align-items-center justify-content-end">
                     <template v-if="isMatchScheduled(match)">
-                      <InputNumber
+                      <span
+                        class="col-6 p-component p-inputnumber p-inputwrapper"
+                      >
+                        <input
+                          type="number"
+                          :value="
+                            matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
+                          "
+                          :step="1"
+                          :min="0"
+                          class="p-inputtext p-component p-inputnumber-input"
+                          @input="
+                            (event) =>
+                              handleUpdatePenaltiesTimeGoals(
+                                'homeTeam',
+                                match.id,
+                                event.target.value
+                              )
+                          "
+                        />
+                      </span>
+
+                      <!-- <InputNumber
                         :model-value="
                           matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
                         "
@@ -238,7 +267,7 @@
                               value
                             )
                         "
-                      />
+                      /> -->
                     </template>
                     <span
                       v-else
@@ -263,7 +292,29 @@
                 <div class="col">
                   <div class="grid align-items-center">
                     <template v-if="isMatchScheduled(match)">
-                      <InputNumber
+                      <span
+                        class="col-6 p-component p-inputnumber p-inputwrapper"
+                      >
+                        <input
+                          type="number"
+                          :value="
+                            matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
+                          "
+                          :step="1"
+                          :min="0"
+                          class="p-inputtext p-component p-inputnumber-input"
+                          @input="
+                            (event) =>
+                              handleUpdatePenaltiesTimeGoals(
+                                'awayTeam',
+                                match.id,
+                                event.target.value
+                              )
+                          "
+                        />
+                      </span>
+
+                      <!-- <InputNumber
                         :step="1"
                         class="col-6 text-center"
                         :model-value="
@@ -278,7 +329,7 @@
                               value
                             )
                         "
-                      />
+                      /> -->
                     </template>
                     <span
                       v-else
@@ -514,6 +565,8 @@ const getAwayTeamPenaltiesTimeScoreClass = (match) => [
 ]
 
 const handleUpdateRegularTimeGoals = (team, matchId, value) => {
+  console.log(value)
+  const parsedValue = parseInt(value || 0)
   const guess = guesses.data.find((guess) => guess.matchId === matchId)
 
   if (guess) {
@@ -521,7 +574,7 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
       ...guesses.data.filter((guess) => guess.matchId !== matchId),
       {
         ...guess,
-        [`${team}RegularTimeGoals`]: value
+        [`${team}RegularTimeGoals`]: parsedValue
       }
     ]
   } else {
@@ -529,7 +582,7 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
       ...guesses.data,
       {
         matchId,
-        [`${team}RegularTimeGoals`]: value
+        [`${team}RegularTimeGoals`]: parsedValue
       }
     ]
   }
@@ -549,6 +602,7 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
 }
 
 const handleUpdatePenaltiesTimeGoals = (team, matchId, value) => {
+  const parsedValue = parseInt(value || 0)
   const guess = guesses.data.find((guess) => guess.matchId === matchId)
 
   if (guess) {
@@ -556,7 +610,7 @@ const handleUpdatePenaltiesTimeGoals = (team, matchId, value) => {
       ...guesses.data.filter((guess) => guess.matchId !== matchId),
       {
         ...guess,
-        [`${team}PenaltiesTimeGoals`]: value
+        [`${team}PenaltiesTimeGoals`]: parsedValue
       }
     ]
   } else {
@@ -564,7 +618,7 @@ const handleUpdatePenaltiesTimeGoals = (team, matchId, value) => {
       ...guesses.data,
       {
         matchId,
-        [`${team}PenaltiesTimeGoals`]: value
+        [`${team}PenaltiesTimeGoals`]: parsedValue
       }
     ]
   }
@@ -623,7 +677,7 @@ const allowPenaltiesGuess = (match) =>
 <style lang="scss">
 .rounds-matches-list {
   .p-inputnumber {
-    max-width: 60px;
+    max-width: 80px;
 
     &-input {
       width: 100%;
