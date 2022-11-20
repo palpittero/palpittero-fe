@@ -68,5 +68,8 @@ export default {
   unprocessedGuesses: 'Palpites não processados',
   options: 'Opções',
   show: 'Exibir',
-  hide: 'Esconder'
+  hide: 'Esconder',
+  env: 'Este é um ambiente de testes',
+  clickHere: 'clique aqui',
+  accessRightVersion: 'para acessar a versão correta'
 }
