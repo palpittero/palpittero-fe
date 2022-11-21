@@ -6,15 +6,20 @@
       >
         <h1 class="mb-0">{{ league.name }}</h1>
 
-        <Button v-if="hasGuesses" @click="handleProcessGuesses">
-          {{ $t('admin.guesses.processGuesses') }}
-        </Button>
+        <Button
+          v-if="hasGuesses"
+          @click="handleProcessGuesses"
+          icon="pi pi-bolt"
+          :label="$t('admin.guesses.processGuesses')"
+        />
       </div>
       <div class="flex flex-column gap-3" v-if="hasGuesses">
         <ChampionshipMatchesList
           v-for="championship in championships"
           :key="championship.id"
           :championship="championship"
+          :league="league"
+          @refresh="loadGuesses"
         />
       </div>
       <div v-else class="surface-section p-5">
@@ -24,8 +29,16 @@
   </UnprocessedGuessesFetcher>
 
   <BaseConfirmDialog
-    :header="$t('admin.dashboard.processGuesses.header')"
-    :message="$t('admin.dashboard.processGuesses.message')"
+    :header="
+      $t('admin.dashboard.unprocessedGuesses.league.header', {
+        leagueName: league.name
+      })
+    "
+    :message="
+      $t('admin.dashboard.unprocessedGuesses.league.message', {
+        leagueName: league.name
+      })
+    "
     :visible="isConfirmDialogVisible"
     :disabled="isSubmitting"
     @hide="handleConfirmDialogHide"
@@ -96,7 +109,7 @@ const handleConfirmDialogHide = () => (isConfirmDialogVisible.value = false)
 
 const handleConfirmDialogSubmit = async () => {
   isSubmitting.value = true
-  await services.guesses.processGuesses()
+  await services.guesses.processGuesses({ leagueId: league.value.id })
   toast.add({
     group: 'app',
     severity: 'success',
