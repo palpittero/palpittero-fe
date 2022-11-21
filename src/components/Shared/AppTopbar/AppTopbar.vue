@@ -54,7 +54,7 @@
       </li>
     </ul>
   </div>
-  <div
+  <!-- <div
     v-if="!isProduction"
     class="app-top-bar text-white flex flex-column justify-content-center align-items-center gap-2 w-full p-2 absolute text-bold"
   >
@@ -68,7 +68,7 @@
       }}</a>
       {{ $t('common.accessRightVersion') }}
     </span>
-  </div>
+  </div> -->
 
   <BaseConfirmDialog
     v-if="isLogoutDialogVisible"
@@ -139,7 +139,7 @@ const handleLogoutDialogSubmit = () => {
   })
 }
 
-const isProduction = computed(() => import.meta.env.VITE_ENV === 'production')
+// const isProduction = computed(() => import.meta.env.VITE_ENV === 'production')
 </script>
 
 <style lang="scss">
