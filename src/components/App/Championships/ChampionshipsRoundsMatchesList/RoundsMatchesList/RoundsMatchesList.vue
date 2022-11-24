@@ -76,7 +76,14 @@
                     class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
                   >
                     <span
-                      :class="getHomeTeamRegularTimeScoreClass(match)"
+                      :class="[
+                        ...getGuessHomeTeamRegularTimeScoreClass(
+                          matchesGuesses[match.id]
+                        ),
+                        ...getGuessHomeTeamPenaltiesTimeScoreClass(
+                          matchesGuesses[match.id]
+                        )
+                      ]"
                       class="text-center"
                     >
                       {{ match.homeTeam.name }}
@@ -110,7 +117,13 @@
                   <span v-else>
                     <span class="flex gap-3 px-2 font-large">
                       <!-- Home team regular time goals -->
-                      <span :class="getHomeTeamRegularTimeScoreClass(match)">
+                      <span
+                        :class="
+                          getGuessHomeTeamRegularTimeScoreClass(
+                            matchesGuesses[match.id]
+                          )
+                        "
+                      >
                         {{
                           parseMatchGoals(
                             matchesGuesses[match.id].homeTeamRegularTimeGoals
@@ -120,7 +133,11 @@
                       <!-- Home team penalties time goals -->
                       <span
                         v-if="isPenaltiesRoundType(match)"
-                        :class="getHomeTeamPenaltiesTimeScoreClass(match)"
+                        :class="
+                          getGuessHomeTeamPenaltiesTimeScoreClass(
+                            matchesGuesses[match.id]
+                          )
+                        "
                       >
                         ({{
                           parseMatchGoals(
@@ -165,7 +182,7 @@
                     <span
                       v-if="isPenaltiesRoundType(match)"
                       :class="
-                        getAwayTeamPenaltiesTimeScoreClass(
+                        getGuessAwayTeamPenaltiesTimeScoreClass(
                           matchesGuesses[match.id]
                         )
                       "
@@ -181,7 +198,7 @@
                     <!-- Away team regular time goals -->
                     <span
                       :class="
-                        getAwayTeamRegularTimeScoreClass(
+                        getGuessAwayTeamRegularTimeScoreClass(
                           matchesGuesses[match.id]
                         )
                       "
@@ -202,7 +219,7 @@
                     <span
                       class="text-center"
                       :class="
-                        getAwayTeamRegularTimeScoreClass(
+                        getGuessAwayTeamRegularTimeScoreClass(
                           matchesGuesses[match.id]
                         )
                       "
@@ -253,26 +270,8 @@
                           "
                         />
                       </span>
-
-                      <!-- <InputNumber
-                        :model-value="
-                          matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
-                        "
-                        :step="1"
-                        :min="0"
-                        class="col-6 text-center"
-                        :class="{ 'p-invalid': submitted && errors.year }"
-                        @input="
-                          ({ value }) =>
-                            handleUpdatePenaltiesTimeGoals(
-                              'homeTeam',
-                              match.id,
-                              value
-                            )
-                        "
-                      /> -->
                     </template>
-                    <span
+                    <!-- <span
                       v-else
                       class="px-3 gap-2 flex font-large"
                       :class="
@@ -288,7 +287,7 @@
                           )
                         }}
                       </span>
-                    </span>
+                    </span> -->
                   </div>
                 </div>
                 <div class="col-1 text-center width-auto">x</div>
@@ -369,16 +368,16 @@
               v-else
               :guess="matchesGuesses[match.id]"
               :home-team-regular-time-class-name="
-                getHomeTeamRegularTimeScoreClass(match)
+                getMatchHomeTeamRegularTimeScoreClass(match)
               "
               :away-team-regular-time-class-name="
-                getAwayTeamRegularTimeScoreClass(match)
+                getMatchAwayTeamRegularTimeScoreClass(match)
               "
               :home-team-penalties-time-class-name="
-                getHomeTeamPenaltiesTimeScoreClass(match)
+                getMatchHomeTeamPenaltiesTimeScoreClass(match)
               "
               :away-team-penalties-time-class-name="
-                getAwayTeamPenaltiesTimeScoreClass(match)
+                getMatchAwayTeamPenaltiesTimeScoreClass(match)
               "
             />
           </template>
@@ -547,25 +546,58 @@ const handlePreviousRound = () => selectedRoundIndex.value--
 
 const handleNextRound = () => selectedRoundIndex.value++
 
-const getHomeTeamRegularTimeScoreClass = (match) => [
+// Match
+const getMatchHomeTeamRegularTimeScoreClass = (match) => [
   match.regularTimeHomeTeamGoals > match.regularTimeAwayTeamGoals && 'text-bold'
 ]
 
-const getAwayTeamRegularTimeScoreClass = (match) => [
+const getMatchAwayTeamRegularTimeScoreClass = (match) => [
   match.regularTimeAwayTeamGoals > match.regularTimeHomeTeamGoals && 'text-bold'
 ]
+const getMatchHomeTeamPenaltiesTimeScoreClass = (match) => [
+  match.penaltiesTimeHomeTeamGoals > match.penaltiesTimeAwayTeamGoals &&
+    'text-bold'
+]
+const getMatchAwayTeamPenaltiesTimeScoreClass = (match) => [
+  match.penaltiesTimeAwayTeamGoals > match.penaltiesTimeHomeTeamGoals &&
+    'text-bold'
+]
 
-const getHomeTeamPenaltiesTimeScoreClass = (match) => {
+// Guess
+const getGuessHomeTeamRegularTimeScoreClass = (guess) => [
+  guess.homeTeamRegularTimeGoals > guess.awayTeamRegularTimeGoals && 'text-bold'
+]
+
+const getGuessAwayTeamRegularTimeScoreClass = (guess) => [
+  guess.awayTeamRegularTimeGoals > guess.homeTeamRegularTimeGoals && 'text-bold'
+]
+const getGuessHomeTeamPenaltiesTimeScoreClass = (guess) => [
+  guess.homeTeamPenaltiesTimeGoals > guess.awayTeamPenaltiesTimeGoals &&
+    'text-bold'
+]
+const getGuessAwayTeamPenaltiesTimeScoreClass = (guess) => [
+  guess.awayTeamPenaltiesTimeGoals > guess.homeTeamPenaltiesTimeGoals &&
+    'text-bold'
+]
+
+const getAwayTeamRegularTimeScoreClass = (match) => {
   return [
-    match.penaltiesTimeHomeTeamGoals > match.penaltiesTimeAwayTeamGoals &&
+    match.regularTimeAwayTeamGoals > match.regularTimeHomeTeamGoals &&
       'text-bold'
   ]
 }
 
-const getAwayTeamPenaltiesTimeScoreClass = (match) => [
-  match.penaltiesTimeAwayTeamGoals > match.penaltiesTimeHomeTeamGoals &&
-    'text-bold'
-]
+// const getHomeTeamPenaltiesTimeScoreClass = (match) => {
+//   return [
+//     match.penaltiesTimeHomeTeamGoals > match.penaltiesTimeAwayTeamGoals &&
+//       'text-bold'
+//   ]
+// }
+
+// const getAwayTeamPenaltiesTimeScoreClass = (match) => [
+//   match.penaltiesTimeAwayTeamGoals > match.penaltiesTimeHomeTeamGoals &&
+//     'text-bold'
+// ]
 
 const handleUpdateRegularTimeGoals = (team, matchId, value) => {
   const parsedValue = parseInt(value || 0)
