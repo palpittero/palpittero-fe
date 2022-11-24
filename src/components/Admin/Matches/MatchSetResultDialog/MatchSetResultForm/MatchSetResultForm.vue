@@ -184,6 +184,7 @@ const showPenaltiesResults = computed(() => {
 watch(
   () => showPenaltiesResults.value,
   (currentValue) => {
+    console.log(currentValue)
     if (!currentValue) {
       match.value.penaltiesTimeHomeTeamGoals = null
       match.value.penaltiesTimeAwayTeamGoals = null

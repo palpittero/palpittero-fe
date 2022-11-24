@@ -16,6 +16,7 @@
 </template>
 
 <script setup>
+import { isNil } from 'lodash/fp'
 import { watch, ref, computed } from 'vue'
 import { useForm } from 'vee-validate'
 import { useI18n } from 'vue-i18n'
@@ -53,8 +54,10 @@ const isPenaltiesRoundType = computed(() =>
 const showPenaltiesResults = computed(
   () =>
     isPenaltiesRoundType.value &&
-    match.value.regularTimeHomeTeamGoals ===
-      match.value.regularTimeAwayTeamGoals
+    !isNil(match.value.penaltiesTimeTimeHomeTeamGoals) &&
+    !isNil(match.value.penaltiesTimeTimeAwayTeamGoals) &&
+    match.value.penaltiesTimeTimeHomeTeamGoals ===
+      match.value.penaltiesTimeTimeAwayTeamGoals
 )
 
 const penaltiesFieldsValidationSchema = computed(() =>
