@@ -7,8 +7,8 @@ const fetchGuesses = (params = {}) => api.get(RESOURCE_URI, { params })
 const fetchMyGuesses = (params = {}) =>
   api.get(`${RESOURCE_URI}/my`, { params })
 
-const registerGuesses = (guesses) =>
-  api.post(`${RESOURCE_URI}/register`, { guesses })
+const registerGuesses = ({ matchesGuesses, championshipsGuesses }) =>
+  api.post(`${RESOURCE_URI}/register`, { matchesGuesses, championshipsGuesses })
 
 const processGuesses = ({ leagueId, championshipId } = {}) =>
   api.post(`${RESOURCE_URI}/process`, { leagueId, championshipId })

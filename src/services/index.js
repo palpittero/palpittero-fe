@@ -7,6 +7,7 @@ import users from './modules/users'
 import usersLeagues from './modules/usersLeagues'
 import championships from './modules/championships'
 import dashboard from './modules/dashboard'
+import championshipsGuesses from './modules/championshipsGuesses'
 
 export default {
   auth,
@@ -17,5 +18,6 @@ export default {
   users,
   usersLeagues,
   championships,
-  dashboard
+  dashboard,
+  championshipsGuesses
 }

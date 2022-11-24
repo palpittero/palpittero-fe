@@ -34,7 +34,6 @@ import { useI18n } from 'vue-i18n'
 import services from '@/services'
 
 import PendingLeaguesInvitationsDialog from './PendingLeaguesInvitationsDialog/PendingLeaguesInvitationsDialog.vue'
-// import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
 const toast = useToast()
 const i18n = useI18n()
@@ -44,32 +43,12 @@ const props = defineProps({
     type: Array,
     default: () => []
   }
-  // total: {
-  //   type: Number,
-  //   default: 0
-  // }
 })
 
 const emits = defineEmits(['refresh'])
 
-// const leagues = ref({
-//   loading: false,
-//   error: null,
-//   data: []
-// })
-
 const isLoading = ref(false)
 const isPendingLeaguesInvitationsDialogOpen = ref(false)
-
-// const loadPendingInvitations = async () => {
-//   leagues.value.loading = true
-//   leagues.value.data = await services.leagues.fetchMyLeagues({
-//     status: USERS_LEAGUES_STATUSES.INVITED
-//   })
-//   leagues.value.loading = false
-// }
-
-// onMounted(loadPendingInvitations)
 
 const handleViewPendingLeaguesInvitations = () =>
   (isPendingLeaguesInvitationsDialogOpen.value = true)

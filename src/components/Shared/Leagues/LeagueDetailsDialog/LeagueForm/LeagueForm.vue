@@ -81,6 +81,31 @@
     </div>
   </div>
 
+  <!-- <div class="field">
+    <label class="mb-3">{{ $t('admin.leagues.private') }}</label>
+
+    <div class="grid">
+      <div class="field-radiobutton col-6">
+        <RadioButton
+          id="private"
+          name="private"
+          :value="1"
+          v-model="league.private"
+        />
+        <label for="private">{{ $t('common.yes') }}</label>
+      </div>
+      <div class="field-radiobutton col-6">
+        <RadioButton
+          id="public"
+          name="private"
+          :value="0"
+          v-model="league.private"
+        />
+        <label for="public">{{ $t('common.no') }}</label>
+      </div>
+    </div>
+  </div> -->
+
   <div class="field" v-if="!ownerId">
     <label class="mb-3">{{ $t('admin.leagues.owner') }}</label>
     <UserSelect v-model="league.ownerId" :disabled="isEditing" />
@@ -117,7 +142,6 @@ import { computed, ref, watch } from 'vue'
 import BaseStatusPartialForm from '@/components/Shared/BaseStatusPartialForm/BaseStatusPartialForm.vue'
 import UserSelect from '@/components/Shared/Users/UserSelect/UserSelect.vue'
 
-// import { LEAGUE_POINTS_STRATEGY } from '@/constants/leagues'
 import ChampionshipsPickList from '@/components/Admin/Championships/ChampionshipsPickList/ChampionshipsPickList.vue'
 import ImageInput from '@/components/Shared/ImageInput/ImageInput.vue'
 import UsersChips from '@/components/Shared/Users/UsersChips/UsersChips.vue'

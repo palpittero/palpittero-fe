@@ -104,8 +104,6 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'remove'])
 
-// const minDate = new Date()
-
 const detail = computed({
   set(value) {
     emits('update:modelValue', value)

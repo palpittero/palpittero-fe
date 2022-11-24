@@ -70,9 +70,6 @@ export const MATCH_DETAIL_MODEL = {
 }
 
 export const MATCH_MODEL = {
-  // homeTeamId: null,
-  // awayTeamId: null,
-  // date: '',
   result: '',
   roundId: null,
   championship: null,

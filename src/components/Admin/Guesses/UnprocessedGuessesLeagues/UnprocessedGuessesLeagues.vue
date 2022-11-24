@@ -1,10 +1,15 @@
 <template>
   <UnprocessedGuessesFetcher>
     <template
-      #default="{ data: unprocessedGuesses, fetch: fetchUnprocessedGuesses }"
+      #default="{
+        data: { matchesGuesses, championshipsGuesses },
+        fetch: fetchUnprocessedGuesses
+      }"
     >
       <LeaguesDescriptionList
-        :leagues="parseGuessesLeagues(unprocessedGuesses)"
+        :leagues="
+          parseGuessesLeagues([...matchesGuesses, ...championshipsGuesses])
+        "
         :title="$t('common.unprocessedGuesses')"
         :description="$t('common.unprocessedGuesses')"
         :empty-state="$t('admin.guesses.allGuessesWereProcessed')"

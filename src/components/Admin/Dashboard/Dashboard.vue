@@ -1,9 +1,11 @@
 <template>
   <UnprocessedGuessesFetcher>
-    <template #default="{ data: unprocessedGuesses, fetch }">
+    <template
+      #default="{ data: { matchesGuesses, championshipsGuesses }, fetch }"
+    >
       <UnprocessedGuessesBanner
-        v-if="unprocessedGuesses.length > 0"
-        :guesses="unprocessedGuesses"
+        v-if="[...matchesGuesses, ...championshipsGuesses].length > 0"
+        :guesses="[...matchesGuesses, ...championshipsGuesses]"
         @refresh="fetch"
       />
     </template>

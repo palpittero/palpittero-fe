@@ -138,8 +138,6 @@ const handleLogoutDialogSubmit = () => {
     name: 'Login'
   })
 }
-
-// const isProduction = computed(() => import.meta.env.VITE_ENV === 'production')
 </script>
 
 <style lang="scss">

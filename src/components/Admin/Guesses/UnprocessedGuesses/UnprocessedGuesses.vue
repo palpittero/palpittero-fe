@@ -1,32 +1,48 @@
 <template>
-  <UnprocessedGuessesFetcher>
-    <BaseDataRenderer :state="{ loading: isLoading }">
-      <div
-        class="flex flex-wrap justify-content-between align-items-center guesses__top-bar--is-pinned unprocessed-guesses__top-bar"
-      >
-        <h1 class="mb-0">{{ league.name }}</h1>
+  <BaseDataRenderer class="unprocessed-guesses" :state="{ loading: isLoading }">
+    <div
+      class="flex flex-wrap justify-content-between align-items-center guesses__top-bar--is-pinned unprocessed-guesses__top-bar"
+    >
+      <h1 class="mb-0">{{ league.name }}</h1>
 
-        <Button
-          v-if="hasGuesses"
-          @click="handleProcessGuesses"
-          icon="pi pi-bolt"
-          :label="$t('admin.guesses.processGuesses')"
-        />
-      </div>
-      <div class="flex flex-column gap-3" v-if="hasGuesses">
-        <ChampionshipMatchesList
-          v-for="championship in championships"
-          :key="championship.id"
-          :championship="championship"
-          :league="league"
-          @refresh="loadGuesses"
-        />
-      </div>
-      <div v-else class="surface-section p-5">
-        {{ $t('admin.guesses.allGuessesWereProcessed') }}
-      </div>
-    </BaseDataRenderer>
-  </UnprocessedGuessesFetcher>
+      <Button
+        v-if="hasGuesses"
+        @click="handleProcessGuesses"
+        icon="pi pi-bolt"
+        :label="$t('admin.guesses.processGuesses')"
+      />
+    </div>
+    <TabView>
+      <TabPanel :header="matchesGuessesTabHeader">
+        <div class="flex flex-column gap-3" v-if="hasGuesses">
+          <ChampionshipMatchesList
+            :championship="championship"
+            v-for="championship in championships"
+            :key="championship.id"
+            :league="league"
+            @refresh="loadGuesses"
+          />
+        </div>
+        <div v-else class="surface-section p-5">
+          {{ $t('admin.guesses.allGuessesWereProcessed') }}
+        </div>
+      </TabPanel>
+      <TabPanel :header="championshipsGuessesTabHeader">
+        <div class="flex flex-column gap-3" v-if="hasChampionshipGuesses">
+          <UserChampionshipGuessesList
+            v-for="championship in guessesChampionships"
+            open
+            :key="championship.id"
+            :championship="championship"
+            :league="league"
+          />
+        </div>
+        <div v-else class="surface-section p-5">
+          {{ $t('admin.guesses.allGuessesWereProcessed') }}
+        </div>
+      </TabPanel>
+    </TabView>
+  </BaseDataRenderer>
 
   <BaseConfirmDialog
     :header="
@@ -48,16 +64,20 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import services from '@/services'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
-import { parseGuessesChampionships } from '@/helpers/guesses'
+import { useRouter } from 'vue-router'
+
+import services from '@/services'
+import {
+  parseChampionshipsGuesses,
+  parseMatchesGuesses
+} from '@/helpers/guesses'
 
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
-import UnprocessedGuessesFetcher from '../UnprocessedGuessesFetcher/UnprocessedGuessesFetcher.vue'
 import ChampionshipMatchesList from '@/components/Admin/Championships/ChampionshipMatchesList/ChampionshipMatchesList.vue'
+import UserChampionshipGuessesList from '@/components/Shared/Guesses/UserChampionshipGuessesList/UserChampionshipGuessesList.vue'
 import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
-import { useRouter } from 'vue-router'
 
 const toast = useToast()
 const i18n = useI18n()
@@ -78,18 +98,15 @@ const isSubmitting = ref(false)
 const isConfirmDialogVisible = ref(false)
 
 onMounted(async () => {
-  isLoading.value = true
   const { leagueId } = props
-
+  isLoading.value = true
   league.value = await services.leagues.fetchLeagueById(leagueId)
   await loadGuesses()
-
   isLoading.value = false
 })
 
 const loadGuesses = async () => {
   const { leagueId } = props
-  isLoading.value = true
   guesses.value = await services.dashboard.fetchUnprocessedGuesses({
     leagueId
   })
@@ -101,7 +118,13 @@ const loadGuesses = async () => {
   isLoading.value = false
 }
 
-const championships = computed(() => parseGuessesChampionships(guesses.value))
+const championships = computed(() =>
+  parseMatchesGuesses(guesses.value.matchesGuesses)
+)
+
+const guessesChampionships = computed(() =>
+  parseChampionshipsGuesses(guesses.value.championshipsGuesses)
+)
 
 const handleProcessGuesses = () => (isConfirmDialogVisible.value = true)
 
@@ -122,7 +145,20 @@ const handleConfirmDialogSubmit = async () => {
   isSubmitting.value = false
 }
 
-const hasGuesses = computed(() => guesses.value.length > 0)
+const hasGuesses = computed(() => guesses.value.matchesGuesses.length > 0)
+const hasChampionshipGuesses = computed(
+  () => guesses.value.championshipsGuesses.length > 0
+)
+
+const matchesGuessesTabHeader = computed(
+  () => `${i18n.t('common.matches')} (${guesses.value.matchesGuesses.length})`
+)
+const championshipsGuessesTabHeader = computed(
+  () =>
+    `${i18n.t('common.positions')} (${
+      guesses.value.championshipsGuesses.length
+    })`
+)
 </script>
 
 <style lang="scss">
@@ -154,6 +190,11 @@ const hasGuesses = computed(() => guesses.value.length > 0)
         }
       }
     }
+  }
+
+  .p-tabview-panels {
+    background: transparent !important;
+    padding: 0 !important;
   }
 }
 </style>

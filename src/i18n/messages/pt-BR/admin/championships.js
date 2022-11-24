@@ -33,5 +33,10 @@ export default {
   addGroup: 'Adicionar grupo',
   groups: 'Grupos',
   setGroups: 'Definir grupos',
-  noGroups: 'Sem grupos'
+  noGroups: 'Sem grupos',
+  setRanking: '{name} - Definir Campeão e Vice',
+  champion: 'Campeão',
+  runnerUp: 'Vice-campeão',
+  setChampions: 'Definir campeão e vice',
+  enableGuess: 'Habilitar palpite de posições'
 }

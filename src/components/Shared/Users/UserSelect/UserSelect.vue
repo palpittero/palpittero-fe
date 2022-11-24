@@ -53,6 +53,4 @@ onMounted(async () => {
   users.data = await services.users.fetchUsers()
   users.loading = false
 })
-
-// const getOptionValue = ({ id, name }) => ({ id, name })
 </script>

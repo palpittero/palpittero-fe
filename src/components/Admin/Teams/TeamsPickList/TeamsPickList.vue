@@ -85,7 +85,7 @@
           </div>
         </div>
       </template>
-      <template #targetheader> Selecionados </template>
+      <template #targetheader> {{ $t('common.selected') }} </template>
       <template #item="{ item }">
         <div class="flex align-items-center gap-3">
           <BadgeAvatar :image="item.badge" />

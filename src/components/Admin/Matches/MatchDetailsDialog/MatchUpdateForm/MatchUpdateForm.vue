@@ -108,7 +108,6 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue'])
 const match = ref(props.modelValue)
 const championship = ref(match.value.championship || null)
-// const minDate = new Date()
 
 watch(
   () => match.value,

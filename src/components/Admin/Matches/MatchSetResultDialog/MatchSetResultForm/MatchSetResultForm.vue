@@ -188,10 +188,8 @@ watch(
       match.value.penaltiesTimeHomeTeamGoals = null
       match.value.penaltiesTimeAwayTeamGoals = null
     } else {
-      // if (!currentValue) {
       match.value.penaltiesTimeHomeTeamGoals = 0
       match.value.penaltiesTimeAwayTeamGoals = 0
-      // }
     }
   }
 )

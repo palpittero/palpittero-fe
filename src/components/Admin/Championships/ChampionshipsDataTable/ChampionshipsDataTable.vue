@@ -63,14 +63,20 @@
         <BaseStatus :status="data.status" />
       </template>
     </Column>
-    <Column headerStyle="min-width:10rem;">
+    <Column headerStyle="min-width:12rem;">
       <template #body="{ data }">
-        <div>
+        <div class="flex gap-2">
           <Button
             icon="pi pi-pencil"
-            class="p-button p-button-info p-button-sm mr-2"
+            class="p-button p-button-info p-button-sm"
             :label="$t('common.edit')"
             @click="handleEditChampionship(data)"
+          />
+          <Button
+            icon="pi pi-star-fill"
+            class="p-button p-button-info p-button-sm"
+            :label="$t('admin.championships.setChampions')"
+            @click="handleSetRanking(data)"
           />
           <Button
             icon="pi pi-trash"
@@ -99,7 +105,7 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['edit', 'delete', 'update:modelValue'])
+const emits = defineEmits(['edit', 'delete', 'ranking', 'update:modelValue'])
 
 const selectedChampionships = computed({
   set(value) {
@@ -112,4 +118,5 @@ const selectedChampionships = computed({
 
 const handleEditChampionship = (championship) => emits('edit', championship)
 const handleDeleteChampionship = (championship) => emits('delete', championship)
+const handleSetRanking = (championship) => emits('ranking', championship)
 </script>

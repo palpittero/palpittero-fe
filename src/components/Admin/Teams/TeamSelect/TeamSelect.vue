@@ -5,6 +5,7 @@
     optionLabel="name"
     :optionValue="getOptionValue"
     filter
+    :showClear="clearable"
     :placeholder="$t('admin.teams.selectTeam')"
     :class="{ 'p-invalid': invalid }"
     class="team-select"
@@ -46,7 +47,8 @@ const props = defineProps({
     type: Number,
     default: null
   },
-  invalid: Boolean
+  invalid: Boolean,
+  clearable: Boolean
 })
 
 const emits = defineEmits(['update:modelValue'])

@@ -1,7 +1,7 @@
 <template>
-  <div class="surface-section">
+  <div class="surface-section p-3">
     <div
-      class="flex justify-content-between cursor-pointer p-3"
+      class="flex justify-content-between cursor-pointer"
       @click="handleToggle"
     >
       <span class="font-medium text-3xl text-900">
@@ -13,6 +13,13 @@
     </div>
     <Transition name="championships-rounds-matches-list">
       <div v-show="isOpen">
+        <ChampionshipGuesses
+          v-if="enablePositionGuesses"
+          v-model="championshipGuesses"
+          :loading="isLoading"
+          :championship-id="championship.id"
+          :league-id="leagueId"
+        />
         <ul v-if="loading" class="m-0 p-0">
           <li class="mb-4">
             <Skeleton width="100%" class="mb-2" />
@@ -36,9 +43,9 @@
           </li>
         </ul>
         <RoundMatchesList
-          v-else-if="rounds.data.length"
+          v-else-if="rounds.length"
           :model-value="matchesGuesses"
-          :rounds="rounds.data"
+          :rounds="rounds"
           :league-id="leagueId"
           :memory-registered-guesses="memoryRegisteredGuesses"
           @update:model-value="handleUpdateMatchesGuesses"
@@ -55,11 +62,18 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import services from '@/services'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import RoundMatchesList from './RoundsMatchesList/RoundsMatchesList.vue'
+import ChampionshipGuesses from './ChampionshipGuesses/ChampionshipGuesses.vue'
+import { useAuthStore } from '@/stores/auth'
+import {
+  getChampionshipGuessesInitialValues,
+  parseChampionshipGuesses
+} from '@/helpers/guesses'
 
 const i18n = useI18n()
+const { loggedUser } = useAuthStore()
 
 const props = defineProps({
   modelValue: {
@@ -82,29 +96,56 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  enablePositionGuesses: Boolean,
   isOpen: Boolean
 })
 
-const emits = defineEmits(['update:modelValue'])
-
-const rounds = ref({
-  loading: false,
-  error: null,
-  data: []
-})
+const emits = defineEmits(['update:modelValue', 'update:championshipGuesses'])
 
 const isOpen = ref(props.isOpen)
+const isLoading = ref(false)
 
 const matchesGuesses = ref(props.modelValue)
 
-onMounted(
-  async () =>
-    (rounds.value.data = await services.championships.fetchRounds(
-      props.championship.id
-    ))
-)
+const rounds = ref([])
+const championshipGuesses = ref({})
 
-const loading = computed(() => rounds.value.loading)
+onMounted(async () => {
+  isLoading.value = true
+
+  rounds.value = await services.championships.fetchRounds(props.championship.id)
+
+  if (props.enablePositionGuesses) {
+    const championshipId = props.championship.id
+    const leagueId = props.leagueId
+    const userId = loggedUser.id
+
+    const championshipGuessesData =
+      await services.championshipsGuesses.fetchChampionshipsGuesses({
+        championshipId,
+        leagueId,
+        userId
+      })
+
+    championshipGuesses.value = {
+      ...getChampionshipGuessesInitialValues({
+        championshipId,
+        leagueId,
+        userId
+      }),
+      ...parseChampionshipGuesses(championshipGuessesData)
+    }
+  }
+
+  isLoading.value = false
+})
+
+watch(
+  () => championshipGuesses.value,
+  (championshipGuesses) =>
+    emits('update:championshipGuesses', championshipGuesses),
+  { deep: true }
+)
 
 const handleUpdateMatchesGuesses = (value) => emits('update:modelValue', value)
 

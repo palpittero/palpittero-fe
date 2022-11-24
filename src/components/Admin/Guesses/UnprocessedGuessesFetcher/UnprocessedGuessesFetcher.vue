@@ -16,7 +16,10 @@ import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRende
 const unprocessedGuesses = ref({
   loading: false,
   error: null,
-  data: []
+  data: {
+    matchesGuesses: [],
+    championshipsGuesses: []
+  }
 })
 
 const loadUnprocessedGuesses = async () => {

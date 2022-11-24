@@ -14,7 +14,8 @@ export const LEAGUE_MODEL = {
   ownerId: null,
   pointsStrategy: LEAGUE_POINTS_STRATEGY.GROUPED,
   status: STATUSES.ACTIVE,
-  resendInvitations: false
+  resendInvitations: false,
+  enableGuesses: false
 }
 
 export const USERS_LEAGUES_STATUSES = {

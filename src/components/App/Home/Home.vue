@@ -121,7 +121,6 @@ const i18n = useI18n()
 const router = useRouter()
 const toast = useToast()
 
-// const canManage = ref(false)
 const selectedLeague = ref({})
 const isLeagueUsersDialogVisible = ref(false)
 const isLeagueJoinDialogVisible = ref(false)
@@ -219,13 +218,13 @@ const handleUsersDialogHide = () => (isLeagueUsersDialogVisible.value = false)
 
 const handleManageLeague = (league) => {
   selectedLeague.value = league
-  // canManage.value = isOwner
+
   isLeagueUsersDialogVisible.value = true
 }
 
 const handleRankingLeague = (league) => {
   selectedLeague.value = league
-  // canManage.value = false
+
   isLeagueRankingDialogVisible.value = true
 }
 

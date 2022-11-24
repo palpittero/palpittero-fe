@@ -13,5 +13,7 @@ export default {
   noGuesses: 'Ninguém registrou palpites para esta partida',
   guessPenalties: 'Palpitar Pênalties',
   penalties: 'Pênaltis',
-  afterPenalties: 'Após pênaltis'
+  afterPenalties: 'Após pênaltis',
+  champion: 'Campeão',
+  runnerUp: 'Vice-campeão'
 }

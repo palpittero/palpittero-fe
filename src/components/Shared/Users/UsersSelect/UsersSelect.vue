@@ -34,7 +34,6 @@ const props = defineProps({
     default: ''
   },
   invalid: Boolean
-  // disabled: Boolean
 })
 
 const emits = defineEmits(['update:modelValue'])

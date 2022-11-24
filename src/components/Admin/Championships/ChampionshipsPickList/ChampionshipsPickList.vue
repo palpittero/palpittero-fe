@@ -5,14 +5,32 @@
       listStyle="height:342px"
       data-key="id"
       class="championships-pick-list"
+      @move-to-source="handleMoveToSourcePickList"
+      @move-all-to-source="handleMoveToSourcePickList"
     >
       <template #sourceheader>
         {{ $t('admin.championships.allChampionships') }}
       </template>
-      <template #targetheader> {{ $t('common.selected') }} </template>
+      <template #targetheader>
+        <div class="flex justify-content-between">
+          <span>
+            {{ $t('common.selected') }}
+          </span>
+          <span class="text-right">
+            {{ $t('admin.championships.enableGuess') }}
+          </span>
+        </div>
+      </template>
       <template #item="{ item }">
-        <div class="flex align-items-center">
+        <div class="flex align-items-center justify-content-between">
           <span>{{ item.name }} {{ item.year }}</span>
+          <InputSwitch
+            v-if="isChampionshipSelected(item)"
+            v-model="item.enableGuesses"
+            :true-value="1"
+            :false-value="0"
+            @click.stop
+          />
         </div>
       </template>
     </PickList>
@@ -65,6 +83,14 @@ onMounted(async () => {
   championships.data = props.filter(rows)
   championships.loading = false
 })
+
+const isChampionshipSelected = (team) => {
+  const [, value] = selectedChampionships.value
+  return value.map(({ id }) => id).includes(team.id)
+}
+
+const handleMoveToSourcePickList = ({ items }) =>
+  items.forEach((val) => (val.enableGuesses = false))
 </script>
 
 <style lang="scss">

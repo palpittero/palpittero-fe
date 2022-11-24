@@ -1,4 +1,5 @@
 <template>
+  <!-- <pre>{{ championshipsGuesses }}</pre> -->
   <div>
     <div
       class="flex flex-wrap justify-content-between align-items-center guesses__top-bar guesses__top-bar--is-pinned gap-2"
@@ -6,10 +7,12 @@
       <h1 class="mb-0">
         {{ league.data.name }}
       </h1>
-      <Button @click="handleRegisterGuesses" :disabled="hasInvalidGuesses">
-        {{ $t('app.guesses.register') }}
-        <span id="test"></span>
-      </Button>
+      <Button
+        @click="handleRegisterGuesses"
+        :disabled="hasInvalidGuesses"
+        icon="pi pi-bolt"
+        :label="$t('app.guesses.register')"
+      />
     </div>
     <div class="flex flex-column gap-3">
       <div
@@ -21,8 +24,10 @@
           :is-open="isChampionshipRoundsMatchesListOpen(index)"
           :championship="championship"
           :league-id="leagueId"
+          :enable-position-guesses="championship.enableGuesses"
           :memory-registered-guesses="memoryRegisteredGuesses"
           empty-state="app.guesses.noRounds"
+          @update:championship-guesses="handleUpdateChampionshipGuesses"
         />
       </div>
     </div>
@@ -30,19 +35,21 @@
 </template>
 
 <script setup>
-import services from '@/services'
-import { reduce, flatMap, pipe, map, filter, isNil } from 'lodash/fp'
+import { reduce, flatMap, pipe, map, filter, isNil, uniqBy } from 'lodash/fp'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 
+import services from '@/services'
 import ChampionshipsRoundsMatchesList from '@/components/App/Championships/ChampionshipsRoundsMatchesList/ChampionshipsRoundsMatchesList.vue'
 
 import { MATCH_STATUSES } from '@/constants/matches'
 import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
+import { useAuthStore } from '@/stores/auth'
 
 const toast = useToast()
 const i18n = useI18n()
+const { loggedUser } = useAuthStore()
 
 const props = defineProps({
   leagueId: {
@@ -66,6 +73,7 @@ const league = reactive({
 const memoryRegisteredGuesses = ref([])
 
 const matchesGuesses = ref(null)
+const championshipsGuesses = ref([])
 
 const guesses = computed(() =>
   pipe(
@@ -88,37 +96,38 @@ const guesses = computed(() =>
 
 const hasInvalidGuesses = computed(
   () =>
-    guesses.value.length === 0 ||
-    guesses.value.some(
-      ({
-        homeTeamRegularTimeGoals,
-        awayTeamRegularTimeGoals,
-        homeTeamPenaltiesTimeGoals,
-        awayTeamPenaltiesTimeGoals,
-        match
-      }) => {
-        const isPenaltiesRound = [
-          CHAMPIONSHIPS_ROUND_TYPE.EXTRA_TIME,
-          CHAMPIONSHIPS_ROUND_TYPE.PENALTIES
-        ].includes(match.round.type)
+    championships.data.every(({ enableGuesses }) => !enableGuesses) &&
+    (guesses.value.length === 0 ||
+      guesses.value.some(
+        ({
+          homeTeamRegularTimeGoals,
+          awayTeamRegularTimeGoals,
+          homeTeamPenaltiesTimeGoals,
+          awayTeamPenaltiesTimeGoals,
+          match
+        }) => {
+          const isPenaltiesRound = [
+            CHAMPIONSHIPS_ROUND_TYPE.EXTRA_TIME,
+            CHAMPIONSHIPS_ROUND_TYPE.PENALTIES
+          ].includes(match.round.type)
 
-        const hasInvalidPenaltiesGuesses =
-          (isPenaltiesRound &&
-            !isNil(homeTeamPenaltiesTimeGoals) &&
-            isNil(awayTeamPenaltiesTimeGoals)) ||
-          (!isNil(awayTeamPenaltiesTimeGoals) &&
-            isNil(homeTeamPenaltiesTimeGoals)) ||
-          (homeTeamPenaltiesTimeGoals &&
-            awayTeamPenaltiesTimeGoals &&
-            homeTeamPenaltiesTimeGoals === awayTeamPenaltiesTimeGoals)
+          const hasInvalidPenaltiesGuesses =
+            (isPenaltiesRound &&
+              !isNil(homeTeamPenaltiesTimeGoals) &&
+              isNil(awayTeamPenaltiesTimeGoals)) ||
+            (!isNil(awayTeamPenaltiesTimeGoals) &&
+              isNil(homeTeamPenaltiesTimeGoals)) ||
+            (homeTeamPenaltiesTimeGoals &&
+              awayTeamPenaltiesTimeGoals &&
+              homeTeamPenaltiesTimeGoals === awayTeamPenaltiesTimeGoals)
 
-        return (
-          isNil(homeTeamRegularTimeGoals) ||
-          isNil(awayTeamRegularTimeGoals) ||
-          hasInvalidPenaltiesGuesses
-        )
-      }
-    )
+          return (
+            isNil(homeTeamRegularTimeGoals) ||
+            isNil(awayTeamRegularTimeGoals) ||
+            hasInvalidPenaltiesGuesses
+          )
+        }
+      ))
 )
 
 onMounted(async () => {
@@ -136,8 +145,15 @@ onMounted(async () => {
 const handleRegisterGuesses = async () => {
   memoryRegisteredGuesses.value = guesses.value.map(({ matchId }) => matchId)
 
-  await services.guesses.registerGuesses(guesses.value)
-  const total = guesses.value.length
+  await services.guesses.registerGuesses({
+    matchesGuesses: guesses.value,
+    championshipsGuesses: championshipsGuesses.value.map((guess) => ({
+      ...guess,
+      leagueId: props.leagueId,
+      userId: loggedUser?.id
+    }))
+  })
+  const total = guesses.value.length + championshipsGuesses.value.length
 
   toast.add({
     severity: 'success',
@@ -149,6 +165,14 @@ const handleRegisterGuesses = async () => {
 }
 
 const isChampionshipRoundsMatchesListOpen = (index) => index === 0
+
+const handleUpdateChampionshipGuesses = (championshipGuesses) => {
+  championshipsGuesses.value = uniqBy(
+    ({ championshipId, leagueId, userId, position }) =>
+      [championshipId, leagueId, userId, position].join(),
+    [...championshipsGuesses.value, ...Object.values(championshipGuesses)]
+  )
+}
 </script>
 
 <style lang="scss">
