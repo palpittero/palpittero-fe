@@ -68,8 +68,6 @@
 <script setup>
 import services from '@/services'
 import { onMounted, reactive, ref, watch } from 'vue'
-// import { useRoute, useRouter } from 'vue-router'
-// import { omit } from 'lodash/fp'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { useToast } from 'primevue/usetoast'
@@ -77,7 +75,6 @@ import { useI18n } from 'vue-i18n'
 import ResetPasswordForm from './ResetPasswordForm/ResetPasswordForm.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { omit } from 'lodash/fp'
-// import ResetPasswordForm from './ResetPasswordForm/ResetPasswordForm.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -107,7 +104,6 @@ const { errors, handleSubmit, setValues } = useForm({
 
 const isLoading = ref(false)
 const isSuccess = ref(false)
-// const isFinished = ref(false)
 
 watch(credentials, (value) => setValues(value), { deep: true, immediate: true })
 
@@ -154,7 +150,7 @@ const onSubmit = handleSubmit(
     try {
       isLoading.value = true
       await services.auth.resetPassword(credentials)
-      // isFinished.value = true
+
       isSuccess.value = true
     } catch (error) {
       if (error.response.status === 404) {

@@ -34,8 +34,6 @@ import services from '@/services'
 import { computed, reactive, onMounted } from 'vue'
 import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 
-// import countriesFetcher from '@/components/Shared/countries/countriesFetcher/countriesFetcher.vue'
-
 const props = defineProps({
   modelValue: {
     type: Array,

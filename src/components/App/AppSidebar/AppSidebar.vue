@@ -23,11 +23,6 @@ const menu = reactive([
   {
     label: i18n.t('common.menu.menu'),
     items: [
-      // {
-      //   label: i18n.t('common.users'),
-      //   icon: 'pi pi-fw pi-users',
-      //   to: { name: 'AdminUsers' }
-      // },
       {
         label: i18n.t('common.menu.leagues'),
         icon: 'pi pi-fw pi-flag',
@@ -38,21 +33,6 @@ const menu = reactive([
         icon: 'pi pi-fw pi-book',
         to: { name: 'Rules' }
       }
-      // {
-      //   label: i18n.t('common.teams'),
-      //   icon: 'pi pi-fw pi-shield',
-      //   to: { name: 'AdminTeams' }
-      // },
-      // {
-      //   label: i18n.t('common.championships'),
-      //   icon: 'pi pi-fw pi-ticket',
-      //   to: { name: 'AdminChampionships' }
-      // },
-      // {
-      //   label: i18n.t('common.matches'),
-      //   icon: 'pi pi-fw pi-ticket',
-      //   to: { name: 'AdminMatches' }
-      // }
     ]
   }
 ])

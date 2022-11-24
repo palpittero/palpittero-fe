@@ -39,10 +39,6 @@ const props = defineProps({
     type: Array,
     required: true
   },
-  // message: {
-  //   type: String,
-  //   default: 'admin.leagues.deleteConfirmation'
-  // },
   visible: Boolean,
   submitting: Boolean
 })

@@ -29,6 +29,7 @@
           :championships="championships"
           @edit="handleEditChampionship"
           @delete="handleDeleteChampionship"
+          @ranking="handleSetRankingChampionship"
         />
 
         <ChampionshipDetailsDialog
@@ -47,6 +48,15 @@
           @hide="handleDeleteDialogHide"
           @submit="handleDeleteDialogSubmit"
         />
+
+        <ChampionshipSetRankingDialog
+          v-if="isChampionshipSetRankingDialogOpen"
+          :championship="championship"
+          :visible="isChampionshipSetRankingDialogOpen"
+          :disabled="isSubmitting"
+          @hide="handleSetRankingDialogHide"
+          @submit="handleSetRankingDialogSubmit"
+        />
       </div>
     </div>
   </div>
@@ -57,12 +67,18 @@ import { ref, onMounted } from 'vue'
 import ChampionshipsDataTable from './ChampionshipsDataTable/ChampionshipsDataTable.vue'
 import ChampionshipDetailsDialog from './ChampionshipDetailsDialog/ChampionshipDetailsDialog.vue'
 import ChampionshipDeleteDialog from './ChampionshipDeleteDialog/ChampionshipDeleteDialog.vue'
+import ChampionshipSetRankingDialog from './ChampionshipSetRankingDialog/ChampionshipSetRankingDialog.vue'
 
 import { CHAMPIONSHIP_MODEL } from '@/constants/championships'
 import services from '@/services'
 import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 import { clone } from 'lodash'
+import {
+  getChampionshipPositionsInitialValues,
+  parseChampionshipInput,
+  parseChampionshipPositions
+} from '@/helpers/championships'
 
 const i18n = useI18n()
 const toast = useToast()
@@ -76,6 +92,7 @@ const championships = ref({
 
 const isChampionshipDetailsDialogVisible = ref(false)
 const isChampionshipDeleteDialogOpen = ref(false)
+const isChampionshipSetRankingDialogOpen = ref(false)
 const selectedChampionships = ref([])
 const isSubmitting = ref(false)
 
@@ -97,13 +114,14 @@ const handleNewChampionship = () => {
   isChampionshipDetailsDialogVisible.value = true
 }
 
-const handleDetailsDialogSubmit = async (championship) => {
+const saveChampionship = async (championship) => {
   isSubmitting.value = true
+  const parsedChampionship = parseChampionshipInput(championship)
 
   if (championship.id) {
-    await services.championships.updateChampionship(championship)
+    await services.championships.updateChampionship(parsedChampionship)
   } else {
-    await services.championships.createChampionship(championship)
+    await services.championships.createChampionship(parsedChampionship)
   }
 
   toast.add({
@@ -114,8 +132,12 @@ const handleDetailsDialogSubmit = async (championship) => {
     life: 4000
   })
 
-  handleDetailsDialogHide()
   isSubmitting.value = false
+}
+
+const handleDetailsDialogSubmit = async (championship) => {
+  await saveChampionship(championship)
+  handleDetailsDialogHide()
   loadChampionships()
 }
 
@@ -168,6 +190,27 @@ const handleDeleteDialogSubmit = async (championships) => {
   } finally {
     isSubmitting.value = false
   }
+}
+
+const handleSetRankingChampionship = (row) => {
+  championship.value = {
+    ...row,
+    positions: {
+      ...getChampionshipPositionsInitialValues(championship.value.id),
+      ...parseChampionshipPositions(row.positions)
+    }
+  }
+
+  isChampionshipSetRankingDialogOpen.value = true
+}
+
+const handleSetRankingDialogHide = () =>
+  (isChampionshipSetRankingDialogOpen.value = false)
+
+const handleSetRankingDialogSubmit = async (championship) => {
+  await saveChampionship(championship)
+  handleSetRankingDialogHide()
+  loadChampionships()
 }
 </script>
 

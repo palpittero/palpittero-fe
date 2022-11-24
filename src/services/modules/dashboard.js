@@ -5,8 +5,8 @@ const RESOURCE_URI = '/dashboard'
 
 const fetchGeneralStats = () => api.get(`${RESOURCE_URI}/general-stats`)
 
-const fetchUnprocessedGuesses = ({ leagueId } = {}) => {
-  const searchParams = objectToSearchParams({ leagueId })
+const fetchUnprocessedGuesses = ({ leagueId, championshipId } = {}) => {
+  const searchParams = objectToSearchParams({ leagueId, championshipId })
 
   return api.get(`${RESOURCE_URI}/unprocessed-guesses${searchParams}`)
 }

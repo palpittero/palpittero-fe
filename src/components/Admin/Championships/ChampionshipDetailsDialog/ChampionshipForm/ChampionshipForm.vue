@@ -123,7 +123,7 @@
         <TeamsAutoComplete
           v-model="group.teams"
           class="w-full"
-          :on-filter="getOnFilterTeams(group, championship.groups)"
+          :on-filter="getOnFilterTeams(championship.groups)"
           :teams="championship.teams"
         />
 
@@ -247,7 +247,7 @@ const handleRemoveGroup = (group) =>
     ({ uuid, id }) => id !== group.id || uuid !== group.uuid
   ))
 
-const getOnFilterTeams = (group, groups) => (team) => {
+const getOnFilterTeams = (groups) => (team) => {
   const selectedTeams = groups.reduce(
     (acc, group) => [...acc, ...group.teams.map(({ id }) => id)],
     []

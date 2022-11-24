@@ -53,15 +53,18 @@
             <div
               class="w-full gap-2 hidden md:flex flex-column align-items-end md:justify-content-end"
             >
-              <template v-if="isMatchFinished(match)">
-                <GuessPointsBadge :guess="matchesGuesses[match.id]" />
-                <Button
-                  @click="goToUserMatchGuessRoute(match)"
-                  :label="$t('app.guesses.viewOtherGuesses')"
-                  class="p-button-link p-button-clear p-button-sm p-0"
-                  icon="pi pi-search"
-                />
-              </template>
+              <GuessPointsBadge
+                v-if="isMatchFinished(match)"
+                :guess="matchesGuesses[match.id]"
+              />
+              <!-- <template > -->
+              <Button
+                @click="goToUserMatchGuessRoute(match)"
+                :label="$t('app.guesses.viewOtherGuesses')"
+                class="p-button-link p-button-clear p-button-sm p-0"
+                icon="pi pi-search"
+              />
+              <!-- </template> -->
             </div>
           </div>
           <div>
@@ -565,7 +568,6 @@ const getAwayTeamPenaltiesTimeScoreClass = (match) => [
 ]
 
 const handleUpdateRegularTimeGoals = (team, matchId, value) => {
-  console.log(value)
   const parsedValue = parseInt(value || 0)
   const guess = guesses.data.find((guess) => guess.matchId === matchId)
 
@@ -690,14 +692,7 @@ const allowPenaltiesGuess = (match) =>
   }
 
   &__guess-points-badge {
-    // display: flex;
-    // gap: 5px;
-    // align-items: center;
-    // right: 60px;
-
     &--top {
-      // position: absolute;
-
       @media screen and (max-width: 960px) {
         display: none;
       }
@@ -711,10 +706,6 @@ const allowPenaltiesGuess = (match) =>
         justify-content: center;
       }
     }
-
-    // @media screen and (max-width: 960px) {
-    //   display: none;
-    // }
   }
 
   &-unregistered-guess {

@@ -71,5 +71,6 @@ export default {
   hide: 'Esconder',
   env: 'Este é um ambiente de testes',
   clickHere: 'clique aqui',
-  accessRightVersion: 'para acessar a versão correta'
+  accessRightVersion: 'para acessar a versão correta',
+  positions: 'Campeão e Vice'
 }
