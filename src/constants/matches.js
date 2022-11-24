@@ -76,8 +76,9 @@ export const MATCH_MODEL = {
   round: null,
   homeTeam: null,
   awayTeam: null,
-  status: MATCH_STATUSES.SCHEDULED,
-  details: []
+  status: null,
+  details: [],
+  resetStatus: true
 }
 
 export const MATCH_RESULTS = {

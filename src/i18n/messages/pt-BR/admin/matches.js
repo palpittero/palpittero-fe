@@ -33,5 +33,8 @@ export default {
   updateResult: 'Atualizar Resultado',
   newMatch: 'Criar Partidas',
   group: 'Grupo',
-  removeMatch: 'Remover partida'
+  removeMatch: 'Remover partida',
+  resetStatus: 'Redefinir status',
+  resetStatusHint:
+    'Ao redefinir o status da partida o mesmo passará a ser calculado automaticamente comparando a data/hora atuais com a data/hora da partida'
 }

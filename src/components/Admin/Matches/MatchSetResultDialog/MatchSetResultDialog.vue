@@ -24,6 +24,7 @@ import * as yup from 'yup'
 import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
 import MatchSetResultForm from './MatchSetResultForm/MatchSetResultForm.vue'
 import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
+import { MATCH_STATUSES } from '@/constants/matches'
 
 const i18n = useI18n()
 
@@ -95,7 +96,10 @@ const header = computed(() => {
 const onSubmit = handleSubmit(
   (match) => {
     submitted.value = true
-    emits('submit', match)
+    emits('submit', {
+      ...match,
+      status: MATCH_STATUSES.FINISHED
+    })
   },
   () => (submitted.value = true)
 )

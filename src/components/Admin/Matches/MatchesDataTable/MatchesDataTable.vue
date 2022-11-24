@@ -61,7 +61,7 @@
           />
 
           <Button
-            v-if="isFinished(data)"
+            v-if="canSetMatchResult(data)"
             icon="pi pi-check-square"
             class="p-button p-button-primary p-button-sm"
             :label="$t('admin.matches.updateResult')"
@@ -120,7 +120,12 @@ const selectedMatches = computed({
   }
 })
 
-const isFinished = (match) => match.status === MATCH_STATUSES.FINISHED
+const isScheduled = (match) => match.status === MATCH_STATUSES.SCHEDULED
+const isCanceled = (match) => match.status === MATCH_STATUSES.CANCELLED
+const isPostponed = (match) => match.status === MATCH_STATUSES.POSTPONED
+
+const canSetMatchResult = (match) =>
+  !isScheduled(match) && !isCanceled(match) && !isPostponed(match)
 
 const handleEditMatch = (match) => emits('edit', match)
 const handleDeleteMatch = (match) => emits('delete', match)

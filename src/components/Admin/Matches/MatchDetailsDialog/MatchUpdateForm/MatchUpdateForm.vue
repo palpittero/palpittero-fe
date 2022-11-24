@@ -84,6 +84,16 @@
       {{ $t('admin.matches.validation.date') }}
     </small>
   </div>
+  <div class="field-checkbox">
+    <Checkbox id="admin" name="city" v-model="match.resetStatus" binary />
+    <label for="admin" class="mr-2">
+      {{ $t('admin.matches.resetStatus') }}
+    </label>
+    <span
+      class="pi pi-question-circle"
+      v-tooltip="$t('admin.matches.resetStatusHint')"
+    />
+  </div>
 </template>
 
 <script setup>

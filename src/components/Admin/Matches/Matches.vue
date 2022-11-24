@@ -168,7 +168,8 @@ const handleEditMatch = (row) => {
     round: pick(MATCH_FIELDS, row.round),
     championship: pick(CHAMPIONSHIP_FIELDS, row.round.championship),
     championshipId: row.round.championship.id,
-    date: new Date(row.date)
+    date: new Date(row.date),
+    resetStatus: MATCH_MODEL.resetStatus
   }
 
   isMatchDetailsDialogVisible.value = true
