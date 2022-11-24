@@ -70,6 +70,13 @@
       {{ $t('admin.matches.validation.date') }}
     </small>
   </div>
+
+  <div class="field-checkbox">
+    <Checkbox id="admin" name="city" v-model="match.resetStatus" binary />
+    <label for="admin">
+      {{ $t('admin.matches.resetStatus') }}
+    </label>
+  </div>
 </template>
 
 <script setup>
