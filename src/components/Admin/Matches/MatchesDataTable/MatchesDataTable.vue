@@ -52,10 +52,10 @@
     </Column>
     <Column>
       <template #body="{ data }">
-        <div>
+        <div class="flex gap-2">
           <Button
             icon="pi pi-pencil"
-            class="p-button p-button-info p-button-sm mr-2"
+            class="p-button p-button-info p-button-sm"
             :label="$t('common.edit')"
             @click="handleEditMatch(data)"
           />
@@ -68,7 +68,6 @@
             @click="handleSetMatchResult(data)"
           />
           <Button
-            v-else
             icon="pi pi-trash"
             class="p-button p-button-danger p-button-sm"
             :label="$t('common.remove')"
