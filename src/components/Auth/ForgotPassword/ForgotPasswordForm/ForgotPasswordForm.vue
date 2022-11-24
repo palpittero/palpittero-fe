@@ -15,6 +15,19 @@
         {{ $t('admin.auth.validation.email') }}
       </small>
     </div>
+    <Message
+      severity="warn"
+      v-if="submitted && errors.unverifiedAccount"
+      :closable="false"
+    >
+      {{ errors.unverifiedAccount }}
+      <Button
+        @click="$emit('resend-activation')"
+        :label="$t('common.clickHere')"
+        class="p-button-link p-button-clear p-0"
+      />
+      {{ $t('admin.auth.toResendActivationEmail') }}
+    </Message>
     <Button
       :label="$t('admin.auth.recoverPassword.title')"
       class="w-full p-3 text-xl"
@@ -60,7 +73,7 @@ const props = defineProps({
   submitted: Boolean
 })
 
-const emits = defineEmits(['update:modelValue', 'submit'])
+const emits = defineEmits(['update:modelValue', 'submit', 'resend-activation'])
 
 const credentials = computed({
   set(value) {

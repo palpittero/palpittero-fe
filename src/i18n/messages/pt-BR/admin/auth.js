@@ -17,6 +17,7 @@ export default {
     passwordsDontMatch: 'As senhas não são iguais',
     tokenInvalidOrExpired: 'Token inválido ou expirado',
     unverifiedAccount: 'Esta conta não foi verificada',
+    resendActivationEmail: 'Esta conta ainda não foi ativada.',
     token: {
       title: 'Erro',
       message: 'Token inválido ou expirado',
@@ -45,6 +46,13 @@ export default {
     subtitle: 'Sua solicitação foi realizada com sucesso',
     message:
       'Você receberá, em breve, um e-mail com instruções para a recuperação da sua senha',
+    cta: 'Fazer Login'
+  },
+  resendActivation: {
+    title: 'Reenviar e-mail de ativação',
+    subtitle: 'Sua solicitação foi realizada com sucesso',
+    message:
+      'Você receberá, em breve, um e-mail com instruções para a ativação do sua conta',
     cta: 'Fazer Login'
   },
   activateAccount: {
@@ -85,5 +93,6 @@ export default {
     message:
       'Em breve você fará parte da liga {visibility} <b>"{name}"</b> <small>(Proprietário: {owner})</small>',
     cta: 'Ver minhas ligas'
-  }
+  },
+  toResendActivationEmail: 'para reenviar o e-mail de ativação'
 }
