@@ -10,7 +10,7 @@
           class="mb-5 login__logo"
         />
       </div>
-      <div v-if="isSuccess" class="text-center">
+      <div v-if="isRecoverPasswordSuccess" class="text-center">
         <h1 class="text-900 font-bold text-3xl lg:text-5xl mb-2">
           {{ $t('admin.auth.recoverPassword.subtitle') }}
         </h1>
@@ -27,6 +27,26 @@
           >
         </div>
       </div>
+      <div v-else-if="isResendActivationEmailSuccess" class="text-center">
+        <span class="text-blue-500 font-bold text-3xl">
+          {{ $t('admin.auth.resendActivation.title', user) }}
+        </span>
+        <h1 class="text-900 font-bold text-3xl lg:text-5xl mb-2">
+          {{ $t('admin.auth.resendActivation.subtitle') }}
+        </h1>
+        <span class="text-gray-600">{{
+          $t('admin.auth.resendActivation.message')
+        }}</span>
+        <div class="flex align-items-center justify-content-center mt-5">
+          <i
+            class="pi pi-fw pi-sign-in text-blue-500 mr-2"
+            style="vertical-align: center"
+          ></i>
+          <router-link :to="{ name: 'Login' }" class="text-blue-500">
+            {{ $t('admin.auth.signUp.cta') }}</router-link
+          >
+        </div>
+      </div>
       <div v-else class="col-12 xl:col-6 login__form-wrapper">
         <div class="h-full w-full m-0 py-7 px-4 login__form-container">
           <ForgotPasswordForm
@@ -35,6 +55,7 @@
             :errors="errors"
             :loading="isLoading"
             @submit="onSubmit"
+            @resend-activation="onResendActivation"
           />
         </div>
       </div>
@@ -54,7 +75,8 @@ import services from '@/services'
 
 const toast = useToast()
 const i18n = useI18n()
-const isSuccess = ref(false)
+const isRecoverPasswordSuccess = ref(false)
+const isResendActivationEmailSuccess = ref(false)
 const isLoading = ref(false)
 
 const credentials = reactive({
@@ -63,10 +85,11 @@ const credentials = reactive({
 
 const submitted = ref(false)
 
-const { errors, handleSubmit, setValues } = useForm({
+const { errors, handleSubmit, setValues, setFieldError } = useForm({
   validationSchema: yup.object().shape({
     email: yup.string().required().email()
-  })
+  }),
+  unverifiedAccount: yup.string().optional()
 })
 
 watch(credentials, (value) => setValues(value), { deep: true, immediate: true })
@@ -77,7 +100,7 @@ const onSubmit = handleSubmit(
     try {
       isLoading.value = true
       await services.auth.recoverPassword(credentials)
-      isSuccess.value = true
+      isRecoverPasswordSuccess.value = true
     } catch (error) {
       if (error.response.status === 404) {
         toast.add({
@@ -85,6 +108,20 @@ const onSubmit = handleSubmit(
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.userNotFound'),
+          life: 4000
+        })
+      }
+
+      if (error.response.status === 403) {
+        setFieldError(
+          'unverifiedAccount',
+          i18n.t('admin.auth.error.resendActivationEmail')
+        )
+        toast.add({
+          group: 'app',
+          severity: 'error',
+          summary: i18n.t('common.error'),
+          detail: i18n.t('admin.auth.error.unverifiedAccount'),
           life: 4000
         })
       }
@@ -96,6 +133,26 @@ const onSubmit = handleSubmit(
     submitted.value = true
   }
 )
+
+const onResendActivation = async () => {
+  try {
+    isLoading.value = true
+    await services.auth.resendActivation(credentials)
+    isResendActivationEmailSuccess.value = true
+  } catch (error) {
+    if (error.response.status === 404) {
+      toast.add({
+        group: 'app',
+        severity: 'error',
+        summary: i18n.t('common.error'),
+        detail: i18n.t('admin.auth.error.userNotFound'),
+        life: 4000
+      })
+    }
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <style lang="scss">

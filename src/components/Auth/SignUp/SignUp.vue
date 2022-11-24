@@ -10,7 +10,7 @@
           class="mb-5 sign-up__logo"
         />
       </div>
-      <div v-if="isSuccess" class="text-center">
+      <div v-if="!isSuccess" class="text-center">
         <span class="text-blue-500 font-bold text-3xl">
           {{ $t('admin.auth.signUp.title', user) }}
         </span>
