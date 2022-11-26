@@ -9,12 +9,12 @@
       </h1>
       <Button
         @click="handleRegisterGuesses"
-        :disabled="hasInvalidGuesses"
+        :disabled="disableRegisterGuesses"
         icon="pi pi-bolt"
         :label="$t('app.guesses.register')"
       />
     </div>
-    <div class="flex flex-column gap-3">
+    <div class="flex flex-column gap-3" :key="renderKey">
       <div
         v-for="(championship, index) in championships.data"
         :key="championship.id"
@@ -70,10 +70,11 @@ const league = reactive({
   data: {}
 })
 
+const renderKey = ref(0)
 const memoryRegisteredGuesses = ref([])
-
 const matchesGuesses = ref(null)
 const championshipsGuesses = ref([])
+const isLoading = ref(false)
 
 const guesses = computed(() =>
   pipe(
@@ -143,9 +144,10 @@ onMounted(async () => {
 })
 
 const handleRegisterGuesses = async () => {
+  isLoading.value = true
   memoryRegisteredGuesses.value = guesses.value.map(({ matchId }) => matchId)
 
-  await services.guesses.registerGuesses({
+  const { invalidGuesses } = await services.guesses.registerGuesses({
     matchesGuesses: guesses.value,
     championshipsGuesses: championshipsGuesses.value.map((guess) => ({
       ...guess,
@@ -153,15 +155,33 @@ const handleRegisterGuesses = async () => {
       userId: loggedUser?.id
     }))
   })
-  const total = guesses.value.length + championshipsGuesses.value.length
+
+  const total =
+    guesses.value.length - invalidGuesses + championshipsGuesses.value.length
+
+  const toastOptions =
+    total > 0
+      ? {
+          severity: 'success',
+          summary: i18n.t('common.success')
+        }
+      : {
+          severity: 'warn',
+          summary: i18n.t('common.warning')
+        }
 
   toast.add({
-    severity: 'success',
-    summary: i18n.t('common.success'),
     detail: i18n.t('app.guesses.guessesCreated', { total }, total),
     life: 4000,
-    group: 'app'
+    group: 'app',
+    ...toastOptions
   })
+
+  if (invalidGuesses > 0) {
+    renderKey.value++
+  }
+
+  isLoading.value = false
 }
 
 const isChampionshipRoundsMatchesListOpen = (index) => index === 0
@@ -173,6 +193,10 @@ const handleUpdateChampionshipGuesses = (championshipGuesses) => {
     [...championshipsGuesses.value, ...Object.values(championshipGuesses)]
   )
 }
+
+const disableRegisterGuesses = computed(
+  () => hasInvalidGuesses.value || isLoading.value
+)
 </script>
 
 <style lang="scss">
