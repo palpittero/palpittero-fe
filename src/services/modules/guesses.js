@@ -19,9 +19,25 @@ const registerGuesses = async ({ matchesGuesses, championshipsGuesses }) => {
 const processGuesses = ({ leagueId, championshipId } = {}) =>
   api.post(`${RESOURCE_URI}/process`, { leagueId, championshipId })
 
+const copyGuesses = ({
+  sourceLeagueId,
+  targetLeagueId,
+  championshipsIds,
+  copyMatchesGuesses,
+  copyChampionshipsGuesses
+} = {}) =>
+  api.post(`${RESOURCE_URI}/copy`, {
+    sourceLeagueId,
+    targetLeagueId,
+    championshipsIds,
+    copyMatchesGuesses,
+    copyChampionshipsGuesses
+  })
+
 export default {
   fetchGuesses,
   fetchMyGuesses,
   registerGuesses,
-  processGuesses
+  processGuesses,
+  copyGuesses
 }

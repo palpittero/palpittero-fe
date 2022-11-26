@@ -22,6 +22,7 @@
     <ChampionshipsPickList
       v-model="league.championships"
       :invalid="submitted && errors.championships"
+      enable-guesses
     />
     <small class="p-invalid" v-if="submitted && errors.championships">
       {{ $t('admin.leagues.validation.championships') }}

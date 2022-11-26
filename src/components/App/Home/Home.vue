@@ -7,7 +7,7 @@
     />
     <div class="flex justify-content-between align-items-center mb-3">
       <h1 class="mb-0">
-        {{ $t('common.leagues') }}
+        {{ $t('common.leagues', 2) }}
       </h1>
       <Button @click="handleCreateLeague">
         {{ $t('app.leagues.create') }}
@@ -20,12 +20,12 @@
       :description="$t('app.leagues.myLeagues.description')"
       :empty-state="$t('app.leagues.noJoinedLeagues')"
       :on-get-route="handleGetRoute"
-      @manage="handleManageLeague"
       @ranking="handleRankingLeague"
-      @leave="handleLeaveLeague"
+      @manage="handleManageLeague"
       @guesses="handleGuessesLeague"
-      @remove="handleRemoveLeague"
       @edit="handleEditLeague"
+      @remove="handleRemoveLeague"
+      @leave="handleLeaveLeague"
     />
 
     <LeaguesDescriptionList

@@ -17,7 +17,7 @@ export default {
   users: 'Usuários',
   dashboard: 'Dashboard',
   teams: 'Times',
-  leagues: 'Ligas',
+  leagues: 'Liga | Ligas',
   championships: 'Campeonatos',
   match: 'Partida',
   matches: 'Partidas',

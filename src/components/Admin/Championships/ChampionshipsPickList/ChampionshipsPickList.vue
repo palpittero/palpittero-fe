@@ -16,7 +16,7 @@
           <span>
             {{ $t('common.selected') }}
           </span>
-          <span class="text-right">
+          <span class="text-right" v-if="enableGuesses">
             {{ $t('admin.championships.enableGuess') }}
           </span>
         </div>
@@ -25,7 +25,7 @@
         <div class="flex align-items-center justify-content-between">
           <span>{{ item.name }} {{ item.year }}</span>
           <InputSwitch
-            v-if="isChampionshipSelected(item)"
+            v-if="enableGuesses && isChampionshipSelected(item)"
             v-model="item.enableGuesses"
             :true-value="1"
             :false-value="0"
@@ -52,6 +52,11 @@ const props = defineProps({
     type: Function,
     default: (championships) => championships
   },
+  leagueId: {
+    type: Number,
+    default: null
+  },
+  enableGuesses: Boolean,
   invalid: Boolean
 })
 
@@ -79,7 +84,9 @@ const selectedChampionships = computed({
 
 onMounted(async () => {
   championships.loading = true
-  const rows = await services.championships.fetchChampionships()
+  const rows = props.leagueId
+    ? await services.leagues.fetchChampionships(props.leagueId)
+    : await services.championships.fetchChampionships()
   championships.data = props.filter(rows)
   championships.loading = false
 })
