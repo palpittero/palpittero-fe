@@ -1,7 +1,8 @@
 export default {
   register: 'Registrar Palpites',
   guessesCreated:
-    '{total} palpite registrado com sucesso | {total} palpites registrados com sucesso',
+    'Nenhum palpite registrado | {total} palpite registrado com sucesso | {total} palpites registrados com sucesso',
+
   noRounds: 'Nenhuma rodada encontrada para este campeonato',
   points: '0 ponto | 1 ponto | {points} pontos',
   finalResult: 'Placar final',
