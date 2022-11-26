@@ -37,5 +37,7 @@ export default {
     'Deseja realmente aprovar a participação deste usuário?',
   leagueUsers: 'Usuários - {leagueName}',
   approveUsersSuccess: 'Usuário aprovado com sucesso',
-  position: 'Posição'
+  position: 'Posição',
+  selectLeague: 'Selecione uma liga',
+  noAvailableLeagues: 'Nenhuma liga disponível'
 }

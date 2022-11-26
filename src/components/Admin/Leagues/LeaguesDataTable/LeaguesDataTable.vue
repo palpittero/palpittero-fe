@@ -2,7 +2,7 @@
   <BaseDataTable
     v-model="selectedLeagues"
     :items="leagues"
-    :title="$t('common.leagues')"
+    :title="$t('common.leagues', 2)"
     class="leagues-data-table"
     searchable
   >

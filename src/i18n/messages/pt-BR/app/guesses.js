@@ -1,7 +1,9 @@
 export default {
   register: 'Registrar Palpites',
+  copy: 'Replicar Palpites',
+  copyToLeague: 'Replicar palpites para {leagueName}',
   guessesCreated:
-    'Nenhum palpite registrado | {total} palpite registrado com sucesso | {total} palpites registrados com sucesso',
+    'Nenhum palpite registrado para partidas agendadas | {total} palpite registrado com sucesso para a partida agendada | {total} palpites registrados com sucesso para todas as partidas agendadas',
 
   noRounds: 'Nenhuma rodada encontrada para este campeonato',
   points: '0 ponto | 1 ponto | {points} pontos',
@@ -16,5 +18,8 @@ export default {
   penalties: 'Pênaltis',
   afterPenalties: 'Após pênaltis',
   champion: 'Campeão',
-  runnerUp: 'Vice-campeão'
+  runnerUp: 'Vice-campeão',
+  guessesCopied:
+    'Nenhum palpite disponível para replicar | {total} palpite replicado com sucesso | {total} palpites replicados com sucesso',
+  copyGuessesFrom: 'Copiar palpites de:'
 }

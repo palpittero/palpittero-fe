@@ -42,7 +42,7 @@ const menu = reactive([
         exact: true
       },
       {
-        label: i18n.t('common.leagues'),
+        label: i18n.t('common.leagues', 2),
         icon: 'pi pi-fw pi-flag',
         to: { name: 'AdminLeagues' },
         exact: true

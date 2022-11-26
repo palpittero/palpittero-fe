@@ -7,12 +7,21 @@
       <h1 class="mb-0">
         {{ league.data.name }}
       </h1>
-      <Button
-        @click="handleRegisterGuesses"
-        :disabled="disableRegisterGuesses"
-        icon="pi pi-bolt"
-        :label="$t('app.guesses.register')"
-      />
+      <div class="flex gap-2">
+        <Button
+          @click="handleRegisterGuesses"
+          :disabled="isRegisterGuessesDisabled"
+          icon="pi pi-bolt"
+          :label="$t('app.guesses.register')"
+        />
+        <Button
+          @click="handleCopyGuesses"
+          :disabled="isLoading"
+          icon="pi pi-copy"
+          class="bg-white text-primary"
+          :label="$t('app.guesses.copy')"
+        />
+      </div>
     </div>
     <div class="flex flex-column gap-3" :key="renderKey">
       <div
@@ -32,6 +41,17 @@
       </div>
     </div>
   </div>
+
+  <!-- <pre>{{ league }}</pre> -->
+
+  <CopyGuessesDialog
+    v-if="isCopyGuessesDialogOpen"
+    :visible="isCopyGuessesDialogOpen"
+    :league="league.data"
+    :championships="championships.data"
+    @hide="handleCopyGuessesDialogHide"
+    @submit="handleCopyGuessesDialogSubmit"
+  />
 </template>
 
 <script setup>
@@ -41,11 +61,12 @@ import { useToast } from 'primevue/usetoast'
 import { useI18n } from 'vue-i18n'
 
 import services from '@/services'
+import { useAuthStore } from '@/stores/auth'
 import ChampionshipsRoundsMatchesList from '@/components/App/Championships/ChampionshipsRoundsMatchesList/ChampionshipsRoundsMatchesList.vue'
+import CopyGuessesDialog from './CopyGuessesDialog/CopyGuessesDialog.vue'
 
 import { MATCH_STATUSES } from '@/constants/matches'
 import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
-import { useAuthStore } from '@/stores/auth'
 
 const toast = useToast()
 const i18n = useI18n()
@@ -74,6 +95,7 @@ const renderKey = ref(0)
 const memoryRegisteredGuesses = ref([])
 const matchesGuesses = ref(null)
 const championshipsGuesses = ref([])
+const isCopyGuessesDialogOpen = ref(false)
 const isLoading = ref(false)
 
 const guesses = computed(() =>
@@ -184,6 +206,53 @@ const handleRegisterGuesses = async () => {
   isLoading.value = false
 }
 
+const isRegisterGuessesDisabled = computed(
+  () => hasInvalidGuesses.value || isLoading.value
+)
+
+const handleCopyGuesses = () => (isCopyGuessesDialogOpen.value = true)
+
+const handleCopyGuessesDialogHide = () =>
+  (isCopyGuessesDialogOpen.value = false)
+
+const handleCopyGuessesDialogSubmit = async ({
+  sourceLeagueId,
+  targetLeagueId,
+  championshipsIds,
+  copyMatchesGuesses,
+  copyChampionshipsGuesses
+}) => {
+  isLoading.value = true
+  const { total = 0 } = await services.guesses.copyGuesses({
+    sourceLeagueId,
+    targetLeagueId,
+    championshipsIds,
+    copyMatchesGuesses,
+    copyChampionshipsGuesses
+  })
+
+  const toastOptions =
+    total > 0
+      ? {
+          severity: 'success',
+          summary: i18n.t('common.success')
+        }
+      : {
+          severity: 'warn',
+          summary: i18n.t('common.warning')
+        }
+
+  toast.add({
+    detail: i18n.t('app.guesses.guessesCopied', { total }, total),
+    life: 4000,
+    group: 'app',
+    ...toastOptions
+  })
+  handleCopyGuessesDialogHide()
+  renderKey.value++
+  isLoading.value = false
+}
+
 const isChampionshipRoundsMatchesListOpen = (index) => index === 0
 
 const handleUpdateChampionshipGuesses = (championshipGuesses) => {
@@ -193,10 +262,6 @@ const handleUpdateChampionshipGuesses = (championshipGuesses) => {
     [...championshipsGuesses.value, ...Object.values(championshipGuesses)]
   )
 }
-
-const disableRegisterGuesses = computed(
-  () => hasInvalidGuesses.value || isLoading.value
-)
 </script>
 
 <style lang="scss">
