@@ -147,7 +147,7 @@ const routes = [
         name: 'AdminUnprocessedGuesses',
         path: 'unprocessed-guesses/leagues/:leagueId',
         component: UnprocessedGuesses,
-        meta: { admin: true }
+        meta: { admin: true, parent: 'AdminUnprocessedGuessesLeagues' }
       },
       {
         name: 'AdminUsers',

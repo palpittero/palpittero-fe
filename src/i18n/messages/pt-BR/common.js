@@ -72,5 +72,22 @@ export default {
   env: 'Este é um ambiente de testes',
   clickHere: 'clique aqui',
   accessRightVersion: 'para acessar a versão correta',
-  positions: 'Campeão e Vice'
+  positions: 'Campeão e Vice',
+  breadcrumb: {
+    home: 'Página Inicial',
+    guesses: 'Palpites',
+    rules: 'Regulamento',
+    myAccount: 'Minha Conta',
+    myProfile: 'Meu Perfil',
+    changePassword: 'Alterar Senha',
+    admin: {
+      dashboard: 'Dashboard',
+      unprocessedGuesses: 'Palpites não processados',
+      users: 'Usuários',
+      leagues: 'Ligas',
+      teams: 'Times',
+      championships: 'Campeonatos',
+      matches: 'Partidas'
+    }
+  }
 }

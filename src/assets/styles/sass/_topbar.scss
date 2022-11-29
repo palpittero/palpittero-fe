@@ -33,10 +33,11 @@
     }
 
     .layout-topbar-button {
-        padding: .5ren;
+        padding: .5rem;
         display: inline-flex;
         justify-content: center;
         align-items: center;
+        gap: 10px;
         position: relative;
         color: var(--text-color-secondary);
         // border-radius: 50%;
@@ -60,14 +61,14 @@
 
         span {
             font-size: 1rem;
-            margin-left: 1rem;
+            // margin-left: 1rem;
             // display: none;
         }
     }
 
-    .layout-menu-button {
-        margin-left: 2rem;
-    }
+    // .layout-menu-button {
+    //     margin-left: 2rem;
+    // }
 
     .layout-topbar-menu-button {
         display: none;

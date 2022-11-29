@@ -6,12 +6,16 @@
       @refresh="loadLeagues"
     />
     <div class="flex justify-content-between align-items-center mb-3">
-      <h1 class="mb-0">
-        {{ $t('common.leagues', 2) }}
-      </h1>
-      <Button @click="handleCreateLeague">
-        {{ $t('app.leagues.create') }}
-      </Button>
+      <Heading
+        class="mb-0"
+        :label="$t('common.leagues', 2)"
+        icon="pi pi-flag"
+      />
+      <Button
+        @click="handleCreateLeague"
+        icon="pi pi-plus"
+        :label="$t('app.leagues.create')"
+      />
     </div>
     <LeaguesDescriptionList
       :leagues="joinedLeagues"
@@ -108,6 +112,7 @@ import { pipe, filter, uniqBy, differenceBy } from 'lodash/fp'
 
 import { LEAGUE_MODEL, USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
+import Heading from '@/components/Shared/Heading/Heading.vue'
 import LeaguesDescriptionList from '@/components/App/Leagues/LeaguesDescriptionList/LeaguesDescriptionList.vue'
 import LeagueUsersDialog from '@/components/Shared/Leagues/LeagueUsersDialog/LeagueUsersDialog.vue'
 import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'

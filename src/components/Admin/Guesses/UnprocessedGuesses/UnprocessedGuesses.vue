@@ -90,6 +90,8 @@ const props = defineProps({
   }
 })
 
+const emits = defineEmits(['ready'])
+
 const league = ref([])
 const guesses = ref([])
 const isLoading = ref(true)
@@ -103,6 +105,7 @@ onMounted(async () => {
   league.value = await services.leagues.fetchLeagueById(leagueId)
   await loadGuesses()
   isLoading.value = false
+  emits('ready', { league: league.value })
 })
 
 const loadGuesses = async () => {
@@ -170,7 +173,7 @@ const championshipsGuessesTabHeader = computed(
     position: -o-sticky;
     position: -ms-sticky;
     position: sticky;
-    top: 70px;
+    top: 60px;
     z-index: 1;
 
     &--is-pinned {

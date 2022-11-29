@@ -116,3 +116,12 @@ small, span {
     padding-right: .5rem !important;
   }
 }
+
+.p-breadcrumb {
+  .p-menuitem-link {
+    &:active, &:focus {
+      outline: 0 !important;
+      box-shadow: none !important;
+    }
+  }
+}
