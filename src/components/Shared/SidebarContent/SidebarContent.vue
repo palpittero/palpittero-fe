@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sidebar-content">
     <ul v-if="items" class="layout-menu">
       <template v-for="(item, i) of items">
         <li
@@ -8,7 +8,7 @@
           :class="[
             {
               'layout-menuitem-category': root,
-              'active-menuitem': activeIndex === i && !item.to && !item.disabled
+              'active-menuitem': isMenuActive(item, i)
             }
           ]"
           role="none"
@@ -31,16 +31,16 @@
               @click="onMenuItemClick($event, item, i)"
               :target="item.target"
               :aria-label="item.label"
-              exact
+              :exact="item.exact"
               role="menuitem"
               v-ripple
             >
-              <i :class="item.icon"></i>
+              <i :class="item.icon" />
               <span>{{ item.label }}</span>
               <i
                 v-if="item.items"
                 class="pi pi-fw pi-angle-down menuitem-toggle-icon"
-              ></i>
+              />
               <Badge v-if="item.badge" :value="item.badge"></Badge>
             </router-link>
             <a
@@ -54,13 +54,13 @@
               role="menuitem"
               v-ripple
             >
-              <i :class="item.icon"></i>
+              <i :class="item.icon" />
               <span>{{ item.label }}</span>
               <i
                 v-if="item.items"
                 class="pi pi-fw pi-angle-down menuitem-toggle-icon"
-              ></i>
-              <Badge v-if="item.badge" :value="item.badge"></Badge>
+              />
+              <Badge v-if="item.badge" :value="item.badge" />
             </a>
             <transition name="layout-submenu-wrapper">
               <SidebarContent
@@ -77,13 +77,16 @@
           v-if="visible(item) && item.separator"
           :key="'separator' + i"
           role="separator"
-        ></li>
+        />
       </template>
     </ul>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 defineProps({
   items: {
@@ -116,7 +119,7 @@ const onMenuItemClick = (event, item, index) => {
 
   emit('menuitem-click', {
     originalEvent: event,
-    item: item
+    item
   })
 }
 
@@ -125,4 +128,22 @@ const visible = (item) => {
     ? item.visible()
     : item.visible !== false
 }
+
+const isMenuActive = (item, index) => {
+  return (
+    (activeIndex.value === index && !item.to && !item.disabled) ||
+    (route.meta?.parent && route.meta?.parent === item.to?.name)
+  )
+}
 </script>
+
+<style lang="scss">
+.sidebar-content {
+  .active-menuitem {
+    a {
+      font-weight: 700 !important;
+      color: var(--primary-color) !important;
+    }
+  }
+}
+</style>

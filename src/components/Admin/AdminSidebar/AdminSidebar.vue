@@ -32,8 +32,7 @@ const menu = reactive([
       {
         label: i18n.t('common.unprocessedGuesses'),
         icon: 'pi pi-fw pi-clock',
-        to: { name: 'AdminUnprocessedGuessesLeagues' },
-        exact: false
+        to: { name: 'AdminUnprocessedGuessesLeagues' }
       },
       {
         label: i18n.t('common.users'),
