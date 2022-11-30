@@ -3,6 +3,7 @@
     v-if="hasFilteredGuesses"
     :items="{ data: filteredGuesses }"
     :searchable="false"
+    :paginator="false"
     :title="$t('common.guesses')"
   >
     <Column field="user" :header="$t('common.player')">

@@ -1,8 +1,5 @@
 <template>
   <BaseDataRenderer :state="{ loading }">
-    <div class="mb-3">
-      <h1 class="mb-0">{{ league.name }}</h1>
-    </div>
     <UserChampionshipGuessesList
       :championship="championshipGuesses"
       :league="league"
@@ -32,6 +29,8 @@ const props = defineProps({
   }
 })
 
+const emits = defineEmits(['ready'])
+
 const championship = ref([])
 const league = ref(null)
 const guesses = ref([])
@@ -50,6 +49,10 @@ onMounted(async () => {
     }
   )
   loading.value = false
+  emits('ready', {
+    league: league.value,
+    championship: championship.value
+  })
 })
 
 const championshipGuesses = computed(
