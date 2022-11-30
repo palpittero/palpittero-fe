@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    name: Staging Deployment
+    name: Deploying to Staging
     runs-on: ubuntu-latest
     
     env:
