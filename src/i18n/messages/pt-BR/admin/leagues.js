@@ -41,5 +41,13 @@ export default {
   newLeague: 'Nova Liga',
   usersWithoutAccount:
     'Usuários que não possuem conta na plataforma serão convidados a se registrarem para, então, receberem o convite para a liga',
-  resendInvitations: 'Reenviar Convites'
+  resendInvitations: 'Reenviar Convites',
+  enablePrizes: 'Habilitar Prêmios',
+  ticketValue: 'Valor do ingresso',
+  prizes: 'Prêmio | Prêmios',
+  positions: {
+    first: 'Primeiro colocado',
+    second: 'Segundo colocado',
+    third: 'Terceiro Colocado'
+  }
 }

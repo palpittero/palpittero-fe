@@ -52,13 +52,16 @@
           </template>
         </Column>
         <Column field="points" :header="$t('admin.users.points')" />
+        <Column field="prize" :header="$t('admin.leagues.prizes')">
+          <template #body="{ data }"> {{ getLeaguePrize(data) }} </template>
+        </Column>
       </DataTable>
     </BaseDataRenderer>
   </BaseDialog>
 </template>
 
 <script setup>
-import { reactive, onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import services from '@/services'
 
@@ -77,7 +80,7 @@ const props = defineProps({
   visible: Boolean
 })
 
-const leagueUsers = reactive({
+const leagueUsers = ref({
   loading: false,
   error: null,
   data: []
@@ -86,12 +89,12 @@ const leagueUsers = reactive({
 onMounted(() => loadUsersLeagues())
 
 const loadUsersLeagues = async () => {
-  leagueUsers.loading = true
-  leagueUsers.data = await services.leagues.fetchUsers({
+  leagueUsers.value.loading = true
+  leagueUsers.value.data = await services.leagues.fetchUsers({
     league: props.league,
     status: USERS_LEAGUES_STATUSES.APPROVED
   })
-  leagueUsers.loading = false
+  leagueUsers.value.loading = false
 }
 
 const emits = defineEmits(['submit'])
@@ -104,19 +107,50 @@ const handleSubmit = () => emits('submit')
 
 const medals = ['🥇', '🥈', '🥉']
 
-const getRankingPosition = (user) => {
-  const showMedal = leagueUsers.data.some(({ points }) => points > 0)
-  const index = leagueUsers.data.findIndex(({ id }) => id === user.id)
+const getRankingPosition = (user) =>
+  leagueUsers.value.data.findIndex(({ id }) => id === user.id) + 1
 
-  return showMedal ? medals[index] || index + 1 : '-'
+const getRankingPositionLabel = (user) => {
+  const showMedal = leagueUsers.value.data.some(({ points }) => points > 0)
+  const position = getRankingPosition(user)
+
+  return showMedal ? medals[position - 1] || position : '-'
 }
 
 const getRankingPositionClass = (user) => {
-  const position = getRankingPosition(user)
+  const positionLabel = getRankingPositionLabel(user)
 
   return [
-    !medals.includes(position) && 'league-ranking-dialog__position--number'
+    !medals.includes(positionLabel) && 'league-ranking-dialog__position--number'
   ]
+}
+
+const getLeaguePrize = (user) => {
+  if (!props.league.enablePrizes || !user.points) {
+    return '-'
+  }
+
+  const ticketValue = parseFloat(props.league.ticketValue)
+
+  if (ticketValue <= 0) {
+    return '-'
+  }
+
+  const rankingPosition = getRankingPosition(user)
+  const leaguePrize = props.league.prizes.find(
+    ({ position }) => position == rankingPosition
+  )
+
+  const prizeValue =
+    (ticketValue *
+      leagueUsers.value.data.length *
+      parseFloat(leaguePrize.amount)) /
+    100
+
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(prizeValue)
 }
 </script>
 

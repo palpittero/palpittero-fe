@@ -13,9 +13,16 @@ export const LEAGUE_MODEL = {
   championships: [],
   ownerId: null,
   pointsStrategy: LEAGUE_POINTS_STRATEGY.GROUPED,
+  enablePrizes: 0,
+  ticketValue: 0,
   status: STATUSES.ACTIVE,
   resendInvitations: false,
-  enableGuesses: false
+  enableGuesses: false,
+  prizes: {
+    1: null,
+    2: null,
+    3: null
+  }
 }
 
 export const USERS_LEAGUES_STATUSES = {
