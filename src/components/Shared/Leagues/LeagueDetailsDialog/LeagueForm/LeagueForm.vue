@@ -133,6 +133,63 @@
   </div>
 
   <div class="field">
+    <label class="mb-3">{{ $t('admin.leagues.enablePrizes') }}</label>
+
+    <div class="grid">
+      <div class="field-radiobutton col-6">
+        <RadioButton
+          id="enable-prize"
+          name="enable-prize"
+          :value="1"
+          v-model="league.enablePrizes"
+        />
+        <label for="enable-prize">{{ $t('common.yes') }}</label>
+      </div>
+      <div class="field-radiobutton col-6">
+        <RadioButton
+          id="disable-prize"
+          name="enable-prize"
+          :value="0"
+          v-model="league.enablePrizes"
+        />
+        <label for="disable-prize">{{ $t('common.no') }}</label>
+      </div>
+    </div>
+  </div>
+
+  <template v-if="league.enablePrizes">
+    <div class="field">
+      <label for="ticket-value">{{ $t('admin.leagues.ticketValue') }}</label>
+      <InputNumber
+        input-id="ticket-value"
+        v-model="league.ticketValue"
+        mode="currency"
+        currency="BRL"
+        locale="pt-BR"
+        showButtons
+        :min="0"
+        :step="1"
+      />
+    </div>
+
+    <template v-if="league.ticketValue > 0">
+      <h5>{{ $t('admin.leagues.prizes', 2) }}</h5>
+      <Divider />
+
+      <LeaguePrizeDetails
+        :model-value="league.prizes"
+        :league="league"
+        :errors="errors"
+        :submitted="submitted"
+        @update:model-value="
+          (detail) => handleUpdatePrizeDetails(detail, index)
+        "
+        @remove="handleRemovePrizeDetail"
+      />
+    </template>
+  </template>
+
+  <div class="field">
     <label class="mb-3">{{ $t('common.status') }}</label>
     <BaseStatusPartialForm v-model="league.status" />
   </div>
@@ -146,6 +203,7 @@ import UserSelect from '@/components/Shared/Users/UserSelect/UserSelect.vue'
 import ChampionshipsPickList from '@/components/Admin/Championships/ChampionshipsPickList/ChampionshipsPickList.vue'
 import ImageInput from '@/components/Shared/ImageInput/ImageInput.vue'
 import UsersChips from '@/components/Shared/Users/UsersChips/UsersChips.vue'
+import LeaguePrizeDetails from './LeaguePrizeDetails/LeaguePrizeDetails.vue'
 
 const props = defineProps({
   modelValue: {

@@ -37,5 +37,6 @@ export default {
   setRanking: 'Definir Ranking | {name} - Definir Ranking',
   champion: 'Campeão',
   runnerUp: 'Vice-campeão',
-  ignoreGroups: 'Ignorar Grupos'
+  ignoreGroups: 'Ignorar Grupos',
+  enableGuesses: 'Habilitar palpites de posições'
 }

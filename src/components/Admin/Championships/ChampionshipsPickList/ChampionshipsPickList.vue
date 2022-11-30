@@ -17,7 +17,7 @@
             {{ $t('common.selected') }}
           </span>
           <span class="text-right" v-if="enableGuesses">
-            {{ $t('admin.championships.enableGuess') }}
+            {{ $t('admin.championships.enableGuesses') }}
           </span>
         </div>
       </template>
