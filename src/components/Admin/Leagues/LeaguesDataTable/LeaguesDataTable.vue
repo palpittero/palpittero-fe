@@ -5,6 +5,7 @@
     :title="$t('common.leagues', 2)"
     class="leagues-data-table"
     searchable
+    paginator
   >
     <Column selectionMode="multiple" headerStyle="width: 3rem" />
     <Column

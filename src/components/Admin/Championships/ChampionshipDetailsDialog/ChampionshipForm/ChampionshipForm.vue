@@ -1,4 +1,5 @@
 <template>
+  <pre>{{ championship.rounds }}</pre>
   <div class="field">
     <label for="name">{{ $t('admin.championships.name') }}</label>
     <InputText
@@ -84,10 +85,11 @@
         <div class="flex align-items-center gap-3 flex-1">
           <RoundTypeSelect class="flex-1" v-model="round.type" />
           <div class="flex align-items-center gap-2">
-            <Checkbox
+            <InputSwitch
               inputId="ignore-groups"
               v-model="round.ignoreGroups"
-              :binary="true"
+              :false-value="0"
+              :true-value="1"
             />
             <label for="ignore-groups">
               {{ $t('admin.championships.ignoreGroups') }}

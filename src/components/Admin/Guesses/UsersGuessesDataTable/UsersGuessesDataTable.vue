@@ -1,6 +1,6 @@
 <template>
   <div class="users-guesses-data-table">
-    <BaseDataTable :items="{ data: guesses }">
+    <BaseDataTable :items="{ data: guesses }" paginator>
       <Column field="user.name" :header="$t('common.player')">
         <template #body="{ data }">
           {{ data.user.name }}

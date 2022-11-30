@@ -23,7 +23,11 @@
     </div>
 
     <Transition name="championships-matches-list">
-      <BaseDataTable v-show="isOpen" :items="{ data: championship.users }">
+      <BaseDataTable
+        v-show="isOpen"
+        :items="{ data: championship.users }"
+        paginator
+      >
         <Column field="user.name" :header="$t('common.player')">
           <template #body="{ data }">
             {{ data.name }}

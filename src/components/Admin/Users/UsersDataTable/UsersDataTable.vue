@@ -5,6 +5,7 @@
     :title="$t('common.users')"
     :global-filter-fields="globalFilterFields"
     searchable
+    paginator
   >
     <Column selectionMode="multiple" headerStyle="width: 3rem" />
     <Column
