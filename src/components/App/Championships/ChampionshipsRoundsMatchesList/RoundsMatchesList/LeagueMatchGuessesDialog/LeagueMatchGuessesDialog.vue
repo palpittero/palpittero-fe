@@ -3,7 +3,9 @@
     :visible="visible"
     :header="header"
     type="dynamic"
+    cancel-button-class="hidden"
     @hide="emits('hide')"
+    @submit="emits('hide')"
   >
     <UserMatchGuesses
       :league-id="leagueId"

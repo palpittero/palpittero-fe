@@ -3,7 +3,9 @@
     :visible="visible"
     :header="header"
     type="dynamic"
+    cancel-button-class="hidden"
     @hide="emits('hide')"
+    @submit="emits('hide')"
   >
     <UserChampionshipGuesses
       :league-id="leagueId"
@@ -38,8 +40,6 @@ const emits = defineEmits(['hide'])
 
 const header = ref('')
 
-const onUserChampionshipGuessesReady = ({ league, championship }) => {
-  console.log({ league, championship })
-  header.value = `${league.name} - ${i18n.t('app.guesses.otherGuesses')}`
-}
+const onUserChampionshipGuessesReady = ({ league }) =>
+  (header.value = `${league.name} - ${i18n.t('app.guesses.otherGuesses')}`)
 </script>

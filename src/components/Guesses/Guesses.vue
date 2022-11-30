@@ -1,13 +1,10 @@
 <template>
-  <!-- <pre>{{ championshipsGuesses }}</pre> -->
   <div>
     <div
       class="flex flex-wrap justify-content-between align-items-center guesses__top-bar guesses__top-bar--is-pinned gap-2"
     >
       <Heading :label="league.data.name" icon="pi pi-flag" />
-      <!-- <h1 class="mb-0">
-        {{ league.data.name }}
-      </h1> -->
+
       <div class="flex gap-2">
         <Button
           @click="handleRegisterGuesses"
@@ -42,8 +39,6 @@
       </div>
     </div>
   </div>
-
-  <!-- <pre>{{ league }}</pre> -->
 
   <CopyGuessesDialog
     v-if="isCopyGuessesDialogOpen"

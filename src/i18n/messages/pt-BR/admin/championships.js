@@ -36,5 +36,6 @@ export default {
   noGroups: 'Sem grupos',
   setRanking: 'Definir Ranking | {name} - Definir Ranking',
   champion: 'Campeão',
-  runnerUp: 'Vice-campeão'
+  runnerUp: 'Vice-campeão',
+  ignoreGroups: 'Ignorar Grupos'
 }

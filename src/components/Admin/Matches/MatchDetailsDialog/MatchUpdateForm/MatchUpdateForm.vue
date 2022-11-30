@@ -18,13 +18,14 @@
         v-model="match.round"
         :championship-id="championship.id"
         :invalid="submitted && errors.roundId"
+        :extra-fields="['ignoreGroups']"
         @update:model-value="handleRoundUpdate"
       />
       <small class="p-invalid" v-if="submitted && errors.roundId">
         {{ $t('admin.matches.validation.round') }}
       </small>
     </div>
-    <div class="field" v-if="championship.hasGroups">
+    <div class="field" v-if="showGroup">
       <label for="championship">{{ $t('admin.matches.group') }}</label>
       <GroupSelect
         v-model="match.group"
@@ -142,10 +143,15 @@ const groupTeamsId = computed(
   () => match.value.group?.teams?.map(({ id }) => id) || []
 )
 
+const showGroup = computed(
+  () => championship.value.hasGroups && !match.value.round.ignoreGroups
+)
+
 const onFilterHomeTeam = (teams) =>
   teams.filter(
     ({ id }) =>
       (!championship.value.hasGroups ||
+        match.value.round.ignoreGroups ||
         (championship.value.hasGroups && groupTeamsId.value.includes(id))) &&
       id !== match.value.awayTeam?.id
   )
@@ -154,6 +160,7 @@ const onFilterAwayTeam = (teams) =>
   teams.filter(
     ({ id }) =>
       (!championship.value.hasGroups ||
+        match.value.round.ignoreGroups ||
         (championship.value.hasGroups && groupTeamsId.value.includes(id))) &&
       id !== match.value.homeTeam?.id
   )
