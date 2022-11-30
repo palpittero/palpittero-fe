@@ -36,6 +36,7 @@
             :championship="championship"
             :index="index"
             :errors="errors"
+            :ignore-groups="match.round.ignoreGroups"
             :submitted="submitted"
             @update:model-value="(detail) => handleUpdateDetail(detail, index)"
             @remove="handleRemoveDetail"

@@ -8,26 +8,14 @@
     :placeholder="$t('admin.rounds.selectRound')"
     :class="{ 'p-invalid': invalid }"
     :disabled="disabled"
-  >
-    <!-- <template #value="{ value, placeholder }">
-      <div v-if="value" class="flex align-items-center gap-3">
-        <div>{{ value.name }} {{ value.year }}</div>
-      </div>
-      <span v-else>
-        {{ placeholder }}
-      </span>
-    </template>
-    <template #option="{ option }">
-      <div class="flex align-items-center gap-3">
-        <div>{{ option.name }} {{ option.year }}</div>
-      </div>
-    </template> -->
-  </Dropdown>
+  />
 </template>
 
 <script setup>
-import services from '@/services'
 import { computed, reactive, watch } from 'vue'
+import { pick } from 'lodash/fp'
+
+import services from '@/services'
 
 const props = defineProps({
   modelValue: {
@@ -41,6 +29,10 @@ const props = defineProps({
   championshipId: {
     type: Number,
     required: true
+  },
+  extraFields: {
+    type: Array,
+    default: () => []
   },
   invalid: Boolean,
   disabled: Boolean
@@ -71,9 +63,7 @@ watch(
   { immediate: true, deep: true }
 )
 
-const parsedRounds = computed(() =>
-  rounds.data.map(({ id, name }) => ({ id, name }))
-)
-
-const getOptionValue = ({ id, name }) => ({ id, name })
+const getOptionValue = (match) =>
+  pick(['id', 'name', ...props.extraFields], match)
+const parsedRounds = computed(() => rounds.data.map(getOptionValue))
 </script>

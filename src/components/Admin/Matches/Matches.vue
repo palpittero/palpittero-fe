@@ -160,7 +160,7 @@ const handleDetailsDialogHide = () => {
 }
 
 const handleEditMatch = (row) => {
-  const MATCH_FIELDS = ['id', 'name']
+  const MATCH_FIELDS = ['id', 'name', 'ignoreGroups']
   const CHAMPIONSHIP_FIELDS = ['id', 'name', 'year', 'hasGroups']
 
   match.value = {

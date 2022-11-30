@@ -30,15 +30,15 @@
           >
             <!-- Group name -->
             <div class="w-full text-bold text-center md:text-left">
-              {{ match.group.name }}
-              <Button
+              {{ match.group?.name }}
+              <!-- <Button
                 type="button"
                 class="absolute md:hidden p-button-text p-0 rounds-matches-list__mobile-menu-button"
                 icon="pi pi-ellipsis-v"
                 @click="(event) => toggleMenu(event, match)"
                 aria-haspopup="true"
                 aria-controls="overlay_menu"
-              />
+              /> -->
             </div>
             <!-- Match status -->
             <div
@@ -354,13 +354,10 @@
             </template>
           </div>
 
-          <template v-if="isMatchFinished(match)">
-            <div
-              class="flex flex-column align-items-center md:hidden"
-              v-if="isMatchFinished(match)"
-            >
-              <GuessPointsBadge :guess="matchesGuesses[match.id]" />
-            </div>
+          <div
+            class="flex flex-column align-items-center gap-3"
+            v-if="isMatchFinished(match)"
+          >
             <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
             <RoundMatchFinalResult
               v-else
@@ -378,7 +375,21 @@
                 getMatchAwayTeamPenaltiesTimeScoreClass(match)
               "
             />
-          </template>
+            <GuessPointsBadge
+              class="md:hidden"
+              :guess="matchesGuesses[match.id]"
+            />
+            <div
+              class="w-full gap-2 flex md:hidden align-items-end justify-content-center"
+            >
+              <Button
+                @click="openLeagueMatchGuessesDialog(match)"
+                :label="$t('app.guesses.viewOtherGuesses')"
+                class="p-button-link p-button-clear p-button-sm p-0"
+                icon="pi pi-search"
+              />
+            </div>
+          </div>
         </li>
       </template>
       <div v-else class="text-center">
@@ -386,7 +397,7 @@
       </div>
     </ul>
   </div>
-  <Menu ref="menu" :model="menuItems" popup />
+  <!-- <Menu ref="menu" :model="menuItems" popup /> -->
 
   <LeagueMatchGuessesDialog
     v-if="isLeagueGuessesDialogVisible"
@@ -691,20 +702,20 @@ const getMatchClass = (guess) => [
     'rounds-matches-list-unregistered-guess'
 ]
 
-const currentMatch = ref()
-const menu = ref()
+// const currentMatch = ref()
+// const menu = ref()
 
-const toggleMenu = async (event, match) => {
-  currentMatch.value = match
-  menu.value.toggle(event)
-}
+// const toggleMenu = async (event, match) => {
+//   currentMatch.value = match
+//   menu.value.toggle(event)
+// }
 
-const menuItems = computed(() => [
-  {
-    label: i18n.t('app.guesses.viewOtherGuesses'),
-    command: () => openLeagueMatchGuessesDialog(currentMatch.value)
-  }
-])
+// const menuItems = computed(() => [
+//   {
+//     label: i18n.t('app.guesses.viewOtherGuesses'),
+//     command: () => openLeagueMatchGuessesDialog(currentMatch.value)
+//   }
+// ])
 
 const isPenaltiesRoundType = (match) =>
   [

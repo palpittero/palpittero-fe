@@ -1,6 +1,6 @@
 <template>
   <div class="grid align-items-center">
-    <div class="col-12 field" v-if="championship.hasGroups">
+    <div class="col-12 field" v-if="championship.hasGroups && !ignoreGroups">
       <label for="group">{{ $t('admin.matches.group') }}</label>
       <GroupSelect
         v-model="detail.group"
@@ -99,6 +99,7 @@ const props = defineProps({
     type: Number,
     required: true
   },
+  ignoreGroups: Boolean,
   submitted: Boolean
 })
 
@@ -121,6 +122,7 @@ const onFilterHomeTeam = (teams) =>
   teams.filter(
     ({ id }) =>
       (!props.championship.hasGroups ||
+        props.ignoreGroups ||
         (props.championship.hasGroups && groupTeamsId.value.includes(id))) &&
       id !== detail.value.awayTeam?.id
   )
@@ -129,6 +131,7 @@ const onFilterAwayTeam = (teams) =>
   teams.filter(
     ({ id }) =>
       (!props.championship.hasGroups ||
+        props.ignoreGroups ||
         (props.championship.hasGroups && groupTeamsId.value.includes(id))) &&
       id !== detail.value.homeTeam?.id
   )
@@ -164,6 +167,6 @@ const parsedErrors = computed(() => {
 const showTeams = computed(
   () =>
     !props.championship.hasGroups ||
-    (props.championship.hasGroups && detail.value.group)
+    (props.championship.hasGroups && (detail.value.group || props.ignoreGroups))
 )
 </script>

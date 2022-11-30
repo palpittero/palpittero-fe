@@ -72,16 +72,28 @@
 
     <template v-else>
       <div
-        class="flex gap-2 mb-2 align-items-center"
+        class="flex gap-3 mb-2 align-items-center"
         v-for="round of championship.rounds"
         :key="round.uuid || round.id"
       >
         <InputText
           v-model="round.name"
-          class="w-full"
+          class="flex-1"
           :placeholder="$t('admin.championships.name')"
         />
-        <RoundTypeSelect class="w-full" v-model="round.type" />
+        <div class="flex align-items-center gap-3 flex-1">
+          <RoundTypeSelect class="flex-1" v-model="round.type" />
+          <div class="flex align-items-center gap-2">
+            <Checkbox
+              inputId="ignore-groups"
+              v-model="round.ignoreGroups"
+              :binary="true"
+            />
+            <label for="ignore-groups">
+              {{ $t('admin.championships.ignoreGroups') }}
+            </label>
+          </div>
+        </div>
 
         <span
           class="pi pi-trash p-button p-button-text p-button-danger"
@@ -182,7 +194,8 @@ const championship = ref(props.modelValue)
 const newRound = (name) => ({
   uuid: uniqueId(),
   name: name || '',
-  type: CHAMPIONSHIPS_ROUND_TYPE.REGULAR_TIME
+  type: CHAMPIONSHIPS_ROUND_TYPE.REGULAR_TIME,
+  ignoreGroups: false
 })
 
 const newGroup = (name) => ({
