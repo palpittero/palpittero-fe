@@ -3,7 +3,8 @@
     v-model="group"
     :options="groups.data"
     optionLabel="name"
-    :optionValue="getOptionValue"
+    :option-value="getOptionValue"
+    :show-clear="clearable"
     filter
     :placeholder="$t('admin.championships.group')"
     :class="{ 'p-invalid': invalid }"
@@ -43,6 +44,7 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  clearable: Boolean,
   invalid: Boolean
 })
 

@@ -2,8 +2,9 @@
   <Dropdown
     v-model="round"
     :options="parsedRounds"
-    optionLabel="name"
-    :optionValue="getOptionValue"
+    option-label="name"
+    :option-value="getOptionValue"
+    :show-clear="clearable"
     filter
     :placeholder="$t('admin.rounds.selectRound')"
     :class="{ 'p-invalid': invalid }"
@@ -34,6 +35,7 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  clearable: Boolean,
   invalid: Boolean,
   disabled: Boolean
 })

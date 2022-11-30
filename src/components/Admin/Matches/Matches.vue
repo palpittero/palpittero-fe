@@ -1,4 +1,7 @@
 <template>
+  <pre>{{ filters }}</pre>
+  <!-- <pre>{{ matches.data }}</pre> -->
+  <!-- <pre>{{ filteredMatches }}</pre> -->
   <div class="grid">
     <div class="col-12">
       <div class="card">
@@ -38,10 +41,14 @@
             />
           </template> -->
         </Toolbar>
+        <MatchesFilters
+          v-model="filters"
+          @update:model-value="handleFiltersUpdate"
+        />
 
         <MatchesDataTable
           v-model="selectedMatches"
-          :matches="matches"
+          :matches="{ ...matches, data: filteredMatches }"
           @edit="handleEditMatch"
           @delete="handleDeleteMatch"
           @set-result="handleSetResultMatch"
@@ -80,11 +87,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import MatchesDataTable from './MatchesDataTable/MatchesDataTable.vue'
 import MatchDetailsDialog from './MatchDetailsDialog/MatchDetailsDialog.vue'
 import MatchDeleteDialog from './MatchDeleteDialog/MatchDeleteDialog.vue'
 import MatchSetResultDialog from './MatchSetResultDialog/MatchSetResultDialog.vue'
+import MatchesFilters from './MatchesFilters/MatchesFilters.vue'
 
 import { MATCH_MODEL, MATCH_DETAIL_MODEL } from '@/constants/matches'
 import services from '@/services'
@@ -107,6 +115,9 @@ const isMatchDeleteDialogOpen = ref(false)
 const isMatchSetResultDialogOpen = ref(false)
 const selectedMatches = ref([])
 const isSubmitting = ref(false)
+const filters = ref({
+  championshipId: null
+})
 
 onMounted(() => loadMatches())
 
@@ -120,6 +131,24 @@ const loadMatches = async () => {
     matches.value.loading = false
   }
 }
+
+const filteredMatches = computed(() =>
+  matches.value.data.filter((match) => {
+    const championshipMatches =
+      !filters.value.championshipId ||
+      match.round.championship.id === filters.value.championshipId
+
+    const groupMatches =
+      !filters.value.groupId ||
+      (match.round.championship.hasGroups &&
+        match.group?.id === filters.value.groupId)
+
+    const roundMatches =
+      !filters.value.roundId || match.round?.id === filters.value.roundId
+
+    return championshipMatches && groupMatches && roundMatches
+  })
+)
 
 const handleNewMatch = () => {
   match.value = clone({
@@ -238,6 +267,10 @@ const handleSetResultDialogHide = () =>
 const handleSetResultDialogSubmit = async (match) => {
   await saveMatch(match)
   handleSetResultDialogHide()
+}
+
+const handleFiltersUpdate = (filters) => {
+  console.log({ filters })
 }
 </script>
 

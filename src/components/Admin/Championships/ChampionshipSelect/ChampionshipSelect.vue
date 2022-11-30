@@ -5,6 +5,7 @@
     optionLabel="name"
     :optionValue="getOptionValue"
     filter
+    :show-clear="clearable"
     :placeholder="$t('admin.championships.selectChampionship')"
     :class="{ 'p-invalid': invalid }"
   >
@@ -43,6 +44,7 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  clearable: Boolean,
   invalid: Boolean
 })
 
