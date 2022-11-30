@@ -1,7 +1,7 @@
 <template>
   <div class="grid gap-5">
     <div
-      class="card col-12 md:col-6 p-fluid match-set-result-form__team flex-1 text-center"
+      class="card col-3 p-0 md:p-3 md:col-6 p-fluid match-set-result-form__team flex-1 text-center"
     >
       <div class="mb-3">
         <img
@@ -17,7 +17,7 @@
         <h6 class="mt-0 mb-3">
           {{ $t('admin.matches.homeTeam') }}
         </h6>
-        <div class="field px-5">
+        <div class="field px-1 md:px-5">
           <label for="regular-time-home-team-goals">
             <small>
               {{ $t('admin.championships.regularTime') }}
@@ -42,7 +42,7 @@
           </small>
         </div>
 
-        <div class="field px-5" v-if="showPenaltiesResults">
+        <div class="field px-1 md:px-5" v-if="showPenaltiesResults">
           <label for="penalties-time-home-team-goals">
             <small>
               {{ $t('admin.championships.penalties') }}
@@ -69,7 +69,7 @@
       </div>
     </div>
     <div
-      class="card col-12 md:col-6 p-fluid match-set-result-form__team flex-1 text-center"
+      class="card col-3 p-0 md:p-3 md:col-6 p-fluid match-set-result-form__team flex-1 text-center"
     >
       <div class="mb-3">
         <img
@@ -85,7 +85,7 @@
         <h6 class="mt-0 mb-3">
           {{ $t('admin.matches.awayTeam') }}
         </h6>
-        <div class="field px-5">
+        <div class="field px-1 md:px-5">
           <label for="regular-time-home-team-goals">
             <small>
               {{ $t('admin.championships.regularTime') }}
@@ -109,7 +109,7 @@
           </small>
         </div>
 
-        <div class="field px-5" v-if="showPenaltiesResults">
+        <div class="field px-1 md:px-5" v-if="showPenaltiesResults">
           <label for="penalties-time-away-team-goals">
             <small>
               {{ $t('admin.championships.penalties') }}
@@ -199,14 +199,18 @@ watch(
 <style lang="scss">
 .match-set-result-form__team {
   &-image {
-    width: 200px;
-    height: 200px;
+    max-width: 100%;
+    // max-height: 200px;
     object-fit: contain;
   }
 
   .p-inputtext {
     text-align: center;
     font-size: 1.5rem;
+
+    @media screen and (max-width: 960px) {
+      font-size: 1rem;
+    }
   }
 }
 </style>
