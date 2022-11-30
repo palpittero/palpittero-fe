@@ -5,6 +5,7 @@
     :title="$t('common.matches')"
     :global-filter-fields="globalFilterFields"
     searchable
+    paginator
   >
     <Column selectionMode="multiple" />
     <Column field="homeTeam" :header="$t('common.score')" sortable>

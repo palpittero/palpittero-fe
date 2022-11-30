@@ -4,6 +4,7 @@
     :items="championships"
     :title="$t('common.championships')"
     searchable
+    paginator
   >
     <Column selectionMode="multiple" headerStyle="width: 3rem" />
     <Column

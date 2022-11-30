@@ -1,5 +1,4 @@
 <template>
-  <pre>{{ championship }}</pre>
   <div class="flex p-toolbar justify-content-start gap-3 mb-3">
     <div class="field">
       <label for="championship-id">

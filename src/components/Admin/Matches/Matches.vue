@@ -1,7 +1,4 @@
 <template>
-  <pre>{{ filters }}</pre>
-  <!-- <pre>{{ matches.data }}</pre> -->
-  <!-- <pre>{{ filteredMatches }}</pre> -->
   <div class="grid">
     <div class="col-12">
       <div class="card">

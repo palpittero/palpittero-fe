@@ -14,11 +14,11 @@
   <template v-if="championship">
     <div class="field">
       <label for="championship">{{ $t('admin.matches.round') }}</label>
-
       <RoundSelect
         v-model="match.round"
         :championship-id="championshipId"
         :invalid="submitted && errors.roundId"
+        :extra-fields="['ignoreGroups']"
         @update:model-value="handleRoundUpdate"
         :disabled="!championship"
       />

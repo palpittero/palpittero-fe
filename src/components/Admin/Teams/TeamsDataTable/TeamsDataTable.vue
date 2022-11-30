@@ -4,6 +4,7 @@
     :items="teams"
     :title="$t('common.teams')"
     searchable
+    paginator
   >
     <Column selectionMode="multiple" headerStyle="width: 3rem" />
     <Column
