@@ -141,6 +141,10 @@ const getLeaguePrize = (user) => {
     ({ position }) => position == rankingPosition
   )
 
+  if (!leaguePrize) {
+    return '-'
+  }
+
   const prizeValue =
     (ticketValue *
       leagueUsers.value.data.length *
