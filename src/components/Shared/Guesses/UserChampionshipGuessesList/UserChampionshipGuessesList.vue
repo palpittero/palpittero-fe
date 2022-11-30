@@ -1,5 +1,5 @@
 <template>
-  <div class="surface-section p-3">
+  <div class="surface-section">
     <div class="flex justify-content-between cursor-pointer">
       <div class="flex gap-3 py-3">
         <span class="font-medium text-3xl text-900">
@@ -13,7 +13,11 @@
           :label="$t('admin.guesses.processGuesses')"
         />
       </div>
-      <span class="flex align-items-center gap-3" @click="handleToggle">
+      <span
+        class="flex align-items-center gap-3"
+        @click="handleToggle"
+        v-if="!readonly"
+      >
         {{ toggle.label }} <span :class="toggle.icon" />
       </span>
     </div>

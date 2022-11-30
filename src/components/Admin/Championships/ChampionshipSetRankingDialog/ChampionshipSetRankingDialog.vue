@@ -50,9 +50,13 @@ setValues(props.championship)
 watch(championship, (value) => setValues(value), { deep: true })
 
 const header = computed(() =>
-  i18n.t('admin.championships.setRanking', {
-    name: `${props.championship.name} ${props.championship.year}`
-  })
+  i18n.t(
+    'admin.championships.setRanking',
+    {
+      name: `${props.championship.name} ${props.championship.year}`
+    },
+    2
+  )
 )
 
 const onSubmit = handleSubmit(

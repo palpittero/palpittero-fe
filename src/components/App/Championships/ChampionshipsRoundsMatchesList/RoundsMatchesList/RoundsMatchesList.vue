@@ -57,14 +57,12 @@
                 v-if="isMatchFinished(match)"
                 :guess="matchesGuesses[match.id]"
               />
-              <!-- <template > -->
               <Button
-                @click="goToUserMatchGuessRoute(match)"
+                @click="openLeagueMatchGuessesDialog(match)"
                 :label="$t('app.guesses.viewOtherGuesses')"
                 class="p-button-link p-button-clear p-button-sm p-0"
                 icon="pi pi-search"
               />
-              <!-- </template> -->
             </div>
           </div>
           <div>
@@ -389,24 +387,36 @@
     </ul>
   </div>
   <Menu ref="menu" :model="menuItems" popup />
+
+  <LeagueMatchGuessesDialog
+    v-if="isLeagueGuessesDialogVisible"
+    :league-id="leagueId"
+    :match-id="matchId"
+    :visible="isLeagueGuessesDialogVisible"
+    @hide="handleLeagueMatchGuessesDialogHide"
+  />
 </template>
 
 <script setup>
-import services from '@/services'
 import { reduce, isNil, isEmpty, uniqueId } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
-import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
-import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
-import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
-import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+
+import services from '@/services'
 import {
   isMatchScheduled,
   isMatchFinished,
   matchHasNoResult
 } from '@/helpers/matches'
+
+import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
+import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
+import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
+import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
+import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+import LeagueMatchGuessesDialog from './LeagueMatchGuessesDialog/LeagueMatchGuessesDialog.vue'
+
 import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
 
 const router = useRouter()
@@ -447,6 +457,9 @@ const guesses = reactive({
 })
 
 const showPenaltiesGuess = ref({})
+const isLeagueGuessesDialogVisible = ref(false)
+const matchId = ref(null)
+
 const handleShowPenaltiesToggle = (match) => {
   showPenaltiesGuess.value[match.id] = !showPenaltiesGuess.value[match.id]
   if (showPenaltiesGuess.value[match.id]) {
@@ -662,14 +675,14 @@ const handleUpdatePenaltiesTimeGoals = (team, matchId, value) => {
 
 const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
 
-const goToUserMatchGuessRoute = (match) => {
-  router.push({
-    name: 'UserMatchGuesses',
-    params: {
-      leagueId: props.leagueId,
-      matchId: match.id
-    }
-  })
+const openLeagueMatchGuessesDialog = (match) => {
+  matchId.value = match.id
+  isLeagueGuessesDialogVisible.value = true
+}
+
+const handleLeagueMatchGuessesDialogHide = () => {
+  isLeagueGuessesDialogVisible.value = false
+  matchId.value = null
 }
 
 const getMatchClass = (guess) => [
@@ -689,7 +702,7 @@ const toggleMenu = async (event, match) => {
 const menuItems = computed(() => [
   {
     label: i18n.t('app.guesses.viewOtherGuesses'),
-    command: () => goToUserMatchGuessRoute(currentMatch.value)
+    command: () => openLeagueMatchGuessesDialog(currentMatch.value)
   }
 ])
 

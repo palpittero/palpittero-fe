@@ -1,9 +1,6 @@
 <template>
   <div class="user-match-guesses">
     <BaseDataRenderer :state="{ loading }">
-      <div class="mb-3">
-        <h1 class="mb-0">{{ league.name }}</h1>
-      </div>
       <MatchCard :match="match" />
       <UsersGuessesMatchDataTable :match="match" :guesses="guesses" />
     </BaseDataRenderer>
@@ -28,6 +25,8 @@ const props = defineProps({
   }
 })
 
+const emits = defineEmits(['ready'])
+
 const match = ref([])
 const league = ref(null)
 const guesses = ref([])
@@ -43,5 +42,6 @@ onMounted(async () => {
     roundId: match.value.round.id
   })
   loading.value = false
+  emits('ready', { league: league.value, match: match.value })
 })
 </script>

@@ -31,36 +31,31 @@
     </div>
     <div class="flex align-items-start gap-2">
       <Button
-        @click="goToUserChampionshipGuessesRoute"
+        @click="openChampionshipGuessesDialog"
         :label="$t('app.guesses.viewOtherGuesses')"
         class="p-button-link p-button-clear p-button-sm p-0"
         icon="pi pi-search"
       />
     </div>
 
-    <!-- <router-link
-      :to="{
-        name: 'UserChampionshipGuesses',
-        params: { leagueId, championshipId }
-      }"
-    >
-      <div class="flex align-items-center gap-2">
-        <span class="pi pi-search" />
-        {{ $t('app.guesses.viewOtherGuesses') }}
-      </div>
-    </router-link> -->
+    <LeagueChampionshipGuessesDialog
+      v-if="isChampionshipGuessesDialogVisible"
+      :league-id="leagueId"
+      :championship-id="championshipId"
+      :visible="isChampionshipGuessesDialogVisible"
+      @hide="handleChampionshipGuessesDialogHide"
+    />
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 
 import TeamSelect from '@/components/Admin/Teams/TeamSelect/TeamSelect.vue'
+import LeagueChampionshipGuessesDialog from './LeagueChampionshipGuessesDialog/LeagueChampionshipGuessesDialog.vue'
 
 const i18n = useI18n()
-const router = useRouter()
 
 const props = defineProps({
   modelValue: {
@@ -79,6 +74,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:modelValue'])
+
+const isChampionshipGuessesDialogVisible = ref(false)
 
 const championshipGuesses = computed({
   set(value) {
@@ -105,14 +102,9 @@ const positionsTitles = {
   1: i18n.t('app.guesses.champion'),
   2: i18n.t('app.guesses.runnerUp')
 }
+const openChampionshipGuessesDialog = () =>
+  (isChampionshipGuessesDialogVisible.value = true)
 
-const goToUserChampionshipGuessesRoute = () => {
-  router.push({
-    name: 'UserChampionshipGuesses',
-    params: {
-      leagueId: props.leagueId,
-      championshipId: props.championshipId
-    }
-  })
-}
+const handleChampionshipGuessesDialogHide = () =>
+  (isChampionshipGuessesDialogVisible.value = false)
 </script>

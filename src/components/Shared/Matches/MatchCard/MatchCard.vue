@@ -37,3 +37,11 @@ defineProps({
   }
 })
 </script>
+
+<style lang="scss">
+.match-card {
+  .p-card-body {
+    padding: 0;
+  }
+}
+</style>

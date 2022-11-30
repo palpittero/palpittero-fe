@@ -4,7 +4,7 @@
     :value="items.data"
     v-model:selection="selectedItems"
     data-key="id"
-    paginator
+    :paginator="paginator"
     :rows="50"
     v-model:filters="filters"
     :global-filter-fields="globalFilterFields"
@@ -57,7 +57,8 @@ const props = defineProps({
     type: Array,
     default: () => ['name']
   },
-  searchable: Boolean
+  searchable: Boolean,
+  paginator: Boolean
 })
 
 const emits = defineEmits(['edit', 'delete', 'update:modelValue'])

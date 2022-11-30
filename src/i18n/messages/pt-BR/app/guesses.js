@@ -11,6 +11,7 @@ export default {
   noMatches: 'Nenhuma partida encontrada para esta rodada',
   matchHasNoResult: 'Placar não registrado',
   viewOtherGuesses: 'Ver outros palpites',
+  otherGuesses: 'Outros palpites',
   notRegistered: 'Palpite não registrado',
   processing: 'Palpite em processamento',
   noGuesses: 'Ninguém registrou palpites para esta partida',

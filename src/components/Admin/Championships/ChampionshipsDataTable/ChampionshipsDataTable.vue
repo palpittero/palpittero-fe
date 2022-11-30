@@ -63,24 +63,24 @@
         <BaseStatus :status="data.status" />
       </template>
     </Column>
-    <Column headerStyle="min-width:12rem;">
+    <Column headerStyle="min-width:14rem;">
       <template #body="{ data }">
-        <div class="flex gap-2">
+        <div class="flex flex-column md:flex-row gap-2 w-full">
           <Button
             icon="pi pi-pencil"
-            class="p-button p-button-info p-button-sm"
+            class="flex-1 p-button p-button-info p-button-sm"
             :label="$t('common.edit')"
             @click="handleEditChampionship(data)"
           />
           <Button
             icon="pi pi-star-fill"
-            class="p-button p-button-info p-button-sm"
-            :label="$t('admin.championships.setChampions')"
+            class="flex-1 p-button p-button-primary p-button-sm"
+            :label="$t('admin.championships.setRanking')"
             @click="handleSetRanking(data)"
           />
           <Button
             icon="pi pi-trash"
-            class="p-button p-button-danger p-button-sm"
+            class="flex-1 p-button p-button-danger p-button-sm"
             :label="$t('common.remove')"
             @click="handleDeleteChampionship(data)"
           />

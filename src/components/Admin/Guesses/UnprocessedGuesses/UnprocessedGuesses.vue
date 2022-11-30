@@ -30,6 +30,7 @@
       <TabPanel :header="championshipsGuessesTabHeader">
         <div class="flex flex-column gap-3" v-if="hasChampionshipGuesses">
           <UserChampionshipGuessesList
+            class="p-3"
             v-for="championship in guessesChampionships"
             open
             :key="championship.id"

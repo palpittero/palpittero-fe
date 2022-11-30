@@ -34,9 +34,7 @@ export default {
   groups: 'Grupos',
   setGroups: 'Definir grupos',
   noGroups: 'Sem grupos',
-  setRanking: '{name} - Definir Campeão e Vice',
+  setRanking: 'Definir Ranking | {name} - Definir Ranking',
   champion: 'Campeão',
-  runnerUp: 'Vice-campeão',
-  setChampions: 'Definir campeão e vice',
-  enableGuess: 'Habilitar palpite de posições'
+  runnerUp: 'Vice-campeão'
 }
