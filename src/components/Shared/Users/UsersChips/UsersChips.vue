@@ -29,21 +29,26 @@
         </div>
       </template>
     </Chips>
-    <div v-if="showFilteredUsers" class="p-autocomplete-panel p-component">
-      <ul class="p-autocomplete-items">
-        <li
-          class="p-autocomplete-item"
-          v-for="user in filteredUsers"
-          :key="user.id"
-          @click="handleAdd({ value: [user.email] })"
-        >
-          {{ user.name }}
-          <small class="text-gray-400">
-            <em>({{ user.email }})</em>
-          </small>
-        </li>
-      </ul>
-    </div>
+    <Popper :show="showFilteredUsers">
+      <span />
+      <template #content>
+        <div class="p-autocomplete-panel p-component">
+          <ul class="p-autocomplete-items">
+            <li
+              class="p-autocomplete-item"
+              v-for="user in filteredUsers"
+              :key="user.id"
+              @click="handleAdd({ value: [user.email] })"
+            >
+              {{ user.name }}
+              <small class="text-gray-400">
+                <em>({{ user.email }})</em>
+              </small>
+            </li>
+          </ul>
+        </div>
+      </template>
+    </Popper>
     <div></div>
     <small class="text-gray-500">
       {{ $t(hint) }}
@@ -53,14 +58,17 @@
 
 <script setup>
 import { computed, nextTick, onMounted, ref } from 'vue'
-import services from '@/services'
-import { useI18n } from 'vue-i18n'
 import { last, pick } from 'lodash/fp'
-
-import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
+import { useI18n } from 'vue-i18n'
 import { useToast } from 'primevue/usetoast'
-import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
+
+import services from '@/services'
 import { validateEmail } from '@/helpers/utils'
+
+import Popper from 'vue3-popper'
+import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
+
+import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
 const i18n = useI18n()
 const toast = useToast()
@@ -213,12 +221,17 @@ const showFilteredUsers = ref(false)
 <style lang="scss">
 .users-chips {
   .p-autocomplete-panel {
-    top: 110px;
-    left: 20px;
-    width: 300px;
+    top: -25px;
+    left: 0;
+    min-width: 300px;
     z-index: 1;
     max-height: 235px;
     overflow: auto;
+  }
+
+  .p-chips + .inline-block {
+    border: 0 !important;
+    margin: 0 !important;
   }
 }
 </style>
