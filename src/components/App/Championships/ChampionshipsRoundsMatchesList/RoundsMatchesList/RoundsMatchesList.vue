@@ -20,7 +20,7 @@
     <ul class="list-none p-0 m-0">
       <template v-if="hasMatches">
         <li
-          v-for="match in matches.data"
+          v-for="match in orderedMatches"
           :key="match.id"
           class="flex flex-column gap-3 border-top-1 surface-border p-3"
           :class="getMatchClass(matchesGuesses[match.id])"
@@ -354,31 +354,30 @@
             </template>
           </div>
 
-          <div
-            class="flex flex-column align-items-center gap-3"
-            v-if="isMatchFinished(match)"
-          >
-            <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
-            <RoundMatchFinalResult
-              v-else
-              :guess="matchesGuesses[match.id]"
-              :home-team-regular-time-class-name="
-                getMatchHomeTeamRegularTimeScoreClass(match)
-              "
-              :away-team-regular-time-class-name="
-                getMatchAwayTeamRegularTimeScoreClass(match)
-              "
-              :home-team-penalties-time-class-name="
-                getMatchHomeTeamPenaltiesTimeScoreClass(match)
-              "
-              :away-team-penalties-time-class-name="
-                getMatchAwayTeamPenaltiesTimeScoreClass(match)
-              "
-            />
-            <GuessPointsBadge
-              class="md:hidden"
-              :guess="matchesGuesses[match.id]"
-            />
+          <div class="flex flex-column align-items-center gap-3">
+            <template v-if="isMatchFinished(match)">
+              <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
+              <RoundMatchFinalResult
+                v-else
+                :guess="matchesGuesses[match.id]"
+                :home-team-regular-time-class-name="
+                  getMatchHomeTeamRegularTimeScoreClass(match)
+                "
+                :away-team-regular-time-class-name="
+                  getMatchAwayTeamRegularTimeScoreClass(match)
+                "
+                :home-team-penalties-time-class-name="
+                  getMatchHomeTeamPenaltiesTimeScoreClass(match)
+                "
+                :away-team-penalties-time-class-name="
+                  getMatchAwayTeamPenaltiesTimeScoreClass(match)
+                "
+              />
+              <GuessPointsBadge
+                class="md:hidden"
+                :guess="matchesGuesses[match.id]"
+              />
+            </template>
             <div
               class="w-full gap-2 flex md:hidden align-items-end justify-content-center"
             >
@@ -409,7 +408,7 @@
 </template>
 
 <script setup>
-import { reduce, isNil, isEmpty, uniqueId } from 'lodash/fp'
+import { reduce, isNil, isEmpty, uniqueId, orderBy } from 'lodash/fp'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -429,6 +428,7 @@ import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 import LeagueMatchGuessesDialog from './LeagueMatchGuessesDialog/LeagueMatchGuessesDialog.vue'
 
 import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
+import { MATCH_STATUSES } from '@/constants/matches'
 
 const router = useRouter()
 const route = useRoute()
@@ -536,6 +536,15 @@ const matchesGuesses = computed(() =>
 )
 
 const hasMatches = computed(() => matches.data.length > 0)
+
+const orderedMatches = computed(() => {
+  return orderBy(
+    (match) =>
+      match.status === MATCH_STATUSES.SCHEDULED ? match.status : match.date,
+    'desc',
+    matches.data
+  )
+})
 
 watch(
   selectedRound,

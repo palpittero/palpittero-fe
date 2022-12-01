@@ -18,7 +18,9 @@ export default {
     email: 'Favor informar um e-mail válido',
     password: 'Favor informar uma senha',
     passwordConfirmation: 'As senhas não são iguais',
-    userNotAllowed: 'Usuário não permitido'
+    userNotAllowed: 'Usuário não permitido',
+    userAlreadySelected: 'Usuário já foi selecionado',
+    invalidEmail: 'E-mail inválido'
   },
   error: {
     passwordsDontMatch: "Passwords don't match"

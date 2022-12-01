@@ -3,8 +3,8 @@
     <div class="mb-3 flex flex-column md:flex-row gap-2">
       <UsersChips
         v-model="selectedUsers"
-        :not-allowed="[ownerId]"
-        @not-allowed="handleNotAllowed"
+        :not-allowed="excludedUsers"
+        :selected="excludedUsers"
         class="flex-4"
       />
       <Button
@@ -211,4 +211,8 @@ const handleApproveUser = (event, user) => {
     reject: () => {}
   })
 }
+const excludedUsers = computed(() => [
+  ownerId.value,
+  ...leagueUsers.data.map(({ id }) => id)
+])
 </script>

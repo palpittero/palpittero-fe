@@ -34,7 +34,7 @@ const props = defineProps({
 const emits = defineEmits(['hide', 'submit'])
 
 const usersNames = computed(() =>
-  props.users.map(({ name }) => name).join('<br />')
+  props.users.map((user) => user?.name || user).join('<br />')
 )
 const leagueName = computed(() => props.league.name)
 

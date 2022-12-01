@@ -1,8 +1,11 @@
 <template>
   <div class="leagues-description-list">
     <div class="surface-section p-5">
-      <div class="font-medium text-3xl text-900 mb-3">
-        {{ title }}
+      <div class="flex align-items-center justify-content-between mb-3">
+        <span class="font-medium text-3xl text-900">
+          {{ title }}
+        </span>
+        <slot name="header-actions" />
       </div>
       <ul v-if="loading" class="m-0 p-0">
         <li class="mb-4">

@@ -22,5 +22,7 @@ export default {
   runnerUp: 'Vice-campeão',
   guessesCopied:
     'Nenhum palpite disponível para replicar | {total} palpite replicado com sucesso | {total} palpites replicados com sucesso',
-  copyGuessesFrom: 'Copiar palpites de:'
+  copyGuessesFrom: 'Copiar palpites de:',
+  targetLeague: 'Liga de Destino',
+  selectTargetLeague: 'Selecione a liga de destino'
 }

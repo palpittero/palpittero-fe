@@ -6,7 +6,7 @@
     :optionValue="getOptionValue"
     filter
     :showClear="clearable"
-    :placeholder="$t('app.leagues.selectLeague')"
+    :placeholder="placeholder || $t('app.leagues.selectLeague')"
     :class="{ 'p-invalid': invalid }"
     class="league-select"
     :loading="leagues.loading"
@@ -49,6 +49,10 @@ const props = defineProps({
   championshipId: {
     type: Number,
     default: null
+  },
+  placeholder: {
+    type: String,
+    default: ''
   },
   invalid: Boolean,
   clearable: Boolean

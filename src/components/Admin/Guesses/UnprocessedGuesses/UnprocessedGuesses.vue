@@ -181,7 +181,7 @@ const championshipsGuessesTabHeader = computed(
       padding: 20px 0;
 
       @media screen and (max-width: 960px) {
-        padding: 10px;
+        padding: 10px 0;
 
         h1 {
           font-size: 1.1rem;

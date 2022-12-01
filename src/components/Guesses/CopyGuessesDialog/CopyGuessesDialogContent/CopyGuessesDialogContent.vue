@@ -1,11 +1,12 @@
 <template>
   <div class="field">
     <label class="text-bold" for="league">
-      {{ $t('common.leagues') }}
+      {{ $t('app.guesses.targetLeague') }}
     </label>
     <LeagueSelect
       id="league"
       v-model="league"
+      :placeholder="$t('app.guesses.selectTargetLeague')"
       :filter="onFilterLeagues"
       @update:model-value="handleLeagueUpdate"
     />
