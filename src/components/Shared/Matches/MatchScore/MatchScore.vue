@@ -18,7 +18,10 @@
       </span>
     </div>
 
-    <div class="flex align-items-center justify-content-around gap-2">
+    <div
+      v-if="match.awayTeam"
+      class="flex align-items-center justify-content-around gap-2"
+    >
       <div class="flex align-items-center gap-2 w-full">
         <BadgeAvatar
           v-if="match.awayTeam.badge"

@@ -12,7 +12,7 @@
     <template #content>
       <p class="ml-2" v-html="rule.description" />
       <DataTable :value="rule.examples">
-        <Column field="guess" header="Seu Palpite">
+        <Column field="guess" :header="$t('app.guesses.yourGuess')">
           <template #body="{ data }">
             <MatchScore :match="data.guess" />
           </template>
