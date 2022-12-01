@@ -1,6 +1,24 @@
 <template>
-  <BaseDataRenderer :state="users">
-    <Chips v-model="selectedUsers" class="block" @add="handleAdd">
+  <BaseDataRenderer class="users-chips" :state="users">
+    <!-- <pre>{{ selectedUsers }}</pre> -->
+    <!-- <AutoComplete
+      v-model="selectedUsers"
+      :suggestions="filteredUsers"
+      @complete="filterUsers"
+      option-label="name"
+    >
+      <template #chip="{ value }">
+        {{ value.name }}
+      </template>
+    </AutoComplete> -->
+
+    <Chips
+      v-model="selectedUsers"
+      class="block"
+      @add="handleAdd"
+      @input="filterUsers"
+      input-id="users-chips"
+    >
       <template #chip="{ value }">
         <div class="flex align-items-center gap-2">
           <span> {{ value[optionLabel] || value }}</span>
@@ -11,6 +29,22 @@
         </div>
       </template>
     </Chips>
+    <div v-if="showFilteredUsers" class="p-autocomplete-panel p-component">
+      <ul class="p-autocomplete-items">
+        <li
+          class="p-autocomplete-item"
+          v-for="user in filteredUsers"
+          :key="user.id"
+          @click="handleAdd({ value: [user.email] })"
+        >
+          {{ user.name }}
+          <small class="text-gray-400">
+            <em>({{ user.email }})</em>
+          </small>
+        </li>
+      </ul>
+    </div>
+    <div></div>
     <small class="text-gray-500">
       {{ $t(hint) }}
     </small>
@@ -26,6 +60,7 @@ import { last, pick } from 'lodash/fp'
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
 import { useToast } from 'primevue/usetoast'
 import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
+import { validateEmail } from '@/helpers/utils'
 
 const i18n = useI18n()
 const toast = useToast()
@@ -37,9 +72,13 @@ const props = defineProps({
   },
   optionLabel: {
     type: String,
-    default: 'email'
+    default: 'name'
   },
   notAllowed: {
+    type: Array,
+    default: () => []
+  },
+  selected: {
     type: Array,
     default: () => []
   },
@@ -49,13 +88,15 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['update:modelValue', 'notAllowed'])
+const emits = defineEmits(['update:modelValue'])
 
 const users = ref({
   loading: false,
   error: null,
   data: []
 })
+
+const filteredUsers = ref([])
 
 const selectedUsers = computed({
   set(value) {
@@ -110,7 +151,15 @@ const handleAdd = async ({ value }) => {
   await nextTick()
 
   if (user) {
-    if (props.notAllowed.includes(user.id)) {
+    if (props.selected.includes(user.id)) {
+      toast.add({
+        group: 'app',
+        severity: 'warn',
+        summary: i18n.t('common.warning'),
+        detail: i18n.t('admin.users.validation.userAlreadySelected'),
+        life: 4000
+      })
+    } else if (props.notAllowed.includes(user.id)) {
       toast.add({
         group: 'app',
         severity: 'warn',
@@ -124,11 +173,52 @@ const handleAdd = async ({ value }) => {
         pick(['id', 'name', 'email'], user)
       ]
     }
+    showFilteredUsers.value = false
+  } else if (!validateEmail(email)) {
+    toast.add({
+      group: 'app',
+      severity: 'warn',
+      summary: i18n.t('common.warning'),
+      detail: i18n.t('admin.users.validation.invalidEmail'),
+      life: 4000
+    })
   } else {
     selectedUsers.value = [...selectedUsers.value, email]
+    showFilteredUsers.value = false
   }
+
+  document.querySelector('[input-id="users-chips"]').value = ''
+  document.querySelector('[input-id="users-chips"]').focus()
 }
 
-const isUserUnique = (email) =>
-  !selectedUsers.value.find((user) => (user.email || user) === email)
+const filterUsers = (event) => {
+  const { value } = event.target
+
+  filteredUsers.value =
+    value.length >= 3
+      ? users.value.data.filter(
+          (user) =>
+            !props.selected.includes(user.id) &&
+            (user.name.toLowerCase().includes(value.toLowerCase()) ||
+              user.email.toLowerCase().includes(value.toLowerCase()))
+        )
+      : []
+
+  showFilteredUsers.value = filteredUsers.value.length > 0
+}
+
+const showFilteredUsers = ref(false)
 </script>
+
+<style lang="scss">
+.users-chips {
+  .p-autocomplete-panel {
+    top: 110px;
+    left: 20px;
+    width: 300px;
+    z-index: 1;
+    max-height: 235px;
+    overflow: auto;
+  }
+}
+</style>

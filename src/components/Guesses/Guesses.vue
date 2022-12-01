@@ -3,7 +3,7 @@
     <div
       class="flex flex-wrap justify-content-between align-items-center guesses__top-bar guesses__top-bar--is-pinned gap-2"
     >
-      <Heading :label="league.data.name" icon="pi pi-flag" />
+      <Heading :label="league.data.name" icon="pi pi-flag" class="mb-0" />
 
       <div class="flex gap-2">
         <Button
@@ -274,14 +274,14 @@ const handleUpdateChampionshipGuesses = (championshipGuesses) => {
     position: -o-sticky;
     position: -ms-sticky;
     position: sticky;
-    top: 70px;
+    top: 60px;
     z-index: 1;
 
     &--is-pinned {
       padding: 20px 0;
 
       @media screen and (max-width: 960px) {
-        padding: 10px;
+        padding: 10px 0;
 
         h1 {
           font-size: 1.1rem;

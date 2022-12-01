@@ -15,6 +15,10 @@ export default {
       header: '{leagueName} / {championshipName} - Processar palpites',
       message:
         'Deseja realmente processar os palpites do campeonato <b>{championshipName}</b> na liga <b>{leagueName}</b>?'
+    },
+    all: {
+      header: 'Processar todos os palpites',
+      message: 'Deseja realmente processar todos os palpites de todas as ligas?'
     }
   },
   guessesProcessedSuccess: 'Palpites processados com sucesso',

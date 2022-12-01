@@ -14,6 +14,18 @@
         :description="$t('common.unprocessedGuesses')"
         :empty-state="$t('admin.guesses.allGuessesWereProcessed')"
       >
+        <template #header-actions>
+          <Button
+            v-if="
+              parseGuessesLeagues([...matchesGuesses, ...championshipsGuesses])
+                .length > 0
+            "
+            :label="$t('admin.guesses.processAllGuesses')"
+            icon="pi pi-bolt"
+            class="p-button-primary p-button-sm"
+            @click="handleProcessAllGuesses"
+          />
+        </template>
         <template #actions="{ league }">
           <div>
             <Button
@@ -32,17 +44,9 @@
         </template>
       </LeaguesDescriptionList>
       <BaseConfirmDialog
-        v-if="selectedLeague"
-        :header="
-          $t('admin.dashboard.unprocessedGuesses.league.header', {
-            leagueName: selectedLeague?.name
-          })
-        "
-        :message="
-          $t('admin.dashboard.unprocessedGuesses.league.message', {
-            leagueName: selectedLeague?.name
-          })
-        "
+        v-if="isConfirmDialogVisible"
+        :header="confirmDialog.header"
+        :message="confirmDialog.message"
         :visible="isConfirmDialogVisible"
         :disabled="isSubmitting"
         @hide="handleConfirmDialogHide"
@@ -53,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { uniqBy } from 'lodash/fp'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -99,14 +103,35 @@ const handleProcessGuesses = (league) => {
   isConfirmDialogVisible.value = true
 }
 
+const handleProcessAllGuesses = () => {
+  // selectedLeague.value = league
+  isConfirmDialogVisible.value = true
+}
+
 const handleConfirmDialogHide = () => {
   isConfirmDialogVisible.value = false
   selectedLeague.value = null
 }
 
+const confirmDialog = computed(() => {
+  return selectedLeague.value
+    ? {
+        header: i18n.t('admin.dashboard.unprocessedGuesses.league.header', {
+          leagueName: selectedLeague.value.name
+        }),
+        message: i18n.t('admin.dashboard.unprocessedGuesses.league.message', {
+          leagueName: selectedLeague.value.name
+        })
+      }
+    : {
+        header: i18n.t('admin.dashboard.unprocessedGuesses.all.header'),
+        message: i18n.t('admin.dashboard.unprocessedGuesses.all.message')
+      }
+})
+
 const handleConfirmDialogSubmit = async (fetchUnprocessedGuesses) => {
   isSubmitting.value = true
-  await services.guesses.processGuesses({ leagueId: selectedLeague.value.id })
+  await services.guesses.processGuesses({ leagueId: selectedLeague.value?.id })
   toast.add({
     group: 'app',
     severity: 'success',
@@ -114,6 +139,7 @@ const handleConfirmDialogSubmit = async (fetchUnprocessedGuesses) => {
     detail: i18n.t('admin.dashboard.guessesProcessedSuccess'),
     life: 4000
   })
+
   handleConfirmDialogHide()
   fetchUnprocessedGuesses()
   isSubmitting.value = false
