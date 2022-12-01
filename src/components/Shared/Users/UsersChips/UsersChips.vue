@@ -21,7 +21,7 @@
     >
       <template #chip="{ value }">
         <div class="flex align-items-center gap-2">
-          <span> {{ value[optionLabel] || value }}</span>
+          <span> {{ value[optionLabel] || value.email || value }}</span>
           <span
             :class="getAttrs(value).icon"
             v-tooltip="getAttrs(value).tooltip"

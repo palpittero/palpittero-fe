@@ -5,7 +5,7 @@
       <Divider />
       <p>
         A pontuação padrão da segue as seguintes regras para palpites do
-        resultaods de tempo regular de jogo:
+        resultados de tempo regular de jogo:
       </p>
 
       <RuleCard
@@ -32,6 +32,22 @@
       />
 
       <em>* disputas de pênaltis nunca terminarão empatadas</em>
+    </div>
+    <Divider />
+    <div class="surface-section p-3">
+      <h2>Pontuação - Campeão / Vice-campeão</h2>
+      <Divider />
+      <p>
+        A pontuação padrão da segue as seguintes regras para palpites de campeão
+        e vice-campeão de um determinado campeonato:
+      </p>
+
+      <RuleCard
+        v-for="(rule, index) in positionsRules"
+        :key="index"
+        header="Resultado Final do Campeonato"
+        :rule="rule"
+      />
     </div>
   </div>
 </template>
@@ -761,6 +777,119 @@ const penaltiesRules = [
           },
           regularTimeHomeTeamGoals: 5,
           regularTimeAwayTeamGoals: 3
+        }
+      }
+    ]
+  }
+]
+
+const positionsRules = [
+  {
+    points: 10,
+    // hint: 'pontuação máxima por palpite',
+    description:
+      'Caso você acerte o <b>campeão e o vice-campeão</b> da competição',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Brasil',
+          regularTimeAwayTeamGoals: 'Argentina'
+        },
+        result: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Brasil',
+          regularTimeAwayTeamGoals: 'Argentina'
+        }
+      }
+    ]
+  },
+  {
+    points: 5,
+    description:
+      'Caso você acerte <b>somente o campeão</b> OU <b>somente  o vice-campeão</b> da competição',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Brasil',
+          regularTimeAwayTeamGoals: 'Argentina'
+        },
+        result: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Brasil',
+          regularTimeAwayTeamGoals: 'Alemanha'
+        }
+      },
+      {
+        guess: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Alemanha',
+          regularTimeAwayTeamGoals: 'Espanha'
+        },
+        result: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Brasil',
+          regularTimeAwayTeamGoals: 'Espanha'
+        }
+      }
+    ]
+  },
+  {
+    points: 0,
+    description:
+      'Caso você não acerte nem <b>o campeão</b> nem <b>o vice-campeão</b> da competição',
+    examples: [
+      {
+        guess: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Brasil',
+          regularTimeAwayTeamGoals: 'Argentina'
+        },
+        result: {
+          homeTeam: {
+            name: 'Campeão'
+          },
+          awayTeam: {
+            name: 'Vice Campeão'
+          },
+          regularTimeHomeTeamGoals: 'Espanha',
+          regularTimeAwayTeamGoals: 'Alemanha'
         }
       }
     ]
