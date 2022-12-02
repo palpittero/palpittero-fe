@@ -1,6 +1,8 @@
 import { createApp, reactive } from 'vue'
 import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
+import Toastification from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
 
 import PrimeVue from 'primevue/config'
 import App from './App.vue'
@@ -9,7 +11,7 @@ import router from './router'
 import i18n, { locale } from './i18n'
 
 import InputText from 'primevue/inputtext'
-import Button from 'primevue/button'
+// import Button from 'primevue/button'
 import SplitButton from 'primevue/splitbutton'
 import Toast from 'primevue/toast'
 import Menubar from 'primevue/menubar'
@@ -96,21 +98,47 @@ import Dock from 'primevue/dock'
 
 import Tooltip from 'primevue/tooltip'
 import StyleClass from 'primevue/styleclass'
+import MyToast from '@/plugins/toast'
 
 import ToastService from 'primevue/toastservice'
 
-import 'primevue/resources/primevue.min.css'
-import 'primeflex/primeflex.css'
-import 'primevue/resources/themes/tailwind-light/theme.css'
-import 'primeicons/primeicons.css'
-import 'prismjs/themes/prism-coy.css'
+import { Button } from '@/components/Base'
 
-import './assets/demo/flags/flags.css'
+// import 'bootstrap/dist/css/bootstrap.min.css'
+import '@/assets/styles/bootstrap.min.css'
+import 'bootstrap'
+
+// import 'primevue/resources/primevue.min.css'
+// import 'primeflex/primeflex.css'
+// import 'primevue/resources/themes/tailwind-light/theme.css'
+// import 'primeicons/primeicons.css'
+// import 'prismjs/themes/prism-coy.css'
+
+// import './assets/demo/flags/flags.css'
 import './assets/styles/layout.scss'
 
+/* import the fontawesome core */
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+/* import font awesome icon component */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+// import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+
+//Add all icons to the library so you can use it in your page
+library.add(fas, far, fab)
+
+/* import specific icons */
+// import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+
+/* add icons to the library */
+// library.add(faUserSecret)
+
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-const app = createApp(App)
+pinia.use(piniaPluginPersistedState)
+const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
 // import CodeHighlight from './AppCodeHighlight'
 // import BlockViewer from './BlockViewer'
@@ -120,12 +148,21 @@ app.config.globalProperties.$appState = reactive({
   darkTheme: false
 })
 
+app.use(Toastification, {
+  timeout: 3000,
+  transition: 'Vue-Toastification__fade',
+  maxToasts: 20,
+  newestOnTop: true
+  // hideProgressBar: true,
+})
+
 app.use(PrimeVue, { ripple: true, inputStyle: 'outlined', locale })
 app.use(ConfirmationService)
 app.use(ToastService)
 app.use(router)
 app.use(i18n)
 app.use(pinia)
+app.use(MyToast)
 
 // app.directive('code', CodeHighlight)
 app.directive('badge', BadgeDirective)
@@ -134,6 +171,7 @@ app.directive('Tooltip', Tooltip)
 app.directive('StyleClass', StyleClass)
 app.directive('Ripple', Ripple)
 
+app.component('Button', Button)
 // app.component('BlockViewer', BlockViewer)
 app.component('Accordion', Accordion)
 app.component('AccordionTab', AccordionTab)
@@ -143,7 +181,7 @@ app.component('AvatarGroup', AvatarGroup)
 app.component('Badge', Badge)
 app.component('BlockUI', BlockUI)
 app.component('Breadcrumb', Breadcrumb)
-app.component('Button', Button)
+// app.component('Button', Button)
 app.component('Calendar', Calendar)
 app.component('Card', Card)
 app.component('Carousel', Carousel)

@@ -60,7 +60,7 @@
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { last, pick } from 'lodash/fp'
 import { useI18n } from 'vue-i18n'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 
 import services from '@/services'
 import { validateEmail } from '@/helpers/utils'
@@ -160,21 +160,9 @@ const handleAdd = async ({ value }) => {
 
   if (user) {
     if (props.selected.includes(user.id)) {
-      toast.add({
-        group: 'app',
-        severity: 'warn',
-        summary: i18n.t('common.warning'),
-        detail: i18n.t('admin.users.validation.userAlreadySelected'),
-        life: 4000
-      })
+      toast.warning(i18n.t('admin.users.validation.userAlreadySelected'))
     } else if (props.notAllowed.includes(user.id)) {
-      toast.add({
-        group: 'app',
-        severity: 'warn',
-        summary: i18n.t('common.warning'),
-        detail: i18n.t('admin.users.validation.userNotAllowed'),
-        life: 4000
-      })
+      toast.warning(i18n.t('admin.users.validation.userNotAllowed'))
     } else {
       selectedUsers.value = [
         ...selectedUsers.value,
@@ -183,13 +171,7 @@ const handleAdd = async ({ value }) => {
     }
     showFilteredUsers.value = false
   } else if (!validateEmail(email)) {
-    toast.add({
-      group: 'app',
-      severity: 'warn',
-      summary: i18n.t('common.warning'),
-      detail: i18n.t('admin.users.validation.invalidEmail'),
-      life: 4000
-    })
+    toast.warning(i18n.t('admin.users.validation.invalidEmail'))
   } else {
     selectedUsers.value = [...selectedUsers.value, email]
     showFilteredUsers.value = false

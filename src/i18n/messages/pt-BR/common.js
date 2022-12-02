@@ -89,5 +89,6 @@ export default {
       championships: 'Campeonatos',
       matches: 'Partidas'
     }
-  }
+  },
+  wait: 'Aguarde...'
 }

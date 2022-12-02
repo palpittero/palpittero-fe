@@ -57,7 +57,7 @@
 <script setup>
 import { reduce, flatMap, pipe, map, filter, isNil, uniqBy } from 'lodash/fp'
 import { computed, onMounted, reactive, ref } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 
 import services from '@/services'
@@ -186,23 +186,9 @@ const handleRegisterGuesses = async () => {
   const total =
     guesses.value.length - invalidGuesses + championshipsGuesses.value.length
 
-  const toastOptions =
-    total > 0
-      ? {
-          severity: 'success',
-          summary: i18n.t('common.success')
-        }
-      : {
-          severity: 'warn',
-          summary: i18n.t('common.warning')
-        }
+  const toastType = total > 0 ? 'warning' : 'success'
 
-  toast.add({
-    detail: i18n.t('app.guesses.guessesCreated', { total }, total),
-    life: 4000,
-    group: 'app',
-    ...toastOptions
-  })
+  toast[toastType](i18n.t('app.guesses.guessesCreated', { total }, total))
 
   if (invalidGuesses > 0) {
     renderKey.value++
@@ -236,23 +222,9 @@ const handleCopyGuessesDialogSubmit = async ({
     copyChampionshipsGuesses
   })
 
-  const toastOptions =
-    total > 0
-      ? {
-          severity: 'success',
-          summary: i18n.t('common.success')
-        }
-      : {
-          severity: 'warn',
-          summary: i18n.t('common.warning')
-        }
+  const toastType = total > 0 ? 'success' : 'warning'
 
-  toast.add({
-    detail: i18n.t('app.guesses.guessesCopied', { total }, total),
-    life: 4000,
-    group: 'app',
-    ...toastOptions
-  })
+  toast[toastType](i18n.t('app.guesses.guessesCopied', { total }, total))
   handleCopyGuessesDialogHide()
   renderKey.value++
   isLoading.value = false

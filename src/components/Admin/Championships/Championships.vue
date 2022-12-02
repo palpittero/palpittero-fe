@@ -71,7 +71,7 @@ import ChampionshipSetRankingDialog from './ChampionshipSetRankingDialog/Champio
 
 import { CHAMPIONSHIP_MODEL } from '@/constants/championships'
 import services from '@/services'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { clone } from 'lodash'
 import {
@@ -124,13 +124,7 @@ const saveChampionship = async (championship) => {
     await services.championships.createChampionship(parsedChampionship)
   }
 
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.championships.saveSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.championships.saveSuccess'))
 
   isSubmitting.value = false
 }
@@ -169,24 +163,12 @@ const handleDeleteDialogSubmit = async (championships) => {
     const ids = championships.map(({ id }) => id)
     await services.championships.deleteChampionships(ids)
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('admin.championships.deleteSuccess'),
-      life: 4000
-    })
+    toast(i18n.t('admin.championships.deleteSuccess'))
 
     handleDeleteDialogHide()
     loadChampionships()
   } catch (error) {
-    toast.add({
-      group: 'app',
-      severity: 'error',
-      summary: i18n.t('common.error'),
-      detail: i18n.t('admin.championships.error.delete'),
-      life: 4000
-    })
+    toast.error(i18n.t('admin.championships.error.delete'))
   } finally {
     isSubmitting.value = false
   }

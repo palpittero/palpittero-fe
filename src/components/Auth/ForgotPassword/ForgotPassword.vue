@@ -65,7 +65,7 @@
 
 <script setup>
 import { reactive, ref, watch } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
@@ -103,13 +103,7 @@ const onSubmit = handleSubmit(
       isRecoverPasswordSuccess.value = true
     } catch (error) {
       if (error.response.status === 404) {
-        toast.add({
-          group: 'app',
-          severity: 'error',
-          summary: i18n.t('common.error'),
-          detail: i18n.t('admin.auth.error.userNotFound'),
-          life: 4000
-        })
+        toast.error(i18n.t('admin.auth.error.userNotFound'))
       }
 
       if (error.response.status === 403) {
@@ -117,13 +111,7 @@ const onSubmit = handleSubmit(
           'unverifiedAccount',
           i18n.t('admin.auth.error.resendActivationEmail')
         )
-        toast.add({
-          group: 'app',
-          severity: 'error',
-          summary: i18n.t('common.error'),
-          detail: i18n.t('admin.auth.error.unverifiedAccount'),
-          life: 4000
-        })
+        toast.error(i18n.t('admin.auth.error.unverifiedAccount'))
       }
     } finally {
       isLoading.value = false
@@ -141,13 +129,7 @@ const onResendActivation = async () => {
     isResendActivationEmailSuccess.value = true
   } catch (error) {
     if (error.response.status === 404) {
-      toast.add({
-        group: 'app',
-        severity: 'error',
-        summary: i18n.t('common.error'),
-        detail: i18n.t('admin.auth.error.userNotFound'),
-        life: 4000
-      })
+      toast.error(i18n.t('admin.auth.error.userNotFound'))
     }
   } finally {
     isLoading.value = false

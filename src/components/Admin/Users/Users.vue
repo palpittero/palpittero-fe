@@ -74,7 +74,7 @@ import UserDeleteDialog from './UserDeleteDialog/UserDeleteDialog.vue'
 
 import { USER_MODEL } from '@/constants/users'
 import services from '@/services'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { clone } from 'lodash'
 
@@ -120,25 +120,13 @@ const handleDetailsDialogSubmit = async (user) => {
       await services.users.createUser(user)
     }
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('admin.users.saveSuccess'),
-      life: 4000
-    })
+    toast(i18n.t('admin.users.saveSuccess'))
 
     handleDetailsDialogHide()
     loadUsers()
   } catch (error) {
     if (error.response.status === 409) {
-      toast.add({
-        group: 'app',
-        severity: 'error',
-        summary: i18n.t('common.error'),
-        detail: i18n.t('admin.auth.error.emailAlreadyInUse'),
-        life: 4000
-      })
+      toast.error(i18n.t('admin.auth.error.emailAlreadyInUse'))
     }
   } finally {
     isSubmitting.value = false
@@ -171,13 +159,7 @@ const handleDeleteDialogSubmit = async (users) => {
   const ids = users.map(({ id }) => id)
   await services.users.deleteUsers(ids)
 
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.users.deleteSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.users.deleteSuccess'))
 
   handleDeleteDialogHide()
   isSubmitting.value = false

@@ -93,7 +93,7 @@ import MatchesFilters from './MatchesFilters/MatchesFilters.vue'
 
 import { MATCH_MODEL, MATCH_DETAIL_MODEL } from '@/constants/matches'
 import services from '@/services'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { clone, pick, uniqueId } from 'lodash/fp'
 
@@ -168,13 +168,7 @@ const saveMatch = async (match) => {
     await services.matches.createMatches(match)
   }
 
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.matches.saveSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.matches.saveSuccess'))
 
   isSubmitting.value = false
   loadMatches()
@@ -235,24 +229,12 @@ const handleDeleteDialogSubmit = async (matches) => {
     const ids = matches.map(({ id }) => id)
     await services.matches.deleteMatches(ids)
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('admin.matches.deleteSuccess'),
-      life: 4000
-    })
+    toast(i18n.t('admin.matches.deleteSuccess'))
 
     handleDeleteDialogHide()
     loadMatches()
   } catch (error) {
-    toast.add({
-      group: 'app',
-      severity: 'error',
-      summary: i18n.t('common.error'),
-      detail: i18n.t('admin.matches.error.delete'),
-      life: 4000
-    })
+    toast.error(i18n.t('admin.matches.error.delete'))
   } finally {
     isSubmitting.value = false
   }

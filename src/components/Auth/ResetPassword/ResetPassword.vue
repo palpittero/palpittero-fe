@@ -70,7 +70,7 @@ import services from '@/services'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import ResetPasswordForm from './ResetPasswordForm/ResetPasswordForm.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -122,22 +122,10 @@ onMounted(async () => {
     router.replace(omit('query', route))
   } catch (error) {
     if (error.response.status === 422) {
-      toast.add({
-        severity: 'error',
-        summary: i18n.t('common.error'),
-        detail: i18n.t('admin.auth.error.tokenInvalidOrExpired'),
-        life: 4000,
-        group: 'app'
-      })
+      toast.error(i18n.t('admin.auth.error.tokenInvalidOrExpired'))
     }
     if (error.response.status === 404) {
-      toast.add({
-        severity: 'error',
-        summary: i18n.t('common.error'),
-        detail: i18n.t('admin.auth.error.userNotFound'),
-        life: 4000,
-        group: 'app'
-      })
+      toast.error(i18n.t('admin.auth.error.userNotFound'))
     }
   } finally {
     isLoading.value = false
@@ -154,7 +142,7 @@ const onSubmit = handleSubmit(
       isSuccess.value = true
     } catch (error) {
       if (error.response.status === 404) {
-        toast.add({
+        toast.error({
           severity: 'error',
           summary: i18n.t('common.error'),
           detail: i18n.t('admin.auth.error.userNotFound'),

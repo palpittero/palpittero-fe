@@ -29,7 +29,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import services from '@/services'
 
@@ -62,13 +62,7 @@ const handlePendingLeaguesInvitationsDialogSubmit = async (invitations) => {
   isLoading.value = true
 
   await services.usersLeagues.updateInvitations(invitations)
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('app.leagues.pendingInvitations.updateSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('app.leagues.pendingInvitations.updateSuccess'))
 
   emits('refresh')
   isLoading.value = false

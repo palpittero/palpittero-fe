@@ -46,7 +46,7 @@
 <script setup>
 import services from '@/services'
 import { reactive, ref, watch } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
@@ -95,23 +95,11 @@ const onSubmit = handleSubmit(
       isSuccess.value = true
     } catch (error) {
       if (error.response.status === 409) {
-        toast.add({
-          severity: 'error',
-          summary: i18n.t('common.error'),
-          detail: i18n.t('admin.auth.error.emailAlreadyInUse'),
-          life: 4000,
-          group: 'app'
-        })
+        toast.error(i18n.t('admin.auth.error.emailAlreadyInUse'))
       }
 
       if (error.response.status === 400) {
-        toast.add({
-          severity: 'error',
-          summary: i18n.t('common.error'),
-          detail: i18n.t('admin.auth.error.passwordsDontMatch'),
-          life: 4000,
-          group: 'app'
-        })
+        toast.error(i18n.t('admin.auth.error.passwordsDontMatch'))
       }
     } finally {
       isLoading.value = false

@@ -65,7 +65,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -137,13 +137,7 @@ const handleConfirmDialogHide = () => (isConfirmDialogVisible.value = false)
 const handleConfirmDialogSubmit = async () => {
   isSubmitting.value = true
   await services.guesses.processGuesses({ leagueId: league.value.id })
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.dashboard.guessesProcessedSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.dashboard.guessesProcessedSuccess'))
   handleConfirmDialogHide()
   loadGuesses()
   isSubmitting.value = false

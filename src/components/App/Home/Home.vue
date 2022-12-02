@@ -105,7 +105,7 @@ import services from '@/services'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { parseLeagueInput, parseLeague } from '@/helpers/leagues'
 import { clone } from 'lodash'
 import { pipe, filter, uniqBy, differenceBy } from 'lodash/fp'
@@ -308,13 +308,7 @@ const handleDetailsDialogSubmit = async (league) => {
     ? await services.leagues.updateLeague(parsedLeague)
     : await services.leagues.createLeague(parsedLeague)
 
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.leagues.saveSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.leagues.saveSuccess'))
 
   handleDetailsDialogHide()
   isSubmitting.value = false
@@ -333,24 +327,12 @@ const handleDeleteDialogSubmit = async ([league]) => {
     isSubmitting.value = true
     await services.leagues.deleteLeague(league)
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('admin.leagues.deleteSuccess'),
-      life: 4000
-    })
+    toast(i18n.t('admin.leagues.deleteSuccess'))
 
     handleDeleteDialogHide()
     loadLeagues()
   } catch (error) {
-    toast.add({
-      group: 'app',
-      severity: 'error',
-      summary: i18n.t('common.error'),
-      detail: i18n.t('admin.leagues.error.delete'),
-      life: 4000
-    })
+    toast.error(i18n.t('admin.leagues.error.delete'))
   } finally {
     isSubmitting.value = false
   }

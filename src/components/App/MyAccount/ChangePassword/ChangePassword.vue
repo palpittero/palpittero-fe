@@ -13,7 +13,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import services from '@/services'
 
@@ -39,22 +39,10 @@ const handleSubmit = async ({ currentPassword, newPassword }) => {
     isSaving.value = true
     await services.auth.updatePassword({ currentPassword, newPassword })
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('app.myAccount.changePassword.saved'),
-      life: 4000
-    })
+    toast(i18n.t('app.myAccount.changePassword.saved'))
   } catch (error) {
     if (error.response.status === 400) {
-      toast.add({
-        group: 'app',
-        severity: 'error',
-        summary: i18n.t('common.error'),
-        detail: i18n.t('app.myAccount.changePassword.error.currentPassword'),
-        life: 4000
-      })
+      toast.error(i18n.t('app.myAccount.changePassword.error.currentPassword'))
     }
   } finally {
     isSaving.value = false

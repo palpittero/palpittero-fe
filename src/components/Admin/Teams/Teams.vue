@@ -74,7 +74,7 @@ import TeamDeleteDialog from './TeamDeleteDialog/TeamDeleteDialog.vue'
 
 import { TEAM_MODEL } from '@/constants/teams'
 import services from '@/services'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { clone } from 'lodash'
 
@@ -119,13 +119,7 @@ const handleDetailsDialogSubmit = async (team) => {
     await services.teams.createTeam(team)
   }
 
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.teams.saveSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.teams.saveSuccess'))
 
   handleDetailsDialogHide()
   isSubmitting.value = false
@@ -159,24 +153,12 @@ const handleDeleteDialogSubmit = async (teams) => {
     const ids = teams.map(({ id }) => id)
     await services.teams.deleteTeams(ids)
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('admin.teams.deleteSuccess'),
-      life: 4000
-    })
+    toast(i18n.t('admin.teams.deleteSuccess'))
 
     handleDeleteDialogHide()
     loadTeams()
   } catch (error) {
-    toast.add({
-      group: 'app',
-      severity: 'error',
-      summary: i18n.t('common.error'),
-      detail: i18n.t('admin.teams.error.delete'),
-      life: 4000
-    })
+    toast.error(i18n.t('admin.teams.error.delete'))
   } finally {
     isSubmitting.value = false
   }

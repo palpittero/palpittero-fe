@@ -91,7 +91,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useConfirm } from 'primevue/useconfirm'
 import { useI18n } from 'vue-i18n'
 import services from '@/services'
@@ -168,13 +168,7 @@ const handleLeagueUserAddSubmit = async (users) => {
   isLeagueUserAddDialogVisible.value = false
   isSubmitting.value = false
 
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.leagues.inviteUsersSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.leagues.inviteUsersSuccess'))
   selectedUsers.value = []
   loadUsersLeagues()
 }
@@ -198,13 +192,7 @@ const handleApproveUser = (event, user) => {
 
       await services.usersLeagues.approveUsers({ leagueId, users })
 
-      toast.add({
-        group: 'app',
-        severity: 'success',
-        summary: i18n.t('common.success'),
-        detail: i18n.t('app.leagues.approveUsersSuccess'),
-        life: 4000
-      })
+      toast(i18n.t('app.leagues.approveUsersSuccess'))
 
       loadUsersLeagues()
     },

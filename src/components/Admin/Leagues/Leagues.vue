@@ -59,7 +59,7 @@ import LeagueDeleteDialog from '@/components/Shared/Leagues/LeagueDeleteDialog/L
 
 import { LEAGUE_MODEL } from '@/constants/leagues'
 import services from '@/services'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { clone } from 'lodash'
 import { parseLeague, parseLeagueInput, parseLeagues } from '@/helpers/leagues'
@@ -107,13 +107,7 @@ const handleDetailsDialogSubmit = async (league) => {
     await services.leagues.createLeague(parsedLeague)
   }
 
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.leagues.saveSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.leagues.saveSuccess'))
 
   handleDetailsDialogHide()
   isSubmitting.value = false
@@ -147,24 +141,12 @@ const handleDeleteDialogSubmit = async (leagues) => {
     const ids = leagues.map(({ id }) => id)
     await services.leagues.deleteLeagues(ids)
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('admin.leagues.deleteSuccess'),
-      life: 4000
-    })
+    toast(i18n.t('admin.leagues.deleteSuccess'))
 
     handleDeleteDialogHide()
     loadLeagues()
   } catch (error) {
-    toast.add({
-      group: 'app',
-      severity: 'error',
-      summary: i18n.t('common.error'),
-      detail: i18n.t('admin.leagues.error.delete'),
-      life: 4000
-    })
+    toast.error(i18n.t('admin.leagues.error.delete'))
   }
 }
 </script>

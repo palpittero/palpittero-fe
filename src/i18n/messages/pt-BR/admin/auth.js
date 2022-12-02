@@ -94,5 +94,7 @@ export default {
       'Em breve você fará parte da liga {visibility} <b>"{name}"</b> <small>(Proprietário: {owner})</small>',
     cta: 'Ver minhas ligas'
   },
-  toResendActivationEmail: 'para reenviar o e-mail de ativação'
+  toResendActivationEmail: 'para reenviar o e-mail de ativação',
+  showPassword: 'Mostrar senha',
+  hidePassword: 'Ocultar senha'
 }

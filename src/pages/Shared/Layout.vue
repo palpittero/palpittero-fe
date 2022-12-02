@@ -29,7 +29,7 @@ import AppTopBar from '@/components/Shared/AppTopbar/AppTopbar.vue'
 import AppFooter from '@/components/Shared/AppFooter/AppFooter.vue'
 import { ref, computed, onBeforeUpdate, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 
 const layoutMode = ref('static')
 const staticMenuInactive = ref(false)

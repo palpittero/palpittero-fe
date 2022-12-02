@@ -67,7 +67,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
@@ -104,24 +104,12 @@ const handleSubmit = async ({ id, name, email, avatar }) => {
     isSaving.value = true
     await services.users.updateUser({ id, name, email, avatar })
 
-    toast.add({
-      group: 'app',
-      severity: 'success',
-      summary: i18n.t('common.success'),
-      detail: i18n.t('app.myAccount.profile.saved'),
-      life: 4000
-    })
+    toast(i18n.t('app.myAccount.profile.saved'))
 
     auth.fetchLoggedUser()
   } catch (error) {
     if (error.response.status === 409) {
-      toast.add({
-        group: 'app',
-        severity: 'error',
-        summary: i18n.t('common.error'),
-        detail: i18n.t('admin.auth.error.emailAlreadyInUse'),
-        life: 4000
-      })
+      toast.error(i18n.t('admin.auth.error.emailAlreadyInUse'))
     }
   } finally {
     isSaving.value = false

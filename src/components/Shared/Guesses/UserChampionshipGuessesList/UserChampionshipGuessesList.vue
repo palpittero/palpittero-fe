@@ -98,7 +98,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 
 import services from '@/services'
 
@@ -159,13 +159,7 @@ const handleConfirmDialogSubmit = async () => {
     leagueId: props.league.id,
     championshipId: props.championship.id
   })
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.dashboard.guessesProcessedSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.dashboard.guessesProcessedSuccess'))
   handleConfirmDialogHide()
   emits('refresh')
   isSubmitting.value = false

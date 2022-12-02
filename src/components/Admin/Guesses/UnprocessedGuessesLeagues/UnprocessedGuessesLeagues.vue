@@ -62,7 +62,7 @@ import { uniqBy } from 'lodash/fp'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-import { useToast } from 'primevue/usetoast'
+import { useToast } from 'vue-toastification'
 import services from '@/services'
 
 import UnprocessedGuessesFetcher from '@/components/Admin/Guesses/UnprocessedGuessesFetcher/UnprocessedGuessesFetcher.vue'
@@ -132,13 +132,7 @@ const confirmDialog = computed(() => {
 const handleConfirmDialogSubmit = async (fetchUnprocessedGuesses) => {
   isSubmitting.value = true
   await services.guesses.processGuesses({ leagueId: selectedLeague.value?.id })
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.dashboard.guessesProcessedSuccess'),
-    life: 4000
-  })
+  toast(i18n.t('admin.dashboard.guessesProcessedSuccess'))
 
   handleConfirmDialogHide()
   fetchUnprocessedGuesses()
