@@ -11,7 +11,7 @@
       @update:model-value="handleLeagueUpdate"
     />
   </div>
-  <div class="field" v-if="copyGuesses.sourceLeagueId">
+  <div class="field" v-if="copyGuesses.targetLeagueId">
     <label class="text-bold">{{ $t('app.guesses.copyGuessesFrom') }}</label>
     <div class="flex gap-5">
       <div class="field-checkbox">
@@ -98,7 +98,7 @@ const onFilterLeagues = ({ id, users }) => {
 }
 
 const handleLeagueUpdate = (league) =>
-  (copyGuesses.value.sourceLeagueId = league?.id)
+  (copyGuesses.value.targetLeagueId = league?.id)
 
 const handleChampionshipsUpdate = (championships) =>
   (copyGuesses.value.championshipsIds = championships.map(({ id }) => id))

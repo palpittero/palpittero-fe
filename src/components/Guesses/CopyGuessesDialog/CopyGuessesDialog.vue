@@ -48,8 +48,8 @@ const props = defineProps({
 
 const emits = defineEmits(['submit', 'hide'])
 const copyGuesses = ref({
-  sourceLeagueId: null,
-  targetLeagueId: props.league.id,
+  sourceLeagueId: props.league.id,
+  targetLeagueId: null,
   championshipsIds: [],
   copyMatchesGuesses: false,
   copyChampionshipsGuesses: false
