@@ -8,7 +8,7 @@
     :rows="50"
     v-model:filters="filters"
     :global-filter-fields="globalFilterFields"
-    responsiveLayout="stack"
+    :responsiveLayout="responsiveLayout"
     :loading="items.loading"
     row-hover
     paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -56,6 +56,10 @@ const props = defineProps({
   globalFilterFields: {
     type: Array,
     default: () => ['name']
+  },
+  responsiveLayout: {
+    type: String,
+    default: 'stack'
   },
   searchable: Boolean,
   paginator: Boolean

@@ -1,7 +1,9 @@
 <template>
   <div class="leagues-description-list">
-    <div class="surface-section p-5">
-      <div class="flex align-items-center justify-content-between mb-3">
+    <div class="surface-section p-2 md:p-5">
+      <div
+        class="flex flex-column md:flex-row align-items-start md:align-items-center justify-content-between gap-3 mb-3"
+      >
         <span class="font-medium text-3xl text-900">
           {{ title }}
         </span>

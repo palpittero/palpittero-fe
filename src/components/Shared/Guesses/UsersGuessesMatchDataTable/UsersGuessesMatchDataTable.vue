@@ -59,7 +59,9 @@ const parseMatchGuess = (guess) => {
   return {
     ...props.match,
     regularTimeHomeTeamGoals: guess.homeTeamRegularTimeGoals,
-    regularTimeAwayTeamGoals: guess.awayTeamRegularTimeGoals
+    regularTimeAwayTeamGoals: guess.awayTeamRegularTimeGoals,
+    penaltiesTimeHomeTeamGoals: guess.homeTeamPenaltiesTimeGoals,
+    penaltiesTimeAwayTeamGoals: guess.awayTeamPenaltiesTimeGoals
   }
 }
 

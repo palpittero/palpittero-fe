@@ -9,7 +9,7 @@
       <Heading
         class="mb-0"
         :label="$t('common.leagues', 2)"
-        icon="pi pi-flag"
+        icon="pi pi-flag text-4xl"
       />
       <Button
         @click="handleCreateLeague"

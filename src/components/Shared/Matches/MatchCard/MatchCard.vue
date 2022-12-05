@@ -6,7 +6,7 @@
           <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
           <MatchStatusBadge :status="match.status" />
         </div>
-        <small v-if="match.group" class="text-bold">
+        <small v-if="showGroup" class="text-bold">
           {{ match.group.name }}
         </small>
       </div>
@@ -25,8 +25,10 @@
 <script setup>
 import MatchCenterScore from '@/components/Shared/Matches/MatchCenterScore/MatchCenterScore.vue'
 import MatchStatusBadge from '@/components/App/Championships/ChampionshipsRoundsMatchesList/RoundsMatchesList/MatchStatusBadge/MatchStatusBadge.vue'
+import { computed } from 'vue'
+import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
 
-defineProps({
+const props = defineProps({
   match: {
     type: Object,
     required: true
@@ -36,6 +38,12 @@ defineProps({
     default: 'primary'
   }
 })
+
+const showGroup = computed(
+  () =>
+    props.match.group &&
+    props.match.round?.type === CHAMPIONSHIPS_ROUND_TYPE.REGULAR_TIME
+)
 </script>
 
 <style lang="scss">

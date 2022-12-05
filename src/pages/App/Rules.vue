@@ -5,7 +5,7 @@
       :model="breadcrumb.model"
       aria-label="breadcrumb"
     />
-    <Heading :label="$t('common.menu.rules')" icon="pi pi-book" />
+    <Heading :label="$t('common.menu.rules')" icon="pi pi-book text-4xl" />
     <Rules />
   </AppLayout>
 </template>
@@ -22,7 +22,7 @@ const i18n = useI18n()
 const breadcrumb = {
   home: {
     label: i18n.t('common.breadcrumb.home'),
-    icon: 'pi pi-home mr-2',
+    icon: 'pi pi-home',
     to: { name: 'Home' }
   },
   model: [
