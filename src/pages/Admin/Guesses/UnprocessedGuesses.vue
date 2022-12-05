@@ -17,7 +17,7 @@ const leagueId = computed(() => parseInt(route.params.leagueId))
 const breadcrumb = ref({
   home: {
     label: i18n.t('common.breadcrumb.admin.dashboard'),
-    icon: 'pi pi-home mr-2',
+    icon: 'pi pi-home',
     to: { name: 'AdminDashboard' }
   },
   model: [

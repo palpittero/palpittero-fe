@@ -3,7 +3,11 @@
     <div
       class="flex flex-wrap justify-content-between align-items-center guesses__top-bar guesses__top-bar--is-pinned gap-2"
     >
-      <Heading :label="league.data.name" icon="pi pi-flag" class="mb-0" />
+      <Heading
+        :label="league.data.name"
+        icon="pi pi-flag md:text-4xl"
+        class="mb-0 md:text-4xl"
+      />
 
       <div class="flex gap-2">
         <Button

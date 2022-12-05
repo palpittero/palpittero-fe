@@ -119,13 +119,56 @@ small, span {
 
 .p-breadcrumb {
   .p-menuitem-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    @media screen and (max-width: 960px) {
+      & > .pi {
+        display: none;
+      }
+    }
+
+   .p-menuitem-text {
+    line-height: unset;
+   }
+
+
     &:active, &:focus {
       outline: 0 !important;
       box-shadow: none !important;
     }
   }
+
+  li {
+    
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+    @media screen and (max-width: 960px) {
+      font-size: .8rem;
+    }
+
+  }
 }
 
 .flex-2 {
   flex: 2 auto !important;
+}
+
+
+.p-paginator {
+  padding-left: 0;
+  padding-right: 0;
+
+  &-element {
+    height: 2rem !important;
+  }
+
+  .p-dropdown {
+    display: flex;
+    align-items: center;
+    height: 2rem !important;
+  }
 }

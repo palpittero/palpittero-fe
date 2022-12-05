@@ -1,24 +1,28 @@
 <template>
-  <div class="surface-section">
-    <div class="flex justify-content-between cursor-pointer">
-      <div class="flex gap-3 py-3">
-        <span class="font-medium text-3xl text-900">
+  <div class="surface-section flex flex-column gap-3 p-3">
+    <div
+      @click="handleToggle"
+      class="flex gap-3 flex-row justify-content-between cursor-pointer"
+    >
+      <div class="flex align-items-center justify-content-between gap-3">
+        <span
+          class="font-medium md:text-3xl text-900 championship-matches-list__championship-name"
+        >
           {{ championship.name }} {{ championship.year }}
         </span>
+
         <Button
-          v-if="!readonly"
-          @click="handleProcessGuesses"
-          class="p-button p-button-text border border-1 border-primary p-button-sm py-0 px-2"
+          @click.stop="handleProcessGuesses"
+          class="p-button p-button-text border border-1 border-primary p-button-sm p-2"
           icon="pi pi-bolt"
           :label="$t('admin.guesses.processGuesses')"
         />
       </div>
-      <span
-        class="flex align-items-center gap-3"
-        @click="handleToggle"
-        v-if="!readonly"
-      >
-        {{ toggle.label }} <span :class="toggle.icon" />
+      <span class="flex align-items-center gap-3">
+        <span class="hidden md:inline">
+          {{ toggle.label }}
+        </span>
+        <span :class="toggle.icon" />
       </span>
     </div>
 
@@ -43,12 +47,14 @@
               <div
                 v-for="guess in data.guesses"
                 :key="guess.id"
-                class="col-12 md:col-3 field"
+                class="col-12 md:col-5 field"
               >
                 <label class="text-bold text-right md:text-left">
                   {{ positionLabels[guess.position] }}
                 </label>
-                <div class="flex align-items-center gap-2">
+                <div
+                  class="flex flex-row-reverse md:flex-row align-items-center gap-2"
+                >
                   <BadgeAvatar :image="guess.team.badge" />
                   {{ guess.team.name }}
                 </div>

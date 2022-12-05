@@ -12,7 +12,7 @@ const i18n = useI18n()
 const breadcrumb = {
   home: {
     label: i18n.t('common.breadcrumb.admin.dashboard'),
-    icon: 'pi pi-home mr-2',
+    icon: 'pi pi-home',
     to: { name: 'AdminDashboard' }
   },
   model: [

@@ -1,29 +1,33 @@
 <template>
-  <div class="surface-section p-3">
-    <div class="flex justify-content-between cursor-pointer">
-      <div class="flex gap-3">
-        <span class="font-medium text-3xl text-900">
+  <div class="surface-section flex flex-column gap-3 p-3">
+    <div
+      @click="handleToggle"
+      class="flex gap-3 flex-row justify-content-between cursor-pointer"
+    >
+      <div class="flex align-items-center justify-content-between gap-3">
+        <span
+          class="font-medium md:text-3xl text-900 championship-matches-list__championship-name"
+        >
           {{ championship.name }} {{ championship.year }}
         </span>
 
         <Button
-          @click="handleProcessGuesses"
-          class="p-button p-button-text border border-1 border-primary p-button-sm py-0 px-2"
+          @click.stop="handleProcessGuesses"
+          class="p-button p-button-text border border-1 border-primary p-button-sm p-2"
           icon="pi pi-bolt"
           :label="$t('admin.guesses.processGuesses')"
         />
       </div>
-      <span class="flex align-items-center gap-3" @click="handleToggle">
-        {{ toggle.label }} <span :class="toggle.icon" />
+      <span class="flex align-items-center gap-3">
+        <span class="hidden md:inline">
+          {{ toggle.label }}
+        </span>
+        <span :class="toggle.icon" />
       </span>
     </div>
 
     <Transition name="championships-matches-list">
-      <UsersGuessesDataTable
-        v-show="isOpen"
-        class="mt-3"
-        :guesses="championship.guesses"
-      />
+      <UsersGuessesDataTable v-show="isOpen" :guesses="championship.guesses" />
     </Transition>
   </div>
 
@@ -114,14 +118,16 @@ const handleConfirmDialogSubmit = async () => {
 </script>
 
 <style lang="scss">
-.championships-matches-list-enter-active,
-.championships-matches-list-leave-active {
-  transition: all 0.3s ease-in-out;
-}
+.championships-matches-list {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s ease-in-out;
+  }
 
-.championships-matches-list-enter-from,
-.championships-matches-list-leave-to {
-  transform: translateX(30px);
-  opacity: 0;
+  &-enter-from,
+  &-leave-to {
+    transform: translateX(30px);
+    opacity: 0;
+  }
 }
 </style>
