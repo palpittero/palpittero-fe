@@ -35,7 +35,7 @@ export default {
   alreadyHaveAnAccount: 'Já possui uma conta?',
   stillNotRegistered: 'Ainda não é registrado?',
   signUp: {
-    title: 'Seja bem-vindo(a), {name}',
+    title: 'Seja bem-vindo(a), {name}!',
     subtitle: 'Sua conta foi criada com sucesso',
     message:
       'Você receberá, em breve, um e-mail com instruções para a confirmação do seu cadastro',
@@ -94,7 +94,7 @@ export default {
       'Em breve você fará parte da liga {visibility} <b>"{name}"</b> <small>(Proprietário: {owner})</small>',
     cta: 'Ver minhas ligas'
   },
-  toResendActivationEmail: 'para reenviar o e-mail de ativação',
+  resendActivationEmail: 'Reenviar o e-mail de ativação',
   showPassword: 'Mostrar senha',
   hidePassword: 'Ocultar senha'
 }

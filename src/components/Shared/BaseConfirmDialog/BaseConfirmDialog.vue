@@ -1,41 +1,33 @@
 <template>
-  <BaseDialog
+  <Modal
     :visible="visible"
     :header="header"
-    modal
+    :disabled="disabled"
+    :target="target"
     @submit="handleSubmit"
     @hide="handleHide"
   >
     <div class="flex align-items-center">
-      <!-- <i class="pi pi-sign-in mr-3" style="font-size: 2rem" /> -->
       <span v-html="message" />
     </div>
-    <template #footer>
-      <Button
-        :label="$t('common.no')"
-        icon="pi pi-times"
-        class="p-button-text"
-        @click="handleHide"
-        :disabled="disabled"
-      />
-      <Button
-        :label="$t('common.yes')"
-        icon="pi pi-check"
-        class="p-button-text"
-        @click="handleSubmit"
-        :disabled="disabled"
-      />
-    </template>
-  </BaseDialog>
+  </Modal>
 </template>
 
 <script setup>
-import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
+import { useI18n } from 'vue-i18n'
+import { Modal } from '@/components/Common'
 
 defineProps({
-  header: String,
-  message: String,
   visible: Boolean,
+  target: String,
+  header: {
+    type: String,
+    default: () => {
+      const i18n = useI18n()
+      return i18n.t('common.confirm')
+    }
+  },
+  message: String,
   disabled: Boolean,
   okButtonClass: String,
   cancelButtonClass: String
@@ -43,6 +35,6 @@ defineProps({
 
 const emits = defineEmits(['submit', 'hide'])
 
-const handleSubmit = () => emits('submit')
+const handleSubmit = (modal) => emits('submit', modal)
 const handleHide = () => emits('hide')
 </script>

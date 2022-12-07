@@ -1,26 +1,26 @@
 <template>
-  <div :class="containerClass" @click="onWrapperClick">
-    <AppTopBar @menu-toggle="onMenuToggle">
-      <template #switch-app>
-        <slot name="switch-app" />
-      </template>
-    </AppTopBar>
-    <div class="layout-sidebar" @click="onSidebarClick">
+  <AppTopBar @menu-toggle="onMenuToggle" :is-admin="isAdmin">
+    <template #switch-app>
+      <slot name="switch-app" />
+    </template>
+  </AppTopBar>
+  <div class="container p-3" @click="onWrapperClick">
+    <!-- <div class="layout-sidebar" @click="onSidebarClick">
       <slot name="sidebar" :onMenuItemClick="onMenuItemClick" :menu="menu" />
-    </div>
+    </div> -->
 
-    <div class="layout-main-container">
-      <!-- <div class="layout-main-container" :class="layoutClass"> -->
-      <div class="layout-main">
-        <slot />
-      </div>
-      <AppFooter />
-    </div>
+    <!-- <div class="container"> -->
+    <!-- <div class="layout-main-container" :class="layoutClass"> -->
+    <!-- <div class="layout-main"> -->
+    <slot />
+    <!-- </div> -->
+    <!-- </div> -->
 
     <transition name="layout-mask">
       <div class="layout-mask p-component-overlay" v-if="mobileMenuActive" />
     </transition>
   </div>
+  <AppFooter />
 </template>
 
 <script setup>
@@ -43,7 +43,8 @@ defineProps({
   menu: {
     type: Array,
     default: () => []
-  }
+  },
+  isAdmin: Boolean
 })
 
 watch(route.path, () => toast.removeAllGroups())
@@ -122,7 +123,7 @@ const isDesktop = () => {
 
 const containerClass = computed(() => {
   return [
-    'layout-wrapper',
+    // 'layout-wrapper',
     {
       'layout-overlay': layoutMode.value === 'overlay',
       'layout-static': layoutMode.value === 'static',

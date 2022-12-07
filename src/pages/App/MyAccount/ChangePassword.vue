@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb v-bind="breadcrumb" />
+  <Breadcrumbs :items="breadcrumbs" />
   <ChangePassword />
 </template>
 
@@ -9,19 +9,17 @@ import ChangePassword from '@/components/App/MyAccount/ChangePassword/ChangePass
 
 const i18n = useI18n()
 
-const breadcrumb = {
-  home: {
+const breadcrumbs = [
+  {
     label: i18n.t('common.breadcrumb.home'),
     icon: 'pi pi-home',
     to: { name: 'Home' }
   },
-  model: [
-    {
-      label: i18n.t('common.breadcrumb.myAccount')
-    },
-    {
-      label: i18n.t('common.breadcrumb.changePassword')
-    }
-  ]
-}
+  {
+    label: i18n.t('common.breadcrumb.myAccount')
+  },
+  {
+    label: i18n.t('common.breadcrumb.changePassword')
+  }
+]
 </script>

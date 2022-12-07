@@ -1,108 +1,74 @@
 <template>
-  <form class="w-full md:w-10 mx-auto" novalidate @submit.prevent>
-    <label for="name" class="block text-900 text-xl font-medium mb-2">{{
-      $t('admin.auth.name')
-    }}</label>
-    <div class="mb-3">
-      <InputText
-        id="name"
-        v-model="user.name"
-        type="text"
-        class="w-full login__input"
-        :class="{ 'p-invalid': submitted && errors.name }"
-      />
-      <small class="p-invalid" v-if="submitted && errors.name">
-        {{ $t('admin.auth.validation.name') }}
-      </small>
-    </div>
-    <div class="mb-3">
-      <label for="email" class="block text-900 text-xl font-medium mb-2">{{
-        $t('admin.auth.email')
-      }}</label>
-      <InputText
-        id="email"
-        :model-value="user.email"
-        type="text"
-        class="w-full login__input"
-        :class="{ 'p-invalid': submitted && errors.email }"
-        @update:model-value="handleEmailUpdate"
-      />
-      <small class="p-invalid" v-if="submitted && errors.email">
-        {{ $t('admin.auth.validation.email') }}
-      </small>
-    </div>
-
-    <div class="mb-3">
-      <label for="password" class="block text-900 font-medium text-xl mb-2">{{
-        $t('admin.auth.password')
-      }}</label>
-      <Password
-        id="password"
-        v-model="user.password"
-        toggleMask
-        :feedback="false"
-        class="w-full"
-        inputClass="w-full login__input"
-        :class="{ 'p-invalid': submitted && errors.password }"
-      />
-      <small class="p-invalid" v-if="submitted && errors.password">
-        {{ $t('admin.auth.validation.password') }}
-      </small>
-    </div>
-
-    <div class="mb-3">
-      <label
-        for="password-confirmation"
-        class="block text-900 font-medium text-xl mb-2"
-        >{{ $t('admin.auth.passwordConfirmation') }}</label
-      >
-      <Password
-        id="password-confirmation"
-        v-model="user.passwordConfirmation"
-        toggleMask
-        :feedback="false"
-        class="w-full"
-        inputClass="w-full login__input"
-        :class="{ 'p-invalid': submitted && errors.passwordConfirmation }"
-      />
-      <small class="p-invalid" v-if="submitted && errors.passwordConfirmation">
-        {{ $t('admin.auth.validation.passwordConfirmation') }}
-      </small>
-    </div>
-    <div class="mb-3 field-checkbox">
-      <Checkbox
-        input-id="terms"
-        v-model="user.terms"
-        binary
-        :class="{ 'p-invalid': submitted && errors.terms }"
-      />
-      <label for="terms">
-        <Button class="p-button-link pl-1" @click="handleTerms">
-          {{ $t('common.termsAndConditions') }}
-        </Button>
-      </label>
-      <div>
-        <small class="p-invalid" v-if="submitted && errors.terms">
-          {{ $t('admin.auth.validation.terms') }}
-        </small>
-      </div>
-    </div>
-
-    <Button
-      :label="$t('admin.auth.createAccount')"
-      class="w-full p-3 text-xl"
-      icon="pi pi-user-edit"
-      @click="handleSubmit"
-      type="submit"
-      :loading="loading"
+  <form class="signup-form d-flex flex-column gap-3" novalidate @submit.prevent>
+    <PInput
+      id="name"
+      v-model="user.name"
+      type="text"
+      :validation="{
+        isInvalid: submitted && errors.name,
+        message: $t('admin.auth.validation.name')
+      }"
+      :label="$t('admin.auth.name')"
     />
-    <div class="flex align-items-center justify-content-center my-3">
+    <PInput
+      id="email"
+      type="email"
+      :model-value="user.email"
+      :label="$t('admin.auth.email')"
+      :validation="{
+        isInvalid: submitted && errors.email,
+        message: $t('admin.auth.validation.email')
+      }"
+      @update:model-value="handleEmailUpdate"
+    />
+
+    <PInput
+      id="password"
+      v-model="user.password"
+      autocomplete="off"
+      type="password"
+      :label="$t('admin.auth.password')"
+      :validation="{
+        isInvalid: submitted && errors.password,
+        message: $t('admin.auth.validation.password')
+      }"
+    />
+
+    <PInput
+      v-model="user.passwordConfirmation"
+      :label="$t('admin.auth.passwordConfirmation')"
+      type="password"
+      :validation="{
+        isInvalid: submitted && errors.passwordConfirmation,
+        message: $t('admin.auth.validation.passwordConfirmation')
+      }"
+    />
+
+    <PCheckbox
+      v-model="user.terms"
+      id="terms"
+      :validation="{
+        isInvalid: submitted && errors.terms,
+        message: $t('admin.auth.validation.terms')
+      }"
+    >
+      <Button class="btn btn-link text-black p-0" @click.stop="handleTerms">
+        {{ $t('common.termsAndConditions') }}
+      </Button>
+    </PCheckbox>
+
+    <PButton
+      type="submit"
+      class="btn-primary btn-lg"
+      icon="fa-solid fa-user-plus"
+      :label="$t('admin.auth.createAccount')"
+      :loading="loading"
+      @click="handleSubmit"
+    />
+
+    <div class="text-center">
       {{ $t('admin.auth.alreadyHaveAnAccount') }}
-      <router-link
-        class="font-medium no-underline text-right cursor-pointer ml-2"
-        style="color: var(--primary-color)"
-        :to="{ name: 'Login' }"
-      >
+      <router-link style="color: var(--primary-color)" :to="{ name: 'Login' }">
         {{ $t('admin.auth.signIn') }}
       </router-link>
     </div>
@@ -154,3 +120,24 @@ const handleTermsDialogHide = () => (isTermsDialogVisible.value = false)
 
 const handleSubmit = () => emits('submit', user)
 </script>
+
+<style lang="scss">
+.signup-form {
+  width: 350px;
+
+  &__toggle-password {
+    z-index: 5;
+    right: 15px;
+    top: 21px;
+    cursor: pointer;
+
+    &.is-invalid {
+      right: 35px;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
+</style>

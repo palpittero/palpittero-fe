@@ -2,12 +2,16 @@
   <Dialog
     :visible="visible"
     :style="style"
-    :header="header"
     modal
     @hide="handleHide"
     @update:visible="handleUpdateVisible"
     :class="`base-dialog--${type}`"
   >
+    <template #header>
+      <div class="modal-header">
+        {{ header }}
+      </div>
+    </template>
     <slot />
     <template #footer>
       <slot name="footer">

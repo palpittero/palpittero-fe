@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb v-bind="breadcrumb" class="mb-3" />
+  <Breadcrumbs :items="breadcrumbs" class="mb-3" />
   <UnprocessedGuesses :leagueId="leagueId" @ready="onUnprocessedGuessesReady" />
 </template>
 
@@ -14,21 +14,19 @@ const i18n = useI18n()
 
 const leagueId = computed(() => parseInt(route.params.leagueId))
 
-const breadcrumb = ref({
-  home: {
+const breadcrumbs = ref([
+  {
     label: i18n.t('common.breadcrumb.admin.dashboard'),
     icon: 'pi pi-home',
     to: { name: 'AdminDashboard' }
   },
-  model: [
-    {
-      label: i18n.t('common.breadcrumb.admin.unprocessedGuesses')
-    }
-  ]
-})
+  {
+    label: i18n.t('common.breadcrumb.admin.unprocessedGuesses')
+  }
+])
 
 const onUnprocessedGuessesReady = ({ league }) =>
-  (breadcrumb.value.model = [
+  (breadcrumbs.value = [
     {
       label: i18n.t('common.breadcrumb.admin.unprocessedGuesses'),
       to: { name: 'AdminUnprocessedGuessesLeagues' }

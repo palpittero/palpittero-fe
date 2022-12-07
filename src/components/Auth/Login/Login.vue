@@ -1,7 +1,8 @@
 <template>
-  <main
-    class="login container d-flex align-items-center justify-content-center w-full text-center h-100vh"
+  <div
+    class="login container d-flex flex-column align-items-center justify-content-center h-100vh"
   >
+    <Logo />
     <LoginForm
       v-model="credentials"
       :submitted="submitted"
@@ -9,7 +10,7 @@
       :loading="isLoading"
       @submit="onSubmit"
     />
-  </main>
+  </div>
 </template>
 
 <script setup>
@@ -22,7 +23,7 @@ import { useRoute, useRouter } from 'vue-router'
 import * as yup from 'yup'
 
 import LoginForm from './LoginForm/LoginForm.vue'
-import 'bootstrap'
+import { Logo } from '@/components/Common'
 
 const toast = useToast()
 const i18n = useI18n()
@@ -75,3 +76,13 @@ const onSubmit = handleSubmit(
   }
 )
 </script>
+
+<style lang="scss">
+@import '@/assets/styles/styles.scss';
+
+.login {
+  @include media-breakpoint-up(lg) {
+    padding-bottom: 30vh;
+  }
+}
+</style>

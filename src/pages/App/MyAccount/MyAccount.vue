@@ -1,13 +1,13 @@
 <template>
   <AppLayout>
-    <template #sidebar="{ onMenuItemClick }">
+    <!-- <template #sidebar="{ onMenuItemClick }">
       <MyAccountSidebar @menuitem-click="onMenuItemClick" />
-    </template>
+    </template> -->
     <router-view />
   </AppLayout>
 </template>
 
 <script setup>
 import AppLayout from '@/pages/App/AppLayout.vue'
-import MyAccountSidebar from '@/components/App/MyAccount/MyAccountSidebar/MyAccountSidebar.vue'
+// import MyAccountSidebar from '@/components/App/MyAccount/MyAccountSidebar/MyAccountSidebar.vue'
 </script>

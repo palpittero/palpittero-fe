@@ -32,6 +32,7 @@ export default {
     pageReport: 'Exibindo {first} a {last} de {totalRecords} {items}'
   },
   menu: {
+    home: 'Página Inicial',
     adminPanel: 'Painel Administrativo',
     palpittero: 'Palpittero',
     logout: 'Sair',

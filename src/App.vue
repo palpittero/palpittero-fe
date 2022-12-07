@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-view />
+    <router-view class="container py-3" />
     <Toast group="app" />
   </div>
 </template>

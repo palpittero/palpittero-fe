@@ -1,6 +1,6 @@
 <template>
   <button
-    class="w-100 btn btn-primary d-flex align-items-center justify-content-center gap-2"
+    :class="`btn d-flex align-items-center justify-content-center gap-2`"
     type="submit"
     :disabled="disabled || loading"
   >
@@ -11,7 +11,6 @@
     <template v-else>
       <font-awesome-icon v-if="icon" :icon="icon" />
       {{ label }}
-      <!-- {{ $t('admin.auth.signIn') }} -->
     </template>
   </button>
 </template>
@@ -25,6 +24,14 @@ defineProps({
   icon: {
     type: String,
     default: ''
+  },
+  variant: {
+    type: String,
+    default: 'primary'
+  },
+  size: {
+    type: String,
+    default: 'md'
   },
   disabled: Boolean,
   loading: Boolean

@@ -1,3 +1,5 @@
-import Button from './Button/Button.vue'
+import PButton from './PButton/PButton.vue'
+import PCheckbox from './PCheckbox/PCheckbox.vue'
+import PInput from './PInput/PInput.vue'
 
-export { Button }
+export { PButton, PCheckbox, PInput }

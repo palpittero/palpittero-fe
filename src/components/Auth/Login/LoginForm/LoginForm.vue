@@ -1,74 +1,47 @@
 <template>
-  <form class="login-form" novalidate @submit.prevent="handleSubmit">
-    <img
-      class="mb-4"
-      src="/images/logo-dark.svg"
-      alt=""
-      width="72"
-      height="57"
+  <form
+    class="login-form d-flex flex-column gap-3"
+    novalidate
+    @submit.prevent="handleSubmit"
+  >
+    <PInput
+      id="email"
+      v-model="credentials.email"
+      type="email"
+      :label="$t('admin.auth.email')"
+      :validation="{
+        isInvalid: submitted && errors.email,
+        message: $t('admin.auth.validation.email')
+      }"
     />
-    <h1 class="h3 mb-3 fw-normal">Palpittero</h1>
+    <PInput
+      id="password"
+      v-model="credentials.password"
+      type="password"
+      :validation="{
+        isInvalid: submitted && errors.password,
+        message: $t('admin.auth.validation.password')
+      }"
+      :label="$t('admin.auth.password')"
+    />
 
-    <div class="form-floating has-validation">
-      <input
-        type="email"
-        v-model="credentials.email"
-        class="login-form__email form-control"
-        :class="{ 'is-invalid': submitted && errors.email }"
-        id="email"
-        :placeholder="$t('admin.auth.email')"
-      />
-      <label for="email">
-        {{ $t('admin.auth.email') }}
-      </label>
-      <div v-if="submitted && errors.email" class="invalid-feedback">
-        {{ errors.email }}
-      </div>
-    </div>
-    <div class="form-floating">
-      <input
-        :type="password.type"
-        v-model="credentials.password"
-        class="login-form__password form-control"
-        :class="{ 'is-invalid': submitted && errors.password }"
-        :placeholder="$t('admin.auth.password')"
-      />
-      <label for="floatingPassword">
-        {{ $t('admin.auth.password') }}
-      </label>
-      <div v-if="submitted && errors.password" class="invalid-feedback">
-        {{ errors.password }}
-      </div>
-      <font-awesome-icon
-        :icon="password.icon"
-        class="login-form__toggle-password position-absolute"
-        :class="{ 'is-invalid': submitted && errors.password }"
-        @click="togglePassword"
-      />
-    </div>
-
-    <div class="flex align-items-center justify-content-end my-3">
+    <small class="text-end">
       <router-link
         :to="{ name: 'ForgotPassword' }"
-        class="font-medium no-underline text-right cursor-pointer"
         style="color: var(--primary-color)"
       >
         {{ $t('admin.auth.forgotPassword') }}
       </router-link>
-    </div>
-    <Button
-      class="btn-lg"
+    </small>
+    <PButton
+      class="btn-primary btn-lg"
       :label="$t('admin.auth.signIn')"
       icon="fa-solid fa-sign-in"
       :loading="loading"
     />
-    <div class="flex align-items-center justify-content-center my-3">
+    <div class="text-center">
       {{ $t('admin.auth.stillNotRegistered') }}
-      <router-link
-        class="font-medium no-underline text-right cursor-pointer ml-2"
-        style="color: var(--primary-color)"
-        :to="{ name: 'SignUp' }"
-      >
+      <router-link style="color: var(--primary-color)" :to="{ name: 'SignUp' }">
         {{ $t('admin.auth.createAnAccount') }}
       </router-link>
     </div>
@@ -76,7 +49,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { useVModel } from '@vueuse/core'
 
 const props = defineProps({
   modelValue: {
@@ -92,64 +65,38 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['update:modelValue', 'submit'])
+const credentials = useVModel(props, 'modelValue', emits)
 
-const showPassword = ref(false)
-
-const credentials = computed({
-  set(value) {
-    emits('update:modelValue', value)
-  },
-  get() {
-    return props.modelValue
-  }
-})
-
-const password = computed(() =>
-  showPassword.value
-    ? {
-        type: 'text',
-        icon: 'fa-solid fa-eye-slash'
-      }
-    : {
-        type: 'password',
-        icon: 'fa-solid fa-eye'
-      }
-)
-
-const togglePassword = () => (showPassword.value = !showPassword.value)
 const handleSubmit = () => emits('submit', credentials)
 </script>
 
 <style lang="scss">
+@import '@/assets/styles/styles';
+
 .login-form {
   width: 350px;
-  margin-bottom: 10vh;
 
-  &__email {
-    border-bottom-right-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-  }
+  // &__email {
+  //   border-bottom-right-radius: 0 !important;
+  //   border-bottom-left-radius: 0 !important;
+  // }
 
-  &__password {
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0.375rem !important;
-  }
+  // &__password {
+  //   border-top-left-radius: 0 !important;
+  //   border-top-right-radius: 0 !important;
+  //   border-bottom-right-radius: 0.375rem !important;
+  // }
 
-  &__toggle-password {
-    z-index: 5;
-    right: 15px;
-    top: 21px;
-    cursor: pointer;
+  // &__toggle-password {
+  //   z-index: 5;
+  //   right: 15px;
+  //   top: 21px;
+  //   cursor: pointer;
 
-    &.is-invalid {
-      right: 35px;
-    }
-
-    &:hover {
-      opacity: 0.7;
-    }
-  }
+  //   &:hover {
+  //     opacity: 0.7;
+  //   }
+  // }
 }
 </style>
 >

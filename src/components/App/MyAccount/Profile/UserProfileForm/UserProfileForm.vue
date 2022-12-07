@@ -1,36 +1,48 @@
 <template>
-  <div class="field">
-    <label for="name">{{ $t('admin.users.name') }}</label>
-    <InputText
-      id="name"
-      v-model.trim="user.name"
-      required
-      autofocus
-      :class="{ 'p-invalid': submitted && errors.name }"
-    />
-    <small class="p-invalid" v-if="submitted && errors.name">
-      {{ $t('admin.users.validation.name') }}
-    </small>
-  </div>
-  <div class="field">
-    <label for="email">{{ $t('admin.users.email') }}</label>
-    <InputText
-      id="email"
-      v-model.trim="user.email"
-      required
-      :class="{ 'p-invalid': submitted && errors.email }"
-    />
-    <small class="p-invalid" v-if="submitted && errors.email">
-      {{ $t('admin.users.validation.email') }}
-    </small>
-  </div>
-  <div class="flex justify-content-end">
-    <Button
-      :label="$t('app.myAccount.profile.save')"
-      icon="pi pi-check"
-      @click="onSubmit"
-      :disabled="loading"
-    />
+  <div>
+    <div class="d-flex flex-column gap-3">
+      <PInput
+        id="name"
+        v-model.trim="user.name"
+        required
+        autofocus
+        :label="$t('admin.users.name')"
+        :validation="{
+          isInvalid: submitted && errors.name,
+          message: $t('admin.users.validation.name')
+        }"
+      />
+      <PInput
+        id="email"
+        v-model.trim="user.email"
+        required
+        :label="$t('admin.users.email')"
+        :validation="{
+          isInvalid: submitted && errors.email,
+          message: $t('admin.users.validation.email')
+        }"
+      />
+      <div class="d-flex justify-content-end">
+        <PButton
+          class="btn-success"
+          :label="$t('app.myAccount.profile.save')"
+          icon="fa-solid fa-check"
+          @click="onSubmit"
+          :disabled="loading"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-end">
+      <PButton
+        type="button"
+        icon="fa-solid fa-trash"
+        class="btn-outline-danger"
+        :label="$t('app.myAccount.profile.removeAccount.title')"
+        @click="handleRemoveAccount"
+        :disabled="isSaving"
+      />
+    </div>
   </div>
 </template>
 
@@ -59,7 +71,7 @@ const { errors, handleSubmit, setValues } = useForm({
 
 watch(user, (user) => setValues(user), { deep: true, immediate: true })
 
-const emits = defineEmits(['update:modelValue', 'submit'])
+const emits = defineEmits(['update:modelValue', 'submit', 'remove'])
 
 const onSubmit = handleSubmit(
   (user) => {
@@ -68,4 +80,6 @@ const onSubmit = handleSubmit(
   },
   () => (submitted.value = true)
 )
+
+const handleRemoveAccount = () => emits('remove')
 </script>

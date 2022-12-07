@@ -1,25 +1,25 @@
 <template>
   <div>
     <div
-      class="image-input__cropped-image flex align-items-center gap-3"
+      class="image-input__cropped-image d-flex flex-column align-items-center gap-3"
       :class="className"
     >
-      <BadgeAvatar size="xlarge" :image="avatarImage" />
-      <div class="flex justify-content-center">
-        <Button
+      <img class="img-fluid rounded-circle" :src="avatarImage" />
+      <div class="d-flex justify-content-center">
+        <PButton
           v-if="croppedImage && clearable"
-          class="p-button-text p-button-danger p-button-icon p-button-sm"
+          type="button"
+          class="btn-danger"
+          :label="$t('common.remove')"
+          icon="fa-solid fa-trash"
           @click="handleRemove"
-        >
-          <span class="pi pi-trash mr-2" /> {{ $t('common.remove') }}
-        </Button>
+        />
         <FileUpload
-          v-else
           accept="image/*"
           mode="basic"
           auto
           custom-upload
-          class="p-button-text"
+          class="btn btn-outline-primary btn-sm"
           :choose-label="label"
           @uploader="uploader"
         />
@@ -39,7 +39,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 
-import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+// import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 import ImageCropperDialog from '@/components/Shared/ImageCropperDialog/ImageCropperDialog.vue'
 
 import { BADGE_AVATAR_PLACEHOLDER } from '@/constants'
@@ -143,7 +143,7 @@ const handleHide = () => {
 <style lang="scss" scoped>
 .image-input {
   &__cropped-image {
-    width: 200px;
+    max-width: 100%;
 
     .p-avatar img {
       max-width: 100%;

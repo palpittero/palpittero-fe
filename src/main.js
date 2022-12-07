@@ -102,8 +102,6 @@ import MyToast from '@/plugins/toast'
 
 import ToastService from 'primevue/toastservice'
 
-import { Button } from '@/components/Base'
-
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/assets/styles/bootstrap.min.css'
 import 'bootstrap'
@@ -171,7 +169,7 @@ app.directive('Tooltip', Tooltip)
 app.directive('StyleClass', StyleClass)
 app.directive('Ripple', Ripple)
 
-app.component('Button', Button)
+// app.component('Button', Button)
 // app.component('BlockViewer', BlockViewer)
 app.component('Accordion', Accordion)
 app.component('AccordionTab', AccordionTab)
@@ -254,12 +252,24 @@ app.component('TreeSelect', TreeSelect)
 app.component('TreeTable', TreeTable)
 app.component('TriStateCheckbox', TriStateCheckbox)
 app.component('InputText', InputText)
-app.component('Button', Button)
+// app.component('Button', Button)
 app.component('SplitButton', SplitButton)
 app.component('Toast', Toast)
 app.component('Menubar', Menubar)
 app.component('Menu', Menu)
 app.component('TieredMenu', TieredMenu)
 app.component('Dock', Dock)
+
+import '@/assets/styles/custom.scss'
+
+import { PButton, PCheckbox, PInput } from '@/components/Base'
+import { Breadcrumbs, Modal } from '@/components/Common'
+
+app.component('PButton', PButton)
+app.component('PCheckbox', PCheckbox)
+app.component('PInput', PInput)
+
+app.component('Breadcrumbs', Breadcrumbs)
+app.component('Modal', Modal)
 
 app.mount('#app')

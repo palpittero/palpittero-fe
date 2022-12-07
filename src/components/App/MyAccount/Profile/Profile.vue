@@ -1,67 +1,96 @@
 <template>
-  <div class="profile">
-    <h1>
-      {{ $t('common.menu.myAccount.profile') }}
-    </h1>
-    <div class="surface-section flex flex-column md:flex-row md:grid p-5">
-      <div class="col-12 md:col-3 justify-content-center flex">
-        <Skeleton
-          v-if="user.loading"
-          shape="circle"
-          height="180px"
-          width="180px"
-          class="mb-3"
-        />
-        <ImageInput
-          v-else
-          class-name="flex-column"
-          v-model="user.data.avatar"
-          :label="$t('common.edit')"
-          select-button-class="p-button-text"
-          :placeholder="USER_AVATAR_PLACEHOLDER"
-        />
-      </div>
-      <Divider layout="vertical" class="col-1 hidden md:block" />
-      <Divider layout="horizontal" class="col md:hidden" />
-      <div class="col-12 md:col-7">
-        <template v-if="user.loading">
-          <Skeleton width="30%" height="10%" class="mb-3" />
-          <Skeleton width="100%" height="10%" class="mb-3" />
+  <div class="container">
+    <main>
+      <!-- <div class="col-md-5 col-lg-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-primary">Your cart</span>
+            <span class="badge bg-primary rounded-pill">3</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Product name</h6>
+                <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">$12</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Second product</h6>
+                <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">$8</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Third item</h6>
+                <small class="text-muted">Brief description</small>
+              </div>
+              <span class="text-muted">$5</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Promo code</h6>
+                <small>EXAMPLECODE</small>
+              </div>
+              <span class="text-success">−$5</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>$20</strong>
+            </li>
+          </ul>
 
-          <Skeleton width="30%" height="10%" class="mb-3" />
-          <Skeleton width="100%" height="10%" class="mb-3" />
+          <form class="card p-2">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Promo code"
+              />
+              <button type="submit" class="btn btn-secondary">Redeem</button>
+            </div>
+          </form>
+        </div> -->
 
-          <Divider class="my-5" />
-
-          <Skeleton width="100%" height="10%" class="mb-3" />
-        </template>
-        <template v-else>
-          <UserProfileForm
-            :user="user.data"
-            @submit="handleSubmit"
-            :loading="isSaving"
+      <h4 class="d-flex w-full justify-content-end">
+        {{ $t('common.menu.myAccount.profile') }}
+      </h4>
+      <hr class="mb-5" />
+      <form novalidate v-if="user.data">
+        <div class="row g-3">
+          <ImageInput
+            class="col-sm-3 px-5 mb-3"
+            v-model="user.data.avatar"
+            :label="$t('common.edit')"
+            select-button-class="p-button-text"
+            :placeholder="USER_AVATAR_PLACEHOLDER"
           />
 
-          <Divider class="my-5" />
+          <UserProfileForm
+            class="col-sm-9"
+            :user="user.data"
+            :loading="isSaving"
+            @submit="handleSubmit"
+            @remove="handleRemoveAccount"
+          />
 
-          <div class="flex justify-content-end">
-            <Button
-              :label="$t('app.myAccount.profile.removeAccount.title')"
-              icon="pi pi-trash"
-              class="p-button-danger"
-              @click="handleRemoveAccount"
-              :disabled="isSaving"
-            />
+          <BaseConfirmDialog
+            target="remove-account"
+            :visible="isRemoveAccountDialogVisible"
+            :message="$t('app.myAccount.profile.removeAccount.message')"
+            @hide="handleRemoveAccountDialogHide"
+            @submit="handleRemoveAccountDialogSubmit"
+          />
 
-            <RemoveAccountDialog
-              :visible="isRemoveAccountDialogVisible"
-              @hide="handleRemoveAccountDialogHide"
-              @submit="handleRemoveAccountDialogSubmit"
-            />
-          </div>
-        </template>
-      </div>
-    </div>
+          <!-- <RemoveAccountDialog
+            :visible="isRemoveAccountDialogVisible"
+            @hide="handleRemoveAccountDialogHide"
+            @submit="handleRemoveAccountDialogSubmit"
+          /> -->
+        </div>
+      </form>
+    </main>
   </div>
 </template>
 
@@ -74,7 +103,7 @@ import { useRouter } from 'vue-router'
 import services from '@/services'
 
 import UserProfileForm from './UserProfileForm/UserProfileForm.vue'
-import RemoveAccountDialog from './RemoveAccountDialog/RemoveAccountDialog.vue'
+import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
 import ImageInput from '@/components/Shared/ImageInput/ImageInput.vue'
 
 import { USER_AVATAR_PLACEHOLDER } from '@/constants'

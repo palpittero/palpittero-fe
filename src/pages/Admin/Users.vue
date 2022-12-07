@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb v-bind="breadcrumb" class="mb-3" />
+  <Breadcrumbs :items="breadcrumbs" class="mb-3" />
   <Users />
 </template>
 
@@ -9,16 +9,14 @@ import Users from '@/components/Admin/Users/Users.vue'
 
 const i18n = useI18n()
 
-const breadcrumb = {
-  home: {
+const breadcrumbs = [
+  {
     label: i18n.t('common.breadcrumb.admin.dashboard'),
     icon: 'pi pi-home',
     to: { name: 'AdminDashboard' }
   },
-  model: [
-    {
-      label: i18n.t('common.breadcrumb.admin.users')
-    }
-  ]
-}
+  {
+    label: i18n.t('common.breadcrumb.admin.users')
+  }
+]
 </script>

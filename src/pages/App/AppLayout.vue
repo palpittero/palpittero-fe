@@ -8,16 +8,16 @@
         </button>
       </router-link>
     </template>
-    <template #sidebar="{ onMenuItemClick }">
+    <!-- <template #sidebar="{ onMenuItemClick }">
       <slot name="sidebar" :on-menu-item-click="onMenuItemClick">
         <AppSidebar @menuitem-click="onMenuItemClick" />
       </slot>
-    </template>
+    </template> -->
     <slot />
   </Layout>
 </template>
 
 <script setup>
 import Layout from '@/pages/Shared/Layout.vue'
-import AppSidebar from '@/components/App/AppSidebar/AppSidebar.vue'
+// import AppSidebar from '@/components/App/AppSidebar/AppSidebar.vue'
 </script>

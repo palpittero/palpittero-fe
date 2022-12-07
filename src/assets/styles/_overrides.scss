@@ -1,4 +1,6 @@
 // // Suggested location to add your overrides so that migration would be easy by just updating the SASS folder in the future
+// @import 'bootstrap/scss/bootstrap';
+
 body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -171,5 +173,26 @@ body {
 //     display: flex;
 //     align-items: center;
 //     height: 2rem !important;
+//   }
+// }
+
+// .p-dialog-mask {
+//   @extend .modal;
+// }
+
+// .p-dialog {
+//   @extend .modal-dialog;
+// }
+
+// .p-dialog-content {
+//   @extend .modal-body;
+// }
+// .p-dialog-header {
+//   @extend .modal-header;
+
+
+//   .p-dialog-title {
+//     @extend .modal-title;
+//     @extend .fs-5;
 //   }
 // }

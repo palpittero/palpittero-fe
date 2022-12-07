@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumb v-bind="breadcrumb" class="mb-3" />
+  <Breadcrumbs :items="breadcrumbs" class="mb-3" />
   <Profile />
 </template>
 
@@ -9,19 +9,19 @@ import { useI18n } from 'vue-i18n'
 
 const i18n = useI18n()
 
-const breadcrumb = {
-  home: {
+const breadcrumbs = [
+  {
     label: i18n.t('common.breadcrumb.home'),
     icon: 'pi pi-home',
     to: { name: 'Home' }
   },
-  model: [
-    {
-      label: i18n.t('common.breadcrumb.myAccount')
-    },
-    {
-      label: i18n.t('common.breadcrumb.myProfile')
-    }
-  ]
-}
+  {
+    label: i18n.t('common.breadcrumb.myAccount'),
+    active: true
+  },
+  {
+    label: i18n.t('common.breadcrumb.myProfile'),
+    active: true
+  }
+]
 </script>
