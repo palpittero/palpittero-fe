@@ -5,15 +5,15 @@
     optionLabel="name"
     :optionValue="getOptionValue"
     filter
-    :showClear="clearable"
+    :showClear="clearable && !disabled"
     :placeholder="$t('admin.teams.selectTeam')"
     :class="{ 'p-invalid': invalid }"
     class="team-select"
+    :disabled="disabled"
   >
     <template #value="{ value, placeholder }">
       <div v-if="value" class="flex align-items-center gap-3">
         <BadgeAvatar :image="value.badge" />
-        <!-- <img :src="value.badge" /> -->
         <div>{{ value.name }}</div>
       </div>
       <span v-else>
@@ -48,7 +48,8 @@ const props = defineProps({
     default: null
   },
   invalid: Boolean,
-  clearable: Boolean
+  clearable: Boolean,
+  disabled: Boolean
 })
 
 const emits = defineEmits(['update:modelValue'])

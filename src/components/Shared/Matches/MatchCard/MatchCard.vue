@@ -2,7 +2,9 @@
   <Card class="match-card" :class="`p-0 bg-${variant}-100`">
     <template #content>
       <div class="flex flex-column align-items-center gap-2">
-        <div class="pb-1 flex justify-content-center align-items-center gap-2">
+        <div
+          class="pb-1 flex flex-column md:flex-row justify-content-center align-items-center gap-2"
+        >
           <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
           <MatchStatusBadge :status="match.status" />
         </div>
@@ -48,8 +50,9 @@ const showGroup = computed(
 
 <style lang="scss">
 .match-card {
-  .p-card-body {
-    padding: 0;
+  .p-card-body,
+  .p-card-content {
+    padding: 0.5rem !important;
   }
 }
 </style>
