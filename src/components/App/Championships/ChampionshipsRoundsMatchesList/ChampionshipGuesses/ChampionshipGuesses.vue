@@ -3,9 +3,8 @@
     <h5
       class="flex gap-2 text-center md:text-left align-items-center bg-red-100 text-bold p-3 mb-0 mt-3"
     >
-      <span class="hidden md:block pi pi-exclamation-triangle" /> Os palpites de
-      campeão e vice poderão ser registrados até o final do último jogo da
-      rodada de oitavas de final, no dia 06/12 às 18h.
+      <span class="hidden md:block pi pi-exclamation-triangle" /> Os prazo para
+      enviar os palpites de campeão e vice finalizaram no dia 06/12.
     </h5>
 
     <div
@@ -28,6 +27,7 @@
               <TeamSelect
                 :id="`position_${guess.position}`"
                 v-model="guess.team"
+                :disabled="disabled"
                 class="w-full"
                 clearable
                 :championship-id="championshipId"
@@ -79,7 +79,8 @@ const props = defineProps({
     type: Number,
     required: true
   },
-  loading: Boolean
+  loading: Boolean,
+  disabled: Boolean
 })
 
 const emits = defineEmits(['update:modelValue'])

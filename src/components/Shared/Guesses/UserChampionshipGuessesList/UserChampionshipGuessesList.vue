@@ -16,6 +16,7 @@
           class="p-button p-button-text border border-1 border-primary p-button-sm p-2"
           icon="pi pi-bolt"
           :label="$t('admin.guesses.processGuesses')"
+          v-if="!readonly"
         />
       </div>
       <span class="flex align-items-center gap-3">

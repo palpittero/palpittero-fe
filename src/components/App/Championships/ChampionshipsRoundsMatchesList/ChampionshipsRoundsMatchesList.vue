@@ -14,11 +14,11 @@
     <Transition name="championships-rounds-matches-list">
       <div v-show="isOpen">
         <ChampionshipGuesses
-          v-if="enablePositionGuesses"
           v-model="championshipGuesses"
           :loading="isLoading"
           :championship-id="championship.id"
           :league-id="leagueId"
+          :disabled="!enablePositionGuesses"
         />
         <ul v-if="loading" class="m-0 p-0">
           <li class="mb-4">
@@ -115,27 +115,28 @@ onMounted(async () => {
 
   rounds.value = await services.championships.fetchRounds(props.championship.id)
 
-  if (props.enablePositionGuesses) {
-    const championshipId = props.championship.id
-    const leagueId = props.leagueId
-    const userId = loggedUser.id
+  // if (props.enablePositionGuesses) {
+  const championshipId = props.championship.id
+  const leagueId = props.leagueId
+  const userId = loggedUser.id
 
-    const championshipGuessesData =
-      await services.championshipsGuesses.fetchChampionshipsGuesses({
-        championshipId,
-        leagueId,
-        userId
-      })
+  const championshipGuessesData =
+    await services.championshipsGuesses.fetchChampionshipsGuesses({
+      championshipId,
+      leagueId,
+      userId
+    })
 
-    championshipGuesses.value = {
-      ...getChampionshipGuessesInitialValues({
-        championshipId,
-        leagueId,
-        userId
-      }),
-      ...parseChampionshipGuesses(championshipGuessesData)
-    }
+  championshipGuesses.value = {
+    ...getChampionshipGuessesInitialValues({
+      championshipId,
+      leagueId,
+      userId
+    }),
+    ...parseChampionshipGuesses(championshipGuessesData)
   }
+
+  // }
 
   isLoading.value = false
 })
