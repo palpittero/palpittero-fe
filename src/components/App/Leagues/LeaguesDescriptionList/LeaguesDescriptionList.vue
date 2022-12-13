@@ -14,11 +14,7 @@
         class="list-group-item hstack pe-2"
       >
         <div class="hstack gap-3">
-          <img
-            :src="league.badge"
-            class="rounded-circle border border-grey"
-            width="40"
-          />
+          <Avatar :img="league.badge" />
           <span class="w-100">
             {{ league.name }}
           </span>
@@ -204,6 +200,7 @@ import { useAuthStore } from '@/stores/auth'
 // import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 // import Heading from '@/components/Shared/Heading/Heading.vue'
 import Accordion from '@/components/Shared/Accordion/Accordion.vue'
+import Avatar from '@/components/Shared/Avatar/Avatar.vue'
 import Alert from '@/components/Shared/Alert/Alert.vue'
 
 import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'

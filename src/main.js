@@ -20,7 +20,7 @@ import TieredMenu from 'primevue/tieredmenu'
 import AutoComplete from 'primevue/autocomplete'
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
-import Avatar from 'primevue/avatar'
+// import Avatar from 'primevue/avatar'
 import AvatarGroup from 'primevue/avatargroup'
 import Badge from 'primevue/badge'
 import BadgeDirective from 'primevue/badgedirective'
@@ -174,7 +174,7 @@ app.directive('Ripple', Ripple)
 app.component('Accordion', Accordion)
 app.component('AccordionTab', AccordionTab)
 app.component('AutoComplete', AutoComplete)
-app.component('Avatar', Avatar)
+// app.component('Avatar', Avatar)
 app.component('AvatarGroup', AvatarGroup)
 app.component('Badge', Badge)
 app.component('BlockUI', BlockUI)
