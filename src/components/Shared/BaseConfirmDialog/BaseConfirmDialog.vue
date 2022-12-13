@@ -7,9 +7,9 @@
     @submit="handleSubmit"
     @hide="handleHide"
   >
-    <div class="flex align-items-center">
-      <span v-html="message" />
-    </div>
+    <span v-html="message" />
+    <!-- <div class="flex align-items-center">
+    </div> -->
   </Modal>
 </template>
 
@@ -28,9 +28,7 @@ defineProps({
     }
   },
   message: String,
-  disabled: Boolean,
-  okButtonClass: String,
-  cancelButtonClass: String
+  disabled: Boolean
 })
 
 const emits = defineEmits(['submit', 'hide'])

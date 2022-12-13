@@ -147,7 +147,7 @@ app.config.globalProperties.$appState = reactive({
 })
 
 app.use(Toastification, {
-  timeout: 3000,
+  timeout: 99999,
   transition: 'Vue-Toastification__fade',
   maxToasts: 20,
   newestOnTop: true

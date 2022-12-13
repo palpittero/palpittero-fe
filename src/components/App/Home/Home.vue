@@ -310,7 +310,7 @@ const handleDetailsDialogSubmit = async (league) => {
     ? await services.leagues.updateLeague(parsedLeague)
     : await services.leagues.createLeague(parsedLeague)
 
-  toast(i18n.t('admin.leagues.saveSuccess'))
+  toast.success(i18n.t('admin.leagues.saveSuccess'))
 
   handleDetailsDialogHide()
   isSubmitting.value = false
@@ -329,7 +329,7 @@ const handleDeleteDialogSubmit = async ([league]) => {
     isSubmitting.value = true
     await services.leagues.deleteLeague(league)
 
-    toast(i18n.t('admin.leagues.deleteSuccess'))
+    toast.success(i18n.t('admin.leagues.deleteSuccess'))
 
     handleDeleteDialogHide()
     loadLeagues()

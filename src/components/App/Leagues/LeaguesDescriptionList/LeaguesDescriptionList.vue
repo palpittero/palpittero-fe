@@ -102,7 +102,12 @@
                   </a>
                 </li>
                 <li @click="emits('remove', league)">
-                  <a href="#" class="dropdown-item row hstack gap-3 m-0">
+                  <a
+                    href="#"
+                    class="dropdown-item row hstack gap-3 m-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#league-delete-dialog"
+                  >
                     <font-awesome-icon icon="fas fa-trash" class="col-2 p-0" />
                     <span class="col p-0">
                       {{ $t('common.remove') }}
@@ -193,7 +198,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 // import { useI18n } from 'vue-i18n'
 

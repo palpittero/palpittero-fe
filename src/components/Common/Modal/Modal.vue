@@ -8,7 +8,7 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header border-bottom border-grey">
           <h1
             v-if="header"
             class="modal-title fs-5"
@@ -23,7 +23,7 @@
             :aria-label="$t('common.close')"
           />
         </div>
-        <div class="modal-body" v-if="visible">
+        <div class="modal-body" v-if="visible || open">
           <slot />
         </div>
         <div class="modal-footer">
@@ -31,15 +31,17 @@
             <PButton
               @click="handleHide"
               type="button"
-              class="btn-outline-secondary"
+              variant="secondary"
               data-bs-dismiss="modal"
+              icon="fas fa-times"
               :label="$t('common.no')"
             />
             <PButton
               @click="handleSubmit"
+              variant="success"
               type="button"
-              class="btn-primary"
-              :label="$t('common.yes')"
+              icon="fas fa-check"
+              :label="visible"
             />
           </slot>
         </div>
@@ -67,6 +69,7 @@ const props = defineProps({
 const emits = defineEmits(['hide', 'submit'])
 
 const modal = ref(null)
+const open = ref(false)
 
 watch(
   () => props.visible,
@@ -77,6 +80,14 @@ onMounted(() => {
   modal.value = new Modal(`#${props.target}`, {
     keyboard: false
   })
+
+  // onMounted(() => {
+  const modalElement = document.getElementById(props.target)
+
+  modalElement?.addEventListener('show.bs.modal', () => {
+    open.value = true
+  })
+  // })
 })
 
 const handleHide = () => emits('hide')

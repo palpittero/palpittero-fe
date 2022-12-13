@@ -93,7 +93,7 @@
                   href="#"
                   class="dropdown-item d-flex align-items-center gap-3"
                   data-bs-toggle="modal"
-                  :data-bs-target="`#logout-confirm-dialog`"
+                  data-bs-target="#logout-confirm-dialog"
                 >
                   <font-awesome-icon icon="fa-solid fa-sign-out" />
                   {{ $t('common.menu.logout') }}
