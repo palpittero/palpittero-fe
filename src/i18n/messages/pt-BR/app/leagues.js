@@ -39,5 +39,8 @@ export default {
   approveUsersSuccess: 'Usuário aprovado com sucesso',
   position: 'Posição',
   selectLeague: 'Selecione uma liga',
-  noAvailableLeagues: 'Nenhuma liga disponível'
+  noAvailableLeagues: 'Nenhuma liga disponível',
+  points: 'Pontos',
+  player: 'Jogador',
+  prize: 'Prêmio'
 }

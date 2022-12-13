@@ -9,7 +9,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { BADGE_AVATAR_PLACEHOLDER } from '@/constants'
+import { BADGE_AVATAR_PLACEHOLDER, USER_AVATAR_PLACEHOLDER } from '@/constants'
 
 const props = defineProps({
   img: {
@@ -19,16 +19,31 @@ const props = defineProps({
   size: {
     type: String,
     default: 'sm'
+  },
+  type: {
+    type: String,
+    default: 'user',
+    validator: (value) => ['avatar', 'badge'].includes(value)
   }
 })
 
-const src = ref(props.img)
+const src = ref(String(props.img))
 
-const handleError = () => (src.value = BADGE_AVATAR_PLACEHOLDER)
+// onMounted(() => console.log(props.img))
+
+const handleError = () => {
+  console.log('error')
+  src.value =
+    props.type === 'user' ? USER_AVATAR_PLACEHOLDER : BADGE_AVATAR_PLACEHOLDER
+}
 </script>
 
 <style lang="scss" scoped>
 .p-avatar {
+  &__xs {
+    width: 30px;
+  }
+
   &__sm {
     width: 40px;
   }

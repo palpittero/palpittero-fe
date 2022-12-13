@@ -31,10 +31,6 @@ const emits = defineEmits(['hide', 'submit'])
 const message = computed(() => {
   const name = props.leagues.map(({ name }) => name).join('<br />')
 
-  console.log(
-    i18n.t('admin.leagues.deleteConfirmation', { name }, props.leagues.length)
-  )
-
   return i18n.t(
     'admin.leagues.deleteConfirmation',
     { name },

@@ -1,10 +1,10 @@
 <template>
   <div
-    class="modal fade"
+    class="modal modal-xl fade"
     :id="target"
     tabindex="-1"
     :aria-labelledby="`base-dialog-header__${target}`"
-    aria-hidden="true"
+    :aria-hidden="visible || open"
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -19,7 +19,7 @@
           <button
             type="button"
             class="btn-close"
-            data-bs-dismiss="modal"
+            @click="handleHide"
             :aria-label="$t('common.close')"
           />
         </div>
@@ -35,13 +35,15 @@
               data-bs-dismiss="modal"
               icon="fas fa-times"
               :label="$t('common.no')"
+              :class="okButtonClass"
             />
             <PButton
               @click="handleSubmit"
               variant="success"
               type="button"
               icon="fas fa-check"
-              :label="visible"
+              :label="$t('common.yes')"
+              :class="cancelButtonClass"
             />
           </slot>
         </div>
@@ -63,6 +65,14 @@ const props = defineProps({
   header: {
     type: String,
     default: ''
+  },
+  okButtonClass: {
+    type: String,
+    default: ''
+  },
+  cancelButtonClass: {
+    type: String,
+    default: ''
   }
 })
 
@@ -73,7 +83,11 @@ const open = ref(false)
 
 watch(
   () => props.visible,
-  (value) => (value ? modal.value.show() : modal.value.hide())
+  (value) => {
+    console.log('visible', value)
+    console.log('open', open.value)
+    value ? modal.value.show() : modal.value.hide()
+  }
 )
 
 onMounted(() => {
@@ -86,6 +100,11 @@ onMounted(() => {
 
   modalElement?.addEventListener('show.bs.modal', () => {
     open.value = true
+  })
+
+  modalElement?.addEventListener('hide.bs.modal', () => {
+    open.value = false
+    emits('hide')
   })
   // })
 })

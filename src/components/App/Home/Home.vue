@@ -47,11 +47,18 @@
     </div>
 
     <LeagueRankingDialog
-      v-if="isLeagueRankingDialogVisible"
       :league="selectedLeague"
       :visible="isLeagueRankingDialogVisible"
       @submit="handleLeagueRankingDialogSubmit"
     />
+
+    <!-- <LeagueDeleteDialog
+      :visible="isLeagueDeleteDialogVisible"
+      :submitting="isSubmitting"
+      :leagues="[selectedLeague]"
+      @hide="handleDeleteDialogHide"
+      @submit="handleDeleteDialogSubmit"
+    /> -->
 
     <LeagueDetailsDialog
       v-if="isLeagueDetailsDialogVisible"
