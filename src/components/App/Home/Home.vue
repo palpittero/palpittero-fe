@@ -5,44 +5,46 @@
       :leagues-invitations="pendingInvitationsLeagues.data"
       @refresh="loadLeagues"
     />
-    <div class="flex justify-content-between align-items-center mb-3">
-      <Heading
-        class="mb-0"
-        :label="$t('common.leagues', 2)"
-        icon="pi pi-flag text-4xl"
-      />
-      <Button
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <Heading class="mb-0" :label="$t('common.leagues', 2)" />
+      <PButton
         @click="handleCreateLeague"
-        icon="pi pi-plus"
+        icon="fa-plus"
         :label="$t('app.leagues.create')"
       />
     </div>
-    <LeaguesDescriptionList
-      :leagues="joinedLeagues"
-      :loading="allMyLeagues.loading"
-      :title="$t('app.leagues.myLeagues.title')"
-      :description="$t('app.leagues.myLeagues.description')"
-      :empty-state="$t('app.leagues.noJoinedLeagues')"
-      :on-get-route="handleGetRoute"
-      @ranking="handleRankingLeague"
-      @manage="handleManageLeague"
-      @guesses="handleGuessesLeague"
-      @edit="handleEditLeague"
-      @remove="handleRemoveLeague"
-      @leave="handleLeaveLeague"
-    />
+    <hr />
+    <div class="vstack gap-3">
+      <LeaguesDescriptionList
+        id="my-leagues"
+        :leagues="joinedLeagues"
+        :loading="allMyLeagues.loading"
+        :title="$t('app.leagues.myLeagues.title')"
+        :description="$t('app.leagues.myLeagues.description')"
+        :empty-state="$t('app.leagues.noJoinedLeagues')"
+        :on-get-route="handleGetRoute"
+        open
+        @ranking="handleRankingLeague"
+        @manage="handleManageLeague"
+        @guesses="handleGuessesLeague"
+        @edit="handleEditLeague"
+        @remove="handleRemoveLeague"
+        @leave="handleLeaveLeague"
+      />
 
-    <LeaguesDescriptionList
-      :leagues="publicLeagues"
-      :loading="allPublicLeagues.loading"
-      :title="$t('app.leagues.publicLeagues.title')"
-      :description="$t('app.leagues.publicLeagues.description')"
-      :empty-state="$t('app.leagues.noPublicLeaguesFound')"
-      :on-get-route="handleGetRoute"
-      @manage="handleManageLeague"
-      @ranking="handleRankingLeague"
-      @join="handleJoinLeague"
-    />
+      <LeaguesDescriptionList
+        id="private-leagues"
+        :leagues="publicLeagues"
+        :loading="allPublicLeagues.loading"
+        :title="$t('app.leagues.publicLeagues.title')"
+        :description="$t('app.leagues.publicLeagues.description')"
+        :empty-state="$t('app.leagues.noPublicLeaguesFound')"
+        :on-get-route="handleGetRoute"
+        @manage="handleManageLeague"
+        @ranking="handleRankingLeague"
+        @join="handleJoinLeague"
+      />
+    </div>
 
     <LeagueRankingDialog
       v-if="isLeagueRankingDialogVisible"

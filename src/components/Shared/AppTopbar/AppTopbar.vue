@@ -8,18 +8,18 @@
         class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
+        data-bs-target="#app-top-bar"
+        aria-controls="app-top-bar"
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon" />
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" id="app-top-bar">
         <ul class="navbar-nav me-auto mb-lg-0">
           <li class="nav-item">
             <router-link
-              class="nav-link d-flex align-items-center gap-2"
+              class="nav-link d-flex align-items-center py-3 gap-3"
               active-class="text-primary"
               :to="{ name: 'Home' }"
             >
@@ -31,7 +31,7 @@
         <ul class="navbar-nav mr-auto mb-lg-0">
           <li class="nav-item" v-if="auth.isAdmin">
             <router-link
-              class="nav-link d-flex align-items-center gap-2 px-2"
+              class="nav-link d-flex align-items-center py-3 gap-3"
               active-class="text-primary"
               :to="switchApp.to"
             >
@@ -41,7 +41,7 @@
           </li>
           <li class="nav-item d-block d-sm-none">
             <router-link
-              class="nav-link d-flex align-items-center gap-2 px-2"
+              class="nav-link d-flex align-items-center py-3 gap-3"
               active-class="text-primary"
               :to="{ name: 'MyAccount' }"
             >
@@ -52,7 +52,7 @@
           <li class="nav-item d-block d-sm-none">
             <a
               href="#"
-              class="nav-link d-flex align-items-center gap-3 text-danger px-2"
+              class="nav-link d-flex align-items-center py-3 gap-3 text-danger"
               data-bs-toggle="modal"
               :data-bs-target="`#logout-confirm-dialog`"
             >
@@ -91,7 +91,7 @@
               <li>
                 <a
                   href="#"
-                  class="dropdown-item d-flex align-items-center gap-3 text-danger"
+                  class="dropdown-item d-flex align-items-center gap-3"
                   data-bs-toggle="modal"
                   :data-bs-target="`#logout-confirm-dialog`"
                 >

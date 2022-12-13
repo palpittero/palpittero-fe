@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="`btn d-flex align-items-center justify-content-center gap-2`"
+    :class="`btn d-flex align-items-center justify-content-center gap-2 shadow-none btn-${variant} btn-${size}`"
     type="submit"
     :disabled="disabled || loading"
   >

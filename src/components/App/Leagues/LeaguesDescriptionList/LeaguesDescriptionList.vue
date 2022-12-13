@@ -1,148 +1,215 @@
 <template>
-  <div class="leagues-description-list">
-    <div class="surface-section p-2 md:p-5">
-      <div
-        class="flex flex-column md:flex-row align-items-start md:align-items-center justify-content-between gap-3 mb-3"
-      >
-        <span class="font-medium text-3xl text-900">
-          {{ title }}
-        </span>
-        <slot name="header-actions" />
-      </div>
-      <ul v-if="loading" class="m-0 p-0">
-        <li class="mb-4">
-          <Skeleton width="100%" class="mb-2" />
-          <Skeleton width="75%" />
-        </li>
-        <li class="mb-4">
-          <Skeleton width="100%" class="mb-2" />
-          <Skeleton width="75%" />
-        </li>
-        <li class="mb-4">
-          <Skeleton width="100%" class="mb-2" />
-          <Skeleton width="75%" />
-        </li>
-        <li class="mb-4">
-          <Skeleton width="100%" class="mb-2" />
-          <Skeleton width="75%" />
-        </li>
-        <li class="mb-4">
-          <Skeleton width="100%" class="mb-2" />
-          <Skeleton width="75%" />
-        </li>
-      </ul>
-      <ul v-else-if="leagues.length" class="list-none p-0 m-0 grid">
-        <li
-          v-for="league in leagues"
-          :key="league.id"
-          class="flex flex-row align-items-start md:align-items-center justify-content-between w-full py-3 px-2 border-top-1 surface-border flex-wrap"
-        >
-          <div
-            class="text-500 font-medium flex align-items-center md:align-items-center justify-content-start gap-3 py-2 px-3"
-          >
-            <BadgeAvatar :image="league.badge" />
-            <router-link v-if="onGetRoute(league)" :to="onGetRoute(league)">
-              {{ league.name }}
-            </router-link>
-            <span v-else>
-              {{ league.name }}
-            </span>
-            <span
-              class="pi pi-id-card"
-              v-show="isOwner(league)"
-              v-tooltip.top="$t('app.leagues.owner')"
-            />
-          </div>
-          <slot name="actions" :league="league">
-            <span class="flex md:hidden">
-              <Button
-                icon="pi pi-cog"
-                class="p-button-text"
-                @click="(event) => toggleMenu(event, league)"
-                aria-haspopup="true"
-                aria-controls="overlay_menu"
-              />
-            </span>
-            <div
-              class="md:flex flex-column align-items-start md:flex-row flex-wrap hidden"
-            >
-              <Button
-                v-if="!isParticipant(league)"
-                :label="$t('app.leagues.join')"
-                icon="pi pi-sign-in"
-                class="p-button-text"
-                @click="emits('join', league)"
-              />
-              <Button
-                v-if="isParticipant(league)"
-                :label="$t('app.leagues.ranking')"
-                icon="pi pi-list"
-                class="p-button-text"
-                @click="emits('ranking', league)"
-              />
-
-              <Button
-                v-if="isOwner(league)"
-                :label="$t('app.leagues.participants')"
-                icon="pi pi-users"
-                class="p-button-text"
-                @click="emits('manage', league)"
-              />
-
-              <Button
-                v-if="isParticipant(league)"
-                :label="$t('app.leagues.guesses')"
-                icon="pi pi-user-edit"
-                class="p-button-text"
-                @click="emits('guesses', league)"
-              />
-
-              <Button
-                v-if="canLeave(league)"
-                :label="$t('app.leagues.leave')"
-                icon="pi pi-sign-out"
-                class="p-button-text p-button-danger"
-                @click="emits('leave', league)"
-              />
-
-              <Button
-                v-if="isOwner(league)"
-                icon="pi pi-pencil"
-                class="p-button-text"
-                :label="$t('common.edit')"
-                @click="emits('edit', league)"
-              />
-
-              <Button
-                v-if="isOwner(league)"
-                icon="pi pi-trash"
-                :label="$t('common.remove')"
-                class="p-button-text p-button-danger"
-                @click="emits('remove', league)"
-              />
-            </div>
-          </slot>
-        </li>
-      </ul>
-      <div v-else class="text-500 mb-5">
-        {{ innerDescription }}
-      </div>
+  <Accordion :title="title" :open="open">
+    <div v-if="loading" class="vstack gap-3 placeholder-glow">
+      <span class="placeholder col-12 p-3" />
+      <span class="placeholder col-10 p-3" />
+      <span class="placeholder col-8 p-3" />
     </div>
-  </div>
-  <Menu ref="menu" :model="menuItems" popup />
+
+    <Alert v-else-if="leagues.length === 0" :text="innerDescription" />
+    <ul v-else class="list-group">
+      <li
+        v-for="league in leagues"
+        :key="league.id"
+        class="list-group-item hstack pe-2"
+      >
+        <div class="hstack gap-3">
+          <img
+            :src="league.badge"
+            class="rounded-circle border border-grey"
+            width="40"
+          />
+          <span class="w-100">
+            {{ league.name }}
+          </span>
+        </div>
+        <div class="ms-auto">
+          <div class="d-lg-none dropdown">
+            <PButton
+              variant="clear"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              icon="fas fa-ellipsis-vertical"
+            />
+
+            <ul class="dropdown-menu">
+              <li v-if="!isParticipant(league)">
+                <a
+                  href="#"
+                  class="dropdown-item hstack row m-0 gap-3"
+                  @click="emits('join', league)"
+                >
+                  <font-awesome-icon icon="fas fa-sign-in" class="col-2 p-0" />
+                  <span class="col p-0">
+                    {{ $t('app.leagues.join') }}
+                  </span>
+                </a>
+              </li>
+              <li v-if="isParticipant(league)">
+                <a
+                  href="#"
+                  class="dropdown-item row m-0 hstack gap-3"
+                  @click="emits('ranking', league)"
+                >
+                  <font-awesome-icon
+                    icon="fas fa-ranking-star"
+                    class="col-2 p-0"
+                  />
+                  <span class="col p-0">
+                    {{ $t('app.leagues.ranking') }}
+                  </span>
+                </a>
+              </li>
+
+              <li v-if="isParticipant(league)">
+                <a
+                  href="#"
+                  class="dropdown-item hstack m-0 gap-3 row"
+                  @click="emits('guesses', league)"
+                >
+                  <font-awesome-icon class="col-2 p-0" icon="fas fa-book" />
+                  <span class="col p-0">
+                    {{ $t('app.leagues.guesses') }}
+                  </span>
+                </a>
+              </li>
+
+              <li v-if="isOwner(league)" @click="emits('manage', league)">
+                <a href="#" class="dropdown-item hstack row m-0 gap-3">
+                  <font-awesome-icon icon="fas fa-users" class="col-2 p-0" />
+                  <span class="col p-0">
+                    {{ $t('app.leagues.participants') }}
+                  </span>
+                </a>
+              </li>
+
+              <li v-if="canLeave(league)" @click="emits('leave', league)">
+                <a href="#" class="dropdown-item hstack row m-0 gap-3">
+                  <font-awesome-icon icon="fas fa-sign-out" class="col-2 p-0" />
+                  <span class="col p-0">
+                    {{ $t('app.leagues.leave') }}
+                  </span>
+                </a>
+              </li>
+
+              <template v-if="isOwner">
+                <li>
+                  <a
+                    class="dropdown-item row hstack gap-3 m-0"
+                    href="#"
+                    @click="emits('edit', league)"
+                  >
+                    <font-awesome-icon icon="fas fa-pencil" class="col-2 p-0" />
+                    <span class="col p-0">
+                      {{ $t('common.edit') }}
+                    </span>
+                  </a>
+                </li>
+                <li @click="emits('remove', league)">
+                  <a href="#" class="dropdown-item row hstack gap-3 m-0">
+                    <font-awesome-icon icon="fas fa-trash" class="col-2 p-0" />
+                    <span class="col p-0">
+                      {{ $t('common.remove') }}
+                    </span>
+                  </a>
+                </li>
+              </template>
+            </ul>
+          </div>
+
+          <div class="d-none d-lg-flex gap-2">
+            <PButton
+              v-if="!isParticipant(league)"
+              :label="$t('app.leagues.join')"
+              icon="fas fa-sign-in"
+              @click="emits('join', league)"
+            />
+
+            <PButton
+              v-if="isParticipant(league)"
+              :label="$t('app.leagues.ranking')"
+              variant="info"
+              icon="fas fa-ranking-star"
+              @click="emits('ranking', league)"
+            />
+
+            <PButton
+              v-if="isParticipant(league)"
+              :label="$t('app.leagues.guesses')"
+              icon="fas fa-book"
+              variant="success"
+              @click="emits('guesses', league)"
+            />
+
+            <PButton
+              v-if="isOwner(league)"
+              :label="$t('app.leagues.participants')"
+              icon="fas fa-users"
+              @click="emits('manage', league)"
+            />
+
+            <PButton
+              v-if="canLeave(league)"
+              :label="$t('app.leagues.leave')"
+              icon="fas fa-sign-out"
+              class="p-button-text p-button-danger"
+              @click="emits('leave', league)"
+            />
+
+            <div v-if="isOwner(league)" class="dropdown ms-auto">
+              <PButton
+                variant="dark"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                icon="fas fa-cog"
+                class="h-100"
+              />
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    href="#"
+                    class="dropdown-item hstack gap-2"
+                    @click="emits('edit', league)"
+                  >
+                    <font-awesome-icon icon="fas fa-pencil" />
+                    {{ $t('common.edit') }}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="dropdown-item hstack gap-2"
+                    @click="emits('remove', league)"
+                  >
+                    <font-awesome-icon icon="fas fa-trash" />
+                    {{ $t('common.remove') }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </Accordion>
+  <!-- <Menu ref="menu" :model="menuItems" popup /> -->
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { useI18n } from 'vue-i18n'
+// import { useI18n } from 'vue-i18n'
 
-import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+// import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+// import Heading from '@/components/Shared/Heading/Heading.vue'
+import Accordion from '@/components/Shared/Accordion/Accordion.vue'
+import Alert from '@/components/Shared/Alert/Alert.vue'
 
 import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
 const authStore = useAuthStore()
-const i18n = useI18n()
+// const i18n = useI18n()
 
 const props = defineProps({
   title: {
@@ -165,7 +232,8 @@ const props = defineProps({
     type: Function,
     default: () => null
   },
-  loading: Boolean
+  loading: Boolean,
+  open: Boolean
 })
 
 const emits = defineEmits([
@@ -177,7 +245,7 @@ const emits = defineEmits([
   'remove'
 ])
 
-const currentLeague = ref()
+// const currentLeague = ref()
 
 const isParticipant = (league) =>
   league?.users?.find(
@@ -200,61 +268,61 @@ const isOwner = (league) =>
   )
 
 const innerDescription = computed(() =>
-  props.leagues.length > 0 ? props.description : props.emptyState
+  props.leagues.length === 0 ? props.description : props.emptyState
 )
 
 const canLeave = (league) => isParticipant(league) && isGuest(league)
-const menu = ref()
+// const menu = ref()
 
-const toggleMenu = async (event, league) => {
-  currentLeague.value = league
-  menu.value.toggle(event)
-}
+// const toggleMenu = async (event, league) => {
+//   currentLeague.value = league
+//   menu.value.toggle(event)
+// }
 
-const menuItems = computed(() => [
-  {
-    label: i18n.t('app.leagues.join'),
-    icon: 'pi pi-sign-in',
-    visible: () => !isParticipant(currentLeague.value),
-    command: () => emits('join', currentLeague.value)
-  },
-  {
-    label: i18n.t('app.leagues.ranking'),
-    icon: 'pi pi-list',
-    visible: () => isParticipant(currentLeague.value),
-    command: () => emits('ranking', currentLeague.value)
-  },
-  {
-    label: i18n.t('app.leagues.participants'),
-    icon: 'pi pi-users',
-    visible: () => isOwner(currentLeague.value),
-    command: () => emits('manage', currentLeague.value)
-  },
-  {
-    label: i18n.t('app.leagues.guesses'),
-    icon: 'pi pi-user-edit',
-    visible: () => isParticipant(currentLeague.value),
-    command: () => emits('guesses', currentLeague.value)
-  },
-  {
-    label: i18n.t('app.leagues.leave'),
-    icon: 'pi pi-sign-out',
-    visible: () => canLeave(currentLeague.value),
-    command: () => emits('leave', currentLeague.value),
-    class: 'p-button-danger'
-  },
-  {
-    label: i18n.t('common.edit'),
-    icon: 'pi pi-pencil',
-    visible: () => isOwner(currentLeague.value),
-    command: () => emits('edit', currentLeague.value)
-  },
-  {
-    label: i18n.t('common.remove'),
-    icon: 'pi pi-trash',
-    visible: () => isOwner(currentLeague.value),
-    command: () => emits('remove', currentLeague.value),
-    class: 'p-button-danger'
-  }
-])
+// const menuItems = computed(() => [
+//   {
+//     label: i18n.t('app.leagues.join'),
+//     icon: 'pi pi-sign-in',
+//     visible: () => !isParticipant(currentLeague.value),
+//     command: () => emits('join', currentLeague.value)
+//   },
+//   {
+//     label: i18n.t('app.leagues.ranking'),
+//     icon: 'pi pi-list',
+//     visible: () => isParticipant(currentLeague.value),
+//     command: () => emits('ranking', currentLeague.value)
+//   },
+//   {
+//     label: i18n.t('app.leagues.participants'),
+//     icon: 'pi pi-users',
+//     visible: () => isOwner(currentLeague.value),
+//     command: () => emits('manage', currentLeague.value)
+//   },
+//   {
+//     label: i18n.t('app.leagues.guesses'),
+//     icon: 'pi pi-user-edit',
+//     visible: () => isParticipant(currentLeague.value),
+//     command: () => emits('guesses', currentLeague.value)
+//   },
+//   {
+//     label: i18n.t('app.leagues.leave'),
+//     icon: 'pi pi-sign-out',
+//     visible: () => canLeave(currentLeague.value),
+//     command: () => emits('leave', currentLeague.value),
+//     class: 'p-button-danger'
+//   },
+//   {
+//     label: i18n.t('common.edit'),
+//     icon: 'pi pi-pencil',
+//     visible: () => isOwner(currentLeague.value),
+//     command: () => emits('edit', currentLeague.value)
+//   },
+//   {
+//     label: i18n.t('common.remove'),
+//     icon: 'pi pi-trash',
+//     visible: () => isOwner(currentLeague.value),
+//     command: () => emits('remove', currentLeague.value),
+//     class: 'p-button-danger'
+//   }
+// ])
 </script>

@@ -18,7 +18,7 @@ export default {
   leaveConfirmation:
     'Ao sair desta liga, caso opte por voltar, a sua pontuação será zerada. Deseja mesmo sair?',
   noPublicLeaguesFound: 'Nenhuma liga pública encontrada',
-  noJoinedLeagues: 'Você não faz parte ou é dono de nenhuma liga',
+  noJoinedLeagues: 'Você não faz parte nem é dono de nenhuma liga',
   guesses: 'Palpites',
   owner: 'Você é o proprietário',
   create: 'Criar Liga',

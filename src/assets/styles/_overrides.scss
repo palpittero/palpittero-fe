@@ -1,10 +1,26 @@
 // // Suggested location to add your overrides so that migration would be easy by just updating the SASS folder in the future
 // @import 'bootstrap/scss/bootstrap';
+* {
+  box-shadow: none !important;
+}
 
 body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.svg-inline--fa {
+  width: 15px;
+  height: 15px;
 }
 //   margin: 0;
 
