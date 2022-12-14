@@ -14,7 +14,6 @@
       showButtons
       :min="0"
       :step="1"
-      @input="handlePrizeInput"
     />
   </div>
   <hr />
@@ -49,6 +48,4 @@ const positionsTitles = {
   2: i18n.t('admin.leagues.positions.second'),
   3: i18n.t('admin.leagues.positions.third')
 }
-
-const handlePrizeInput = (value) => console.log(value)
 </script>

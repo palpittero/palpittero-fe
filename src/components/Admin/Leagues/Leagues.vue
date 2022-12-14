@@ -150,7 +150,3 @@ const handleDeleteDialogSubmit = async (leagues) => {
   }
 }
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/demo/badges.scss';
-</style>

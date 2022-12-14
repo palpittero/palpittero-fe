@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
-    <main>
-      <!-- <div class="col-md-5 col-lg-4">
+  <main>
+    <!-- <div class="col-md-5 col-lg-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-primary">Your cart</span>
             <span class="badge bg-primary rounded-pill">3</span>
@@ -53,45 +52,44 @@
           </form>
         </div> -->
 
-      <h4 class="d-flex w-full justify-content-end">
-        {{ $t('common.menu.myAccount.profile') }}
-      </h4>
-      <hr class="mb-5" />
-      <form novalidate v-if="user.data">
-        <div class="row g-3">
-          <ImageInput
-            class="col-sm-3 px-5 mb-3"
-            v-model="user.data.avatar"
-            :label="$t('common.edit')"
-            select-button-class="p-button-text"
-            :placeholder="USER_AVATAR_PLACEHOLDER"
-          />
+    <h4 class="d-flex w-full justify-content-end">
+      {{ $t('common.menu.myAccount.profile') }}
+    </h4>
+    <hr class="mb-5" />
+    <form novalidate v-if="user.data">
+      <div class="row g-3">
+        <ImageInput
+          class="col-sm-3 px-5 mb-3"
+          v-model="user.data.avatar"
+          :label="$t('common.edit')"
+          select-button-class="p-button-text"
+          :placeholder="USER_AVATAR_PLACEHOLDER"
+        />
 
-          <UserProfileForm
-            class="col-sm-9"
-            :user="user.data"
-            :loading="isSaving"
-            @submit="handleSubmit"
-            @remove="handleRemoveAccount"
-          />
+        <UserProfileForm
+          class="col-sm-9"
+          :user="user.data"
+          :loading="isSaving"
+          @submit="handleSubmit"
+          @remove="handleRemoveAccount"
+        />
 
-          <BaseConfirmDialog
-            target="remove-account"
-            :visible="isRemoveAccountDialogVisible"
-            :message="$t('app.myAccount.profile.removeAccount.message')"
-            @hide="handleRemoveAccountDialogHide"
-            @submit="handleRemoveAccountDialogSubmit"
-          />
+        <BaseConfirmDialog
+          target="remove-account"
+          :visible="isRemoveAccountDialogVisible"
+          :message="$t('app.myAccount.profile.removeAccount.message')"
+          @hide="handleRemoveAccountDialogHide"
+          @submit="handleRemoveAccountDialogSubmit"
+        />
 
-          <!-- <RemoveAccountDialog
+        <!-- <RemoveAccountDialog
             :visible="isRemoveAccountDialogVisible"
             @hide="handleRemoveAccountDialogHide"
             @submit="handleRemoveAccountDialogSubmit"
           /> -->
-        </div>
-      </form>
-    </main>
-  </div>
+      </div>
+    </form>
+  </main>
 </template>
 
 <script setup>

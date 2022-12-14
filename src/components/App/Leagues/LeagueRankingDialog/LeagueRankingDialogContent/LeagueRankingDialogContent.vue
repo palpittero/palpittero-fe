@@ -5,6 +5,9 @@
         <span class="placeholder p-3" />
         <span class="placeholder p-3" />
         <span class="placeholder p-3" />
+        <span class="placeholder p-3" />
+        <span class="placeholder p-3" />
+        <span class="placeholder p-3" />
       </div>
     </template>
     <div class="table-responsive">
@@ -26,7 +29,9 @@
           <tr v-for="leagueUser in leagueUsers.data" :key="leagueUser.id">
             <td scope="row">
               <div class="hstack gap-3">
-                {{ getRankingPosition(leagueUser) }}
+                <span class="league-ranking-dialog__position--number"
+                  >{{ getRankingPositionLabel(leagueUser) }}
+                </span>
                 <Avatar :img="leagueUser.avatar" size="xs" />
                 <span class="hstack gap-2">
                   <span class="d-flex flex-column flex-lg-row">
@@ -67,19 +72,14 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+
 import services from '@/services'
 
-// import Modal from '@/components/Common/Modal/Modal.vue'
-// import DataTable from '@/components/Shared/DataTable/DataTable.vue'
-// import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 import Avatar from '@/components/Shared/Avatar/Avatar.vue'
 import BaseDataRenderer from '@/components/Shared/BaseDataRenderer/BaseDataRenderer.vue'
 import * as bootstrap from 'bootstrap'
 
 import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
-
-const i18n = useI18n()
 
 const props = defineProps({
   league: {
@@ -116,14 +116,6 @@ const loadUsersLeagues = async () => {
   leagueUsers.value.loading = false
 }
 
-// const emits = defineEmits(['submit'])
-
-// const header = computed(() =>
-//   i18n.t('app.leagues.rankingLeague', { league: props.league.name })
-// )
-
-// const handleSubmit = () => emits('submit')
-
 const medals = ['🥇', '🥈', '🥉']
 
 const getRankingPosition = (user) =>
@@ -132,17 +124,8 @@ const getRankingPosition = (user) =>
 const getRankingPositionLabel = (user) => {
   const showMedal = leagueUsers.value.data.some(({ points }) => points > 0)
   const position = getRankingPosition(user)
-  console.log(position)
 
   return showMedal ? medals[position - 1] || position : '-'
-}
-
-const getRankingPositionClass = (user) => {
-  const positionLabel = getRankingPositionLabel(user)
-
-  return [
-    !medals.includes(positionLabel) && 'league-ranking-dialog__position--number'
-  ]
 }
 
 const getLeaguePrize = (user) => {
@@ -183,13 +166,7 @@ const getLeaguePrize = (user) => {
   &__position {
     &--number {
       width: 8px;
-      height: 8px;
-      background: transparent;
-      text-align: center;
-      border-radius: 50%;
-      padding: 9px;
       display: flex;
-      align-items: center;
       justify-content: center;
     }
   }

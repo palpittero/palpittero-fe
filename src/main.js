@@ -1,6 +1,8 @@
 import { createApp, reactive } from 'vue'
+
 import { createPinia } from 'pinia'
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
+
 import Toastification from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 
@@ -39,7 +41,7 @@ import ConfirmDialog from 'primevue/confirmdialog'
 import ConfirmPopup from 'primevue/confirmpopup'
 import ConfirmationService from 'primevue/confirmationservice'
 import ContextMenu from 'primevue/contextmenu'
-import DataTable from 'primevue/datatable'
+// import DataTable from 'primevue/datatable'
 import DataView from 'primevue/dataview'
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'
 import Dialog from 'primevue/dialog'
@@ -98,48 +100,24 @@ import Dock from 'primevue/dock'
 
 import Tooltip from 'primevue/tooltip'
 import StyleClass from 'primevue/styleclass'
-import MyToast from '@/plugins/toast'
+// import MyToast from '@/plugins/toast'
 
 import ToastService from 'primevue/toastservice'
 
-// import 'bootstrap/dist/css/bootstrap.min.css'
-import '@/assets/styles/bootstrap.min.css'
 import 'bootstrap'
 
-// import 'primevue/resources/primevue.min.css'
-// import 'primeflex/primeflex.css'
-// import 'primevue/resources/themes/tailwind-light/theme.css'
-// import 'primeicons/primeicons.css'
-// import 'prismjs/themes/prism-coy.css'
-
-// import './assets/demo/flags/flags.css'
-import './assets/styles/layout.scss'
-
-/* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
-
-/* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-// import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 
-//Add all icons to the library so you can use it in your page
 library.add(fas, far, fab)
-
-/* import specific icons */
-// import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
-
-/* add icons to the library */
-// library.add(faUserSecret)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedState)
-const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
-// import CodeHighlight from './AppCodeHighlight'
-// import BlockViewer from './BlockViewer'
+const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon)
 
 app.config.globalProperties.$appState = reactive({
   theme: 'lara-light-indigo',
@@ -151,7 +129,6 @@ app.use(Toastification, {
   transition: 'Vue-Toastification__fade',
   maxToasts: 20,
   newestOnTop: true
-  // hideProgressBar: true,
 })
 
 app.use(PrimeVue, { ripple: true, inputStyle: 'outlined', locale })
@@ -160,7 +137,7 @@ app.use(ToastService)
 app.use(router)
 app.use(i18n)
 app.use(pinia)
-app.use(MyToast)
+// app.use(MyToast)
 
 // app.directive('code', CodeHighlight)
 app.directive('badge', BadgeDirective)

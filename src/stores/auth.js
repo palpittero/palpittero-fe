@@ -3,7 +3,7 @@ import services from '@/services'
 
 import { USER_ROLES } from '@/constants/users'
 
-export const useAuthStore = defineStore('auth/user', {
+export const useAuthStore = defineStore('palpittero/auth', {
   persist: true,
   state: () => ({
     accessToken: null,

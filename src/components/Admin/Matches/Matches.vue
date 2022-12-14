@@ -38,10 +38,7 @@
             />
           </template> -->
         </Toolbar>
-        <MatchesFilters
-          v-model="filters"
-          @update:model-value="handleFiltersUpdate"
-        />
+        <MatchesFilters v-model="filters" />
 
         <MatchesDataTable
           v-model="selectedMatches"
@@ -247,12 +244,4 @@ const handleSetResultDialogSubmit = async (match) => {
   await saveMatch(match)
   handleSetResultDialogHide()
 }
-
-const handleFiltersUpdate = (filters) => {
-  console.log({ filters })
-}
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/demo/badges.scss';
-</style>

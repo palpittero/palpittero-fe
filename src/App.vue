@@ -1,16 +1,20 @@
 <template>
-  <div>
+  <div v-show="loaded">
     <router-view class="container py-3" />
     <Toast group="app" />
   </div>
 </template>
 
 <script setup>
-import { usePrimeVue } from 'primevue/config'
-import { onMounted } from 'vue-demi'
-import i18n, { locale } from './i18n'
+import { ref, watchEffect } from 'vue'
+import { useThemeStore } from '@/stores/theme'
 
-const primeVue = usePrimeVue()
+const loaded = ref(false)
+const themeStore = useThemeStore()
 
-onMounted(() => (primeVue.config.locale = locale[i18n.global.locale.value]))
+watchEffect(async () => {
+  loaded.value = false
+  await themeStore.switchTheme(themeStore.theme)
+  loaded.value = true
+})
 </script>

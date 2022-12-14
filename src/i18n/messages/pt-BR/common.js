@@ -44,7 +44,8 @@ export default {
       myAccount: 'Minha Conta',
       profile: 'Meu Perfil',
       changePassword: 'Alterar Senha'
-    }
+    },
+    changeTheme: 'Alterar Tema'
   },
   selected: 'Selecionados',
   notFound: {

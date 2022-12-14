@@ -9,9 +9,8 @@
         <PButton
           v-if="croppedImage && clearable"
           type="button"
-          class="btn-danger"
           :label="$t('common.remove')"
-          icon="fa-solid fa-trash"
+          icon="fas fa-trash"
           @click="handleRemove"
         />
         <FileUpload
@@ -19,7 +18,7 @@
           mode="basic"
           auto
           custom-upload
-          class="btn btn-outline-primary btn-sm"
+          class="btn btn-primary btn-sm"
           :choose-label="label"
           @uploader="uploader"
         />

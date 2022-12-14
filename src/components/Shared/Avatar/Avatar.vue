@@ -29,10 +29,7 @@ const props = defineProps({
 
 const src = ref(String(props.img))
 
-// onMounted(() => console.log(props.img))
-
 const handleError = () => {
-  console.log('error')
   src.value =
     props.type === 'user' ? USER_AVATAR_PLACEHOLDER : BADGE_AVATAR_PLACEHOLDER
 }

@@ -34,16 +34,16 @@
               variant="secondary"
               data-bs-dismiss="modal"
               icon="fas fa-times"
-              :label="$t('common.no')"
-              :class="okButtonClass"
+              :label="cancelButtonText || $t('common.no')"
+              :class="cancelButtonClass"
             />
             <PButton
               @click="handleSubmit"
               variant="success"
               type="button"
               icon="fas fa-check"
-              :label="$t('common.yes')"
-              :class="cancelButtonClass"
+              :label="okButtonText || $t('common.yes')"
+              :class="okButtonClass"
             />
           </slot>
         </div>
@@ -73,6 +73,14 @@ const props = defineProps({
   cancelButtonClass: {
     type: String,
     default: ''
+  },
+  okButtonText: {
+    type: String,
+    default: ''
+  },
+  cancelButtonText: {
+    type: String,
+    default: ''
   }
 })
 
@@ -84,8 +92,6 @@ const open = ref(false)
 watch(
   () => props.visible,
   (value) => {
-    console.log('visible', value)
-    console.log('open', open.value)
     value ? modal.value.show() : modal.value.hide()
   }
 )
@@ -95,18 +101,14 @@ onMounted(() => {
     keyboard: false
   })
 
-  // onMounted(() => {
   const modalElement = document.getElementById(props.target)
 
-  modalElement?.addEventListener('show.bs.modal', () => {
-    open.value = true
-  })
+  modalElement?.addEventListener('show.bs.modal', () => (open.value = true))
 
   modalElement?.addEventListener('hide.bs.modal', () => {
-    open.value = false
     emits('hide')
+    setTimeout(() => (open.value = false), 300)
   })
-  // })
 })
 
 const handleHide = () => emits('hide')

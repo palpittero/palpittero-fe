@@ -37,7 +37,7 @@
       <PButton
         type="button"
         icon="fa-solid fa-trash"
-        class="btn-outline-danger"
+        class="btn-outline"
         :label="$t('app.myAccount.profile.removeAccount.title')"
         @click="handleRemoveAccount"
         :disabled="isSaving"

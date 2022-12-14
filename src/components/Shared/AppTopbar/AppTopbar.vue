@@ -1,5 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg sticky-top bg-light p-0">
+  <nav
+    class="app-topbar navbar navbar-expand-lg sticky-top navbar-dark bg-primary px-0"
+  >
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <Logo class="m-0" />
@@ -19,11 +21,10 @@
         <ul class="navbar-nav me-auto mb-lg-0">
           <li class="nav-item">
             <router-link
-              class="nav-link d-flex align-items-center py-3 gap-3"
-              active-class="text-primary"
+              class="nav-link d-flex align-items-center gap-2"
               :to="{ name: 'Home' }"
             >
-              <font-awesome-icon icon="fa-solid fa-home" />
+              <font-awesome-icon icon="fas fa-home" />
               {{ $t('common.menu.home') }}
             </router-link>
           </li>
@@ -31,8 +32,7 @@
         <ul class="navbar-nav mr-auto mb-lg-0">
           <li class="nav-item" v-if="auth.isAdmin">
             <router-link
-              class="nav-link d-flex align-items-center py-3 gap-3"
-              active-class="text-primary"
+              class="nav-link d-flex align-items-center gap-2"
               :to="switchApp.to"
             >
               <font-awesome-icon :icon="switchApp.icon" />
@@ -41,22 +41,22 @@
           </li>
           <li class="nav-item d-block d-sm-none">
             <router-link
-              class="nav-link d-flex align-items-center py-3 gap-3"
-              active-class="text-primary"
+              class="nav-link d-flex align-items-center gap-2"
               :to="{ name: 'MyAccount' }"
             >
-              <font-awesome-icon icon="fa-solid fa-user" />
+              <font-awesome-icon icon="fas fa-user" />
               {{ $t('common.menu.myAccount.myAccount') }}
             </router-link>
           </li>
+          <ThemeSwitcher class="d-lg-none" />
           <li class="nav-item d-block d-sm-none">
             <a
               href="#"
-              class="nav-link d-flex align-items-center py-3 gap-3 text-danger"
+              class="nav-link d-flex align-items-center gap-2"
               data-bs-toggle="modal"
               :data-bs-target="`#logout-confirm-dialog`"
             >
-              <font-awesome-icon icon="fa-solid fa-sign-out" />
+              <font-awesome-icon icon="fas fa-sign-out" />
               {{ $t('common.menu.logout') }}
             </a>
           </li>
@@ -79,10 +79,10 @@
             <ul class="dropdown-menu dropdown-menu--right">
               <li>
                 <router-link
-                  class="dropdown-item d-flex align-items-center gap-3"
+                  class="dropdown-item d-flex align-items-center gap-2"
                   :to="{ name: 'MyAccount' }"
                 >
-                  <font-awesome-icon icon="fa-solid fa-user" />
+                  <font-awesome-icon icon="fas fa-user" />
                   {{ $t('common.menu.myAccount.myAccount') }}
                 </router-link>
               </li>
@@ -91,17 +91,19 @@
               <li>
                 <a
                   href="#"
-                  class="dropdown-item d-flex align-items-center gap-3"
+                  class="dropdown-item d-flex align-items-center gap-2"
                   data-bs-toggle="modal"
                   data-bs-target="#logout-confirm-dialog"
                 >
-                  <font-awesome-icon icon="fa-solid fa-sign-out" />
+                  <font-awesome-icon icon="fas fa-sign-out" />
                   {{ $t('common.menu.logout') }}
                 </a>
               </li>
             </ul>
           </li>
         </ul>
+
+        <ThemeSwitcher class="d-none d-lg-block" />
       </div>
     </div>
   </nav>
@@ -121,9 +123,11 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
-import { USER_AVATAR_PLACEHOLDER } from '@/constants'
 import { Logo } from '@/components/Common'
+import BaseConfirmDialog from '@/components/Shared/BaseConfirmDialog/BaseConfirmDialog.vue'
+import ThemeSwitcher from '@/components/Shared/ThemeSwitcher/ThemeSwitcher.vue'
+
+import { USER_AVATAR_PLACEHOLDER } from '@/constants'
 
 const router = useRouter()
 const i18n = useI18n()
@@ -136,12 +140,12 @@ const props = defineProps({
 const switchApp = computed(() =>
   props.isAdmin
     ? {
-        icon: 'fa-solid fa-display',
+        icon: 'fas fa-display',
         label: i18n.t('common.menu.palpittero'),
         to: { name: 'Home' }
       }
     : {
-        icon: 'fa-solid fa-gears',
+        icon: 'fas fa-gears',
         label: i18n.t('common.menu.adminPanel'),
         to: { name: 'AdminDashboard' }
       }

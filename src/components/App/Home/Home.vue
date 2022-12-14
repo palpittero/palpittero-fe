@@ -49,7 +49,7 @@
     <LeagueRankingDialog
       :league="selectedLeague"
       :visible="isLeagueRankingDialogVisible"
-      @submit="handleLeagueRankingDialogSubmit"
+      @hide="handleLeagueRankingDialogHide"
     />
 
     <!-- <LeagueDeleteDialog
@@ -301,7 +301,7 @@ const handleEditLeague = async ({ id }) => {
   isLeagueDetailsDialogVisible.value = true
 }
 
-const handleLeagueRankingDialogSubmit = () =>
+const handleLeagueRankingDialogHide = () =>
   (isLeagueRankingDialogVisible.value = false)
 
 const handleDetailsDialogHide = () => {
