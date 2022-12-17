@@ -16,31 +16,31 @@ export const MATCH_STATUSES_LABELS = {
     text: 'admin.matches.status.scheduled',
     icon: 'pi pi-calendar',
     iconStyle: { color: 'var(--blue-600)' },
-    severity: 'info'
+    variant: 'info'
   },
   [MATCH_STATUSES.PREPARATION]: {
     text: 'admin.matches.status.preparation',
     icon: 'pi pi-clock',
     iconStyle: { color: 'var(--warning-600)' },
-    severity: 'warning'
+    variant: 'warning'
   },
   [MATCH_STATUSES.IN_PROGRESS]: {
     text: 'admin.matches.status.inProgress',
     icon: 'pi pi-play',
     iconStyle: { color: 'var(--warning-600)' },
-    severity: 'primary'
+    variant: 'primary'
   },
   [MATCH_STATUSES.FINISHED]: {
     text: 'admin.matches.status.finished',
     icon: 'pi pi-check',
     iconStyle: { color: 'var(--green-600)' },
-    severity: 'success'
+    variant: 'success'
   },
   [MATCH_STATUSES.CANCELLED]: {
     text: 'admin.matches.status.cancelled',
     icon: 'pi pi-times',
     iconStyle: { color: 'var(--red-600)' },
-    severity: 'danger'
+    variant: 'danger'
   }
 }
 

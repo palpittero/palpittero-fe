@@ -1,6 +1,9 @@
 <template>
-  <div :class="`alert alert-${variant} hstack gap-2`">
-    <font-awesome-icon v-if="icon" :icon="icon" />{{ text }}
+  <div :class="`alert alert-${variant} hstack m-0`">
+    <font-awesome-icon v-if="icon" :icon="icon" />
+    <slot>
+      {{ text }}
+    </slot>
   </div>
 </template>
 

@@ -1,7 +1,10 @@
 <template>
-  <div class="p-input form-floating">
+  <div
+    class="p-input"
+    :class="{ 'form-floating': label, [className]: className }"
+  >
     <input v-model="value" v-bind="$attrs" :type="type" :class="defaultClass" />
-    <label :for="$attrs.id">
+    <label v-if="label" :for="$attrs.id">
       {{ props.label }}
     </label>
 
@@ -44,6 +47,10 @@ const props = defineProps({
       isInvalid: false,
       message: ''
     })
+  },
+  className: {
+    type: String,
+    default: ''
   }
 })
 
@@ -81,6 +88,7 @@ const type = computed(() =>
 
 const defaultClass = computed(() => [
   'form-control',
+  'fs-1 text-center',
   props.validation.isInvalid && 'is-invalid'
 ])
 </script>

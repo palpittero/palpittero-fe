@@ -71,7 +71,7 @@ const handleSubmit = () => emits('submit', credentials)
 </script>
 
 <style lang="scss">
-@import '@/assets/styles/styles';
+// @import '@/assets/styles/styles';
 
 .login-form {
   width: 350px;

@@ -1,47 +1,91 @@
 <template>
-  <div>
-    <div
-      class="flex flex-wrap justify-content-between align-items-center guesses__top-bar guesses__top-bar--is-pinned gap-2"
-    >
-      <Heading
-        :label="league.data.name"
-        icon="pi pi-flag md:text-4xl"
-        class="mb-0 md:text-4xl"
-      />
+  <div class="guesses__top-bar hstack bg-blur justify-content-between">
+    <Heading class="mb-0" :label="league.data.name" icon="fas fa-flag" />
+    <!-- <PButton
+      @click="handleRegisterGuesses"
+      icon="fas fa-bolt-lightning"
+      variant="success"
+      class="d-non d-lg-block"
+      :label="$t('app.guesses.register')"
+      :disabled="isRegisterGuessesDisabled"
+    /> -->
+  </div>
+  <!-- <div class="guesses__top-bar hstack justify-content-between bg-white">
+    <Heading :label="league.data.name" icon="fas fa-flag" class="mb-0" />
 
-      <div class="flex gap-2">
-        <Button
+    <PButton
+      @click="handleRegisterGuesses"
+      icon="fas fa-bolt-lightning"
+      class="d-none d-lg-flex"
+      variant="success"
+      :label="$t('app.guesses.register')"
+      :disabled="isRegisterGuessesDisabled"
+    />
+  </div> -->
+  <hr />
+
+  <!-- <div
+      class="guesses__top-bar d-flex flex-column flex-lg-row align-items-center justify-content-between position-sticky w-100 bg-white gap-2 p-3"
+    >
+      <Heading :label="league.data.name" icon="fas fa-flag" />
+
+      <div class="d-flex gap-2">
+        <PButton
           @click="handleRegisterGuesses"
-          :disabled="isRegisterGuessesDisabled"
-          icon="pi pi-bolt"
+          icon="fas fa-bolt-lightning"
           :label="$t('app.guesses.register')"
+          :disabled="isRegisterGuessesDisabled"
         />
-        <Button
+        <PButton
           @click="handleCopyGuesses"
           :disabled="isLoading"
-          icon="pi pi-copy"
-          class="bg-white text-primary"
+          icon="fas fa-copy"
+          variant="outline-primary"
           :label="$t('app.guesses.copy')"
         />
       </div>
+    </div> -->
+  <div class="flex flex-column gap-3" :key="renderKey">
+    <div
+      v-for="(championship, index) in championships.data"
+      :key="championship.id"
+    >
+      <ChampionshipsRoundsMatchesList
+        v-model="matchesGuesses[championship.id]"
+        :is-open="isChampionshipRoundsMatchesListOpen(index)"
+        :championship="championship"
+        :league-id="leagueId"
+        :enable-position-guesses="championship.enableGuesses"
+        :memory-registered-guesses="memoryRegisteredGuesses"
+        empty-state="app.guesses.noRounds"
+        @update:championship-guesses="handleUpdateChampionshipGuesses"
+      />
     </div>
-    <div class="flex flex-column gap-3" :key="renderKey">
-      <div
-        v-for="(championship, index) in championships.data"
-        :key="championship.id"
-      >
-        <ChampionshipsRoundsMatchesList
-          v-model="matchesGuesses[championship.id]"
-          :is-open="isChampionshipRoundsMatchesListOpen(index)"
-          :championship="championship"
-          :league-id="leagueId"
-          :enable-position-guesses="championship.enableGuesses"
-          :memory-registered-guesses="memoryRegisteredGuesses"
-          empty-state="app.guesses.noRounds"
-          @update:championship-guesses="handleUpdateChampionshipGuesses"
-        />
-      </div>
-    </div>
+  </div>
+
+  <div class="d-none d-lg-flex justify-content-end">
+    <PButton
+      @click="handleRegisterGuesses"
+      icon="fas fa-bolt-lightning"
+      class="d-none d-lg-flex"
+      variant="success"
+      :label="$t('app.guesses.register')"
+      :disabled="isRegisterGuessesDisabled"
+    />
+  </div>
+
+  <div
+    class="guesses__bottom-bar position-fixed d-block d-lg-none bg-blur p-3 w-100"
+  >
+    <PButton
+      @click="handleRegisterGuesses"
+      icon="fas fa-bolt-lightning"
+      class="w-100"
+      size="sm"
+      variant="success"
+      :label="$t('app.guesses.register')"
+      :disabled="isRegisterGuessesDisabled"
+    />
   </div>
 
   <CopyGuessesDialog
@@ -52,6 +96,7 @@
     @hide="handleCopyGuessesDialogHide"
     @submit="handleCopyGuessesDialogSubmit"
   />
+  <!-- </div> -->
 </template>
 
 <script setup>
@@ -242,34 +287,48 @@ const handleUpdateChampionshipGuesses = (championshipGuesses) => {
 </script>
 
 <style lang="scss">
+@import '@/assets/styles/styles.scss';
 .guesses {
   &__top-bar {
-    background-color: #fafafa;
-    position: -webkit-sticky;
-    position: -moz-sticky;
-    position: -o-sticky;
-    position: -ms-sticky;
-    position: sticky;
-    top: 60px;
-    z-index: 1;
+    // position: -webkit-sticky;
+    // position: -moz-sticky;
+    // position: -o-sticky;
+    // position: -ms-sticky;
+    // position: sticky;
+    // top: 80px;
+    // z-index: 1;
 
-    &--is-pinned {
-      padding: 20px 0;
+    // padding: 0.5rem 0;
+    // width: inherit;
 
-      @media screen and (max-width: 960px) {
-        padding: 10px 0;
+    @media screen and (max-width: 960px) {
+      // .btn {
+      //   --bs-btn-padding-y: 0.25rem;
+      //   --bs-btn-padding-x: 0.5rem;
+      //   --bs-btn-font-size: 0.875rem;
+      //   --bs-btn-border-radius: 0.25rem;
+      // }
 
-        h1 {
-          font-size: 1.1rem;
-          font-weight: bold;
-        }
+      // padding: 0.8rem 1rem;
+      top: 70px;
 
-        .p-button {
-          padding: 8px;
-          font-size: 0.9rem;
-        }
+      h1 {
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+
+      .p-button {
+        padding: 8px;
+        font-size: 0.9rem;
       }
     }
+  }
+
+  &__bottom-bar {
+    z-index: 1;
+    bottom: 0;
+    right: 0;
+    left: 0;
   }
 }
 </style>

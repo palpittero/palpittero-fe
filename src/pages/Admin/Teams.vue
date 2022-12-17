@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumbs :items="breadcrumbs" class="mb-3" />
+  <Breadcrumbs :items="breadcrumbs"  />
   <Teams />
 </template>
 
@@ -12,7 +12,7 @@ const i18n = useI18n()
 const breadcrumbs = [
   {
     label: i18n.t('common.breadcrumb.admin.dashboard'),
-    icon: 'pi pi-home',
+    icon: 'fas fa-home',
     to: { name: 'AdminDashboard' }
   },
   {

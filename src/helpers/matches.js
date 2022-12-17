@@ -14,4 +14,6 @@ const matchHasNoResult = ({
   isNil(regularTimeHomeTeamGoals) &&
   isNil(regularTimeAwayTeamGoals)
 
-export { isMatchScheduled, isMatchFinished, matchHasNoResult }
+const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
+
+export { isMatchScheduled, isMatchFinished, matchHasNoResult, parseMatchGoals }

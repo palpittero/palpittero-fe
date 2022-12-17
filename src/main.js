@@ -239,9 +239,11 @@ app.component('Dock', Dock)
 
 import '@/assets/styles/custom.scss'
 
-import { PButton, PCheckbox, PInput } from '@/components/Base'
+import { PAlert, PAvatar, PButton, PCheckbox, PInput } from '@/components/Base'
 import { Breadcrumbs, Modal } from '@/components/Common'
 
+app.component('PAlert', PAlert)
+app.component('PAvatar', PAvatar)
 app.component('PButton', PButton)
 app.component('PCheckbox', PCheckbox)
 app.component('PInput', PInput)
