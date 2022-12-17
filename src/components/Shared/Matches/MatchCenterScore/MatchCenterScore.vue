@@ -16,19 +16,25 @@
           {{ match.homeTeam.name }}
         </span>
       </div>
-      <span v-if="isMatchFinished" :class="homeTeamRegularTimeScoreClass">
+      <span :class="homeTeamRegularTimeScoreClass">
         {{ parseMatchGoals(match.regularTimeHomeTeamGoals) }}
       </span>
-      <span v-if="showPenaltiesScore" :class="homeTeamPenaltiesTimeScoreClass">
+      <span
+        v-if="showPenaltiesScore && match.penaltiesTimeHomeTeamGoals !== null"
+        :class="homeTeamPenaltiesTimeScoreClass"
+      >
         ({{ parseMatchGoals(match.penaltiesTimeHomeTeamGoals) }})
       </span>
     </div>
     <span>X</span>
     <div class="flex align-items-center justify-content-around gap-2">
-      <span v-if="showPenaltiesScore" :class="awayTeamPenaltiesTimeScoreClass">
+      <span
+        v-if="showPenaltiesScore && match.penaltiesTimeAwayTeamGoals !== null"
+        :class="awayTeamPenaltiesTimeScoreClass"
+      >
         ({{ parseMatchGoals(match.penaltiesTimeAwayTeamGoals) }})
       </span>
-      <span v-if="isMatchFinished" :class="awayTeamTeamRegularTimeScoreClass">
+      <span :class="awayTeamTeamRegularTimeScoreClass">
         {{ parseMatchGoals(match.regularTimeAwayTeamGoals) }}
       </span>
       <div
@@ -53,7 +59,6 @@ import { computed } from 'vue'
 
 import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
 import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
-import { MATCH_STATUSES } from '@/constants/matches'
 
 const props = defineProps({
   match: {
@@ -98,13 +103,7 @@ const isPenaltiesRound = computed(() =>
   ].includes(props.match.round.type)
 )
 
-const isMatchFinished = computed(
-  () => props.match.status === MATCH_STATUSES.FINISHED
-)
-
-const showPenaltiesScore = computed(
-  () => isPenaltiesRound.value && isMatchFinished.value
-)
+const showPenaltiesScore = computed(() => isPenaltiesRound.value)
 
 const parseMatchGoals = (goals) => (isNil(goals) ? '-' : goals)
 </script>

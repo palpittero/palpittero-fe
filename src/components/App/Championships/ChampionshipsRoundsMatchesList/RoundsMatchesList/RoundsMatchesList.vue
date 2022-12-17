@@ -130,7 +130,11 @@
                       </span>
                       <!-- Home team penalties time goals -->
                       <span
-                        v-if="isPenaltiesRoundType(match)"
+                        v-if="
+                          isPenaltiesRoundType(match) &&
+                          matchesGuesses[match.id]
+                            .homeTeamPenaltiesTimeGoals !== null
+                        "
                         :class="
                           getGuessHomeTeamPenaltiesTimeScoreClass(
                             matchesGuesses[match.id]
@@ -178,7 +182,11 @@
                   <span v-else class="gap-3 px-2 flex font-large">
                     <!-- Away team penalties time goals -->
                     <span
-                      v-if="isPenaltiesRoundType(match)"
+                      v-if="
+                        isPenaltiesRoundType(match) &&
+                        matchesGuesses[match.id].awayTeamPenaltiesTimeGoals !==
+                          null
+                      "
                       :class="
                         getGuessAwayTeamPenaltiesTimeScoreClass(
                           matchesGuesses[match.id]
