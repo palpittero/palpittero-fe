@@ -1,5 +1,7 @@
 <template>
-  <Badge :value="$t(parsedStatus.text)" :severity="parsedStatus.severity" />
+  <span class="badge" :class="`text-bg-${parsedStatus.variant}`">
+    {{ $t(parsedStatus.text) }}
+  </span>
 </template>
 
 <script setup>

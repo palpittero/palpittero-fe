@@ -1,5 +1,5 @@
 <template>
-  <Dropdown
+  <PSelect
     v-model="league"
     :options="filteredLeagues"
     optionLabel="name"
@@ -29,7 +29,7 @@
     <template #empty>
       {{ $t('app.leagues.noAvailableLeagues') }}
     </template>
-  </Dropdown>
+  </PSelect>
 </template>
 
 <script setup>

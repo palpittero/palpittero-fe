@@ -1,16 +1,11 @@
 <template>
-  <div class="accordion">
-    <div class="hstack gap-3">
-      <Heading class="h2" :label="title" />
-      <PButton
-        class="ms-auto"
-        variant="clear"
-        :icon="icon"
-        @click.stop="toggle"
-      />
+  <div class="accordion card">
+    <div class="hstack gap-3 card-header px-2 py-1 p-lg-3" @click.stop="toggle">
+      <Heading class="h3 mb-0 text-bold" :label="title" />
+      <font-awesome-icon class="ms-auto p-3" :icon="icon" />
     </div>
     <Transition name="accordion">
-      <div v-show="show">
+      <div v-show="show" class="card-body p-0">
         <slot />
       </div>
     </Transition>
@@ -32,7 +27,7 @@ const props = defineProps({
 const show = ref(props.open)
 const toggle = () => (show.value = !show.value)
 
-const icon = computed(() => (show.value ? 'fa-angle-down' : 'fa-angle-up'))
+const icon = computed(() => (show.value ? 'fa-angle-down' : 'fa-angle-right'))
 </script>
 
 <style lang="scss" scoped>

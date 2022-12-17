@@ -1,393 +1,219 @@
 <template>
   <div class="rounds-matches-list">
-    <div class="flex align-items-center justify-content-between py-3">
-      <Button
-        class="p-button-text p-button-plain"
-        :disabled="isCurrentFirstRound"
-        @click="handlePreviousRound"
-      >
-        <span class="pi pi-angle-left" />
-      </Button>
-      <span class="text-bold">{{ selectedRound.name }}</span>
-      <Button
-        class="p-button-text p-button-plain"
-        :disabled="isCurrentLastRound"
-        @click="handleNextRound"
-      >
-        <span class="pi pi-angle-right" />
-      </Button>
-    </div>
-    <ul class="list-none p-0 m-0">
+    <!-- RoundsNavigator -->
+    <RoundsNavigator
+      :selected-round="selectedRound"
+      @previous="handlePreviousRound"
+      @next="handleNextRound"
+    />
+
+    <ul class="list-group list-group-flush">
       <template v-if="hasMatches">
         <li
           v-for="match in orderedMatches"
           :key="match.id"
-          class="flex flex-column gap-3 border-top-1 surface-border p-3"
+          class="list-group-item vstack gap-3 p-1 p-lg-3"
           :class="getMatchClass(matchesGuesses[match.id])"
         >
           <div
-            class="flex flex-column md:flex-row align-items-start justify-content-between"
+            class="d-flex flex-column flex-lg-row align-items-start justify-content-between"
           >
             <!-- Group name -->
-            <div class="w-full text-bold text-center md:text-left">
-              {{ match.group?.name }}
-              <!-- <Button
-                type="button"
-                class="absolute md:hidden p-button-text p-0 rounds-matches-list__mobile-menu-button"
-                icon="pi pi-ellipsis-v"
-                @click="(event) => toggleMenu(event, match)"
-                aria-haspopup="true"
-                aria-controls="overlay_menu"
-              /> -->
+            <div
+              v-if="match.group"
+              class="d-flex text-bold justify-content-center justify-content-lg-start w-100"
+            >
+              {{ match.group.name }}
             </div>
             <!-- Match status -->
             <div
-              class="flex flex-column md:flex-row justify-content-center align-items-center w-full gap-2"
+              class="d-flex flex-column flex-lg-row align-self-center align-items-center gap-2 w-100"
             >
-              <div class="flex flex-column align-items-center gap-2">
+              <div class="vstack align-items-center gap-2">
                 <em>{{ $d(new Date(match.date), 'long', 'pt-BR') }}</em>
                 <MatchStatusBadge :status="match.status" />
               </div>
             </div>
             <!-- Guess status / view other badges -->
             <div
-              class="w-full gap-2 hidden md:flex flex-column align-items-end md:justify-content-end"
+              class="w-full gap-2 d-none d-lg-flex flex-column align-items-end w-100"
             >
               <GuessPointsBadge
                 v-if="isMatchFinished(match)"
                 :guess="matchesGuesses[match.id]"
               />
-              <Button
-                @click="openLeagueMatchGuessesDialog(match)"
-                :label="$t('app.guesses.viewOtherGuesses')"
-                class="p-button-link p-button-clear p-button-sm p-0"
-                icon="pi pi-search"
+            </div>
+          </div>
+          <div class="rounded shadow-lg p-3">
+            <div class="d-flex align-items-center gap-2">
+              <!-- Home team name and badge -->
+              <TeamAvatar
+                class="rounds-matches-list__team-avatar"
+                :team="match.homeTeam"
+                :class="getGuessHomeTeamScoreClass(match)"
+              />
+              <!-- Regular time inputs -->
+              <div
+                class="d-flex gap-2 w-100 justify-content-evenly align-items-start align-self-center"
+              >
+                <PInput
+                  v-if="isMatchScheduled(match)"
+                  type="number"
+                  class="text-center"
+                  :model-value="
+                    matchesGuesses[match.id].homeTeamRegularTimeGoals
+                  "
+                  :min="0"
+                  @update:model-value="
+                    (value) =>
+                      handleUpdateRegularTimeGoals('homeTeam', match.id, value)
+                  "
+                />
+                <span v-else class="fs-1">
+                  <!-- Home team regular time goals -->
+                  <span :class="getGuessHomeTeamRegularTimeScoreClass(match)">
+                    {{
+                      parseMatchGoals(
+                        matchesGuesses[match.id].homeTeamRegularTimeGoals
+                      )
+                    }}
+                  </span>
+                  <!-- Home team penalties time goals -->
+                  <span
+                    v-if="showPenaltiesResult(match)"
+                    :class="getGuessHomeTeamPenaltiesTimeScoreClass(match)"
+                  >
+                    ({{
+                      parseMatchGoals(
+                        matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
+                      )
+                    }})
+                  </span>
+                </span>
+                <font-awesome-icon
+                  icon="fas fa-times"
+                  class="align-self-center"
+                />
+                <PInput
+                  v-if="isMatchScheduled(match)"
+                  inputClass="text-center"
+                  type="number"
+                  :model-value="
+                    matchesGuesses[match.id].awayTeamRegularTimeGoals
+                  "
+                  :step="1"
+                  :min="0"
+                  @update:model-value="
+                    (value) =>
+                      handleUpdateRegularTimeGoals('awayTeam', match.id, value)
+                  "
+                />
+                <span v-else class="fs-1">
+                  <span
+                    v-if="showPenaltiesResult(match)"
+                    :class="getGuessAwayTeamPenaltiesTimeScoreClass(match)"
+                  >
+                    <span>
+                      ({{
+                        parseMatchGoals(
+                          matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
+                        )
+                      }})
+                    </span>
+                  </span>
+                  <!-- Away team regular time goals -->
+                  <span :class="getGuessAwayTeamRegularTimeScoreClass(match)">
+                    <span>
+                      {{
+                        parseMatchGoals(
+                          matchesGuesses[match.id].awayTeamRegularTimeGoals
+                        )
+                      }}
+                    </span>
+                  </span>
+                </span>
+              </div>
+              <!-- Away team regular time input -->
+              <TeamAvatar
+                class="rounds-matches-list__team-avatar"
+                :team="match.awayTeam"
+                :class="getGuessAwayTeamScoreClass(match)"
               />
             </div>
-          </div>
-          <div>
-            <div class="grid align-items-center">
-              <div class="col">
-                <div class="grid align-items-center justify-content-end">
-                  <!-- Home team name and badge -->
-                  <div
-                    class="col-6 flex gap-2 justify-content-end align-items-center flex-column-reverse md:flex-row"
-                  >
-                    <span
-                      :class="[
-                        ...getGuessHomeTeamRegularTimeScoreClass(
-                          matchesGuesses[match.id]
-                        ),
-                        ...getGuessHomeTeamPenaltiesTimeScoreClass(
-                          matchesGuesses[match.id]
-                        )
-                      ]"
-                      class="text-center"
-                    >
-                      {{ match.homeTeam.name }}
-                    </span>
-                    <BadgeAvatar :image="match.homeTeam.badge" />
-                  </div>
-                  <!-- Home team regular time input -->
-                  <template v-if="isMatchScheduled(match)">
-                    <span
-                      class="col-6 p-component p-inputnumber p-inputwrapper"
-                    >
-                      <input
-                        type="number"
-                        :value="
-                          matchesGuesses[match.id].homeTeamRegularTimeGoals
-                        "
-                        :min="0"
-                        class="p-inputtext p-component p-inputnumber-input"
-                        @input="
-                          (event) =>
-                            handleUpdateRegularTimeGoals(
-                              'homeTeam',
-                              match.id,
-                              event.target.value
-                            )
-                        "
-                      />
-                    </span>
-                  </template>
-                  <!-- Home team goals -->
-                  <span v-else>
-                    <span class="flex gap-3 px-2 font-large">
-                      <!-- Home team regular time goals -->
-                      <span
-                        :class="
-                          getGuessHomeTeamRegularTimeScoreClass(
-                            matchesGuesses[match.id]
-                          )
-                        "
-                      >
-                        {{
-                          parseMatchGoals(
-                            matchesGuesses[match.id].homeTeamRegularTimeGoals
-                          )
-                        }}
-                      </span>
-                      <!-- Home team penalties time goals -->
-                      <span
-                        v-if="isPenaltiesRoundType(match)"
-                        :class="
-                          getGuessHomeTeamPenaltiesTimeScoreClass(
-                            matchesGuesses[match.id]
-                          )
-                        "
-                      >
-                        ({{
-                          parseMatchGoals(
-                            matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
-                          )
-                        }})
-                      </span>
-                    </span>
-                  </span>
-                </div>
-              </div>
-              <span class="col-1 text-center width-auto">x</span>
-              <div class="col">
-                <div class="grid align-items-center">
-                  <!-- Away team regular time input -->
-                  <template v-if="isMatchScheduled(match)">
-                    <span
-                      class="col-6 p-component p-inputnumber p-inputwrapper"
-                    >
-                      <input
-                        type="number"
-                        :value="
-                          matchesGuesses[match.id].awayTeamRegularTimeGoals
-                        "
-                        :step="1"
-                        :min="0"
-                        class="p-inputtext p-component p-inputnumber-input text-center"
-                        @input="
-                          (event) =>
-                            handleUpdateRegularTimeGoals(
-                              'awayTeam',
-                              match.id,
-                              event.target.value
-                            )
-                        "
-                      />
-                    </span>
-                  </template>
-                  <!-- Away team goals -->
-                  <span v-else class="gap-3 px-2 flex font-large">
-                    <!-- Away team penalties time goals -->
-                    <span
-                      v-if="isPenaltiesRoundType(match)"
-                      :class="
-                        getGuessAwayTeamPenaltiesTimeScoreClass(
-                          matchesGuesses[match.id]
-                        )
-                      "
-                    >
-                      <span>
-                        ({{
-                          parseMatchGoals(
-                            matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
-                          )
-                        }})
-                      </span>
-                    </span>
-                    <!-- Away team regular time goals -->
-                    <span
-                      :class="
-                        getGuessAwayTeamRegularTimeScoreClass(
-                          matchesGuesses[match.id]
-                        )
-                      "
-                    >
-                      <span>
-                        {{
-                          parseMatchGoals(
-                            matchesGuesses[match.id].awayTeamRegularTimeGoals
-                          )
-                        }}
-                      </span>
-                    </span>
-                  </span>
-                  <div
-                    class="col-6 flex align-items-center justify-content-start gap-2 flex-column md:flex-row"
-                  >
-                    <BadgeAvatar :image="match.awayTeam.badge" />
-                    <span
-                      class="text-center"
-                      :class="
-                        getGuessAwayTeamRegularTimeScoreClass(
-                          matchesGuesses[match.id]
-                        )
-                      "
-                    >
-                      {{ match.awayTeam.name }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div class="text-right" v-if="allowPenaltiesGuess(match)">
-              <Button
-                class="p-button-text p-button-sm"
-                @click="handleShowPenaltiesToggle(match)"
-              >
-                {{ getPenaltiesGuessToggleLabel(match) }}
-              </Button>
+            <div v-if="allowPenaltiesGuess(match)">
+              <div class="d-flex justify-content-center">
+                <PButton
+                  :variant="getPenaltiesGuessToggle(match).variant"
+                  @click="handleShowPenaltiesToggle(match)"
+                  :label="getPenaltiesGuessToggle(match).label"
+                  size="sm"
+                />
+              </div>
+              <template v-if="showPenaltiesGuess[match.id]">
+                <div class="hstack gap-2 py-3">
+                  <!-- Fake home team -->
+                  <div class="rounds-matches-list__team-avatar" />
+                  <!-- Penalties time inputs -->
+                  <div class="hstack gap-2">
+                    <PInput
+                      inputClass="text-center"
+                      type="number"
+                      :model-value="
+                        matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
+                      "
+                      :min="0"
+                      @update:model-value="
+                        (value) =>
+                          handleUpdatePenaltiesTimeGoals(
+                            'homeTeam',
+                            match.id,
+                            value
+                          )
+                      "
+                    />
+                    <font-awesome-icon icon="fas fa-times" />
+                    <PInput
+                      className="text-center"
+                      type="number"
+                      :model-value="
+                        matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
+                      "
+                      :step="1"
+                      :min="0"
+                      @update:model-value="
+                        (value) =>
+                          handleUpdatePenaltiesTimeGoals(
+                            'awayTeam',
+                            match.id,
+                            value
+                          )
+                      "
+                    />
+                  </div>
+                  <!-- Fake away team -->
+                  <div class="rounds-matches-list__team-avatar" />
+                </div>
+              </template>
             </div>
-            <template
-              v-if="showPenaltiesGuess[match.id] && allowPenaltiesGuess(match)"
-            >
-              <div class="text-center">
-                <small> {{ $t('app.guesses.penalties') }} </small>
-              </div>
-              <div class="grid align-items-center">
-                <div class="col">
-                  <div class="grid align-items-center justify-content-end">
-                    <template v-if="isMatchScheduled(match)">
-                      <span
-                        class="col-6 p-component p-inputnumber p-inputwrapper"
-                      >
-                        <input
-                          type="number"
-                          :value="
-                            matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
-                          "
-                          :step="1"
-                          :min="0"
-                          class="p-inputtext p-component p-inputnumber-input"
-                          @input="
-                            (event) =>
-                              handleUpdatePenaltiesTimeGoals(
-                                'homeTeam',
-                                match.id,
-                                event.target.value
-                              )
-                          "
-                        />
-                      </span>
-                    </template>
-                    <!-- <span
-                      v-else
-                      class="px-3 gap-2 flex font-large"
-                      :class="
-                        getHomeTeamRegularTimeScoreClass(
-                          matchesGuesses[match.id]
-                        )
-                      "
-                    >
-                      <span>
-                        {{
-                          parseMatchGoals(
-                            matchesGuesses[match.id].homeTeamPenaltiesTimeGoals
-                          )
-                        }}
-                      </span>
-                    </span> -->
-                  </div>
-                </div>
-                <div class="col-1 text-center width-auto">x</div>
-                <div class="col">
-                  <div class="grid align-items-center">
-                    <template v-if="isMatchScheduled(match)">
-                      <span
-                        class="col-6 p-component p-inputnumber p-inputwrapper"
-                      >
-                        <input
-                          type="number"
-                          :value="
-                            matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
-                          "
-                          :step="1"
-                          :min="0"
-                          class="p-inputtext p-component p-inputnumber-input"
-                          @input="
-                            (event) =>
-                              handleUpdatePenaltiesTimeGoals(
-                                'awayTeam',
-                                match.id,
-                                event.target.value
-                              )
-                          "
-                        />
-                      </span>
-
-                      <!-- <InputNumber
-                        :step="1"
-                        class="col-6 text-center"
-                        :model-value="
-                          matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
-                        "
-                        :class="{ 'p-invalid': submitted && errors.year }"
-                        @input="
-                          ({ value }) =>
-                            handleUpdatePenaltiesTimeGoals(
-                              'awayTeam',
-                              match.id,
-                              value
-                            )
-                        "
-                      /> -->
-                    </template>
-                    <span
-                      v-else
-                      class="px-3 gap-2 flex font-large"
-                      :class="
-                        getAwayTeamRegularTimeScoreClass(
-                          matchesGuesses[match.id]
-                        )
-                      "
-                    >
-                      <span>
-                        {{
-                          parseMatchGoals(
-                            matchesGuesses[match.id].awayTeamPenaltiesTimeGoals
-                          )
-                        }}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </template>
           </div>
 
-          <div class="flex flex-column align-items-center gap-3">
+          <div class="d-flex flex-column align-items-center gap-2">
             <template v-if="isMatchFinished(match)">
               <MatchNoResult v-if="matchHasNoResult(match)" align="center" />
-              <RoundMatchFinalResult
-                v-else
-                :guess="matchesGuesses[match.id]"
-                :home-team-regular-time-class-name="
-                  getMatchHomeTeamRegularTimeScoreClass(match)
-                "
-                :away-team-regular-time-class-name="
-                  getMatchAwayTeamRegularTimeScoreClass(match)
-                "
-                :home-team-penalties-time-class-name="
-                  getMatchHomeTeamPenaltiesTimeScoreClass(match)
-                "
-                :away-team-penalties-time-class-name="
-                  getMatchAwayTeamPenaltiesTimeScoreClass(match)
-                "
-              />
+              <RoundMatchFinalResult v-else :guess="matchesGuesses[match.id]" />
               <GuessPointsBadge
-                class="md:hidden"
+                class="d-lg-none"
                 :guess="matchesGuesses[match.id]"
               />
             </template>
-            <div
-              class="w-full gap-2 flex md:hidden align-items-end justify-content-center"
-            >
-              <Button
-                @click="openLeagueMatchGuessesDialog(match)"
-                :label="$t('app.guesses.viewOtherGuesses')"
-                class="p-button-link p-button-clear p-button-sm p-0"
-                icon="pi pi-search"
-              />
-            </div>
+            <PButton
+              @click="openLeagueMatchGuessesDialog(match)"
+              :label="$t('app.guesses.viewOtherGuesses')"
+              variant="link"
+              class="px-0"
+              icon="fas fa-search"
+            />
           </div>
         </li>
       </template>
@@ -424,8 +250,11 @@ import MatchStatusBadge from './MatchStatusBadge/MatchStatusBadge.vue'
 import GuessPointsBadge from './GuessPointsBadge/GuessPointsBadge.vue'
 import RoundMatchFinalResult from './RoundMatchFinalResult/RoundMatchFinalResult.vue'
 import MatchNoResult from '@/components/Shared/Matches/MatchNoResult.vue'
-import BadgeAvatar from '@/components/Shared/BadgeAvatar/BadgeAvatar.vue'
+// import Avatar from '@/components/Shared/Avatar/Avatar.vue'
 import LeagueMatchGuessesDialog from './LeagueMatchGuessesDialog/LeagueMatchGuessesDialog.vue'
+
+import TeamAvatar from '@/components/Shared/TeamAvatar/TeamAvatar.vue'
+import RoundsNavigator from './RoundsNavigator.vue'
 
 import { CHAMPIONSHIPS_ROUND_TYPE } from '@/constants/championships'
 import { MATCH_STATUSES } from '@/constants/matches'
@@ -479,10 +308,16 @@ const handleShowPenaltiesToggle = (match) => {
   }
 }
 
-const getPenaltiesGuessToggleLabel = (match) =>
+const getPenaltiesGuessToggle = (match) =>
   showPenaltiesGuess.value[match.id]
-    ? i18n.t('common.cancel')
-    : i18n.t('app.guesses.guessPenalties')
+    ? {
+        variant: 'danger',
+        label: i18n.t('app.guesses.cancelPenalties')
+      }
+    : {
+        variant: 'info',
+        label: i18n.t('app.guesses.guessPenalties')
+      }
 
 const currentRound = computed(() =>
   props.rounds.find((round) => {
@@ -491,10 +326,6 @@ const currentRound = computed(() =>
       : round.current
   })
 )
-
-const isCurrentFirstRound = computed(() => selectedRound.value?.first)
-
-const isCurrentLastRound = computed(() => selectedRound.value?.last)
 
 const selectedRoundIndex = ref(
   props.rounds.findIndex((round) => round.id === currentRound.value?.id)
@@ -579,58 +410,52 @@ const handlePreviousRound = () => selectedRoundIndex.value--
 
 const handleNextRound = () => selectedRoundIndex.value++
 
-// Match
-const getMatchHomeTeamRegularTimeScoreClass = (match) => [
-  match.regularTimeHomeTeamGoals > match.regularTimeAwayTeamGoals && 'text-bold'
-]
-
-const getMatchAwayTeamRegularTimeScoreClass = (match) => [
-  match.regularTimeAwayTeamGoals > match.regularTimeHomeTeamGoals && 'text-bold'
-]
-const getMatchHomeTeamPenaltiesTimeScoreClass = (match) => [
-  match.penaltiesTimeHomeTeamGoals > match.penaltiesTimeAwayTeamGoals &&
-    'text-bold'
-]
-const getMatchAwayTeamPenaltiesTimeScoreClass = (match) => [
-  match.penaltiesTimeAwayTeamGoals > match.penaltiesTimeHomeTeamGoals &&
-    'text-bold'
-]
-
 // Guess
-const getGuessHomeTeamRegularTimeScoreClass = (guess) => [
-  guess.homeTeamRegularTimeGoals > guess.awayTeamRegularTimeGoals && 'text-bold'
+const getGuessHomeTeamScoreClass = (match) => [
+  getGuessHomeTeamRegularTimeScoreClass(match),
+  getGuessHomeTeamPenaltiesTimeScoreClass(match)
 ]
 
-const getGuessAwayTeamRegularTimeScoreClass = (guess) => [
-  guess.awayTeamRegularTimeGoals > guess.homeTeamRegularTimeGoals && 'text-bold'
-]
-const getGuessHomeTeamPenaltiesTimeScoreClass = (guess) => [
-  guess.homeTeamPenaltiesTimeGoals > guess.awayTeamPenaltiesTimeGoals &&
-    'text-bold'
-]
-const getGuessAwayTeamPenaltiesTimeScoreClass = (guess) => [
-  guess.awayTeamPenaltiesTimeGoals > guess.homeTeamPenaltiesTimeGoals &&
-    'text-bold'
-]
+const getGuessHomeTeamRegularTimeScoreClass = (match) => {
+  const guess = matchesGuesses.value[match.id]
 
-const getAwayTeamRegularTimeScoreClass = (match) => {
-  return [
-    match.regularTimeAwayTeamGoals > match.regularTimeHomeTeamGoals &&
-      'text-bold'
-  ]
+  return (
+    guess.homeTeamRegularTimeGoals > guess.awayTeamRegularTimeGoals &&
+    'text-bold'
+  )
 }
 
-// const getHomeTeamPenaltiesTimeScoreClass = (match) => {
-//   return [
-//     match.penaltiesTimeHomeTeamGoals > match.penaltiesTimeAwayTeamGoals &&
-//       'text-bold'
-//   ]
-// }
+const getGuessHomeTeamPenaltiesTimeScoreClass = (match) => {
+  const guess = matchesGuesses.value[match.id]
 
-// const getAwayTeamPenaltiesTimeScoreClass = (match) => [
-//   match.penaltiesTimeAwayTeamGoals > match.penaltiesTimeHomeTeamGoals &&
-//     'text-bold'
-// ]
+  return (
+    guess.homeTeamPenaltiesTimeGoals > guess.awayTeamPenaltiesTimeGoals &&
+    'text-bold'
+  )
+}
+
+const getGuessAwayTeamScoreClass = (match) => [
+  getGuessAwayTeamRegularTimeScoreClass(match),
+  getGuessAwayTeamPenaltiesTimeScoreClass(match)
+]
+
+const getGuessAwayTeamRegularTimeScoreClass = (match) => {
+  const guess = matchesGuesses.value[match.id]
+
+  return (
+    guess.awayTeamRegularTimeGoals > guess.homeTeamRegularTimeGoals &&
+    'text-bold'
+  )
+}
+
+const getGuessAwayTeamPenaltiesTimeScoreClass = (match) => {
+  const guess = matchesGuesses.value[match.id]
+
+  return (
+    guess.awayTeamPenaltiesTimeGoals > guess.homeTeamPenaltiesTimeGoals &&
+    'text-bold'
+  )
+}
 
 const handleUpdateRegularTimeGoals = (team, matchId, value) => {
   const parsedValue = parseInt(value || 0)
@@ -659,11 +484,12 @@ const handleUpdateRegularTimeGoals = (team, matchId, value) => {
   if (
     !isNil(matchesGuesses.value[matchId].homeTeamRegularTimeGoals) &&
     !isNil(matchesGuesses.value[matchId].awayTeamRegularTimeGoals) &&
-    matchesGuesses.value[matchId].homeTeamRegularTimeGoals ===
+    matchesGuesses.value[matchId].homeTeamRegularTimeGoals !==
       matchesGuesses.value[matchId].awayTeamRegularTimeGoals
   ) {
-    matchesGuesses.value[matchId].homeTeamPenaltiesTimeGoals = null
-    matchesGuesses.value[matchId].awayTeamPenaltiesTimeGoals = null
+    handleUpdatePenaltiesTimeGoals('homeTeam', matchId, null)
+    handleUpdatePenaltiesTimeGoals('awayTeam', matchId, null)
+
     showPenaltiesGuess.value[matchId] = false
   }
 }
@@ -739,6 +565,11 @@ const allowPenaltiesGuess = (match) =>
   !isNil(matchesGuesses.value[match.id].awayTeamRegularTimeGoals) &&
   matchesGuesses.value[match.id].homeTeamRegularTimeGoals ===
     matchesGuesses.value[match.id].awayTeamRegularTimeGoals
+
+const showPenaltiesResult = (match) =>
+  isPenaltiesRoundType(match) &&
+  !isNil(match.homeTeamPenaltiesTimeGoals) &&
+  !isNil(match.awayTeamPenaltiesTimeGoals)
 </script>
 
 <style lang="scss">
@@ -754,6 +585,16 @@ const allowPenaltiesGuess = (match) =>
 
   .grid {
     margin-top: 0;
+  }
+
+  &__team-avatar {
+    @media screen and (max-width: 960px) {
+      flex: 0 0 80px;
+    }
+
+    @media screen and (min-width: 991px) {
+      flex: 0 0 250px;
+    }
   }
 
   &__guess-points-badge {

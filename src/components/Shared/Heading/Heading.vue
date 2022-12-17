@@ -1,7 +1,7 @@
 <template>
-  <h1 class="flex align-items-center gap-2 md:gap-3">
+  <h1 class="hstack gap-2 text-bold">
     <!-- <span v-if="icon" :class="icon" /> -->
-    <font-awesome-icon v-if="icon" :icon="icon" />
+    <!-- <font-awesome-icon v-if="icon" :icon="icon" /> -->
     {{ label }}
   </h1>
 </template>

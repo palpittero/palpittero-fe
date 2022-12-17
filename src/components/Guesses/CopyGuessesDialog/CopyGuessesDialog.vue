@@ -1,36 +1,24 @@
 <template>
-  <BaseDialog
+  <Modal
+    target="copy-guesses-dialog"
+    :ok-button-text="$t('app.guesses.copy')"
+    :ok-button-class="{ disabled: isSubmitDisabled }"
+    :cancel-button-text="$t('common.cancel')"
     :visible="visible"
     :header="$t('app.guesses.copyToLeague', { leagueName: league.name })"
-    type="dynamic"
+    @hide="handleClose"
     @submit="handleSubmit"
-    @hide="handleHide"
   >
     <CopyGuessesDialogContent
       v-model="copyGuesses"
       :league-id="league.id"
       :championships="championships"
     />
-    <template #footer>
-      <Button
-        :label="$t('common.cancel')"
-        icon="pi pi-times"
-        class="p-button-text"
-        @click="handleHide"
-      />
-      <Button
-        :label="$t('app.guesses.copy')"
-        icon="pi pi-copy"
-        class="p-button-text"
-        :disabled="isSubmitDisabled"
-        @click="handleSubmit"
-      />
-    </template>
-  </BaseDialog>
+  </Modal>
 </template>
 
 <script setup>
-import BaseDialog from '@/components/Shared/BaseDialog/BaseDialog.vue'
+import Modal from '@/components/Common/Modal/Modal.vue'
 import CopyGuessesDialogContent from './CopyGuessesDialogContent/CopyGuessesDialogContent.vue'
 import { computed, ref } from 'vue'
 
@@ -56,7 +44,7 @@ const copyGuesses = ref({
 })
 
 const handleSubmit = () => emits('submit', copyGuesses.value)
-const handleHide = () => emits('hide')
+const handleClose = () => emits('hide')
 
 const isSubmitDisabled = computed(
   () => copyGuesses.value.championshipsIds.length === 0

@@ -1,5 +1,5 @@
 <template>
-  <Breadcrumbs :items="breadcrumbs" class="mb-3" />
+  <Breadcrumbs :items="breadcrumbs"  />
   <UnprocessedGuesses :leagueId="leagueId" @ready="onUnprocessedGuessesReady" />
 </template>
 
@@ -17,7 +17,7 @@ const leagueId = computed(() => parseInt(route.params.leagueId))
 const breadcrumbs = ref([
   {
     label: i18n.t('common.breadcrumb.admin.dashboard'),
-    icon: 'pi pi-home',
+    icon: 'fas fa-home',
     to: { name: 'AdminDashboard' }
   },
   {

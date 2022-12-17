@@ -1,5 +1,11 @@
 <template>
-  <Badge :value="label" :style="style" />
+  <span
+    class="badge"
+    :class="`text-bg-${style.variant}`"
+    :style="style.opacity"
+  >
+    {{ label }}
+  </span>
 </template>
 
 <script setup>
@@ -22,6 +28,7 @@ const style = computed(() => {
   const key = props.guess.id
     ? props.guess.points || 'processing'
     : 'notRegistered'
+  console.log(GUESS_POINTS_BADGE_STYLE, key)
   return GUESS_POINTS_BADGE_STYLE[key]
 })
 

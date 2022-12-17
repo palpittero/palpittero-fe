@@ -12,7 +12,7 @@ const i18n = useI18n()
 const breadcrumbs = [
   {
     label: i18n.t('common.breadcrumb.home'),
-    icon: 'pi pi-home',
+    icon: 'fas fa-home',
     to: { name: 'Home' }
   },
   {

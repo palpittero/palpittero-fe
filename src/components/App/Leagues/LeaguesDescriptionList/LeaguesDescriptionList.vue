@@ -6,14 +6,14 @@
       <span class="placeholder col-8 p-3" />
     </div>
 
-    <Alert v-else-if="leagues.length === 0" :text="innerDescription" />
-    <ul v-else class="list-group">
+    <PAlert v-else-if="leagues.length === 0" :text="innerDescription" />
+    <ul v-else class="list-group list-group-flush">
       <li
         v-for="league in leagues"
         :key="league.id"
         class="list-group-item hstack pe-2"
       >
-        <div class="hstack gap-3">
+        <div class="hstack gap-3" @click="emits('guesses', league)">
           <Avatar :img="league.badge" />
           <span class="w-100">
             {{ league.name }}
@@ -201,7 +201,7 @@ import { useAuthStore } from '@/stores/auth'
 // import Heading from '@/components/Shared/Heading/Heading.vue'
 import Accordion from '@/components/Shared/Accordion/Accordion.vue'
 import Avatar from '@/components/Shared/Avatar/Avatar.vue'
-import Alert from '@/components/Shared/Alert/Alert.vue'
+// import Alert from '@/components/Shared/Alert/Alert.vue'
 
 import { USERS_LEAGUES_STATUSES } from '@/constants/leagues'
 
