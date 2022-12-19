@@ -51,7 +51,28 @@
             </div>
           </template>
         </Column>
-        <Column field="points" :header="$t('admin.users.points')" />
+        <Column
+          field="points"
+          :header="$t('admin.users.points')"
+          headerStyle="width:15%; min-width:12rem;"
+        >
+          <template #body="{ data }">
+            <div class="text-bold">
+              {{ $t('common.total') }}: {{ data.points }}
+            </div>
+            <div>
+              <small>
+                {{ $t('common.matches') }}: {{ data.guessesPoints }}
+              </small>
+            </div>
+            <div>
+              <small
+                >{{ $t('common.positions') }}:
+                {{ data.championshipsGuessesPoints }}</small
+              >
+            </div>
+          </template>
+        </Column>
         <Column field="prize" :header="$t('admin.leagues.prizes')">
           <template #body="{ data }"> {{ getLeaguePrize(data) }} </template>
         </Column>
