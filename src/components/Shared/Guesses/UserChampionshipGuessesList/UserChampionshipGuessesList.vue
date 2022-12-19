@@ -136,7 +136,7 @@ const positionLabels = {
 }
 
 const calculateTotalPoints = (guesses) =>
-  guesses.reduce((acc, guess) => acc + guess.points || 0, 0) || null
+  guesses.reduce((acc, guess) => acc + guess.points || 0, 0) || 0
 
 const toggle = computed(() => {
   return isOpen.value
