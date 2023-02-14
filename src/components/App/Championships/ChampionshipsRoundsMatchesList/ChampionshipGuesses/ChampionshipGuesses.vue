@@ -3,8 +3,8 @@
     <h5
       class="flex gap-2 text-center md:text-left align-items-center bg-red-100 text-bold p-3 mb-0 mt-3"
     >
-      <span class="hidden md:block pi pi-exclamation-triangle" /> Os prazo para
-      enviar os palpites de campeão e vice finalizaram no dia 06/12.
+      <span class="hidden md:block pi pi-exclamation-triangle" /> O prazo para
+      envio dos palpites de campeão e vice se encerrará no dia 31/03.
     </h5>
 
     <div
