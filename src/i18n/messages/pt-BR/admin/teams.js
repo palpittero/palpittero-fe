@@ -9,7 +9,8 @@ export default {
   deleteSuccess: 'Time removido com sucesso',
   saveSuccess: 'Time salvo com sucesso',
   validation: {
-    name: 'Favor informar um nome'
+    name: 'Favor informar um nome',
+    duplicatedName: 'Já existe um time com este nome'
   },
   newTeam: 'Novo Time',
   nationalTeam: 'Seleção Nacional',

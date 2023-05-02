@@ -6,10 +6,17 @@
       v-model.trim="team.name"
       required
       autofocus
-      :class="{ 'p-invalid': submitted && errors.name }"
+      :class="{
+        'p-invalid': submitted && (errors.name || errors.duplicatedName)
+      }"
     />
-    <small class="p-invalid" v-if="submitted && errors.name">
-      {{ $t('admin.teams.validation.name') }}
+    <small class="p-invalid" v-if="submitted">
+      <span v-if="errors.name">
+        {{ $t('admin.teams.validation.name') }}
+      </span>
+      <span v-if="errors.duplicatedName">
+        {{ $t('admin.teams.validation.duplicatedName') }}
+      </span>
     </small>
   </div>
   <div class="field">

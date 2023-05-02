@@ -50,6 +50,7 @@
           v-model="team"
           :visible="isTeamDetailsDialogVisible"
           :submitting="isSubmitting"
+          :serverErrors="serverErrors"
           @hide="handleDetailsDialogHide"
           @submit="handleDetailsDialogSubmit"
         />
@@ -92,6 +93,7 @@ const isTeamDetailsDialogVisible = ref(false)
 const isTeamDeleteDialogOpen = ref(false)
 const selectedTeams = ref([])
 const isSubmitting = ref(false)
+const serverErrors = ref({})
 
 onMounted(() => loadTeams())
 
@@ -112,24 +114,33 @@ const handleNewTeam = () => {
 }
 
 const handleDetailsDialogSubmit = async (team) => {
-  isSubmitting.value = true
-  if (team.id) {
-    await services.teams.updateTeam(team)
-  } else {
-    await services.teams.createTeam(team)
+  try {
+    isSubmitting.value = true
+    serverErrors.value = {}
+    if (team.id) {
+      await services.teams.updateTeam(team)
+    } else {
+      await services.teams.createTeam(team)
+    }
+
+    toast.add({
+      group: 'app',
+      severity: 'success',
+      summary: i18n.t('common.success'),
+      detail: i18n.t('admin.teams.saveSuccess'),
+      life: 4000
+    })
+
+    handleDetailsDialogHide()
+    loadTeams()
+  } catch (error) {
+    if (error.response.status === 409) {
+      console.log(i18n.t('admin.teams.validation.duplicatedName'))
+      serverErrors.value.duplicatedName = true
+    }
+  } finally {
+    isSubmitting.value = false
   }
-
-  toast.add({
-    group: 'app',
-    severity: 'success',
-    summary: i18n.t('common.success'),
-    detail: i18n.t('admin.teams.saveSuccess'),
-    life: 4000
-  })
-
-  handleDetailsDialogHide()
-  isSubmitting.value = false
-  loadTeams()
 }
 
 const handleDetailsDialogHide = () => {
