@@ -1,17 +1,5 @@
 <template>
   <BaseDataRenderer class="users-chips" :state="users">
-    <!-- <pre>{{ selectedUsers }}</pre> -->
-    <!-- <AutoComplete
-      v-model="selectedUsers"
-      :suggestions="filteredUsers"
-      @complete="filterUsers"
-      option-label="name"
-    >
-      <template #chip="{ value }">
-        {{ value.name }}
-      </template>
-    </AutoComplete> -->
-
     <Chips
       v-model="selectedUsers"
       class="block"
