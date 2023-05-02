@@ -10,13 +10,13 @@
     <TeamForm
       :model-value="props.modelValue"
       :submitted="submitted"
-      :errors="errors"
+      :errors="allErrors"
     />
   </BaseDialog>
 </template>
 
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, computed } from 'vue'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
@@ -25,6 +25,10 @@ import TeamForm from './TeamForm/TeamForm.vue'
 
 const props = defineProps({
   modelValue: {
+    type: Object,
+    default: () => ({})
+  },
+  serverErrors: {
     type: Object,
     default: () => ({})
   },
@@ -45,6 +49,11 @@ const { errors, handleSubmit, setValues } = useForm({
 })
 
 watch(props.modelValue, (team) => setValues(team.value), { deep: true })
+
+const allErrors = computed(() => ({
+  ...props.serverErrors,
+  ...errors.value
+}))
 
 const onSubmit = handleSubmit(
   (team) => {
