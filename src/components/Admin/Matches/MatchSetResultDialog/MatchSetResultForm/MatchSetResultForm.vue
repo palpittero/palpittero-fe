@@ -1,138 +1,134 @@
 <template>
-  <div class="grid gap-5">
-    <div
-      class="card col-3 p-0 md:p-3 md:col-6 p-fluid match-set-result-form__team flex-1 text-center"
-    >
-      <div class="mb-3">
-        <img
-          :src="match.homeTeam.badge"
-          :alt="match.homeTeam.name"
-          class="match-set-result-form__team-image"
+  <div class="flex flex-column md:flex-row gap-5 match-set-result-form">
+    <!-- Home team -->
+    <div class="card flex-1 flex flex-column align-items-center gap-1">
+      <h6 class="mt-0 mb-3">
+        {{ $t('admin.matches.homeTeam') }}
+      </h6>
+      <img
+        :src="match.homeTeam.badge"
+        :alt="match.homeTeam.name"
+        class="match-set-result-form__team-image"
+      />
+      <h4 class="mb-1">
+        {{ match.homeTeam.name }}
+      </h4>
+      <div class="field flex flex-column align-items-center">
+        <label for="regular-time-home-team-goals">
+          <small>
+            {{ $t('admin.championships.regularTime') }}
+          </small>
+        </label>
+        <InputNumber
+          id="regular-time-home-team-goals"
+          :value="match.regularTimeHomeTeamGoals"
+          show-buttons
+          :min="0"
+          button-layout="horizontal"
+          increment-button-icon="pi pi-plus"
+          decrement-button-icon="pi pi-minus"
+          :class="{ 'p-invalid': errors.regularTimeHomeTeamGoals }"
+          @input="(value) => handleInput(value, 'regularTimeHomeTeamGoals')"
         />
+        <small
+          class="p-invalid"
+          v-if="submitted && errors.regularTimeHomeTeamGoals"
+        >
+          {{ $t('admin.matches.validation.regularTimeHomeTeamGoals') }}
+        </small>
       </div>
-      <div>
-        <h4 class="mb-1">
-          {{ match.homeTeam.name }}
-        </h4>
-        <h6 class="mt-0 mb-3">
-          {{ $t('admin.matches.homeTeam') }}
-        </h6>
-        <div class="field px-1 md:px-5">
-          <label for="regular-time-home-team-goals">
-            <small>
-              {{ $t('admin.championships.regularTime') }}
-            </small>
-          </label>
-          <InputNumber
-            id="regular-time-home-team-goals"
-            :value="match.regularTimeHomeTeamGoals"
-            show-buttons
-            :min="0"
-            button-layout="horizontal"
-            increment-button-icon="pi pi-plus"
-            decrement-button-icon="pi pi-minus"
-            :class="{ 'p-invalid': errors.regularTimeHomeTeamGoals }"
-            @input="(value) => handleInput(value, 'regularTimeHomeTeamGoals')"
-          />
-          <small
-            class="p-invalid"
-            v-if="submitted && errors.regularTimeHomeTeamGoals"
-          >
-            {{ $t('admin.matches.validation.regularTimeHomeTeamGoals') }}
+      <!-- Home team penalties -->
+      <div
+        class="field flex flex-column align-items-center"
+        v-if="showPenaltiesResults"
+      >
+        <label for="penalties-time-home-team-goals">
+          <small>
+            {{ $t('admin.championships.penalties') }}
           </small>
-        </div>
-
-        <div class="field px-1 md:px-5" v-if="showPenaltiesResults">
-          <label for="penalties-time-home-team-goals">
-            <small>
-              {{ $t('admin.championships.penalties') }}
-            </small>
-          </label>
-          <InputNumber
-            id="penalties-time-home-team-goals"
-            :value="match.penaltiesTimeHomeTeamGoals"
-            show-buttons
-            :min="0"
-            button-layout="horizontal"
-            increment-button-icon="pi pi-plus"
-            decrement-button-icon="pi pi-minus"
-            :class="{ 'p-invalid': errors.regularTimeHomeTeamGoals }"
-            @input="(value) => handleInput(value, 'penaltiesTimeHomeTeamGoals')"
-          />
-          <small
-            class="p-invalid"
-            v-if="submitted && errors.penaltiesTimeHomeTeamGoals"
-          >
-            {{ $t('admin.matches.validation.penaltiesTimeHomeTeamGoals') }}
-          </small>
-        </div>
+        </label>
+        <InputNumber
+          id="penalties-time-home-team-goals"
+          :value="match.penaltiesTimeHomeTeamGoals"
+          show-buttons
+          :min="0"
+          button-layout="horizontal"
+          increment-button-icon="pi pi-plus"
+          decrement-button-icon="pi pi-minus"
+          :class="{ 'p-invalid': errors.regularTimeHomeTeamGoals }"
+          @input="(value) => handleInput(value, 'penaltiesTimeHomeTeamGoals')"
+        />
+        <small
+          class="p-invalid"
+          v-if="submitted && errors.penaltiesTimeHomeTeamGoals"
+        >
+          {{ $t('admin.matches.validation.penaltiesTimeHomeTeamGoals') }}
+        </small>
       </div>
     </div>
-    <div
-      class="card col-3 p-0 md:p-3 md:col-6 p-fluid match-set-result-form__team flex-1 text-center"
-    >
-      <div class="mb-3">
-        <img
-          :src="match.awayTeam.badge"
-          :alt="match.awayTeam.name"
-          class="match-set-result-form__team-image"
+    <!-- Away team -->
+    <div class="card flex-1 flex flex-column align-items-center gap-1">
+      <h6 class="mt-0 mb-3">
+        {{ $t('admin.matches.awayTeam') }}
+      </h6>
+      <img
+        :src="match.awayTeam.badge"
+        :alt="match.awayTeam.name"
+        class="match-set-result-form__team-image"
+      />
+      <h4 class="mb-1">
+        {{ match.awayTeam.name }}
+      </h4>
+      <div class="field flex flex-column align-items-center">
+        <label for="regular-time-home-team-goals">
+          <small>
+            {{ $t('admin.championships.regularTime') }}
+          </small>
+        </label>
+        <InputNumber
+          :value="match.regularTimeAwayTeamGoals"
+          show-buttons
+          min="0"
+          button-layout="horizontal"
+          increment-button-icon="pi pi-plus"
+          decrement-button-icon="pi pi-minus"
+          :class="{ 'p-invalid': errors.regularTimeAwayTeamGoals }"
+          @input="(value) => handleInput(value, 'regularTimeAwayTeamGoals')"
         />
+        <small
+          class="p-invalid"
+          v-if="submitted && errors.regularTimeAwayTeamGoals"
+        >
+          {{ $t('admin.matches.validation.regularTimeAwayTeamGoals') }}
+        </small>
       </div>
-      <div>
-        <h4 class="mb-1">
-          {{ match.awayTeam.name }}
-        </h4>
-        <h6 class="mt-0 mb-3">
-          {{ $t('admin.matches.awayTeam') }}
-        </h6>
-        <div class="field px-1 md:px-5">
-          <label for="regular-time-home-team-goals">
-            <small>
-              {{ $t('admin.championships.regularTime') }}
-            </small>
-          </label>
-          <InputNumber
-            :value="match.regularTimeAwayTeamGoals"
-            show-buttons
-            min="0"
-            button-layout="horizontal"
-            increment-button-icon="pi pi-plus"
-            decrement-button-icon="pi pi-minus"
-            :class="{ 'p-invalid': errors.regularTimeAwayTeamGoals }"
-            @input="(value) => handleInput(value, 'regularTimeAwayTeamGoals')"
-          />
-          <small
-            class="p-invalid"
-            v-if="submitted && errors.regularTimeAwayTeamGoals"
-          >
-            {{ $t('admin.matches.validation.regularTimeAwayTeamGoals') }}
-          </small>
-        </div>
 
-        <div class="field px-1 md:px-5" v-if="showPenaltiesResults">
-          <label for="penalties-time-away-team-goals">
-            <small>
-              {{ $t('admin.championships.penalties') }}
-            </small>
-          </label>
-          <InputNumber
-            id="penalties-time-away-team-goals"
-            :value="match.penaltiesTimeAwayTeamGoals"
-            show-buttons
-            :min="0"
-            button-layout="horizontal"
-            increment-button-icon="pi pi-plus"
-            decrement-button-icon="pi pi-minus"
-            :class="{ 'p-invalid': errors.regularTimeAwayTeamGoals }"
-            @input="(value) => handleInput(value, 'penaltiesTimeAwayTeamGoals')"
-          />
-          <small
-            class="p-invalid"
-            v-if="submitted && errors.penaltiesTimeAwayTeamGoals"
-          >
-            {{ $t('admin.matches.validation.penaltiesTimeAwayTeamGoals') }}
+      <div
+        class="field flex flex-column align-items-center"
+        v-if="showPenaltiesResults"
+      >
+        <label for="penalties-time-away-team-goals">
+          <small>
+            {{ $t('admin.championships.penalties') }}
           </small>
-        </div>
+        </label>
+        <InputNumber
+          id="penalties-time-away-team-goals"
+          :value="match.penaltiesTimeAwayTeamGoals"
+          show-buttons
+          :min="0"
+          button-layout="horizontal"
+          increment-button-icon="pi pi-plus"
+          decrement-button-icon="pi pi-minus"
+          :class="{ 'p-invalid': errors.regularTimeAwayTeamGoals }"
+          @input="(value) => handleInput(value, 'penaltiesTimeAwayTeamGoals')"
+        />
+        <small
+          class="p-invalid"
+          v-if="submitted && errors.penaltiesTimeAwayTeamGoals"
+        >
+          {{ $t('admin.matches.validation.penaltiesTimeAwayTeamGoals') }}
+        </small>
       </div>
     </div>
   </div>
@@ -158,7 +154,7 @@ const emits = defineEmits(['update:modelValue'])
 const match = ref(props.modelValue)
 
 const handleInput = ({ value }, key) => {
-  match.value[key] = parseInt(value)
+  match.value[key] = parseInt(value) || 0
   emits('update:modelValue', match.value)
 }
 
@@ -197,11 +193,16 @@ watch(
 </script>
 
 <style lang="scss">
-.match-set-result-form__team {
-  &-image {
-    max-width: 100%;
-    // max-height: 200px;
-    object-fit: contain;
+.match-set-result-form {
+  &__team {
+    &-image {
+      max-width: 150px;
+      object-fit: contain;
+
+      @media screen and (max-width: 768px) {
+        max-width: 100px;
+      }
+    }
   }
 
   .p-inputtext {
