@@ -1,5 +1,4 @@
 <template>
-  <pre>{{ championship.rounds }}</pre>
   <div class="field">
     <label for="name">{{ $t('admin.championships.name') }}</label>
     <InputText
