@@ -42,16 +42,6 @@
         <BaseStatus :status="data.status" />
       </template>
     </Column>
-    <Column
-      field="status"
-      :header="$t('common.status')"
-      sortable
-      headerStyle="width:14%; min-width:10rem;"
-    >
-      <template #body="{ data }">
-        <BaseStatus :status="data.status" />
-      </template>
-    </Column>
     <Column>
       <template #body="{ data }">
         <div class="flex gap-2">
