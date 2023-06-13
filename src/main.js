@@ -1,3 +1,6 @@
+import 'dayjs/locale/pt-br'
+import dayjs from 'dayjs'
+dayjs.locale('pt-br')
 import { createApp, reactive } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
