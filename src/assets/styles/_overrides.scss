@@ -172,3 +172,13 @@ small, span {
     height: 2rem !important;
   }
 }
+
+.p-datepicker-timeonly {
+  .p-datepicker-buttonbar {
+    justify-content: end;
+
+    .p-button:first-child {
+      display: none !important;
+    }
+  }
+}
