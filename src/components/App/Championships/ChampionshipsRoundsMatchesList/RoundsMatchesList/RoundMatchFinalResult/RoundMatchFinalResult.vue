@@ -50,20 +50,20 @@ const props = defineProps({
     required: true
   },
   homeTeamRegularTimeClassName: {
-    type: String,
-    default: ''
+    type: [String, Array],
+    default: () => []
   },
   awayTeamRegularTimeClassName: {
-    type: String,
-    default: ''
+    type: [String, Array],
+    default: () => []
   },
   homeTeamPenaltiesTimeClassName: {
-    type: String,
-    default: ''
+    type: [String, Array],
+    default: () => []
   },
   awayTeamPenaltiesTimeClassName: {
-    type: String,
-    default: ''
+    type: [String, Array],
+    default: () => []
   }
 })
 
