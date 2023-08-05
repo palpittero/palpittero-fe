@@ -48,7 +48,7 @@
           :model="items"
           class="p-button-text p-button-plain mr-2 mb-2 hidden lg:flex align-items-center gap-2"
         >
-          <BadgeAvatar :image="loggedInAvatar" size="small" type="user" />
+          <BadgeAvatar :image="loggedInAvatar" size="small" type="avatar" />
           {{ loggedInMenuLabel }}
         </SplitButton>
       </li>

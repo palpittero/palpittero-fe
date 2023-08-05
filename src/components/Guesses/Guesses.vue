@@ -35,7 +35,7 @@
           :is-open="isChampionshipRoundsMatchesListOpen(index)"
           :championship="championship"
           :league-id="leagueId"
-          :enable-position-guesses="championship.enableGuesses"
+          :enable-position-guesses="!!championship.enableGuesses"
           :memory-registered-guesses="memoryRegisteredGuesses"
           empty-state="app.guesses.noRounds"
           @update:championship-guesses="handleUpdateChampionshipGuesses"

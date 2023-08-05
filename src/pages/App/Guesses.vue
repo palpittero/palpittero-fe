@@ -30,7 +30,7 @@ const breadcrumb = ref({
   model: []
 })
 
-const leagueId = computed(() => parseInt(route.params.leagueId))
+const leagueId = computed(() => Number(route.params.leagueId))
 
 const onGuessesReady = ({ league }) =>
   (breadcrumb.value.model = [

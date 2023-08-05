@@ -20,7 +20,7 @@
           :league-id="leagueId"
           :disabled="!enablePositionGuesses"
         />
-        <ul v-if="loading" class="m-0 p-0">
+        <ul v-if="isLoading" class="m-0 p-0">
           <li class="mb-4">
             <Skeleton width="100%" class="mb-2" />
             <Skeleton width="75%" />
@@ -85,7 +85,7 @@ const props = defineProps({
     required: true
   },
   leagueId: {
-    type: Object,
+    type: Number,
     required: true
   },
   emptyState: {
