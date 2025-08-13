@@ -1,3 +1,7 @@
+$fontSize:14px;
+$borderRadius:12px;
+$transitionDuration:.2s;
+
 .layout-footer {
     transition: margin-left $transitionDuration;
     display: flex;

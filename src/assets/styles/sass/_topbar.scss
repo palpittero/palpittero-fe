@@ -1,3 +1,9 @@
+@use "mixins";
+
+$fontSize:14px;
+$borderRadius:12px;
+$transitionDuration:.2s;
+
 .layout-topbar {
     position: fixed;
     height: 4.5rem;
@@ -28,7 +34,7 @@
         }
 
         &:focus {
-            @include focused();
+            @include mixins.focused();
         }
     }
 
@@ -52,7 +58,7 @@
         }
 
         &:focus {
-            @include focused();
+            @include mixins.focused();
         }
 
         i {

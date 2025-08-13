@@ -1,3 +1,9 @@
+@use "mixins";
+
+$fontSize:14px;
+$borderRadius:12px;
+$transitionDuration:.2s;
+
 .layout-sidebar {
 	position: fixed;
 	width: 300px;
@@ -56,7 +62,7 @@
             }
 
             &:focus {
-                @include focused-inset();
+                @include mixins.focused-inset();
             }
 
             &:hover {

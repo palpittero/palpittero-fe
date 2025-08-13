@@ -270,7 +270,3 @@ const handleFiltersUpdate = (filters) => {
   console.log({ filters })
 }
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/demo/badges.scss';
-</style>

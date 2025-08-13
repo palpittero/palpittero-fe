@@ -213,7 +213,3 @@ const handleSetRankingDialogSubmit = async (championship) => {
   loadChampionships()
 }
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/demo/badges.scss';
-</style>

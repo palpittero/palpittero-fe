@@ -70,10 +70,11 @@ const handleSubmit = () => emits('submit')
 <style lang="scss">
 .base-dialog {
   &--dynamic {
+    width: 50vw;
+
     @media screen and (max-width: 960px) {
       width: 90vw;
     }
-    width: 50vw;
   }
 }
 </style>

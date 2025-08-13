@@ -184,7 +184,3 @@ const handleDeleteDialogSubmit = async (users) => {
   loadUsers()
 }
 </script>
-
-<style scoped lang="scss">
-@import '@/assets/demo/badges.scss';
-</style>
