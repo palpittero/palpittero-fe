@@ -4,6 +4,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
+RUN node -v
+
+RUN npm -v
+
 RUN apk add --no-cache python3 make g++
 
 RUN npm install --legacy-peer-deps
