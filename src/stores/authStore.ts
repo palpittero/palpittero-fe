@@ -4,10 +4,13 @@ import services from '@/services'
 import { USER_ROLES } from '@/constants'
 import type { iUser } from '@/types'
 import { computed, ref } from 'vue'
+import { useLocalStorage, useRafFn } from '@vueuse/core'
+import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth/user', () => {
-  const accessToken = ref<string | null>(null)
-  const refreshToken = ref<string | null>(null)
+  const accessToken = useLocalStorage<string>('palpittero/accessToken', '')
+  const refreshToken = useLocalStorage<string>('palpittero/refreshToken', '')
+
   const loggedUser = ref<iUser | null>(null)
   const authenticating = ref(false)
 
@@ -15,16 +18,20 @@ export const useAuthStore = defineStore('auth/user', () => {
 
   async function authenticate({ email, password }: { email: string; password: string }) {
     authenticating.value = true
-    const { accessToken, refreshToken } = await services.auth.authenticate({
+    const tokens = await services.auth.authenticate({
       email,
       password,
     })
 
-    accessToken.value = accessToken
-    refreshToken.value = refreshToken
+    accessToken.value = tokens.accessToken
+    refreshToken.value = tokens.refreshToken
 
-    loggedUser.value = await services.auth.fetchLoggedUser()
+    fetchLoggedUser()
     authenticating.value = false
+  }
+
+  async function fetchLoggedUser() {
+    loggedUser.value = await services.auth.fetchLoggedUser()
   }
 
   async function renewToken() {
@@ -40,8 +47,11 @@ export const useAuthStore = defineStore('auth/user', () => {
   }
 
   function logout() {
-    const store = useAuthStore()
-    store.$reset()
+    accessToken.value = ''
+    refreshToken.value = ''
+    loggedUser.value = null
+
+    window.location.href = '/login'
   }
 
   return {
@@ -52,6 +62,7 @@ export const useAuthStore = defineStore('auth/user', () => {
     authenticate,
     renewToken,
     logout,
+    fetchLoggedUser,
     isAdmin,
   }
 })

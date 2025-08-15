@@ -14,12 +14,14 @@ const authRoutes: RouteRecordRaw[] = [
     //     next({ name: 'not-found' })
     //   }
     // },
+    meta: { public: true },
   },
   {
     name: 'account-removed',
     path: '/conta-removida',
     alias: ['/account-removed'],
     component: () => import('@/views/Auth/AccountRemovedPage.vue'),
+    meta: { public: true },
   },
   {
     name: 'activate-account',
@@ -34,17 +36,20 @@ const authRoutes: RouteRecordRaw[] = [
         next({ name: 'not-found' })
       }
     },
+    meta: { public: true },
   },
   {
     name: 'forgot-password',
     path: '/esqueci-minha-senha',
     alias: ['/forgot-password'],
     component: () => import('@/views/Auth/ForgotPasswordPage.vue'),
+    meta: { public: true },
   },
   {
     name: 'login',
     path: '/login',
     component: () => import('@/views/Auth/LoginPage.vue'),
+    meta: { public: true },
   },
   {
     name: 'reset-password',
@@ -59,12 +64,14 @@ const authRoutes: RouteRecordRaw[] = [
         next({ name: 'not-found' })
       }
     },
+    meta: { public: true },
   },
   {
     name: 'sign-up',
     path: '/criar-conta',
     alias: ['/sign-up'],
     component: () => import('@/views/Auth/SignUpPage.vue'),
+    meta: { public: true },
   },
 ]
 

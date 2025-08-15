@@ -1,19 +1,21 @@
 import api from '@/services/api'
+import type { iUser } from '@/types'
+import type { iAuthenticate } from '@/types/auth'
 
 const RESOURCE_URI = '/auth'
 
-const authenticate = ({ email, password }: { email: string; password: string }): Promise<any> =>
-  api.post(`${RESOURCE_URI}/authenticate`, { email, password })
-
-const refreshToken = ({
-  accessToken,
-  refreshToken,
+const authenticate = ({
+  email,
+  password,
 }: {
-  accessToken: string
-  refreshToken: string
-}) => api.post(`${RESOURCE_URI}/refreshToken`, { accessToken, refreshToken })
+  email: string
+  password: string
+}): Promise<iAuthenticate> => api.post(`${RESOURCE_URI}/authenticate`, { email, password })
 
-const fetchLoggedUser = () => api.get(`${RESOURCE_URI}/me`)
+const refreshToken = ({ accessToken, refreshToken }: iAuthenticate): Promise<iAuthenticate> =>
+  api.post(`${RESOURCE_URI}/refreshToken`, { accessToken, refreshToken })
+
+const fetchLoggedUser = (): Promise<iUser> => api.get(`${RESOURCE_URI}/me`)
 
 const signUp = ({
   name,

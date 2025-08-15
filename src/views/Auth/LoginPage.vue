@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import LoginForm, { type iCredentials } from '@/components/Auth/LoginForm.vue'
 import { ref } from 'vue'
-import { useToastStore } from '@/stores'
+import { useAuthStore, useToastStore } from '@/stores'
 import { useRoute, useRouter } from 'vue-router'
-import services from '@/services'
 
 const router = useRouter()
+
+const authStore = useAuthStore()
 
 const toastStore = useToastStore()
 const route = useRoute()
@@ -18,7 +19,7 @@ const credentials = ref<iCredentials>({
 
 const handleSubmit = async (credentials: iCredentials) => {
   try {
-    await services.auth.recoverPassword(credentials)
+    await authStore.authenticate(credentials)
     // @ts-expect-error Not assignable type
     router.push(route.query.returnUrl || '/')
   } catch (error: any) {

@@ -1,4 +1,6 @@
-const appRoutes = [
+import type { RouteRecordRaw } from 'vue-router'
+
+const appRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',

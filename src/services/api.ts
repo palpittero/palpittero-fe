@@ -1,6 +1,7 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios'
 import router from '@/router'
 import { useAuthStore } from '@/stores/authStore'
+import { storeToRefs } from 'pinia'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -8,10 +9,11 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-  const auth = useAuthStore()
+  const authStore = useAuthStore()
+  const { accessToken } = storeToRefs(authStore)
 
-  if (auth.accessToken) {
-    config.headers['Authorization'] = `Bearer ${auth.accessToken}`
+  if (accessToken.value) {
+    config.headers['Authorization'] = `Bearer ${accessToken.value}`
   }
 
   config.headers['Cache-Control'] = 'no-cache'
