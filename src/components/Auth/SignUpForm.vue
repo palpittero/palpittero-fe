@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 export type iCredentials = {
   name: string
@@ -14,21 +14,18 @@ const emit = defineEmits<{
   submit: [data: iCredentials]
 }>()
 
-const submitted = ref<boolean>(false)
-
-const handleSubmit = (event: Event) => {
-  submitted.value = true
-  event.preventDefault()
-  emit('submit', credentials.value)
-}
-
 const passwordsMismatch = computed<boolean>(
   () => credentials.value.password !== credentials.value.passwordConfirmation,
 )
+
+const handleSubmit = () => {
+  if (passwordsMismatch.value) return
+  emit('submit', credentials.value)
+}
 </script>
 
 <template>
-  <form class="card bg-base-200 w-full max-w-sm shrink-0 shadow-2xl" @submit="handleSubmit">
+  <form class="card bg-base-200 w-full max-w-sm shrink-0 shadow-2xl" @submit.prevent="handleSubmit">
     <div class="card-body">
       <fieldset class="fieldset">
         <label class="label" for="email">Nome</label>

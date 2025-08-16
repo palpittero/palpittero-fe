@@ -4,7 +4,7 @@ const errorRoutes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
-    component: () => import('@/views/Errors/NotFoundPage.vue'),
+    component: () => import('@/views/Errors/NotFoundView.vue'),
     meta: { public: true },
   },
 ]

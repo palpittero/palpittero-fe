@@ -19,6 +19,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "@vueuse/core": "^13.6.0",
+    "add": "^2.0.6",
     "axios": "^1.11.0",
     "daisyui": "^5.0.50",
     "lodash": "^4.17.21",
@@ -26,7 +27,9 @@
     "pinia-plugin-persistedstate": "^4.5.0",
     "tailwindcss": "^4.1.11",
     "vue": "^3.5.18",
-    "vue-router": "^4.5.1"
+    "vue-advanced-cropper": "^2.8.9",
+    "vue-router": "^4.5.1",
+    "yarn": "^1.22.22"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",

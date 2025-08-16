@@ -13,7 +13,7 @@ const createUser = (user: any) => api.post(`${RESOURCE_URI}`, user)
 const updateUser = (user: any) => {
   const formData = parseMultiPartFormData({ data: user, ignore: ['avatar'] })
   // @ts-expect-error - HTTP_MULTIPART_CONFIG is not a valid AxiosRequestConfig
-  api.put(`${RESOURCE_URI}/${user.id}`, formData, HTTP_MULTIPART_CONFIG)
+  return api.put(`${RESOURCE_URI}/${user.id}`, formData, HTTP_MULTIPART_CONFIG)
 }
 
 const deleteUser = (user: any) => api.delete(`${RESOURCE_URI}/${user.id}`)
