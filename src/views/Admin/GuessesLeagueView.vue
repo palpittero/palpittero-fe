@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ConfirmationModal from '@/components/Admin/ConfirmationModal.vue'
+import ConfirmationModal from '@/components/Shared/ConfirmationModal.vue'
 import GuessesLeaguesTabs from '@/components/Admin/Guesses/GuessesLeaguesTabs.vue'
 
 import services from '@/services'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ConfirmationModal from '@/components/Admin/ConfirmationModal.vue'
+import ConfirmationModal from '@/components/Shared/ConfirmationModal.vue'
 import GuessesLeaguesList from '@/components/Admin/Guesses/GuessesLeaguesList.vue'
 import services from '@/services'
 import { useToastStore } from '@/stores'

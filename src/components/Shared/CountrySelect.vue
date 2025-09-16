@@ -3,7 +3,7 @@ import services from '@/services'
 import { type iCountry, type iState } from '@/types'
 import { onMounted, reactive } from 'vue'
 import BaseSearchableSelect from './BaseSearchableSelect.vue'
-import BaseImage from '../Admin/BaseImage.vue'
+import BaseImage from './BaseImage.vue'
 
 defineProps<{ label: string; required?: boolean; disabled?: boolean }>()
 
