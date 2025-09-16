@@ -40,7 +40,7 @@ const handleSubmit = () => {
         </div>
       </div>
       <fieldset class="fieldset">
-        <legend class="fieldset-legend">Escolha uma imagem</legend>
+        <legend class="fieldset-legend">Escolha um avatar</legend>
         <InputFileImage v-model="profile.avatar" />
       </fieldset>
 
@@ -66,7 +66,7 @@ const handleSubmit = () => {
       />
       <div class="validator-hint">Informe um e-mail válido</div>
       <button type="submit" class="justify-self-end btn btn-success mt-4" :disabled="loading">
-        <span v-if="loading" class="loading loading-spinner"></span>
+        <span v-if="loading" class="loading loading-ring"></span>
         Salvar Dados
       </button>
     </fieldset>

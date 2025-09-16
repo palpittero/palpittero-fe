@@ -2,12 +2,13 @@ import { HTTP_MULTIPART_CONFIG } from '@/constants'
 import { parseMultiPartFormData } from '@/helpers/form'
 import { objectToSearchParams } from '@/helpers/utils'
 import api from '@/services/api'
+import type { iChampionship, iLeague } from '@/types'
 
 const RESOURCE_URI = '/leagues'
 
-const fetchLeagues = () => api.get(RESOURCE_URI)
+const fetchLeagues = (): Promise<iLeague[]> => api.get(RESOURCE_URI)
 
-const fetchLeagueById = (id: number) => api.get(`${RESOURCE_URI}/${id}`)
+const fetchLeagueById = (id: number): Promise<iLeague> => api.get(`${RESOURCE_URI}/${id}`)
 
 const createLeague = (league: any) => {
   const formData = parseMultiPartFormData({ data: league, ignore: ['badge'] })
@@ -33,7 +34,8 @@ const fetchUsers = ({ league, status }: { league: any; status: string }) => {
   return api.get(`${RESOURCE_URI}/${league.id}/users${searchParams}`)
 }
 
-const fetchChampionships = (id: number) => api.get(`${RESOURCE_URI}/${id}/championships`)
+const fetchChampionships = (id: number): Promise<iChampionship[]> =>
+  api.get(`${RESOURCE_URI}/${id}/championships`)
 
 const fetchMyLeagues = ({ status }: { status: string }) => {
   const searchParams = objectToSearchParams({ status })

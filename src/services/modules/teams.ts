@@ -1,15 +1,16 @@
 import { HTTP_MULTIPART_CONFIG } from '@/constants'
 import { parseMultiPartFormData } from '@/helpers/form'
 import api from '@/services/api'
+import type { iCountry, iTeam } from '@/types'
 
 const RESOURCE_URI = '/teams'
 
-const fetchTeams = (query = {}) =>
+const fetchTeams = (query = {}): Promise<iTeam[]> =>
   api.get(RESOURCE_URI, {
     params: query,
   })
 
-const fetchTeamById = (id: number) => api.get(`${RESOURCE_URI}/${id}`)
+const fetchTeamById = (id: number): Promise<iTeam> => api.get(`${RESOURCE_URI}/${id}`)
 
 const createTeam = (team: any) => {
   const formData = parseMultiPartFormData({ data: team, ignore: ['badge'] })
@@ -27,7 +28,7 @@ const deleteTeam = (team: any) => api.delete(`${RESOURCE_URI}/${team.id}`)
 
 const deleteTeams = (ids: number[]) => api.post(`${RESOURCE_URI}/delete-many`, { ids })
 
-const fetchCountries = () => api.get(`${RESOURCE_URI}/countries`)
+const fetchCountries = (): Promise<iCountry[]> => api.get(`${RESOURCE_URI}/countries`)
 
 export default {
   fetchTeams,

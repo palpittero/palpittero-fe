@@ -64,7 +64,7 @@ const handleSubmit = () => {
 
       <div class="validator-hint">Senhas não conferem</div>
       <button type="submit" class="justify-self-end btn btn-success mt-4" :disabled="loading">
-        <span v-if="loading" class="loading loading-spinner"></span>
+        <span v-if="loading" class="loading loading-ring"></span>
         Alterar Senha
       </button>
     </fieldset>

@@ -1,16 +1,20 @@
 import api from '@/services/api'
+import type { iChampionship, iChampionshipGroup, iChampionshipRound, iTeam } from '@/types'
 
 const RESOURCE_URI = '/championships'
 
-const fetchChampionships = () => api.get(RESOURCE_URI)
+const fetchChampionships = (): Promise<iChampionship[]> => api.get(RESOURCE_URI)
 
-const fetchChampionshipById = (id: number) => api.get(`${RESOURCE_URI}/${id}`)
+const fetchChampionshipById = (id: number): Promise<iChampionship> =>
+  api.get(`${RESOURCE_URI}/${id}`)
 
-const fetchRounds = (id: number) => api.get(`${RESOURCE_URI}/${id}/rounds`)
+const fetchRounds = (id: number): Promise<iChampionshipRound[]> =>
+  api.get(`${RESOURCE_URI}/${id}/rounds`)
 
-const fetchTeams = (id: number) => api.get(`${RESOURCE_URI}/${id}/teams`)
+const fetchTeams = (id: number): Promise<iTeam[]> => api.get(`${RESOURCE_URI}/${id}/teams`)
 
-const fetchGroups = (id: number) => api.get(`${RESOURCE_URI}/${id}/groups`)
+const fetchGroups = (id: number): Promise<iChampionshipGroup[]> =>
+  api.get(`${RESOURCE_URI}/${id}/groups`)
 
 const createChampionship = (championship: any) => api.post(`${RESOURCE_URI}`, championship)
 

@@ -1,5 +1,4 @@
 import type { iRole, iUser } from '@/types'
-import { STATUSES } from '.'
 
 export const USER_ROLES: Record<string, iRole> = {
   ADMIN: 'admin',
@@ -18,11 +17,12 @@ export const USER_ROLES_OPTIONS: { id: iRole; name: string }[] = [
 ]
 
 export const USER_MODEL: iUser = {
+  avatar: '',
   name: '',
   email: '',
   password: '',
   passwordConfirmation: '',
   phone: '',
-  role: USER_ROLES.PLAYER,
-  status: STATUSES.ACTIVE,
+  role: 'player',
+  status: 'active',
 }

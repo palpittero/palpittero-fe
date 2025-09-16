@@ -10,6 +10,7 @@ const parseMultiPartFormData = ({
   const formData = new FormData()
 
   for (const key in data) {
+    console.log(key, !ignore.includes(key) && (isArray(data[key]) || isObject(data[key])))
     const value =
       !ignore.includes(key) && (isArray(data[key]) || isObject(data[key]))
         ? JSON.stringify(data[key])

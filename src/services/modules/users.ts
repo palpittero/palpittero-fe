@@ -1,12 +1,13 @@
 import { HTTP_MULTIPART_CONFIG } from '@/constants'
 import { parseMultiPartFormData } from '@/helpers/form'
 import api from '@/services/api'
+import type { iUser } from '@/types'
 
 const RESOURCE_URI = '/users'
 
-const fetchUsers = () => api.get(RESOURCE_URI)
+const fetchUsers = async (): Promise<iUser[]> => api.get(RESOURCE_URI)
 
-const fetchUserById = (id: number) => api.get(`${RESOURCE_URI}/${id}`)
+const fetchUserById = async (id: number): Promise<iUser> => api.get(`${RESOURCE_URI}/${id}`)
 
 const createUser = (user: any) => api.post(`${RESOURCE_URI}`, user)
 

@@ -41,7 +41,7 @@ const handleSubmit = () => {
       />
       <div class="modal-action">
         <form method="dialog" class="flex gap-2">
-          <button class="btn btn-neutral">Cancelar</button>
+          <button class="btn btn">Cancelar</button>
           <button class="btn btn-primary" @click.prevent="handleSubmit">Confirmar</button>
         </form>
       </div>

@@ -1,10 +1,11 @@
 import api from '@/services/api'
+import type { iMatch } from '@/types'
 
 const RESOURCE_URI = '/matches'
 
-const fetchMatches = (query = {}) => api.get(RESOURCE_URI, { params: query })
+const fetchMatches = (query = {}): Promise<iMatch[]> => api.get(RESOURCE_URI, { params: query })
 
-const fetchMatchById = (id: number) => api.get(`${RESOURCE_URI}/${id}`)
+const fetchMatchById = (id: number): Promise<iMatch> => api.get(`${RESOURCE_URI}/${id}`)
 
 const createMatch = (match: any) => api.post(`${RESOURCE_URI}`, match)
 

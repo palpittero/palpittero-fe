@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
-  themes:
-    light --default,
-    dark --prefersdark;
+  themes: emerald --default;
+  /* dark --prefersdark; */
 }
 
-.input {
+.input,
+.select {
   @apply w-full;
 }

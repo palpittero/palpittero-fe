@@ -1,3 +1,6 @@
+import type { iChampionshipGroup, iChampionshipRound } from '@/types'
+import { uniqueId } from 'lodash'
+
 const getChampionshipPositionsInitialValues = (championshipId: number) => ({
   1: {
     championshipId,
@@ -27,4 +30,23 @@ const parseChampionshipInput = (championship: any) => ({
   positions: Object.values(championship?.positions || {}),
 })
 
-export { getChampionshipPositionsInitialValues, parseChampionshipPositions, parseChampionshipInput }
+const createRound = (name: string): iChampionshipRound => ({
+  uuid: uniqueId(),
+  name: name || '',
+  type: 'regularTime',
+  ignoreGroups: false,
+})
+
+const createGroup = (name: string): iChampionshipGroup => ({
+  uuid: uniqueId(),
+  name: name || '',
+  teams: [],
+})
+
+export {
+  getChampionshipPositionsInitialValues,
+  parseChampionshipPositions,
+  parseChampionshipInput,
+  createRound,
+  createGroup,
+}

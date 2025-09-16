@@ -1,7 +1,7 @@
 import type { iRole, iStatus } from './common'
 
 export type iUser = {
-  id?: string
+  id?: number
   name: string
   email: string
   password: string
@@ -14,3 +14,5 @@ export type iUser = {
   createdAt?: string | null
   updatedAt?: string | null
 }
+
+export type iUserOption = iOption & { email: string }

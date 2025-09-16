@@ -4,8 +4,7 @@ import services from '@/services'
 import { USER_ROLES } from '@/constants'
 import type { iUser } from '@/types'
 import { computed, ref } from 'vue'
-import { useLocalStorage, useRafFn } from '@vueuse/core'
-import { useRouter } from 'vue-router'
+import { useLocalStorage } from '@vueuse/core'
 
 export const useAuthStore = defineStore('auth/user', () => {
   const accessToken = useLocalStorage<string>('palpittero/accessToken', '')

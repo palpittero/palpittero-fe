@@ -8,9 +8,11 @@ import usersLeagues from './modules/usersLeagues'
 import championships from './modules/championships'
 import dashboard from './modules/dashboard'
 import championshipsGuesses from './modules/championshipsGuesses'
+import common from './modules/common'
 
 export default {
   auth,
+  common,
   guesses,
   leagues,
   matches,

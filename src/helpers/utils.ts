@@ -1,7 +1,7 @@
-import { pickBy, isNil } from 'lodash'
+import type { iOption } from '@/types'
+import { pickBy, isNil } from 'lodash/fp'
 
 const objectToSearchParams = (params: Record<string, any>): string => {
-  // @ts-expect-error - Lodash types
   const searchParams = new URLSearchParams(pickBy((param: any) => !isNil(param), params)).toString()
 
   return searchParams ? `?${searchParams}` : ''
@@ -14,4 +14,10 @@ const validateEmail = (email: string): RegExpMatchArray | null =>
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     )
 
-export { objectToSearchParams, validateEmail }
+const parseOptions = (data: any[]): iOption[] =>
+  data.map(({ id, name }: { id: number; name: string }) => ({
+    id,
+    name,
+  }))
+
+export { objectToSearchParams, validateEmail, parseOptions }

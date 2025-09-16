@@ -1,32 +1,32 @@
-import { STATUSES } from '.'
+import type { iTeam } from '@/types'
 
 export const TEAM_TYPES = {
   NATIONAL_TEAM: 'nationalTeam',
-  CLUB: 'club'
+  CLUB: 'club',
 }
 
 export const TEAM_TYPES_OPTIONS = [
   {
     id: TEAM_TYPES.NATIONAL_TEAM,
-    name: 'admin.teams.nationalTeam'
+    name: 'admin.teams.nationalTeam',
   },
   {
     id: TEAM_TYPES.CLUB,
-    name: 'admin.teams.club'
-  }
+    name: 'admin.teams.club',
+  },
 ]
 
-export const TEAM_MODEL = {
+export const TEAM_MODEL: iTeam = {
   name: '',
   badge: '',
-  type: TEAM_TYPES.NATIONAL_TEAM,
-  country: '',
   region: '',
-  nationalDivision: 0,
-  status: STATUSES.ACTIVE
+  nationalDivision: '',
+  countryId: '',
+  type: 'club',
+  status: 'active',
 }
 
 export const TEAM_FILTER_MODES = {
   TYPE: 'type',
-  COUNTRY_REGION: 'countryRegion'
+  COUNTRY_REGION: 'countryRegion',
 }
