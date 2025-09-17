@@ -33,10 +33,11 @@ const handleSubmit = () => {
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <fieldset class="fieldset bg-base-200 border-base-300 rounded-box max-w-3xl border p-4">
+    <fieldset class="fieldset bg-white rounded-box max-w-3xl p-4 shadow-xl">
+      <legend class="fieldset-legend text-base">Meus Dados</legend>
       <div class="avatar" v-if="avatar">
         <div class="w-24 rounded-full">
-          <img :src="avatar as string" />
+          <img :src="avatar" />
         </div>
       </div>
       <fieldset class="fieldset">
@@ -44,27 +45,30 @@ const handleSubmit = () => {
         <InputFileImage v-model="profile.avatar" />
       </fieldset>
 
-      <legend class="fieldset-legend">Meus Dados</legend>
-      <label for="name">Nome</label>
-      <input
-        v-model="profile.name"
-        id="name"
-        type="text"
-        class="input validator"
-        required
-        placeholder="Informe o seu nome"
-      />
-      <div class="validator-hint">Nome é obrigatório</div>
-      <label for="email">E-mail</label>
-      <input
-        v-model="profile.email"
-        id="email"
-        type="email"
-        class="input validator"
-        required
-        placeholder="Informe o seu e-mail"
-      />
-      <div class="validator-hint">Informe um e-mail válido</div>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Nome</legend>
+        <input
+          v-model="profile.name"
+          id="name"
+          type="text"
+          class="input validator"
+          required
+          placeholder="Informe o seu nome"
+        />
+        <div class="validator-hint">Nome é obrigatório</div>
+      </fieldset>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">E-mail</legend>
+        <input
+          v-model="profile.email"
+          id="email"
+          type="email"
+          class="input validator"
+          required
+          placeholder="Informe o seu e-mail"
+        />
+        <div class="validator-hint">Informe um e-mail válido</div>
+      </fieldset>
       <button type="submit" class="justify-self-end btn btn-success mt-4" :disabled="loading">
         <span v-if="loading" class="loading loading-ring"></span>
         Salvar Dados

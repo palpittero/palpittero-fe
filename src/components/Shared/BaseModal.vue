@@ -9,6 +9,8 @@ withDefaults(
     disableConfirm?: boolean
     cancelButtonText?: string
     confirmButtonText?: string
+    hideCloseButton?: boolean
+    hideConfirmButton?: boolean
   }>(),
   {
     size: 'xl',
@@ -54,8 +56,8 @@ const handleSubmit = () => {
 
 const sizeClasses = {
   sm: 'max-w-xl',
-  md: 'max-w-2xl',
-  lg: 'max-w-3xl',
+  md: '!max-w-2xl',
+  lg: '!max-w-3xl',
   xl: '!max-w-4xl',
   '2xl': 'max-w-5xl',
 }
@@ -74,11 +76,16 @@ const sizeClasses = {
         <slot />
         <div class="modal-action">
           <form method="dialog" class="flex gap-2">
-            <button class="btn btn-neutral">
+            <button class="btn btn-neutral" v-if="!hideCloseButton">
               {{ cancelButtonText }}
             </button>
           </form>
-          <button type="submit" class="btn btn-primary" :disabled="disableConfirm">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            :disabled="disableConfirm"
+            v-if="!hideConfirmButton"
+          >
             {{ confirmButtonText }}
           </button>
         </div>

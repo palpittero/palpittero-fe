@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { iGuess } from '@/types'
-import BaseImage from '../BaseImage.vue'
+import BaseImage from '@/components/Shared/BaseImage.vue'
 import GuessPointsBadge from '../GuessPointsBadge.vue'
 import { computed } from 'vue'
 

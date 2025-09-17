@@ -3,7 +3,7 @@ import services from '@/services'
 import { type iTeam, type iState } from '@/types'
 import { computed, onMounted, reactive } from 'vue'
 import BaseSearchableSelect from '@/components/Shared/BaseSearchableSelect.vue'
-import BaseImage from '../BaseImage.vue'
+import BaseImage from '@/components/Shared/BaseImage.vue'
 
 const props = withDefaults(
   defineProps<{

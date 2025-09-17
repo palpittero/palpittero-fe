@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { getMimeType } from '@/utils'
 import { computed, onUnmounted, reactive, ref } from 'vue'
-import { CircleStencil, Cropper, Preview } from 'vue-advanced-cropper'
+import { RectangleStencil, Cropper, Preview } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
+import BaseImage from './BaseImage.vue'
 
 defineProps<{
   label?: string
@@ -97,11 +98,7 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <div class="avatar" v-if="imageSrc">
-      <div class="w-24 rounded-full">
-        <img :src="imageSrc" />
-      </div>
-    </div>
+    <BaseImage v-if="imageSrc" :src="imageSrc" class="size-24" />
     <fieldset class="fieldset">
       <legend class="fieldset-legend" v-if="label">{{ label }}</legend>
       <div class="flex flex-col gap-4">
@@ -121,11 +118,12 @@ onUnmounted(() => {
           <Cropper
             class="flex-1 cropper w-[calc(100vw-15rem)] lg:w-xl lg:h-[500px]"
             :src="file.src"
-            :stencil-component="CircleStencil"
+            :stencil-component="RectangleStencil"
+            :stencil-props="{ aspectRatio: 1 }"
             @change="handleCrop"
           />
           <Preview
-            class="flex-none w-24 h-24 rounded-full"
+            class="flex-none w-24 h-24 rounded-box"
             :image="cropResult?.image"
             :coordinates="cropResult?.coordinates"
           />

@@ -2,7 +2,7 @@
 import type { iGuess } from '@/types'
 import MatchScore from '../Matches/MatchScore.vue'
 import FormattedDate from '@/components/Shared/FormattedDate.vue'
-import BaseImage from '../BaseImage.vue'
+import BaseImage from '@/components/Shared/BaseImage.vue'
 
 defineProps<{
   guess: iGuess

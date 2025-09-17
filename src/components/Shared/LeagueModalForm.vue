@@ -16,7 +16,7 @@ import { LEAGUE_MODEL } from '@/constants'
 const toastStore = useToastStore()
 
 const props = defineProps<{
-  leagueId: number
+  leagueId?: number | null
 }>()
 
 const emit = defineEmits<{
@@ -94,8 +94,8 @@ const filterUsers = (option: iOption) => option.id !== league.data.ownerId
   >
     <span v-if="league.loading" class="loading loading-ring loading-xl" />
     <fieldset v-else class="fieldset">
-      <div>
-        <label class="label" for="email">Nome</label>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Nome</legend>
         <input
           id="name"
           type="text"
@@ -105,7 +105,7 @@ const filterUsers = (option: iOption) => option.id !== league.data.ownerId
           v-model="league.data.name"
         />
         <div class="validator-hint">O nome é obrigatório</div>
-      </div>
+      </fieldset>
 
       <!-- @vue-ignore -->
       <InputFileImage v-model="league.data.badge" label="Escolha um escudo" />

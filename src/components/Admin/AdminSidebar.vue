@@ -1,9 +1,6 @@
 <template>
   <div class="col-span-12 lg:col-span-3">
-    <ul class="menu menu-md bg-base-200 rounded-box w-full hidden lg:flex flex-col gap-1">
-      <li class="menu-title">
-        <span>Painel Administrativo</span>
-      </li>
+    <ul class="menu menu-md bg-base-200 rounded-box w-full hidden lg:flex flex-col gap-1 p-0">
       <li>
         <router-link class="py-2" :to="{ name: 'admin.index' }" exact-active-class="menu-active">
           <i class="fa-solid fa-chart-line" />

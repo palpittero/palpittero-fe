@@ -1,8 +1,9 @@
 import api from '@/services/api'
+import type { iUser } from '@/types'
 
 const RESOURCE_URI = '/users-leagues'
 
-const inviteUsers = ({ leagueId, users }: { leagueId: number; users: any }) =>
+const inviteUsers = ({ leagueId, users }: { leagueId: number; users: iUser[] }) =>
   api.post(`${RESOURCE_URI}/invite`, { leagueId, users })
 
 const acceptInvitation = (token: string) => api.post(`${RESOURCE_URI}/acceptInvitation/${token}`)

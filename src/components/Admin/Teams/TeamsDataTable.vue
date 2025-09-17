@@ -3,7 +3,7 @@ import DataStatus from '@/components/Shared/DataStatus.vue'
 import DataTable, { type iColumn } from '@/components/Shared/DataTable.vue'
 
 import type { iState, iTeam } from '@/types'
-import BaseImage from '../BaseImage.vue'
+import BaseImage from '@/components/Shared/BaseImage.vue'
 
 const props = defineProps<{
   state: iState<iTeam[]>

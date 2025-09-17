@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LeagueModalForm from '@/components/Admin/Leagues/LeagueModalForm.vue'
+import LeagueModalForm from '@/components/Shared/LeagueModalForm.vue'
 import LeaguesDataTable from '@/components/Admin/Leagues/LeaguesDataTable.vue'
 import { parseLeagues } from '@/helpers/leagues'
 import services from '@/services'

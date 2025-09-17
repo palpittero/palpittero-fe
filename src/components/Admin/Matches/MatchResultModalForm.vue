@@ -8,7 +8,7 @@ import { useToastStore } from '@/stores'
 import { parseMatch } from '@/helpers/matches'
 import FormattedDate from '@/components/Shared/FormattedDate.vue'
 import { isNil } from 'lodash/fp'
-import BaseImage from '../BaseImage.vue'
+import BaseImage from '@/components/Shared/BaseImage.vue'
 
 const props = defineProps<{
   matchId?: number | null

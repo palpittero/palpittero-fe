@@ -20,7 +20,7 @@ const handleLoaded = () => {
 
 <template>
   <img
-    class="rounded-lg object-contain"
+    class="rounded-box object-contain"
     :src="image"
     @error="handleError"
     @load="handleLoaded"

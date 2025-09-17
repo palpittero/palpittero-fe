@@ -2,7 +2,7 @@
 import type { iMatch } from '@/types'
 import { isNil } from 'lodash/fp'
 import { computed } from 'vue'
-import BaseImage from '../BaseImage.vue'
+import BaseImage from '@/components/Shared/BaseImage.vue'
 
 const props = defineProps<{
   match: iMatch
