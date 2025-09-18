@@ -39,10 +39,8 @@
               <div class="grid md:grid-cols-2 gap-4">
                 <!-- Guess -->
                 <div>
-                  <h5 class="font-medium text-sm text-base-content/70 mb-2">
-                    Seu Palpite:
-                  </h5>
-                  <div class="bg-info/10 rounded-lg p-3">
+                  <h5 class="font-medium text-sm text-base-content/70 mb-2">Seu Palpite:</h5>
+                  <div class="bg-info/10 rounded-box p-3">
                     <div class="flex items-center justify-center gap-4 text-sm">
                       <div class="text-center">
                         <div class="font-medium">{{ example.guess.homeTeam.name }}</div>
@@ -63,10 +61,8 @@
 
                 <!-- Result -->
                 <div>
-                  <h5 class="font-medium text-sm text-base-content/70 mb-2">
-                    Resultado Real:
-                  </h5>
-                  <div class="bg-success/10 rounded-lg p-3">
+                  <h5 class="font-medium text-sm text-base-content/70 mb-2">Resultado Real:</h5>
+                  <div class="bg-success/10 rounded-box p-3">
                     <div class="flex items-center justify-center gap-4 text-sm">
                       <div class="text-center">
                         <div class="font-medium">{{ example.result.homeTeam.name }}</div>

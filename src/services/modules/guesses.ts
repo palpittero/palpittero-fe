@@ -1,10 +1,11 @@
 import api from '@/services/api'
+import type { iGuess } from '@/types'
 
 const RESOURCE_URI = '/guesses'
 
 const fetchGuesses = (params = {}) => api.get(RESOURCE_URI, { params })
 
-const fetchMyGuesses = (params = {}) => api.get(`${RESOURCE_URI}/my`, { params })
+const fetchMyGuesses = (params = {}): Promise<iGuess[]> => api.get(`${RESOURCE_URI}/my`, { params })
 
 const registerGuesses = async ({
   matchesGuesses,

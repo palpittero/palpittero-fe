@@ -1,5 +1,6 @@
 import { objectToSearchParams } from '@/helpers/utils'
 import api from '@/services/api'
+import type { iChampionshipGuess } from '@/types'
 
 const RESOURCE_URI = '/championships-guesses'
 
@@ -10,8 +11,8 @@ const fetchChampionshipsGuesses = ({
 }: {
   championshipId: number
   leagueId: number
-  userId: number
-}) => {
+  userId?: number
+}): Promise<iChampionshipGuess[]> => {
   const searchParams = objectToSearchParams({ userId })
 
   return api.get(`${RESOURCE_URI}/${championshipId}/${leagueId}${searchParams}`)

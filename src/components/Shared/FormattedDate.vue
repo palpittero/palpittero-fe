@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div>
+  <span>
     {{
       new Date(date)
         .toLocaleString('pt-BR', {
@@ -18,7 +18,7 @@ defineProps<{
         })
         .replace(',', ' -')
     }}
-  </div>
+  </span>
   <!-- <div class="text-sm opacity-50">
     {{
       new Date(date).toLocaleString('pt-BR', {

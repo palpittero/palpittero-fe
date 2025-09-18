@@ -70,7 +70,7 @@ onMounted(loadTeams)
     <template #option="{ option }">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <BaseImage :src="option.badge" class="size-5" />
+          <BaseImage :src="option.badge" class="size-5 rounded-md" />
           <span :class="{ 'text-primary': option.id === teamId }">{{ option.name }}</span>
         </div>
         <i v-if="option.id === teamId" class="fa-solid fa-check text-primary" />

@@ -4,7 +4,7 @@ export type iRole = 'system' | 'admin' | 'player'
 
 export type iState<T> = {
   loading: boolean
-  error: string | null
+  error: Error | string | null
   data: T
 }
 

@@ -19,7 +19,7 @@ const appRoutes: RouteRecordRaw[] = [
       {
         path: 'liga/:leagueId/palpites',
         name: 'app.guesses',
-        component: () => import('@/views/App/GuessesView.vue'),
+        component: () => import('@/views/App/LeagueGuessesView.vue'),
       },
       {
         path: 'regras',

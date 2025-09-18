@@ -1,13 +1,14 @@
 import type { iStatus } from './common'
 import type { iGuess } from './guesses'
 import type { iTeam } from './teams'
+import type { iUser } from './user'
 
 export type iChampionshipRoundTime = 'regularTime' | 'extraTime' | 'penalties'
 
 export type iChampionshipRoundType = 'simple' | 'detailed'
 
 export type iChampionship = {
-  id?: number
+  id: number
   name: string
   year: number | null
   status: iStatus
@@ -20,9 +21,11 @@ export type iChampionship = {
   createdAt?: string
   updatedAt?: string
   guesses: iGuess[]
+  positions?: any[]
 
   // UI
   selected?: boolean
+  users?: iUser[]
 }
 
 export type iChampionshipRound = {
@@ -31,6 +34,10 @@ export type iChampionshipRound = {
   name: string
   type: iChampionshipRoundTime
   ignoreGroups: boolean
+  championshipId: number
+
+  // UI
+  current?: boolean
 }
 
 export type iChampionshipGroup = {

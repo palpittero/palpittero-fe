@@ -1,9 +1,7 @@
 <template>
   <div v-if="visible" class="modal modal-open">
     <div class="modal-box max-w-2xl">
-      <h3 class="font-bold text-lg mb-4">
-        Copiar Palpites para {{ league.name }}
-      </h3>
+      <h3 class="font-bold text-lg mb-4">Copiar Palpites para {{ league.name }}</h3>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <!-- Source league (read-only) -->
@@ -11,13 +9,7 @@
           <label class="label">
             <span class="label-text font-medium">Liga de origem</span>
           </label>
-          <input
-            type="text"
-            :value="league.name"
-            class="input input-bordered"
-            readonly
-            disabled
-          />
+          <input type="text" :value="league.name" class="input input-bordered" readonly disabled />
         </div>
 
         <!-- Target league selection -->
@@ -46,7 +38,7 @@
           <label class="label">
             <span class="label-text font-medium">Campeonatos</span>
           </label>
-          <div class="space-y-2 max-h-48 overflow-y-auto border border-base-300 rounded-lg p-3">
+          <div class="space-y-2 max-h-48 overflow-y-auto border border-base-300 rounded-box p-3">
             <label
               v-for="championship in championships"
               :key="championship.id"
@@ -105,7 +97,10 @@
         </div>
 
         <!-- Summary -->
-        <div v-if="copyGuesses.targetLeagueId && copyGuesses.championshipsIds.length > 0" class="alert">
+        <div
+          v-if="copyGuesses.targetLeagueId && copyGuesses.championshipsIds.length > 0"
+          class="alert"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -124,8 +119,13 @@
             <ul class="list-disc list-inside mt-1 space-y-1">
               <li>{{ copyGuesses.championshipsIds.length }} campeonato(s) selecionado(s)</li>
               <li v-if="copyGuesses.copyMatchesGuesses">Palpites de jogos serão copiados</li>
-              <li v-if="copyGuesses.copyChampionshipsGuesses">Palpites de campeonatos serão copiados</li>
-              <li v-if="!copyGuesses.copyMatchesGuesses && !copyGuesses.copyChampionshipsGuesses" class="text-warning">
+              <li v-if="copyGuesses.copyChampionshipsGuesses">
+                Palpites de campeonatos serão copiados
+              </li>
+              <li
+                v-if="!copyGuesses.copyMatchesGuesses && !copyGuesses.copyChampionshipsGuesses"
+                class="text-warning"
+              >
                 Nenhuma opção de cópia selecionada
               </li>
             </ul>
@@ -134,9 +134,7 @@
       </form>
 
       <div class="modal-action">
-        <button type="button" class="btn btn-ghost" @click="handleHide">
-          Cancelar
-        </button>
+        <button type="button" class="btn btn-ghost" @click="handleHide">Cancelar</button>
         <button
           type="button"
           class="btn btn-primary gap-2"
@@ -162,15 +160,7 @@
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import services from '@/services'
 
-interface League {
-  id: number
-  name: string
-}
-
-interface Championship {
-  id: number
-  name: string
-}
+import type { iLeague, iChampionship } from '@/types'
 
 interface CopyGuessesData {
   sourceLeagueId: number
@@ -182,8 +172,8 @@ interface CopyGuessesData {
 
 const props = defineProps<{
   visible: boolean
-  league: League
-  championships: Championship[]
+  league: iLeague
+  championships: iChampionship[]
 }>()
 
 const emits = defineEmits<{
@@ -191,17 +181,17 @@ const emits = defineEmits<{
   hide: []
 }>()
 
-const availableLeagues = reactive<{ loading: boolean; data: League[] }>({
+const availableLeagues = reactive<{ loading: boolean; data: iLeague[] }>({
   loading: false,
-  data: []
+  data: [],
 })
 
 const copyGuesses = ref<CopyGuessesData>({
-  sourceLeagueId: props.league.id,
+  sourceLeagueId: props.league.id || 0,
   targetLeagueId: null,
   championshipsIds: [],
   copyMatchesGuesses: false,
-  copyChampionshipsGuesses: false
+  copyChampionshipsGuesses: false,
 })
 
 const isSubmitDisabled = computed(() => {
@@ -218,7 +208,7 @@ const loadAvailableLeagues = async () => {
     const leagues = await services.leagues.fetchLeagues()
 
     // Filter out the current league
-    availableLeagues.data = leagues.filter((league: League) => league.id !== props.league.id)
+    availableLeagues.data = leagues.filter((league: iLeague) => league.id !== props.league.id)
   } catch (error) {
     console.error('Error loading available leagues:', error)
   } finally {
@@ -235,11 +225,11 @@ const handleSubmit = () => {
 const handleHide = () => {
   // Reset form
   copyGuesses.value = {
-    sourceLeagueId: props.league.id,
+    sourceLeagueId: props.league.id || 0,
     targetLeagueId: null,
     championshipsIds: [],
     copyMatchesGuesses: false,
-    copyChampionshipsGuesses: false
+    copyChampionshipsGuesses: false,
   }
 
   emits('hide')
@@ -252,9 +242,12 @@ onMounted(() => {
 })
 
 // Load leagues when modal becomes visible
-watch(() => props.visible, (visible) => {
-  if (visible) {
-    loadAvailableLeagues()
-  }
-})
+watch(
+  () => props.visible,
+  (visible) => {
+    if (visible) {
+      loadAvailableLeagues()
+    }
+  },
+)
 </script>

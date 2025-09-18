@@ -70,7 +70,7 @@ const sizeClasses = {
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
       <form v-if="isOpen" class="w-full shrink-0" @submit.prevent="handleSubmit">
-        <h3 class="text-lg font-bold">
+        <h3 class="text-xl font-bold mb-3">
           {{ title }}
         </h3>
         <slot />

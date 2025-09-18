@@ -1,4 +1,4 @@
-import type { iChampionship, iGuess } from '@/types'
+import type { iChampionship, iChampionshipGuess, iGuess, iMatchGuess } from '@/types'
 
 const parseMatchesGuesses = (guesses: iGuess[]): iChampionship[] => {
   const championships = guesses.reduce(
@@ -21,7 +21,7 @@ const parseMatchesGuesses = (guesses: iGuess[]): iChampionship[] => {
   return Object.values(championships) as iChampionship[]
 }
 
-const parseChampionshipsGuesses = (guesses: iGuess[]) => {
+const parseChampionshipsGuesses = (guesses: iGuess[]): iChampionship[] => {
   const championships = guesses.reduce((acc: Record<string, iChampionship>, guess: iGuess) => {
     const { championship } = guess
     const guesses = acc[championship.id!]?.users?.[guess.user.id]?.guesses || []
@@ -47,37 +47,107 @@ const parseChampionshipsGuesses = (guesses: iGuess[]) => {
   }))
 }
 
-const parseChampionshipGuesses = (championshipGuesses) =>
+const parseChampionshipGuesses = (championshipGuesses: iChampionshipGuess[]) =>
   championshipGuesses.reduce(
-    (acc, championshipGuess) => ({
+    (acc: Record<number, iChampionshipGuess>, championshipGuess: iChampionshipGuess) => ({
       ...acc,
       [championshipGuess.position]: championshipGuess,
     }),
     {},
   )
 
-const getChampionshipGuessesInitialValues = ({ championshipId, leagueId, userId }) => ({
-  1: {
-    championshipId,
-    leagueId,
-    userId,
-    team: null,
-    teamId: null,
-    position: 1,
-  },
-  2: {
-    championshipId,
-    leagueId,
-    userId,
-    team: null,
-    teamId: null,
-    position: 2,
-  },
-})
+const initChampionshipPositionsGuesses = ({
+  championshipId,
+  leagueId,
+  userId,
+  championshipGuesses,
+}: {
+  championshipId: number
+  leagueId: number
+  userId: number
+  championshipGuesses: iChampionshipGuess[]
+}): Record<number, iChampionshipGuess> => {
+  return {
+    1: {
+      championshipId,
+      leagueId,
+      userId,
+      team: null,
+      teamId: null,
+      position: 1,
+    },
+    2: {
+      championshipId,
+      leagueId,
+      userId,
+      team: null,
+      teamId: null,
+      position: 2,
+    },
+    ...parseChampionshipGuesses(championshipGuesses),
+  }
+}
+
+const prepareChampionshipsGuesses = (championshipsGuesses: Record<number, iChampionshipGuess>) =>
+  Object.values(championshipsGuesses).reduce(
+    (acc: iChampionshipGuess[], championshipGuessesMap: Record<number, iChampionshipGuess>) => {
+      const championshipGuesses = Object.values(championshipGuessesMap).map(
+        (championshipGuess: any) => ({
+          ...championshipGuess,
+          team: {
+            id: championshipGuess.teamId,
+          },
+        }),
+      )
+
+      return [...acc, ...championshipGuesses]
+    },
+    [],
+  )
+
+const hasInvalidMatchesGuesses = ({
+  championships,
+  matchesGuesses,
+}: {
+  championships: iChampionship[]
+  matchesGuesses: iMatchGuess[]
+}) => {
+  // Check if there are any championships that enable guesses but have no position guesses
+  const hasEnabledChampionships = championships.some(({ enableGuesses }) => !!enableGuesses)
+
+  if (!hasEnabledChampionships && matchesGuesses.length === 0) {
+    return true
+  }
+
+  // Check if any guess has invalid data
+  return matchesGuesses.some((guess: any) => {
+    const hasRegularTimeGoals =
+      guess.homeTeamRegularTimeGoals !== null && guess.awayTeamRegularTimeGoals !== null
+
+    if (!hasRegularTimeGoals) return true
+
+    // Check penalties validation for draw games
+    const isDraw = guess.homeTeamRegularTimeGoals === guess.awayTeamRegularTimeGoals
+    const hasPenaltiesRound =
+      guess.match?.round?.type === 'penalties' || guess.match?.round?.type === 'extra_time'
+
+    if (isDraw && hasPenaltiesRound) {
+      const hasPenalties =
+        guess.homeTeamPenaltiesTimeGoals !== null && guess.awayTeamPenaltiesTimeGoals !== null
+      const penaltiesDraw = guess.homeTeamPenaltiesTimeGoals === guess.awayTeamPenaltiesTimeGoals
+
+      return !hasPenalties || penaltiesDraw
+    }
+
+    return false
+  })
+}
 
 export {
   parseMatchesGuesses,
   parseChampionshipsGuesses,
   parseChampionshipGuesses,
-  getChampionshipGuessesInitialValues,
+  initChampionshipPositionsGuesses,
+  prepareChampionshipsGuesses,
+  hasInvalidMatchesGuesses,
 }

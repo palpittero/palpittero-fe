@@ -4,7 +4,13 @@
     <div class="breadcrumbs text-sm">
       <ul>
         <li><router-link to="/" class="link link-hover">Home</router-link></li>
-        <li><router-link :to="{ name: 'app.guesses', params: { leagueId } }" class="link link-hover">{{ league.data.name || 'Liga' }}</router-link></li>
+        <li>
+          <router-link
+            :to="{ name: 'app.guesses', params: { leagueId } }"
+            class="link link-hover"
+            >{{ league.data.name || 'Liga' }}</router-link
+          >
+        </li>
         <li>Palpite do Jogo</li>
       </ul>
     </div>
@@ -18,9 +24,7 @@
               <span class="text-primary text-3xl">⚽</span>
               Palpite do Jogo
             </h1>
-            <p class="text-base-content/70 mt-1">
-              Liga: {{ league.data.name || 'Carregando...' }}
-            </p>
+            <p class="text-base-content/70 mt-1">Liga: {{ league.data.name || 'Carregando...' }}</p>
           </div>
 
           <div class="flex gap-2">
@@ -30,7 +34,12 @@
               @click="handleSaveGuess"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
               Salvar Palpite
             </button>
@@ -62,25 +71,25 @@
 
           <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <div class="stat bg-base-200/50 rounded-lg">
+              <div class="stat bg-base-200/50 rounded-box">
                 <div class="stat-title">Campeonato</div>
                 <div class="stat-value text-lg">{{ match.data.championship?.name || 'N/A' }}</div>
               </div>
             </div>
             <div>
-              <div class="stat bg-base-200/50 rounded-lg">
+              <div class="stat bg-base-200/50 rounded-box">
                 <div class="stat-title">Rodada</div>
                 <div class="stat-value text-lg">{{ match.data.round?.name || 'N/A' }}</div>
               </div>
             </div>
             <div>
-              <div class="stat bg-base-200/50 rounded-lg">
+              <div class="stat bg-base-200/50 rounded-box">
                 <div class="stat-title">Data</div>
                 <div class="stat-value text-lg">{{ formatMatchDate(match.data.date) }}</div>
               </div>
             </div>
             <div>
-              <div class="stat bg-base-200/50 rounded-lg">
+              <div class="stat bg-base-200/50 rounded-box">
                 <div class="stat-title">Status</div>
                 <div class="stat-value text-lg">
                   <div class="badge" :class="getStatusBadgeClass(match.data.status)">
@@ -107,8 +116,14 @@
             <div class="text-center md:col-span-2">
               <div class="avatar mb-3">
                 <div class="w-16 rounded-full bg-base-200">
-                  <img v-if="match.data.homeTeam?.logo" :src="match.data.homeTeam.logo" :alt="match.data.homeTeam.name" />
-                  <div v-else class="w-full h-full flex items-center justify-center text-2xl">🏠</div>
+                  <img
+                    v-if="match.data.homeTeam?.logo"
+                    :src="match.data.homeTeam.logo"
+                    :alt="match.data.homeTeam.name"
+                  />
+                  <div v-else class="w-full h-full flex items-center justify-center text-2xl">
+                    🏠
+                  </div>
                 </div>
               </div>
               <h3 class="font-bold text-lg">{{ match.data.homeTeam?.name || 'Time da Casa' }}</h3>
@@ -144,8 +159,14 @@
             <div class="text-center md:col-span-2">
               <div class="avatar mb-3">
                 <div class="w-16 rounded-full bg-base-200">
-                  <img v-if="match.data.awayTeam?.logo" :src="match.data.awayTeam.logo" :alt="match.data.awayTeam.name" />
-                  <div v-else class="w-full h-full flex items-center justify-center text-2xl">🛫</div>
+                  <img
+                    v-if="match.data.awayTeam?.logo"
+                    :src="match.data.awayTeam.logo"
+                    :alt="match.data.awayTeam.name"
+                  />
+                  <div v-else class="w-full h-full flex items-center justify-center text-2xl">
+                    🛫
+                  </div>
                 </div>
               </div>
               <h3 class="font-bold text-lg">{{ match.data.awayTeam?.name || 'Time Visitante' }}</h3>
@@ -194,14 +215,24 @@
           <!-- Guess Validation -->
           <div v-if="!canMakeGuess" class="alert alert-warning mt-6">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <span>Palpites não são mais aceitos para este jogo</span>
           </div>
 
           <div v-else-if="!isValidGuess" class="alert alert-error mt-6">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <span>{{ validationMessage }}</span>
           </div>
@@ -209,7 +240,12 @@
           <!-- Points Information -->
           <div class="alert alert-info mt-6">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <div>
               <h3 class="font-bold">Sistema de Pontuação:</h3>
@@ -251,19 +287,19 @@ const authStore = useAuthStore()
 // Reactive data
 const league = reactive({
   loading: false,
-  data: {} as any
+  data: {} as any,
 })
 
 const match = reactive({
   loading: false,
-  data: {} as any
+  data: {} as any,
 })
 
 const guess = ref({
   homeTeamGoals: null as number | null,
   awayTeamGoals: null as number | null,
   homeTeamPenalties: null as number | null,
-  awayTeamPenalties: null as number | null
+  awayTeamPenalties: null as number | null,
 })
 
 const isLoading = ref(false)
@@ -322,11 +358,7 @@ const validationMessage = computed(() => {
 // Methods
 const loadData = async () => {
   try {
-    await Promise.all([
-      loadLeague(),
-      loadMatch(),
-      loadExistingGuess()
-    ])
+    await Promise.all([loadLeague(), loadMatch(), loadExistingGuess()])
   } catch (error) {
     console.error('Error loading data:', error)
   }
@@ -361,7 +393,7 @@ const loadExistingGuess = async () => {
     const params = {
       leagueId: leagueId.value,
       matchId: matchId.value,
-      userId: authStore.loggedUser?.id
+      userId: authStore.loggedUser?.id,
     }
     const existingGuesses = await services.guesses.fetchMyGuesses(params)
 
@@ -371,7 +403,7 @@ const loadExistingGuess = async () => {
         homeTeamGoals: existingGuess.homeTeamRegularTimeGoals || null,
         awayTeamGoals: existingGuess.awayTeamRegularTimeGoals || null,
         homeTeamPenalties: existingGuess.homeTeamPenaltiesTimeGoals || null,
-        awayTeamPenalties: existingGuess.awayTeamPenaltiesTimeGoals || null
+        awayTeamPenalties: existingGuess.awayTeamPenaltiesTimeGoals || null,
       }
     }
   } catch (error) {
@@ -387,22 +419,22 @@ const formatMatchDate = (dateString: string) => {
 
 const getStatusText = (status: string) => {
   const statusMap: Record<string, string> = {
-    'SCHEDULED': 'Agendado',
-    'LIVE': 'Ao vivo',
-    'FINISHED': 'Finalizado',
-    'POSTPONED': 'Adiado',
-    'CANCELLED': 'Cancelado'
+    SCHEDULED: 'Agendado',
+    LIVE: 'Ao vivo',
+    FINISHED: 'Finalizado',
+    POSTPONED: 'Adiado',
+    CANCELLED: 'Cancelado',
   }
   return statusMap[status] || status
 }
 
 const getStatusBadgeClass = (status: string) => {
   const classMap: Record<string, string> = {
-    'SCHEDULED': 'badge-info',
-    'LIVE': 'badge-success',
-    'FINISHED': 'badge-neutral',
-    'POSTPONED': 'badge-warning',
-    'CANCELLED': 'badge-error'
+    SCHEDULED: 'badge-info',
+    LIVE: 'badge-success',
+    FINISHED: 'badge-neutral',
+    POSTPONED: 'badge-warning',
+    CANCELLED: 'badge-error',
   }
   return classMap[status] || 'badge-neutral'
 }
@@ -418,12 +450,12 @@ const handleSaveGuess = async () => {
       homeTeamRegularTimeGoals: guess.value.homeTeamGoals,
       awayTeamRegularTimeGoals: guess.value.awayTeamGoals,
       homeTeamPenaltiesTimeGoals: guess.value.homeTeamPenalties,
-      awayTeamPenaltiesTimeGoals: guess.value.awayTeamPenalties
+      awayTeamPenaltiesTimeGoals: guess.value.awayTeamPenalties,
     }
 
     await services.guesses.registerGuesses({
       matchesGuesses: [matchGuess],
-      championshipsGuesses: []
+      championshipsGuesses: [],
     })
 
     toastStore.success('Palpite salvo com sucesso!')

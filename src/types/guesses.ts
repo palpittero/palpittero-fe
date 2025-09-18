@@ -2,6 +2,7 @@ import type { iChampionship } from './championships'
 import type { iStatus } from './common'
 import type { iLeague } from './leagues'
 import type { iMatch } from './matches'
+import type { iTeam } from './teams'
 import type { iUser } from './user'
 
 export type iGuess = {
@@ -18,8 +19,10 @@ export type iGuess = {
   championship: iChampionship
   groupName: string
   user: Pick<iUser, 'id' | 'name' | 'avatar'>
+  userId: number
   league: Pick<iLeague, 'id' | 'name' | 'badge' | 'private'>
   match: iMatch
+  matchId: number
   // match: {
   //   id: 1
   //   date: '2022-05-30T17:00:00.000Z'
@@ -55,7 +58,35 @@ export type iGuess = {
   // }
 }
 
+export type iMatchGuess = {
+  id?: number
+  matchId: number
+  homeTeamRegularTimeGoals: number | null
+  awayTeamRegularTimeGoals: number | null
+  homeTeamPenaltiesTimeGoals: number | null
+  awayTeamPenaltiesTimeGoals: number | null
+  points?: number | null
+}
+
 export type iUnprocessedGuess = {
   matchesGuesses: iGuess[]
   championshipsGuesses: iGuess[]
+}
+
+export type iChampionshipGuess = {
+  id?: number
+  position: number
+  team: Pick<iTeam, 'id' | 'name' | 'badge'> | null
+  teamId?: number | null
+  championshipId: number
+  championship?: Pick<iChampionship, 'id' | 'name' | 'positions' | 'year'>
+  championshipStatus?: iStatus
+  leagueId: number
+  league?: Pick<iLeague, 'id' | 'name' | 'badge'>
+  user?: Pick<iUser, 'id' | 'name' | 'name' | 'avatar'>
+  userId: number
+  updatedAt?: string
+  points?: number | null
+  createdAt?: string
+  leagueStatus?: iStatus
 }

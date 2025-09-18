@@ -4,7 +4,7 @@ import { type RouteLocationRaw } from 'vue-router'
 export type iBreadcrumbItem = {
   label: string
   icon?: string
-  to: RouteLocationRaw | string
+  to?: RouteLocationRaw | string
   active?: boolean
 }
 
@@ -14,13 +14,14 @@ defineProps<{
 </script>
 
 <template>
-  <div class="breadcrumbs">
+  <div class="breadcrumbs text-sm">
     <ul>
       <li v-for="item in items" :key="item.label">
-        <i v-if="item.icon" :class="item.icon" />
-        <router-link :to="item.to" exact-active-class="pointer-events-none">{{
-          item.label
-        }}</router-link>
+        <router-link v-if="item.to" :to="item.to" exact-active-class="pointer-events-none">
+          <i v-if="item.icon" :class="item.icon" />
+          {{ item.label }}
+        </router-link>
+        <template v-else>{{ item.label }}</template>
       </li>
     </ul>
   </div>

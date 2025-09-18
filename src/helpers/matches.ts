@@ -1,4 +1,4 @@
-import { isNil, pick } from 'lodash/fp'
+import { isNil, orderBy, pick } from 'lodash/fp'
 import { MATCH_STATUSES } from '@/constants/matches'
 import type { iMatch, iMatchDetail } from '@/types'
 import { uniqueId } from 'lodash'
@@ -50,4 +50,18 @@ const parseMatch = (match: iMatch): iMatch => {
   }
 }
 
-export { isMatchScheduled, isMatchFinished, matchHasNoResult, createMatchDetail, parseMatch }
+const orderMatchesByStatusAndDate = (matches: iMatch[]) =>
+  orderBy(
+    (match: iMatch) => (match.status === 'scheduled' ? match.status : match.date),
+    'desc',
+    matches,
+  )
+
+export {
+  isMatchScheduled,
+  isMatchFinished,
+  matchHasNoResult,
+  createMatchDetail,
+  parseMatch,
+  orderMatchesByStatusAndDate,
+}
