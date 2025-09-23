@@ -42,7 +42,7 @@ export type iMatchDetail = {
   homeTeamId?: number | null
   awayTeam?: iTeam | null
   awayTeamId?: number | null
-  groupId?: number | null
+  groupId: number
   group: iChampionshipGroup | null
   date?: string | null
 }

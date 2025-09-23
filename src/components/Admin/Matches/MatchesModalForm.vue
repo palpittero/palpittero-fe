@@ -18,7 +18,13 @@ const handleAddMatch = () => {
 }
 
 const handleRemoveMatch = (detail: iMatchDetail) => {
-  match.value.details = match.value.details?.filter(({ id }) => id !== detail.id)
+  match.value.details = match.value.details?.filter(({ uuid }) => uuid !== detail.uuid)
+}
+
+const handleEditMatch = (detail: iMatchDetail) => {
+  selectedMatchDetail.value = detail
+  // @ts-ignore
+  match_detail_modal_form.showModal()
 }
 
 const selectedMatchDetail = ref<iMatchDetail>({} as iMatchDetail)
@@ -35,6 +41,11 @@ const handleRoundChange = (round: iMatchRound) => {
 
 const handleChampionshipChange = (championship: iChampionship) => {
   match.value.championship = championship
+  match.value.roundId = null
+  match.value.groupId = null
+  match.value.homeTeamId = null
+  match.value.awayTeamId = null
+  match.value.details = []
 }
 </script>
 
@@ -49,6 +60,7 @@ const handleChampionshipChange = (championship: iChampionship) => {
 
     <ChampionshipRoundSelect
       v-if="match.championshipId"
+      :key="match.championshipId"
       v-model="match.roundId"
       label="Rodada"
       required
@@ -59,34 +71,40 @@ const handleChampionshipChange = (championship: iChampionship) => {
     <fieldset v-if="match.roundId" class="fieldset">
       <legend class="fieldset-legend">Partidas</legend>
 
-      <div class="flex flex-col gap-1">
-        <div class="alert alert-warning alert-soft" v-if="match.details?.length === 0">
-          <span> <i class="fa-solid fa-warning" /> Nenhuma partida adicionada </span>
-        </div>
+      <div>
+        <div class="flex flex-col gap-4">
+          <div v-if="match.details?.length === 0" class="flex flex-col">
+            <div class="alert alert-warning alert-soft">
+              <span> <i class="fa-solid fa-warning" /> Nenhuma partida adicionada </span>
+            </div>
+            <input
+              type="number"
+              class="input validator hidden"
+              :value="match.details?.length"
+              required
+              :min="1"
+            />
+            <div class="validator-hint">Adicione pelo menos uma partida</div>
+          </div>
 
-        <input
-          type="number"
-          class="input validator hidden"
-          :value="match.details?.length"
-          required
-          :min="1"
-        />
-        <div class="validator-hint" v-if="match.details?.length === 0">
-          Adicione pelo menos uma partida
-        </div>
+          <MatchesModalFormDetails
+            v-else
+            :details="match.details!"
+            @edit="handleEditMatch"
+            @remove="handleRemoveMatch"
+          />
 
-        <MatchesModalFormDetails v-else :details="match.details!" @remove="handleRemoveMatch" />
+          <button class="btn btn-primary btn-outline" @click="handleAddMatch" type="button">
+            <i class="fa-solid fa-plus" />
+            Adicionar Partida
+          </button>
+        </div>
 
         <MatchDetailModalForm
           v-model="selectedMatchDetail"
-          :championship-id="match.championshipId!"
-          @submit="handleSubmitMatchDetail"
+          :championship="match.championship!"
+          @confirm="handleSubmitMatchDetail"
         />
-
-        <button class="btn btn-primary btn-outline" @click="handleAddMatch" type="button">
-          <i class="fa-solid fa-plus" />
-          Adicionar Partida
-        </button>
       </div>
     </fieldset>
   </fieldset>

@@ -10,6 +10,7 @@ import { onMounted, reactive, ref } from 'vue'
 const matchId = ref<number>(0)
 
 const handleAdd = () => {
+  matchId.value = 0
   // @ts-ignore
   match_modal_form.showModal()
 }
@@ -27,6 +28,7 @@ const handleUpdateResult = async (row: iMatch) => {
 }
 
 const handleSuccess = () => {
+  console.log('handleSuccess')
   // @ts-ignore
   match_modal_form.close()
   // @ts-ignore

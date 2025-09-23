@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { iChampionshipGroup, iMatchDetail, iState, iTeam } from '@/types'
+import type { iChampionship, iChampionshipGroup, iMatchDetail, iState, iTeam } from '@/types'
 import ChampionshipGroupSelect from '../Championships/ChampionshipGroupSelect.vue'
 import BaseModal from '@/components/Shared/BaseModal.vue'
 import services from '@/services'
@@ -7,31 +7,35 @@ import TeamSelect from '../Teams/TeamSelect.vue'
 import { reactive } from 'vue'
 
 const props = defineProps<{
-  championshipId: number
+  championship: iChampionship
 }>()
 
 const emit = defineEmits<{
-  submit: [matchDetail: iMatchDetail]
+  confirm: [matchDetail: iMatchDetail]
 }>()
 
 const matchDetail = defineModel<iMatchDetail>({ required: true })
 
 const handleSubmit = () => {
-  emit('submit', matchDetail.value)
+  emit('confirm', matchDetail.value)
 }
 
-const filterHomeTeams = ({ teams, matchDetail }: { teams: iTeam[]; matchDetail: iMatchDetail }) =>
+const filterHomeTeams = (teams: iTeam[]): iTeam[] =>
   teams.filter(
     (team) =>
-      team.id !== matchDetail.awayTeamId &&
-      matchDetail.group?.teams.some(({ id }) => id === team.id),
+      team.id !== matchDetail.value.awayTeamId &&
+      (!props.championship.hasGroups ||
+        (props.championship.hasGroups &&
+          matchDetail.value.group?.teams.some(({ id }) => id === team.id))),
   )
 
 const filterAwayTeams = ({ teams, matchDetail }: { teams: iTeam[]; matchDetail: iMatchDetail }) =>
   teams.filter(
     (team) =>
       team.id !== matchDetail.homeTeamId &&
-      matchDetail.group?.teams.some(({ id }) => id === team.id),
+      (!props.championship.hasGroups ||
+        (props.championship.hasGroups &&
+          matchDetail.group?.teams.some(({ id }) => id === team.id))),
   )
 
 const teams = reactive<iState<iTeam[]>>({
@@ -42,12 +46,14 @@ const teams = reactive<iState<iTeam[]>>({
 
 const handleOpen = async () => {
   teams.loading = true
-  teams.data = await services.championships.fetchTeams(props.championshipId)
+  teams.data = await services.championships.fetchTeams(props.championship.id)
   teams.loading = false
 }
 
 const handleGroupChange = (group: iChampionshipGroup) => {
   matchDetail.value.group = group
+  matchDetail.value.homeTeamId = null
+  matchDetail.value.awayTeamId = null
 }
 
 const handleHomeTeamChange = (team: iTeam) => {
@@ -68,19 +74,24 @@ const handleAwayTeamChange = (team: iTeam) => {
     @open="handleOpen"
   >
     <ChampionshipGroupSelect
-      v-model="matchDetail.group"
+      v-if="championship?.hasGroups"
+      v-model="matchDetail.groupId"
       label="Grupo"
       required
-      :championship-id="championshipId"
+      :championship-id="championship.id"
       @change="handleGroupChange"
     />
 
-    <div class="flex w-full gap-4" v-if="matchDetail.group">
+    <div
+      class="flex w-full gap-4"
+      v-if="!championship?.hasGroups || (championship?.hasGroups && matchDetail.group)"
+      :key="matchDetail.groupId"
+    >
       <div class="grid grid-cols-12 w-full gap-4">
         <TeamSelect
           id="home-team-select"
           v-model="matchDetail.homeTeamId"
-          :filter="(teams: iTeam[]) => filterHomeTeams({ teams, matchDetail })"
+          :filter="filterHomeTeams"
           :teams="teams.data"
           label="Time da Casa"
           class="col-span-12 lg:col-span-4"

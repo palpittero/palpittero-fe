@@ -60,6 +60,8 @@ const filteredOptions = computed(() =>
   }),
 )
 
+const selectedOption = computed(() => props.options.find((option) => option.id === model.value))
+
 watch(
   () => props.options,
   (current) => {
@@ -81,8 +83,6 @@ const handleSearchFocus = () => {
 
   isOpen.value = true
 }
-
-const selectedOption = computed(() => props.options.find((option) => option.id === model.value))
 
 const handleSearchBlur = () => {
   document.getElementById(`selected-option-${props.id}`)?.classList.remove('text-base-content/50')
@@ -120,14 +120,14 @@ const handleSearchBlur = () => {
 
       <i
         v-if="isClearable"
-        class="fa-solid fa-xmark cursor-pointer absolute right-2 top-3.5 z-40"
+        class="fa-solid fa-xmark cursor-pointer absolute right-2 top-3.5"
         @click="handleClear"
       />
 
       <ul
         v-if="isOpen"
         tabindex="0"
-        class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-full max-h-72 flex-nowrap overflow-auto top-10 left-0 absolute"
+        class="dropdown-content z-10 menu p-2 shadow bg-base-200 rounded-box w-full max-h-72 flex-nowrap overflow-auto top-10 left-0 absolute"
       >
         <li v-for="option in filteredOptions" :key="option.id" @click="handleSelect(option)">
           <slot name="option" :option="option">

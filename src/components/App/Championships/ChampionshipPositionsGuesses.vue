@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import TeamSelect from '@/components/Admin/Teams/TeamSelect.vue'
-import type { iChampionshipGuess } from '@/types'
+import type { iChampionship, iChampionshipGuess, iTeam } from '@/types'
 
 const props = defineProps<{
-  championshipId: number
+  championship: iChampionship
+  teams: iTeam[]
   leagueId: number
   loading?: boolean
   disabled?: boolean
@@ -15,12 +16,17 @@ const emit = defineEmits<{
 
 const championshipGuesses = defineModel<Record<number, iChampionshipGuess>>({ required: true })
 
-const onFilterTeams = (guess: iChampionshipGuess) => (teams: any[]) => {
+const onFilterTeams = ({ guess, teams }: { guess: iChampionshipGuess; teams: iTeam[] }) => {
+  console.log({ guess, teams })
   const teamsIds = Object.values(championshipGuesses.value)
     .filter(({ teamId }) => teamId && guess.teamId !== teamId)
     .map(({ teamId }) => teamId)
 
-  return teams.filter((team) => !teamsIds.includes(team.id))
+  console.log({ teams })
+
+  return teams.filter(
+    (team) => props.teams.some((t) => t.id === team.id) && !teamsIds.includes(team.id),
+  )
 }
 
 const positionsTitles: Record<number, string> = {
@@ -29,7 +35,7 @@ const positionsTitles: Record<number, string> = {
 }
 
 const handleViewOtherChampionshipGuesses = () => {
-  emit('view-other-championship-guesses', props.championshipId)
+  emit('view-other-championship-guesses', props.championship.id)
 }
 </script>
 
@@ -52,15 +58,15 @@ const handleViewOtherChampionshipGuesses = () => {
             :label="positionsTitles[guess.position]"
             class="w-full"
             :disabled="disabled"
-            :championship-id="championshipId"
-            :filter="onFilterTeams(guess)"
+            :championship-id="championship.id"
+            :filter="(teams) => onFilterTeams({ guess, teams })"
           />
         </div>
       </div>
       <div class="text-right">
         <button
           @click="handleViewOtherChampionshipGuesses"
-          class="link link-hover link-primary"
+          class="link link-hover text-xs link-primary"
           type="button"
         >
           <i class="fa-solid fa-search" />

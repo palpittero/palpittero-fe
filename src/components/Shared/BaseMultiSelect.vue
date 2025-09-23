@@ -108,7 +108,7 @@ const isSelected = (option: iOption) => model.value?.some(({ id }) => id === opt
 
       <ul
         tabindex="0"
-        class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-full top-12 flex-nowrap max-h-80 overflow-auto left-0 absolute"
+        class="dropdown-content z-10 menu p-2 shadow bg-base-200 rounded-box w-full top-12 flex-nowrap max-h-80 overflow-auto left-0 absolute"
       >
         <li v-for="option in filteredOptions" :key="option.id">
           <slot name="option" :option="option">

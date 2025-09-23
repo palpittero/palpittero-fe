@@ -4,7 +4,7 @@ import { MATCH_MODEL } from '@/constants'
 import type { iMatch, iState } from '@/types'
 import { reactive, ref } from 'vue'
 import MatchesModalForm from './MatchesModalForm.vue'
-import MatchModalFormUpdate from './MatchModalFormUpdate.vue'
+import MatchUpdateModalForm from './MatchUpdateModalForm.vue'
 import services from '@/services'
 import { useToastStore } from '@/stores'
 import { parseMatch } from '@/helpers/matches'
@@ -37,17 +37,11 @@ const handleOpen = async () => {
   }
 }
 
-const handleClose = () => {
-  emit('cancel')
-}
-
 const submitting = ref<boolean>(false)
 
 const handleSubmit = async () => {
   try {
     submitting.value = true
-
-    console.log('matches', match.data)
 
     if (match.data.id) {
       await services.matches.updateMatch(match.data)
@@ -65,22 +59,11 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <BaseModal
-    id="match_modal_form"
-    title="Partida"
-    @open="handleOpen"
-    @close="handleClose"
-    @submit="handleSubmit"
-  >
+  <BaseModal id="match_modal_form" title="Partida" @open="handleOpen" @submit="handleSubmit">
     <span v-if="match.loading" class="loading loading-ring loading-xl" />
     <template v-else>
-      <MatchModalFormUpdate
-        v-if="matchId"
-        v-model="match.data"
-        :match-id="match.data.id"
-        @submit="handleSubmit"
-      />
-      <MatchesModalForm v-else v-model="match.data" @submit="handleSubmit" />
+      <MatchUpdateModalForm v-if="matchId" v-model="match.data" :match-id="match.data.id" />
+      <MatchesModalForm v-else v-model="match.data" />
     </template>
   </BaseModal>
 </template>

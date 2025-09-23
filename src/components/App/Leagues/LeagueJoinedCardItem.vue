@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseImage from '@/components/Shared/BaseImage.vue'
 import type { iLeague } from '@/types'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   league: iLeague
@@ -52,10 +52,22 @@ const visibilityBadge = computed<{ class: string; label: string }>(() =>
     ? { class: 'badge-warning', label: 'Privada' }
     : { class: 'badge-success', label: 'Pública' },
 )
+
+const handleCardClick = (event: Event, league: iLeague) => {
+  // Check if click came from dropdown or its children
+  if ((event.target as HTMLElement).closest('.dropdown')) {
+    return // Don't handle the click
+  }
+
+  handleGuessesLeague(league)
+}
 </script>
 
 <template>
-  <div class="card bg-base-200/50 shadow-sm">
+  <div
+    class="card bg-base-200/50 shadow-sm cursor-pointer hover:bg-base-200 transition-all duration-200"
+    @click="handleCardClick($event, league)"
+  >
     <div class="card-body p-4">
       <div class="flex justify-between items-center gap-4">
         <BaseImage :src="league.badge" class="size-14" />

@@ -18,7 +18,7 @@ const handleSubmit = () => {
 <template>
   <ConfirmationModal
     id="join_league_confirmation_modal"
-    title="Confirmar Exclusão"
+    title="Entrar na Liga"
     @submit="handleSubmit"
   >
     <p class="py-4">Tem certeza que deseja participar da liga "{{ league?.name }}"?</p>

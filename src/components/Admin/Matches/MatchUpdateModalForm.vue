@@ -15,14 +15,18 @@ const filterHomeTeams = (teams: iTeam[]) =>
   teams.filter(
     (team) =>
       team.id !== match.value.awayTeamId &&
-      match.value.group?.teams.some(({ id }) => id === team.id),
+      (!match.value.championship?.hasGroups ||
+        (match.value.championship.hasGroups &&
+          match.value.group?.teams.some(({ id }) => id === team.id))),
   )
 
 const filterAwayTeams = (teams: iTeam[]) =>
   teams.filter(
     (team) =>
       team.id !== match.value.homeTeamId &&
-      match.value.group?.teams.some(({ id }) => id === team.id),
+      (!match.value.championship?.hasGroups ||
+        (match.value.championship.hasGroups &&
+          match.value.group?.teams.some(({ id }) => id === team.id))),
   )
 
 const handleGroupChange = (group: iChampionshipGroup) => {
@@ -52,7 +56,6 @@ watch(
 
     <div v-if="match.championshipId">
       <ChampionshipRoundSelect
-        v-if="showGroup"
         v-model="match.roundId"
         label="Rodada"
         required
@@ -61,6 +64,7 @@ watch(
       />
 
       <ChampionshipGroupSelect
+        v-if="showGroup"
         v-model="match.groupId"
         label="Grupo"
         required

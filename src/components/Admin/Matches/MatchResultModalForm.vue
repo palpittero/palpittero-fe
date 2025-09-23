@@ -27,11 +27,13 @@ const match = reactive<iState<iMatch>>({
   data: { ...MATCH_MODEL },
 })
 
-const isPenaltiesRoundType = computed<boolean>(
-  () => !['extraTime', 'penalties'].includes(match.data.round?.type ?? ''),
+const isPenaltiesRoundType = computed<boolean>(() =>
+  ['extraTime', 'penalties'].includes(match.data.round?.type ?? ''),
 )
 
 const showPenaltiesResults = computed<boolean>(() => {
+  if (!isPenaltiesRoundType.value) return false
+
   const { regularTimeHomeTeamGoals, regularTimeAwayTeamGoals } = match.data
 
   return (

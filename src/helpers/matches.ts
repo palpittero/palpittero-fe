@@ -12,11 +12,12 @@ const matchHasNoResult = ({
   regularTimeHomeTeamGoals,
   regularTimeAwayTeamGoals,
   ...match
-}: iMatch) =>
+}: iMatch): boolean =>
   isMatchFinished(match) && isNil(regularTimeHomeTeamGoals) && isNil(regularTimeAwayTeamGoals)
 
 const createMatchDetail = (): iMatchDetail => ({
   uuid: uniqueId(),
+  groupId: 0,
   homeTeamId: null,
   awayTeamId: null,
   date: null,

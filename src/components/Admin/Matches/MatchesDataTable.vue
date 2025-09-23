@@ -19,8 +19,6 @@ const columns: iColumn<iMatch>[] = [
   {
     key: 'result',
     label: 'Placar',
-    sortable: true,
-    searchable: true,
   },
   {
     key: 'round',

@@ -1,4 +1,5 @@
 import type { iChampionship, iChampionshipGuess, iGuess, iMatchGuess } from '@/types'
+import { isNil } from 'lodash/fp'
 
 const parseMatchesGuesses = (guesses: iGuess[]): iChampionship[] => {
   const championships = guesses.reduce(
@@ -127,16 +128,30 @@ const hasInvalidMatchesGuesses = ({
     if (!hasRegularTimeGoals) return true
 
     // Check penalties validation for draw games
-    const isDraw = guess.homeTeamRegularTimeGoals === guess.awayTeamRegularTimeGoals
-    const hasPenaltiesRound =
+    const isDraw =
+      parseInt(String(guess.homeTeamRegularTimeGoals)) ===
+      parseInt(String(guess.awayTeamRegularTimeGoals))
+
+    const isPenaltiesRound =
       guess.match?.round?.type === 'penalties' || guess.match?.round?.type === 'extra_time'
 
-    if (isDraw && hasPenaltiesRound) {
+    if (isDraw && isPenaltiesRound) {
       const hasPenalties =
-        guess.homeTeamPenaltiesTimeGoals !== null && guess.awayTeamPenaltiesTimeGoals !== null
-      const penaltiesDraw = guess.homeTeamPenaltiesTimeGoals === guess.awayTeamPenaltiesTimeGoals
+        !isNil(guess.homeTeamPenaltiesTimeGoals) && !isNil(guess.awayTeamPenaltiesTimeGoals)
 
-      return !hasPenalties || penaltiesDraw
+      const penaltiesDraw =
+        parseInt(String(guess.homeTeamPenaltiesTimeGoals)) ===
+        parseInt(String(guess.awayTeamPenaltiesTimeGoals))
+
+      console.log({
+        hasPenalties,
+        penaltiesDraw,
+        homeTeamPenaltiesTimeGoals: guess.homeTeamPenaltiesTimeGoals,
+        awayTeamPenaltiesTimeGoals: guess.awayTeamPenaltiesTimeGoals,
+        result: hasPenalties && penaltiesDraw,
+      })
+
+      return hasPenalties && penaltiesDraw
     }
 
     return false

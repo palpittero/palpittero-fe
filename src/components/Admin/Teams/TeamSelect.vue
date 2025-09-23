@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import services from '@/services'
 import { type iTeam, type iState } from '@/types'
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, reactive, watch } from 'vue'
 import BaseSearchableSelect from '@/components/Shared/BaseSearchableSelect.vue'
 import BaseImage from '@/components/Shared/BaseImage.vue'
 
@@ -17,6 +17,7 @@ const props = withDefaults(
   }>(),
   {
     id: 'team-select',
+    teams: () => [],
   },
 )
 
@@ -29,7 +30,7 @@ const state = reactive<iState<iTeam[]>>({
 })
 
 const loadTeams = async () => {
-  if (props.teams) {
+  if (props.teams.length > 0) {
     state.data = props.teams
     return
   }
@@ -46,12 +47,23 @@ const loadTeams = async () => {
 }
 
 const filteredTeams = computed<iTeam[]>(() => {
+  console.log('filteredTeams', state.data, props.filter)
   if (props.filter) {
+    console.log('filter', props.filter(state.data))
     return props.filter(state.data)
   }
 
   return state.data
 })
+
+watch(
+  () => props.teams,
+  (current) => {
+    console.log('current', current)
+    state.data = current as iTeam[]
+  },
+  { immediate: true },
+)
 
 onMounted(loadTeams)
 </script>

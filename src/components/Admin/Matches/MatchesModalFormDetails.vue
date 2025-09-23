@@ -6,19 +6,28 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
+  edit: [detail: iMatchDetail]
   remove: [detail: iMatchDetail]
 }>()
 
 const handleRemoveMatch = (detail: iMatchDetail) => {
   emit('remove', detail)
 }
+
+const handleEditMatch = (detail: iMatchDetail) => {
+  emit('edit', detail)
+}
 </script>
 
 <template>
   <ul class="list bg-base-100 rounded-box shadow-md">
-    <li class="list-row items-center" v-for="detail in details" :key="detail.id">
+    <li
+      class="list-row items-center hover:bg-base-200 cursor-pointer"
+      v-for="detail in details"
+      :key="detail.id || detail.uuid!"
+      @click="handleEditMatch(detail)"
+    >
       <div class="flex gap-2 items-center">
-        <!-- <FormattedDate :date="detail.date!" /> -->
         {{
           new Date(detail.date!)
             .toLocaleString('pt-BR', {
@@ -33,13 +42,13 @@ const handleRemoveMatch = (detail: iMatchDetail) => {
           <img class="size-4 rounded-box object-cover" :src="detail.homeTeam?.badge!" />
           {{ detail.homeTeam?.name }}
         </div>
-        <!-- <i class="fa-solid fa-xmark" /> -->
+
         <div class="flex justify-start items-center gap-1 w-full">
           <img class="size-4 rounded-box object-cover" :src="detail.awayTeam?.badge!" />
           {{ detail.awayTeam?.name }}
         </div>
       </div>
-      <kbd class="kbd kbd-xs flex flex-col">
+      <kbd class="kbd kbd-xs flex flex-col" v-if="detail.group">
         {{ detail.group?.name }}
       </kbd>
       <span>
@@ -52,7 +61,7 @@ const handleRemoveMatch = (detail: iMatchDetail) => {
             .replace('/', '.')
         }}
       </span>
-      <a class="link link-hover link-error" @click="handleRemoveMatch(detail)">
+      <a class="link link-hover link-error" @click.stop="handleRemoveMatch(detail)">
         <i class="fa-solid fa-trash" />
       </a>
     </li>

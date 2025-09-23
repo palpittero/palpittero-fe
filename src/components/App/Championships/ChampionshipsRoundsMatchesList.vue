@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import services from '@/services'
-import type { iChampionship, iChampionshipGuess, iChampionshipRound, iMatch, iState } from '@/types'
+import type {
+  iChampionship,
+  iChampionshipGuess,
+  iChampionshipRound,
+  iMatch,
+  iState,
+  iTeam,
+} from '@/types'
 import { useAuthStore } from '@/stores'
 import ChampionshipPositionsGuesses from '@/components/App/Championships/ChampionshipPositionsGuesses.vue'
 import RoundsMatchesList from './RoundsMatchesList.vue'
@@ -28,6 +35,12 @@ const rounds = reactive<iState<iChampionshipRound[]>>({
   error: null,
 })
 
+const teams = reactive<iState<iTeam[]>>({
+  loading: false,
+  data: [],
+  error: null,
+})
+
 const hasRounds = computed<boolean>(() => rounds.data.length > 0)
 
 const championshipPositionsGuesses = defineModel<Record<number, iChampionshipGuess>>(
@@ -45,6 +58,9 @@ const loadChampionshipData = async () => {
 
     // Load rounds
     rounds.data = await services.championships.fetchRounds(props.championship.id)
+
+    // Load teams
+    teams.data = await services.championships.fetchTeams(props.championship.id)
 
     // Load championship guesses if position guesses are enabled
     if (props.championship.enableGuesses && authStore.loggedUser?.id) {
@@ -108,11 +124,14 @@ onMounted(loadChampionshipData)
         <ChampionshipPositionsGuesses
           v-model="championshipPositionsGuesses"
           :loading="isLoading"
-          :championship-id="championship.id"
+          :championship="championship"
+          :teams="teams.data"
           :league-id="leagueId"
           :disabled="!championship.enableGuesses"
           @view-other-championship-guesses="handleViewOtherChampionshipGuesses"
         />
+
+        <!-- <pre>{{ matchesGuesses }}</pre> -->
 
         <!-- Loading skeleton -->
         <ChampionshipRoundMatchesListSkeleton v-if="isLoading" />

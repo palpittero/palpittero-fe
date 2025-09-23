@@ -8,7 +8,7 @@ defineProps<{
 const matchStatuses: Record<iMatchStatus, { text: string; class: string }> = {
   scheduled: {
     text: 'Agendada',
-    class: 'fa-solid fa-calendar text-secondary-content',
+    class: 'fa-solid fa-calendar text-secondary',
   },
   preparation: {
     text: 'Pré-jogo',
@@ -20,7 +20,7 @@ const matchStatuses: Record<iMatchStatus, { text: string; class: string }> = {
   },
   finished: {
     text: 'Concluída',
-    class: 'fa-solid fa-check text-success',
+    class: 'fa-solid fa-check-circle text-success',
   },
   cancelled: {
     text: 'Cancelada',
@@ -38,7 +38,7 @@ const matchStatuses: Record<iMatchStatus, { text: string; class: string }> = {
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-1 text-xs">
     <i :class="matchStatuses[status].class" />
     {{ matchStatuses[status].text }}
   </div>

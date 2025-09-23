@@ -3,23 +3,26 @@ import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import services from '@/services'
 import type { iMatch, iChampionshipRound, iState, iMatchGuess } from '@/types'
-import MatchCard from './MatchCard.vue'
+import MatchCardGuess from './MatchCardGuess.vue'
+import MatchCardResult from './MatchCardResult.vue'
 import { orderMatchesByStatusAndDate } from '@/helpers/matches'
 import BaseEmptyState from '@/components/Shared/BaseEmptyState.vue'
 import ChampionshipRoundSelector from './ChampionshipRoundSelector.vue'
 import RoundMatchesListSkeleton from '@/components/App/Championships/RoundMatchesListSkeleton.vue'
 
 const props = defineProps<{
-  modelValue: Record<number, iMatchGuess>
+  // modelValue: Record<number, iMatchGuess>
   rounds: iChampionshipRound[]
   leagueId: number
   memoryRegisteredGuesses?: number[]
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Record<number, iMatchGuess>]
+  // 'update:modelValue': [value: Record<number, iMatchGuess>]
   'view-other-guesses': [match: iMatch]
 }>()
+
+const matchesGuesses = defineModel<Record<number, iMatchGuess>>({ required: true })
 
 const route = useRoute()
 const router = useRouter()
@@ -134,7 +137,15 @@ watch(
 
 const isLoading = computed<boolean>(() => matches.loading || guesses.loading)
 
-// Update route query parameter
+const matchesGuessesMap = computed<Record<number, iMatchGuess>>(() => {
+  return matches.data.reduce(
+    (acc, match) => {
+      acc[match.id!] = getMatchGuess(match.id)
+      return acc
+    },
+    {} as Record<number, iMatchGuess>,
+  )
+})
 
 const getMatchGuess = (matchId?: number | null): iMatchGuess => {
   if (!matchId) return createEmptyGuess(0)
@@ -157,6 +168,11 @@ const handleUpdateGuess = (updatedGuess: iMatchGuess) => {
   // Update local guesses data
   const existingIndex = guesses.data.findIndex((g) => g.matchId === updatedGuess.matchId)
 
+  if (updatedGuess.homeTeamRegularTimeGoals !== updatedGuess.awayTeamRegularTimeGoals) {
+    updatedGuess.homeTeamPenaltiesTimeGoals = null
+    updatedGuess.awayTeamPenaltiesTimeGoals = null
+  }
+
   if (existingIndex >= 0) {
     guesses.data[existingIndex] = updatedGuess
   } else {
@@ -164,18 +180,18 @@ const handleUpdateGuess = (updatedGuess: iMatchGuess) => {
   }
 
   // Create the modelValue format expected by parent
-  const modelValue: Record<number, iMatchGuess> = {}
+  // const modelValue: Record<number, iMatchGuess> = {}
   guesses.data.forEach((guess) => {
     const match = matches.data.find((m) => m.id === guess.matchId)
     if (match) {
-      modelValue[guess.matchId] = {
+      matchesGuesses.value[guess.matchId] = {
         ...guess,
         match,
       } as any
     }
   })
 
-  emit('update:modelValue', modelValue)
+  // emit('update:modelValue', modelValue)
 }
 
 const handleViewOtherGuesses = (match: iMatch) => {
@@ -209,15 +225,25 @@ onMounted(() => {
     />
 
     <div v-else class="space-y-4">
-      <MatchCard
-        v-for="match in orderedMatches"
-        :key="match.id!"
-        :match="match"
-        :guess="getMatchGuess(match.id)"
-        :memory-registered-guesses="memoryRegisteredGuesses"
-        @update:guess="handleUpdateGuess"
-        @view-other-guesses="handleViewOtherGuesses"
-      />
+      <template v-for="match in orderedMatches" :key="match.id!">
+        <MatchCardGuess
+          v-if="['scheduled', 'postponed'].includes(match.status!)"
+          :match="match"
+          :guess="matchesGuessesMap[match.id!]"
+          :memory-registered-guesses="memoryRegisteredGuesses"
+          @update:guess="handleUpdateGuess"
+          @view-other-guesses="handleViewOtherGuesses"
+        />
+
+        <MatchCardResult
+          v-else
+          :match="match"
+          :guess="matchesGuessesMap[match.id!]"
+          :memory-registered-guesses="memoryRegisteredGuesses"
+          @update:guess="handleUpdateGuess"
+          @view-other-guesses="handleViewOtherGuesses"
+        />
+      </template>
     </div>
   </div>
 </template>
