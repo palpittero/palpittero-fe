@@ -2,7 +2,7 @@
   <div class="space-y-8">
     <div class="text-center">
       <h1
-        class="text-3xl md:text-4xl font-bold text-base-content flex items-center justify-center gap-3 mb-2"
+        class="text-2xl md:text-3xl font-bold text-base-content flex items-center justify-center gap-3 mb-2"
       >
         <i class="fa-solid fa-book" />
         Regras de Pontuação
@@ -11,12 +11,12 @@
     </div>
 
     <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h2 class="card-title text-2xl mb-2">
+      <div class="card-body p-3 lg:p-6">
+        <h2 class="card-title text-xl">
           <span class="text-primary">⚽</span>
           Pontuação - Tempo Regular
         </h2>
-        <div class="divider"></div>
+        <div class="divider my-2" />
         <p class="text-base-content/80 mb-6">
           A pontuação padrão segue as seguintes regras para palpites do resultado de tempo regular
           de jogo:

@@ -1,5 +1,5 @@
 import api from '@/services/api'
-import type { iGuess } from '@/types'
+import type { iCopyGuesses, iGuess } from '@/types'
 
 const RESOURCE_URI = '/guesses'
 
@@ -13,14 +13,11 @@ const registerGuesses = async ({
 }: {
   matchesGuesses: any
   championshipsGuesses: any
-}) => {
-  const output = await api.post(`${RESOURCE_URI}/register`, {
+}) =>
+  api.post(`${RESOURCE_URI}/register`, {
     matchesGuesses,
     championshipsGuesses,
   })
-  console.log({ output })
-  return output
-}
 
 const processGuesses = ({
   leagueId,
@@ -34,13 +31,7 @@ const copyGuesses = ({
   championshipsIds,
   copyMatchesGuesses,
   copyChampionshipsGuesses,
-}: {
-  sourceLeagueId: number
-  targetLeagueId: number
-  championshipsIds: number[]
-  copyMatchesGuesses: boolean
-  copyChampionshipsGuesses: boolean
-}) =>
+}: iCopyGuesses) =>
   api.post(`${RESOURCE_URI}/copy`, {
     sourceLeagueId,
     targetLeagueId,

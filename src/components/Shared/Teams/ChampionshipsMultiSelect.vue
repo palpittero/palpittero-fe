@@ -3,9 +3,17 @@ import ChampionshipsModalSelect from '@/components/Admin/Championships/Champions
 import type { iChampionship } from '@/types'
 import { computed } from 'vue'
 
-const props = defineProps<{
-  required?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    required?: boolean
+    championships?: iChampionship[]
+    filter?: (championships: iChampionship[]) => iChampionship[]
+  }>(),
+  {
+    championships: () => [],
+    filter: (championships: iChampionship[]) => championships,
+  },
+)
 
 const selectedChampionships = defineModel<iChampionship[]>({ required: true })
 
@@ -88,6 +96,7 @@ const isInvalid = computed<boolean>(
     </fieldset>
     <ChampionshipsModalSelect
       :selected-championships="selectedChampionships"
+      :championships="championships"
       @confirm="handleConfirm"
     />
   </div>

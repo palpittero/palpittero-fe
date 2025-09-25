@@ -2,7 +2,7 @@
 import services from '@/services'
 import { omit } from 'lodash/fp'
 
-import { onBeforeMount, onMounted, reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -27,10 +27,6 @@ const activateAccount = async () => {
     state.loading = false
   }
 }
-
-onBeforeMount(() => {
-  console.log(route.query)
-})
 
 onMounted(activateAccount)
 </script>

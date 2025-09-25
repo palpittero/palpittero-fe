@@ -103,7 +103,7 @@ onUnmounted(() => {
       <legend class="fieldset-legend" v-if="label">{{ label }}</legend>
       <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2">
-          <input type="file" class="file-input flex-1" accept="image/*" @change="handleChange" />
+          <input type="file" class="file-input" accept="image/*" @change="handleChange" />
           <a
             v-if="image"
             type="button"

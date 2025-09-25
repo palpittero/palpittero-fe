@@ -8,7 +8,7 @@ defineProps<{
 const matchStatuses: Record<iMatchStatus, { text: string; class: string }> = {
   scheduled: {
     text: 'Agendada',
-    class: 'fa-solid fa-calendar text-secondary',
+    class: 'fa-solid fa-calendar',
   },
   preparation: {
     text: 'Pré-jogo',

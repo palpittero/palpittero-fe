@@ -7,7 +7,6 @@ const route = useRoute()
 watch(
   () => route.name,
   (current, previous) => {
-    console.log(current, previous)
     if (previous && current !== previous) {
       document.getElementById('drawer')?.click()
     }

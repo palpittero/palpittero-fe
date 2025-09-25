@@ -43,8 +43,8 @@ const isCurrentLastRound = computed<boolean>(
     </button>
 
     <div class="text-center">
-      <div class="font-bold text-lg">{{ selectedRound?.name }}</div>
-      <div class="text-sm text-base-content/60">
+      <div class="font-bold text-sm lg:text-lg">{{ selectedRound?.name }}</div>
+      <div class="text-xs lg:text-sm text-base-content/60">
         <template v-if="totalMatches > 0">
           {{ totalMatches }} {{ totalMatches === 1 ? 'jogo' : 'jogos' }}
         </template>

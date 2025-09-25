@@ -5,23 +5,23 @@ defineProps<{
   isLoading: boolean
 }>()
 
-const emits = defineEmits<{
-  registerGuesses: []
-  copyGuesses: []
+const emit = defineEmits<{
+  'register-guesses': []
+  'copy-guesses': []
 }>()
 
 const handleRegisterGuesses = () => {
-  emits('registerGuesses')
+  emit('register-guesses')
 }
 
 const handleCopyGuesses = () => {
-  emits('copyGuesses')
+  emit('copy-guesses')
 }
 </script>
 
 <template>
   <div
-    class="sticky top-0 lg:top-18 bg-base-100/95 backdrop-blur-sm z-50 lg:z-40 p-4 -m-4 rounded-box border border-base-300 flex flex-wrap justify-between items-center gap-4"
+    class="sticky top-16 lg:top-18 bg-base-100/95 backdrop-blur-sm z-50 lg:z-40 p-4 -m-4 rounded-box border border-base-300 flex flex-wrap justify-between items-center gap-4"
   >
     <div>
       <h1 class="text-2xl md:text-3xl font-bold text-base-content flex items-center gap-3">

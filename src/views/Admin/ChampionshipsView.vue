@@ -1,33 +1,13 @@
 <script setup lang="ts">
 import ChampionshipModalForm from '@/components/Admin/Championships/ChampionshipModalForm.vue'
 import ChampionshipsDataTable from '@/components/Admin/Championships/ChampionshipsDataTable.vue'
+import ChampionshipSetRankingModalForm from '@/components/Admin/Championships/ChampionshipSetRankingModalForm.vue'
 
 import services from '@/services'
 import type { iChampionship, iState } from '@/types'
 import { onMounted, reactive, ref } from 'vue'
 
 const championshipId = ref<number>(0)
-
-const handleAdd = () => {
-  // @ts-ignore
-  championship_modal_form.showModal()
-}
-
-const handleEdit = async (row: iChampionship) => {
-  championshipId.value = row.id!
-  // @ts-ignore
-  championship_modal_form.showModal()
-}
-
-const handleSuccess = () => {
-  // @ts-ignore
-  championship_modal_form.close()
-  loadChampionships()
-}
-
-const handleCancel = () => {
-  championshipId.value = 0
-}
 
 const championships = reactive<iState<iChampionship[]>>({
   loading: false,
@@ -47,6 +27,35 @@ const loadChampionships = async () => {
 }
 
 onMounted(loadChampionships)
+
+const handleAdd = () => {
+  // @ts-ignore
+  championship_modal_form.showModal()
+}
+
+const handleEdit = async (row: iChampionship) => {
+  championshipId.value = row.id!
+  // @ts-ignore
+  championship_modal_form.showModal()
+}
+
+const handleSuccess = () => {
+  // @ts-ignore
+  championship_modal_form.close()
+  // @ts-ignore
+  championship_set_ranking_modal_form.close()
+  loadChampionships()
+}
+
+const handleCancel = () => {
+  championshipId.value = 0
+}
+
+const handleSetRanking = (row: iChampionship) => {
+  championshipId.value = row.id!
+  // @ts-ignore
+  championship_set_ranking_modal_form.showModal()
+}
 </script>
 
 <template>
@@ -64,9 +73,14 @@ onMounted(loadChampionships)
         </button>
       </div>
     </div>
-    <ChampionshipsDataTable :state="championships" @edit="handleEdit" />
+    <ChampionshipsDataTable :state="championships" @edit="handleEdit" @ranking="handleSetRanking" />
   </div>
   <ChampionshipModalForm
+    :championship-id="championshipId"
+    @success="handleSuccess"
+    @cancel="handleCancel"
+  />
+  <ChampionshipSetRankingModalForm
     :championship-id="championshipId"
     @success="handleSuccess"
     @cancel="handleCancel"

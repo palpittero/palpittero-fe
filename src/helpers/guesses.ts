@@ -1,4 +1,10 @@
-import type { iChampionship, iChampionshipGuess, iGuess, iMatchGuess } from '@/types'
+import type {
+  iChampionship,
+  iChampionshipGuess,
+  iGuess,
+  iMatchGuess,
+  iUserChampionshipGuess,
+} from '@/types'
 import { isNil } from 'lodash/fp'
 
 const parseMatchesGuesses = (guesses: iGuess[]): iChampionship[] => {
@@ -22,30 +28,39 @@ const parseMatchesGuesses = (guesses: iGuess[]): iChampionship[] => {
   return Object.values(championships) as iChampionship[]
 }
 
-const parseChampionshipsGuesses = (guesses: iGuess[]): iChampionship[] => {
-  const championships = guesses.reduce((acc: Record<string, iChampionship>, guess: iGuess) => {
-    const { championship } = guess
-    const guesses = acc[championship.id!]?.users?.[guess.user.id]?.guesses || []
+const parseChampionshipsGuesses = (guesses: iChampionshipGuess[]): iUserChampionshipGuess[] => {
+  const championships = guesses.reduce(
+    // @ts-ignore
+    (acc: Record<string, iUserChampionshipGuess>, guess: iChampionshipGuess) => {
+      const { championship } = guess
+      const championshipId = String(championship?.id)
+      const userId = Number(guess.user?.id)
 
-    return {
-      ...acc,
-      [championship.id!]: {
-        ...championship,
-        users: {
-          ...acc[championship.id!]?.users,
-          [guess.user.id!]: {
-            ...guess.user,
-            guesses: [...guesses, guess],
+      const guesses = acc[championshipId]?.users?.[userId]?.guesses || []
+
+      return {
+        ...acc,
+        [championshipId]: {
+          ...championship,
+          users: {
+            ...acc[championshipId]?.users,
+            [userId]: {
+              ...guess.user,
+              guesses: [...guesses, guess],
+            },
           },
         },
-      },
-    }
-  }, {})
+      }
+    },
+    {} as Record<string, iUserChampionshipGuess>,
+  )
 
-  return Object.values(championships).map(({ users, ...championship }) => ({
-    ...championship,
-    users: Object.values(users),
-  }))
+  return Object.values(championships as unknown as Record<string, iUserChampionshipGuess>).map(
+    ({ users, ...championship }) => ({
+      ...championship,
+      users: Object.values(users),
+    }),
+  )
 }
 
 const parseChampionshipGuesses = (championshipGuesses: iChampionshipGuess[]) =>
@@ -142,14 +157,6 @@ const hasInvalidMatchesGuesses = ({
       const penaltiesDraw =
         parseInt(String(guess.homeTeamPenaltiesTimeGoals)) ===
         parseInt(String(guess.awayTeamPenaltiesTimeGoals))
-
-      console.log({
-        hasPenalties,
-        penaltiesDraw,
-        homeTeamPenaltiesTimeGoals: guess.homeTeamPenaltiesTimeGoals,
-        awayTeamPenaltiesTimeGoals: guess.awayTeamPenaltiesTimeGoals,
-        result: hasPenalties && penaltiesDraw,
-      })
 
       return hasPenalties && penaltiesDraw
     }

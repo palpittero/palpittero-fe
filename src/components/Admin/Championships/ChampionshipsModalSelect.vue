@@ -4,9 +4,17 @@ import services from '@/services'
 import type { iChampionship, iState } from '@/types'
 import { computed, reactive, ref } from 'vue'
 
-const props = defineProps<{
-  selectedChampionships: iChampionship[]
-}>()
+const props = withDefaults(
+  defineProps<{
+    selectedChampionships: iChampionship[]
+    filter?: (championships: iChampionship[]) => iChampionship[]
+    championships?: iChampionship[]
+  }>(),
+  {
+    filter: (championships: iChampionship[]) => championships,
+    championships: () => [],
+  },
+)
 
 const model = ref<iChampionship[]>([])
 
@@ -14,7 +22,7 @@ const emit = defineEmits<{
   confirm: [iChampionship[]]
 }>()
 
-const championships = reactive<iState<iChampionship[]>>({
+const state = reactive<iState<iChampionship[]>>({
   loading: false,
   data: [],
   error: null,
@@ -22,9 +30,15 @@ const championships = reactive<iState<iChampionship[]>>({
 
 const handleOpen = async () => {
   model.value = [...props.selectedChampionships]
-  championships.loading = true
 
-  championships.data = (await services.championships.fetchChampionships()).map((championship) => {
+  if (props.championships.length > 0) {
+    state.data = props.championships
+    return
+  }
+
+  state.loading = true
+
+  state.data = (await services.championships.fetchChampionships()).map((championship) => {
     const selectedChampionship = model.value?.find((c) => c.id === championship.id)
 
     return {
@@ -34,11 +48,11 @@ const handleOpen = async () => {
     }
   })
 
-  championships.loading = false
+  state.loading = false
 }
 
 const handleClose = () => {
-  championships.data = []
+  state.data = []
 }
 
 const handleConfirm = () => {
@@ -46,16 +60,16 @@ const handleConfirm = () => {
 }
 
 const allSelected = computed<boolean>(() =>
-  championships.data.every((championship) => championship.selected),
+  state.data.every((championship) => championship.selected),
 )
 
 const handleToggleAll = () => {
-  championships.data = championships.data.map((championship) => ({
+  state.data = state.data.map((championship) => ({
     ...championship,
     selected: !allSelected.value,
   }))
 
-  model.value = championships.data.filter((championship) => championship.selected)
+  model.value = state.data.filter((championship) => championship.selected)
 }
 
 const handleToggle = (championship: iChampionship) => {
@@ -69,6 +83,8 @@ const handleToggle = (championship: iChampionship) => {
 const toggleAllLabel = computed<string>(() =>
   allSelected.value ? 'Desmarcar todos' : 'Marcar todos',
 )
+
+const filteredChampionships = computed<iChampionship[]>(() => props.filter(state.data))
 </script>
 
 <template>
@@ -80,10 +96,7 @@ const toggleAllLabel = computed<string>(() =>
     @close="handleClose"
     @submit="handleConfirm"
   >
-    <div
-      v-if="championships.loading"
-      class="my-auto mx-auto w-full flex items-center justify-center"
-    >
+    <div v-if="state.loading" class="my-auto mx-auto w-full flex items-center justify-center">
       <span class="loading loading-ring loading-xl" />
     </div>
     <div class="overflow-x-auto py-6">
@@ -95,7 +108,7 @@ const toggleAllLabel = computed<string>(() =>
       <ul class="list bg-base-100 rounded-box shadow-md">
         <li
           class="list-row hover:bg-base-200 cursor-pointer"
-          v-for="championship in championships.data"
+          v-for="championship in filteredChampionships"
           :key="championship.id"
           @click="handleToggle(championship)"
         >

@@ -3,6 +3,7 @@ import { isNil } from 'lodash/fp'
 import { computed } from 'vue'
 
 const badgeClassMap: Record<string, string> = {
+  10: 'badge-success',
   5: 'badge-primary',
   4: 'badge-green',
   3: 'badge-green',

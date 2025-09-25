@@ -84,9 +84,37 @@ export type iChampionshipGuess = {
   leagueId: number
   league?: Pick<iLeague, 'id' | 'name' | 'badge'>
   user?: Pick<iUser, 'id' | 'name' | 'name' | 'avatar'>
+  users?: Pick<iUser, 'id' | 'name' | 'name' | 'avatar'>[]
   userId: number
   updatedAt?: string
   points?: number | null
   createdAt?: string
   leagueStatus?: iStatus
+}
+
+export type iUserChampionshipGuessPosition = {
+  position: number
+  teamId: number | null
+}
+
+export type iUserChampionshipGuessUser = Pick<iUser, 'id' | 'name' | 'avatar'> & {
+  guesses: iChampionshipGuess[]
+}
+
+export type iUserChampionshipGuess = {
+  id: number
+  name: string
+  year: number
+  positions: iUserChampionshipGuessPosition[]
+  users: iUserChampionshipGuessUser[]
+}
+
+export type iCopyGuesses = {
+  sourceLeagueId?: number | null
+  targetLeagueId: number | null
+  copyMatchesGuesses: boolean
+  copyChampionshipsGuesses: boolean
+
+  championships?: iChampionship[]
+  championshipsIds?: number[]
 }

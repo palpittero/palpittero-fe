@@ -28,7 +28,6 @@ const handleUpdateResult = async (row: iMatch) => {
 }
 
 const handleSuccess = () => {
-  console.log('handleSuccess')
   // @ts-ignore
   match_modal_form.close()
   // @ts-ignore

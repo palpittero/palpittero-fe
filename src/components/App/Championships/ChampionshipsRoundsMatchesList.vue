@@ -89,21 +89,25 @@ const loadChampionshipData = async () => {
 }
 
 const emit = defineEmits<{
-  'view-other-guesses': [match: iMatch]
-  'view-other-championship-guesses': [championshipId: number]
+  'view-guesses': [match: iMatch]
+  'view-championship-guesses': [championship: iChampionship]
 }>()
 
 const handleViewOtherGuesses = (match: iMatch) => {
-  emit('view-other-guesses', match)
+  emit('view-guesses', match)
 }
 
-const handleViewOtherChampionshipGuesses = (championshipId: number) => {
-  emit('view-other-championship-guesses', championshipId)
+const handleViewOtherChampionshipGuesses = (championship: iChampionship) => {
+  emit('view-championship-guesses', championship)
 }
 
 const handleToggle = () => {
   isOpen.value = !isOpen.value
 }
+
+const isChampionshipGuessesDisabled = computed<boolean>(() =>
+  Boolean(!props.championship.enableGuesses || props.championship.positions?.length),
+)
 
 onMounted(loadChampionshipData)
 </script>
@@ -127,11 +131,9 @@ onMounted(loadChampionshipData)
           :championship="championship"
           :teams="teams.data"
           :league-id="leagueId"
-          :disabled="!championship.enableGuesses"
-          @view-other-championship-guesses="handleViewOtherChampionshipGuesses"
+          :disabled="isChampionshipGuessesDisabled"
+          @view-championship-guesses="handleViewOtherChampionshipGuesses"
         />
-
-        <!-- <pre>{{ matchesGuesses }}</pre> -->
 
         <!-- Loading skeleton -->
         <ChampionshipRoundMatchesListSkeleton v-if="isLoading" />
@@ -143,7 +145,7 @@ onMounted(loadChampionshipData)
           :rounds="rounds.data"
           :league-id="leagueId"
           :memory-registered-guesses="memoryRegisteredGuesses"
-          @view-other-guesses="handleViewOtherGuesses"
+          @view-guesses="handleViewOtherGuesses"
         />
 
         <!-- Empty state -->

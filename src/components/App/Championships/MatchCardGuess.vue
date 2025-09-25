@@ -14,7 +14,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:guess': [guess: iMatchGuess]
-  'view-other-guesses': [match: iMatch]
+  'view-guesses': [match: iMatch]
 }>()
 
 const isPenaltiesRound = computed<boolean>(() =>
@@ -225,7 +225,7 @@ const handleUpdateGuess = async (
 
       <!-- View other guesses button -->
       <div class="flex justify-center lg:justify-end">
-        <button class="link link-hover link-xs" @click="$emit('view-other-guesses', match)">
+        <button class="link link-hover link-xs" @click="$emit('view-guesses', match)">
           <i class="fa-solid fa-search" />
           Ver palpites
         </button>

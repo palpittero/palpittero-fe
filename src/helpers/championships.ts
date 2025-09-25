@@ -1,20 +1,24 @@
-import type { iChampionshipGroup, iChampionshipRound } from '@/types'
+import type { iChampionship, iChampionshipGroup, iChampionshipRound } from '@/types'
 import { uniqueId } from 'lodash'
 
-const getChampionshipPositionsInitialValues = (championshipId: number) => ({
-  1: {
-    championshipId,
-    team: null,
-    teamId: null,
-    position: 1,
-  },
-  2: {
-    championshipId,
-    team: null,
-    teamId: null,
-    position: 2,
-  },
-})
+const initializeChampionshipPositions = (championship: iChampionship) =>
+  [
+    {
+      championshipId: championship.id,
+      team: null,
+      teamId: null,
+      position: 1,
+    },
+    {
+      championshipId: championship.id,
+      team: null,
+      teamId: null,
+      position: 2,
+    },
+  ].map((position) => ({
+    ...position,
+    ...championship.positions?.find((p) => p.position === position.position),
+  }))
 
 const parseChampionshipPositions = (positions: any) =>
   positions.reduce(
@@ -35,6 +39,7 @@ const createRound = (name: string): iChampionshipRound => ({
   name: name || '',
   type: 'regularTime',
   ignoreGroups: false,
+  championshipId: 0,
 })
 
 const createGroup = (name: string): iChampionshipGroup => ({
@@ -44,7 +49,7 @@ const createGroup = (name: string): iChampionshipGroup => ({
 })
 
 export {
-  getChampionshipPositionsInitialValues,
+  initializeChampionshipPositions,
   parseChampionshipPositions,
   parseChampionshipInput,
   createRound,

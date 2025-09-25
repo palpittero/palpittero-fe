@@ -12,11 +12,6 @@ const appRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/App/HomeView.vue'),
       },
       {
-        path: 'minha-conta',
-        name: 'app.my-account',
-        component: () => import('@/views/App/MyAccountView.vue'),
-      },
-      {
         path: 'liga/:leagueId/palpites',
         name: 'app.guesses',
         component: () => import('@/views/App/LeagueGuessesView.vue'),

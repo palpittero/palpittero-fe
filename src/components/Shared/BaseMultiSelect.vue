@@ -40,7 +40,6 @@ watch(search, (current) => {
 const hasValue = computed(() => model.value?.length > 0)
 
 const handleToggle = (option: iOption) => {
-  console.log(option)
   if (model.value?.some(({ id }) => id === option.id)) {
     model.value = model.value.filter(({ id }) => id !== option.id)
   } else {

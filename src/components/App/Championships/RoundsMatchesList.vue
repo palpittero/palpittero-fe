@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   // 'update:modelValue': [value: Record<number, iMatchGuess>]
-  'view-other-guesses': [match: iMatch]
+  'view-guesses': [match: iMatch]
 }>()
 
 const matchesGuesses = defineModel<Record<number, iMatchGuess>>({ required: true })
@@ -195,7 +195,7 @@ const handleUpdateGuess = (updatedGuess: iMatchGuess) => {
 }
 
 const handleViewOtherGuesses = (match: iMatch) => {
-  emit('view-other-guesses', match)
+  emit('view-guesses', match)
 }
 
 // Initialize on mount
@@ -232,7 +232,7 @@ onMounted(() => {
           :guess="matchesGuessesMap[match.id!]"
           :memory-registered-guesses="memoryRegisteredGuesses"
           @update:guess="handleUpdateGuess"
-          @view-other-guesses="handleViewOtherGuesses"
+          @view-guesses="handleViewOtherGuesses"
         />
 
         <MatchCardResult
@@ -241,7 +241,7 @@ onMounted(() => {
           :guess="matchesGuessesMap[match.id!]"
           :memory-registered-guesses="memoryRegisteredGuesses"
           @update:guess="handleUpdateGuess"
-          @view-other-guesses="handleViewOtherGuesses"
+          @view-guesses="handleViewOtherGuesses"
         />
       </template>
     </div>

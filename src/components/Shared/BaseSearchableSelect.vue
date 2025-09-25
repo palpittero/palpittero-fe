@@ -1,11 +1,10 @@
 <script setup lang="ts">
-// import type { iOption } from '@/types'
 import { computed, ref, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
     id: string | number
-    label: string
+    label?: string
     options: any[]
     disabled?: boolean
     clearable?: boolean
@@ -40,7 +39,9 @@ const handleSelect = (option: any) => {
   isOpen.value = false
 }
 
-const isClearable = computed<boolean>(() => (!!model.value && props.clearable) ?? false)
+const isClearable = computed<boolean>(
+  () => (!!model.value && props.clearable && !props.disabled) ?? false,
+)
 
 const handleClear = () => {
   model.value = null
@@ -101,7 +102,7 @@ const handleSearchBlur = () => {
 <template>
   <fieldset class="fieldset">
     <legend class="fieldset-legend" for="role">
-      {{ label }}
+      <slot name="label">{{ label }}</slot>
     </legend>
 
     <div class="relative">
@@ -116,7 +117,7 @@ const handleSearchBlur = () => {
         :disabled="disabled"
         @blur="handleSearchBlur"
       />
-      <div class="validator-hint">{{ label }} é obrigatório</div>
+      <div v-if="required" class="validator-hint">{{ label }} é obrigatório</div>
 
       <i
         v-if="isClearable"

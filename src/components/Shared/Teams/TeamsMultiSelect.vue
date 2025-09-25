@@ -22,7 +22,6 @@ const handleRemove = (championship: iTeam) => {
 }
 
 const handleConfirm = (teams: iTeam[]) => {
-  console.log(teams)
   selectedTeams.value = teams
   // @ts-ignore
   document.getElementById(`${props.id}_modal`)?.close()

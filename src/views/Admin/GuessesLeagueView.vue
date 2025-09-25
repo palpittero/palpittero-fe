@@ -45,7 +45,6 @@ const loadLeague = async () => {
 const selectedChampionship = ref<any>(null)
 
 const processGuessesConfirmationMessage = computed<string>(() => {
-  console.log(selectedChampionship.value)
   if (selectedChampionship.value) {
     return `Tem certeza que deseja processar os palpites do campeonato <b>${selectedChampionship.value?.name}</b> na liga <b>${league.data?.name}</b>?`
   }

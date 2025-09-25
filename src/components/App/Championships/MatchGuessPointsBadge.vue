@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import type { iMatchGuess } from '@/types'
 import { isNil } from 'lodash/fp'
 import { computed } from 'vue'
 
+type iPartialGuess = {
+  id: number
+  points: number
+}
+
 const props = defineProps<{
-  guess: iMatchGuess
+  guess: iPartialGuess
 }>()
 
 const classMap = {
+  10: 'badge-success text-white',
   5: 'badge-success text-white',
   4: 'badge-secondary text-white',
   3: 'badge-neutral',
@@ -19,7 +24,7 @@ const classMap = {
 }
 
 const badgeClass = computed<string>(() => {
-  const baseClasses = 'badge badge-sm lg:absolute top-3 right-3'
+  const baseClasses = 'badge badge-sm gap-1 !px-1.5'
   const key = props.guess.id ? (props.guess.points ?? 'processing') : 'notRegistered'
 
   // @ts-ignore
@@ -42,7 +47,9 @@ const label = computed<string>(() => {
 </script>
 <template>
   <div :class="badgeClass">
-    <i v-if="guess.points === 5" class="fa-solid fa-star" />
-    {{ label }}
+    <slot>
+      <i v-if="guess.points >= 5" class="fa-solid fa-star" />
+      {{ label }}
+    </slot>
   </div>
 </template>

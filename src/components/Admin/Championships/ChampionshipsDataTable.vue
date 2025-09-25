@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import BaseImage from '@/components/Shared/BaseImage.vue'
 import DataStatus from '@/components/Shared/DataStatus.vue'
 import DataTable, { type iColumn } from '@/components/Shared/DataTable.vue'
-
 import type { iState, iChampionship } from '@/types'
-import BaseImage from '@/components/Shared/BaseImage.vue'
 
 defineProps<{
   state: iState<iChampionship[]>
@@ -11,6 +10,7 @@ defineProps<{
 
 const emit = defineEmits<{
   edit: [row: iChampionship]
+  ranking: [row: iChampionship]
 }>()
 
 const columns: iColumn<iChampionship & { teams: any; groups: any; rounds: any }>[] = [
@@ -36,6 +36,10 @@ const columns: iColumn<iChampionship & { teams: any; groups: any; rounds: any }>
     sortable: true,
   },
   {
+    key: 'positions',
+    label: 'Ranking',
+  },
+  {
     key: 'status',
     label: 'Status',
   },
@@ -43,6 +47,10 @@ const columns: iColumn<iChampionship & { teams: any; groups: any; rounds: any }>
 
 const handleEdit = (row: iChampionship) => {
   emit('edit', row)
+}
+
+const handleSetRanking = (row: iChampionship) => {
+  emit('ranking', row)
 }
 </script>
 
@@ -68,6 +76,24 @@ const handleEdit = (row: iChampionship) => {
     </template>
     <template #rounds="{ value }">
       {{ value?.length }}
+    </template>
+    <template #positions="{ row }">
+      <div class="flex flex-col items-start gap-1">
+        <!-- <MatchStatus :status="value" /> -->
+        <template v-if="row.positions.length">
+          <div
+            v-for="position in row.positions"
+            :key="position.position"
+            class="flex items-center gap-2 text-xs"
+          >
+            <BaseImage :src="position.team.badge" class="size-4 rounded-md" />
+            {{ position.team.name }}
+          </div>
+        </template>
+        <a v-else class="link link-hover link-primary" @click.stop="handleSetRanking(row)">
+          Atualizar Ranking
+        </a>
+      </div>
     </template>
     <template #status="{ value, row }">
       <DataStatus :status="value" resource="championships" :entity-id="row.id" />

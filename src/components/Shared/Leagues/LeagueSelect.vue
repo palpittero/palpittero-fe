@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import services from '@/services'
-import { type iTeam, type iState } from '@/types'
+import { type iLeague, type iState } from '@/types'
 import { computed, onMounted, reactive, watch } from 'vue'
 import BaseSearchableSelect from '@/components/Shared/BaseSearchableSelect.vue'
 import BaseImage from '@/components/Shared/BaseImage.vue'
@@ -8,37 +8,37 @@ import BaseImage from '@/components/Shared/BaseImage.vue'
 const props = withDefaults(
   defineProps<{
     id?: string
-    label?: string
+    label: string
     placeholder?: string
     required?: boolean
     disabled?: boolean
-    teams?: iTeam[]
-    filter?: (teams: iTeam[]) => iTeam[]
+    leagues?: iLeague[]
+    filter?: (leagues: iLeague[]) => iLeague[]
   }>(),
   {
-    id: 'team-select',
-    teams: () => [],
+    id: 'league-select',
+    leagues: () => [],
   },
 )
 
-const teamId = defineModel<string | number | iTeam | null>()
+const leagueId = defineModel<string | number | iLeague | null>()
 
-const state = reactive<iState<iTeam[]>>({
+const state = reactive<iState<iLeague[]>>({
   loading: false,
   data: [],
   error: null,
 })
 
-const loadTeams = async () => {
-  if (props.teams.length > 0) {
-    state.data = props.teams
+const loadLeagues = async () => {
+  if (props.leagues.length > 0) {
+    state.data = props.leagues
     return
   }
 
   try {
     state.loading = true
 
-    state.data = await services.teams.fetchTeams()
+    state.data = await services.leagues.fetchLeagues()
   } catch (error: any) {
     state.error = error.message
   } finally {
@@ -46,7 +46,7 @@ const loadTeams = async () => {
   }
 }
 
-const filteredTeams = computed<iTeam[]>(() => {
+const filteredLeagues = computed<iLeague[]>(() => {
   if (props.filter) {
     return props.filter(state.data)
   }
@@ -55,37 +55,34 @@ const filteredTeams = computed<iTeam[]>(() => {
 })
 
 watch(
-  () => props.teams,
+  () => props.leagues,
   (current) => {
-    state.data = current as iTeam[]
+    state.data = current as iLeague[]
   },
   { immediate: true },
 )
 
-onMounted(loadTeams)
+onMounted(loadLeagues)
 </script>
 
 <template>
   <BaseSearchableSelect
     :id="id"
-    v-model="teamId"
-    :options="filteredTeams"
+    v-model="leagueId"
+    :options="filteredLeagues"
     :label="label"
     :placeholder="placeholder"
     :required="required"
     :disabled="disabled || state.loading"
     clearable
   >
-    <template #label>
-      <slot name="label">{{ label }}</slot>
-    </template>
     <template #option="{ option }">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
           <BaseImage :src="option.badge" class="size-5 rounded-md" />
-          <span :class="{ 'text-primary': option.id === teamId }">{{ option.name }}</span>
+          <span :class="{ 'text-primary': option.id === leagueId }">{{ option.name }}</span>
         </div>
-        <i v-if="option.id === teamId" class="fa-solid fa-check text-primary" />
+        <i v-if="option.id === leagueId" class="fa-solid fa-check text-primary" />
       </div>
     </template>
   </BaseSearchableSelect>

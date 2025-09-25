@@ -18,7 +18,7 @@ const handleToggle = () => {
 <template>
   <div class="flex justify-between items-center cursor-pointer" @click="handleToggle">
     <div class="flex items-center gap-3">
-      <h2 class="text-xl font-bold">{{ championship.name }} {{ championship.year }}</h2>
+      <h2 class="text-sm lg:text-xl font-bold">{{ championship.name }} {{ championship.year }}</h2>
     </div>
     <div class="flex items-center gap-2">
       <span class="text-sm text-base-content/60">

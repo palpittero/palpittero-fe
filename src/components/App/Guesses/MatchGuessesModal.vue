@@ -4,9 +4,9 @@ import services from '@/services'
 import type { iGuess, iMatch, iState } from '@/types'
 import BaseModal from '@/components/Shared/BaseModal.vue'
 import BaseEmptyState from '@/components/Shared/BaseEmptyState.vue'
-import MatchGuessesDialogHeader from './MatchGuessesDialogHeader.vue'
+import MatchGuessesModalHeader from './MatchGuessesModalHeader.vue'
 import FormattedDate from '@/components/Shared/FormattedDate.vue'
-import MatchGuessesDialogItem from '@/components/App/Guesses/MatchGuessDialogItem.vue'
+import MatchGuessesModalItem from '@/components/App/Guesses/MatchGuessModalItem.vue'
 
 const props = defineProps<{
   match: iMatch | null
@@ -47,7 +47,7 @@ const loadMatchGuesses = async () => {
 
 <template>
   <BaseModal
-    id="match_guesses_dialog"
+    id="match_guesses_modal"
     title="Palpites do Jogo"
     @open="loadMatchGuesses"
     size="md"
@@ -55,7 +55,7 @@ const loadMatchGuesses = async () => {
     cancel-button-text="Fechar"
   >
     <div class="flex flex-col space-y-4">
-      <MatchGuessesDialogHeader :match="match" />
+      <MatchGuessesModalHeader :match="match" />
 
       <div v-if="matchGuesses.loading" class="flex justify-center py-8">
         <span class="loading loading-spinner loading-lg text-primary"></span>
@@ -84,7 +84,7 @@ const loadMatchGuesses = async () => {
         </div>
 
         <div class="grid gap-3">
-          <MatchGuessesDialogItem
+          <MatchGuessesModalItem
             v-for="guess in matchGuesses.data"
             :key="guess.id || guess.userId"
             :guess="guess"

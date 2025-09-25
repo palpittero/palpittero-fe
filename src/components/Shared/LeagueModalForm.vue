@@ -93,7 +93,7 @@ const filterUsers = (option: iOption) => option.id !== league.data.ownerId
     @submit="handleSubmit"
   >
     <span v-if="league.loading" class="loading loading-ring loading-xl" />
-    <fieldset v-else class="fieldset">
+    <template v-else>
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Nome</legend>
         <input
@@ -171,6 +171,6 @@ const filterUsers = (option: iOption) => option.id !== league.data.ownerId
           <LeaguePrizes v-model="league.data.prizes" />
         </template>
       </fieldset>
-    </fieldset>
+    </template>
   </BaseModal>
 </template>

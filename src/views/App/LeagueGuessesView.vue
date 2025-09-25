@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { map } from 'lodash/fp'
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import services from '@/services'
-import { useToastStore } from '@/stores'
+import { useAuthStore, useToastStore } from '@/stores'
 import type {
   iLeague,
   iChampionship,
@@ -10,19 +11,23 @@ import type {
   iChampionshipGuess,
   iMatchGuess,
   iMatch,
+  iCopyGuesses,
 } from '@/types'
 import ChampionshipsRoundsMatchesList from '@/components/App/Championships/ChampionshipsRoundsMatchesList.vue'
-import CopyGuessesModal from '@/components/App/Guesses/CopyGuessesModal.vue'
+import CopyGuessesModalForm from '@/components/App/Guesses/CopyGuessesModalForm.vue'
 import type { iBreadcrumbItem } from '@/components/Shared/PageBreadcrumbs.vue'
 import PageBreadcrumbs from '@/components/Shared/PageBreadcrumbs.vue'
 import GuessesHeader from '@/components/App/Guesses/GuessesHeader.vue'
 import { hasInvalidMatchesGuesses, prepareChampionshipsGuesses } from '@/helpers/guesses'
 import BaseEmptyState from '@/components/Shared/BaseEmptyState.vue'
-import MatchGuessesDialog from '@/components/App/Guesses/MatchGuessesDialog.vue'
-import ChampionshipGuessesDialog from '@/components/App/Guesses/ChampionshipGuessesDialog.vue'
+import MatchGuessesModal from '@/components/App/Guesses/MatchGuessesModal.vue'
+import ChampionshipGuessesModal from '@/components/App/Guesses/ChampionshipGuessesModal.vue'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const toastStore = useToastStore()
+const authStore = useAuthStore()
+const { loggedUser } = storeToRefs(authStore)
 
 const breadcrumbItems = computed<iBreadcrumbItem[]>(() => [
   {
@@ -129,8 +134,6 @@ const handleRegisterGuesses = async () => {
     // Store which matches are being registered
     memoryRegisteredGuesses.value = matchesGuesses.value.map((guess: any) => guess.matchId)
 
-    console.log('guesses', matchesGuesses.value)
-
     const payload = {
       matchesGuesses: matchesGuesses.value,
       championshipsGuesses: prepareChampionshipsGuesses(championshipsPositionsGuesses.value),
@@ -153,36 +156,39 @@ const handleRegisterGuesses = async () => {
 }
 
 // Copy Guesses
-const isCopyGuessesModalOpen = ref<boolean>(false)
+const isCopyingGuesses = ref<boolean>(false)
 
 const handleCopyGuesses = () => {
-  isCopyGuessesModalOpen.value = true
+  // @ts-ignore
+  copy_guesses_modal.showModal()
 }
 
-const handleCopyGuessesModalHide = () => {
-  isCopyGuessesModalOpen.value = false
-}
-
-const handleCopyGuessesSubmit = async (copyData: any) => {
+const handleCopyGuessesSubmit = async ({
+  sourceLeagueId,
+  targetLeagueId,
+  championships,
+  copyMatchesGuesses,
+  copyChampionshipsGuesses,
+}: iCopyGuesses) => {
   try {
-    isLoading.value = true
+    isCopyingGuesses.value = true
 
     const result = await services.guesses.copyGuesses({
-      sourceLeagueId: copyData.sourceLeagueId,
-      targetLeagueId: copyData.targetLeagueId,
-      championshipsIds: copyData.championshipsIds,
-      copyMatchesGuesses: copyData.copyMatchesGuesses,
-      copyChampionshipsGuesses: copyData.copyChampionshipsGuesses,
+      sourceLeagueId,
+      targetLeagueId,
+      championshipsIds: map('id', championships),
+      copyMatchesGuesses,
+      copyChampionshipsGuesses,
     })
 
     const total = (result as any)?.data?.total || (result as any)?.total || 0
     toastStore.success(
-      total > 0 ? `${total} palpites copiados com sucesso!` : 'Nenhum palpite foi copiado',
+      total > 0 ? `${total} palpite(s) copiado(s) com sucesso!` : 'Nenhum palpite foi copiado',
     )
 
-    handleCopyGuessesModalHide()
+    // @ts-ignore
+    copy_guesses_modal.close()
 
-    // Reload championships data to show updated guesses
     if (total > 0) {
       await loadChampionships()
     }
@@ -190,7 +196,7 @@ const handleCopyGuessesSubmit = async (copyData: any) => {
     console.error('Error copying guesses:', error)
     toastStore.error('Erro ao copiar palpites')
   } finally {
-    isLoading.value = false
+    isCopyingGuesses.value = false
   }
 }
 
@@ -224,15 +230,15 @@ const selectedMatch = ref<iMatch | null>(null)
 const handleViewOtherGuesses = (match: iMatch) => {
   selectedMatch.value = match
   // @ts-ignore
-  match_guesses_dialog.showModal()
+  match_guesses_modal.showModal()
 }
 
-const selectedChampionshipId = ref<number | null>(null)
+const selectedChampionship = ref<iChampionship | null>(null)
 
-const handleViewOtherChampionshipGuesses = (championshipId: number) => {
-  selectedChampionshipId.value = championshipId
+const handleViewOtherChampionshipGuesses = (championship: iChampionship) => {
+  selectedChampionship.value = { ...championship }
   // @ts-ignore
-  championship_guesses_dialog.showModal()
+  championship_guesses_modal.showModal()
 }
 </script>
 
@@ -266,8 +272,8 @@ const handleViewOtherChampionshipGuesses = (championshipId: number) => {
         :league-id="leagueId"
         :is-open="isChampionshipOpen(index)"
         :memory-registered-guesses="memoryRegisteredGuesses"
-        @view-other-guesses="handleViewOtherGuesses"
-        @view-other-championship-guesses="handleViewOtherChampionshipGuesses"
+        @view-guesses="handleViewOtherGuesses"
+        @view-championship-guesses="handleViewOtherChampionshipGuesses"
       />
 
       <BaseEmptyState
@@ -276,18 +282,17 @@ const handleViewOtherChampionshipGuesses = (championshipId: number) => {
         description="Esta liga ainda não possui campeonatos para palpitar"
       />
 
-      <MatchGuessesDialog :match="selectedMatch" :league-id="leagueId" />
+      <MatchGuessesModal :match="selectedMatch" :league-id="leagueId" />
 
-      <ChampionshipGuessesDialog :championship-id="selectedChampionshipId" :league-id="leagueId" />
+      <ChampionshipGuessesModal :championship="selectedChampionship" :league-id="leagueId" />
     </div>
   </div>
 
   <!-- Copy Guesses Modal -->
-  <CopyGuessesModal
-    :visible="isCopyGuessesModalOpen"
+  <CopyGuessesModalForm
     :league="league.data"
     :championships="championships.data"
+    :logged-user="loggedUser"
     @submit="handleCopyGuessesSubmit"
-    @hide="handleCopyGuessesModalHide"
   />
 </template>

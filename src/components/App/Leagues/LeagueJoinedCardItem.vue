@@ -70,7 +70,7 @@ const handleCardClick = (event: Event, league: iLeague) => {
   >
     <div class="card-body p-4">
       <div class="flex justify-between items-center gap-4">
-        <BaseImage :src="league.badge" class="size-14" />
+        <BaseImage :src="league.badge" class="size-14 border border-base-200" />
         <div class="flex-1">
           <h3 class="font-bold text-lg">{{ league.name }}</h3>
           <!-- <p class="text-sm text-base-content/70 mt-1">

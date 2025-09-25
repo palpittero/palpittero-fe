@@ -26,8 +26,6 @@ const columns: iColumn<iTeam>[] = [
   },
 ]
 
-console.log(props.state)
-
 const handleEdit = (row: iTeam) => {
   emit('edit', row)
 }

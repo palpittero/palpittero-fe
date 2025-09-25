@@ -2,7 +2,7 @@
 import BaseMultiSelect from '@/components/Shared/BaseMultiSelect.vue'
 import services from '@/services'
 import type { iChampionship, iState } from '@/types'
-import { onMounted, reactive, watch } from 'vue'
+import { onMounted, reactive } from 'vue'
 
 defineProps<{
   label: string
@@ -31,14 +31,6 @@ const loadChampionships = async () => {
 }
 
 onMounted(loadChampionships)
-
-watch(
-  championships,
-  (current) => {
-    console.log(current)
-  },
-  { deep: true },
-)
 
 const handleClear = () => {
   championships.value = championships.value.map((championship) => ({

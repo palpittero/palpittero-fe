@@ -1,15 +1,10 @@
 <template>
   <div class="card bg-base-200/50 shadow-sm border border-base-300">
-    <div class="card-body p-6">
+    <div class="card-body p-3 lg:p-6">
       <!-- Rule Header -->
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-3">
-          <div
-            class="badge badge-lg font-bold text-white"
-            :class="getPointsBadgeClass(rule.points)"
-          >
-            {{ rule.points }} pts
-          </div>
+      <div class="flex flex-col-reverse lg:flex-row lg:items-center lg:justify-between mb-4 gap-4">
+        <div class="flex flex-col lg:flex-row lg:items-center gap-1">
+          <MatchGuessPointsBadge :guess="{ id: 999, points: rule.points }" class="!badge-md" />
           <div v-if="rule.hint" class="text-sm text-base-content/60 italic">
             {{ rule.hint }}
           </div>
@@ -44,14 +39,14 @@
                     <div class="flex items-center justify-center gap-4 text-sm">
                       <div class="text-center">
                         <div class="font-medium">{{ example.guess.homeTeam.name }}</div>
-                        <div class="text-2xl font-bold text-info">
+                        <div class="text-lg font-bold text-info">
                           {{ example.guess.regularTimeHomeTeamGoals }}
                         </div>
                       </div>
                       <div class="text-base-content/50">×</div>
                       <div class="text-center">
                         <div class="font-medium">{{ example.guess.awayTeam.name }}</div>
-                        <div class="text-2xl font-bold text-info">
+                        <div class="text-lg font-bold text-info">
                           {{ example.guess.regularTimeAwayTeamGoals }}
                         </div>
                       </div>
@@ -66,14 +61,14 @@
                     <div class="flex items-center justify-center gap-4 text-sm">
                       <div class="text-center">
                         <div class="font-medium">{{ example.result.homeTeam.name }}</div>
-                        <div class="text-2xl font-bold text-success">
+                        <div class="text-lg font-bold text-success">
                           {{ example.result.regularTimeHomeTeamGoals }}
                         </div>
                       </div>
                       <div class="text-base-content/50">×</div>
                       <div class="text-center">
                         <div class="font-medium">{{ example.result.awayTeam.name }}</div>
-                        <div class="text-2xl font-bold text-success">
+                        <div class="text-lg font-bold text-success">
                           {{ example.result.regularTimeAwayTeamGoals }}
                         </div>
                       </div>
@@ -84,12 +79,9 @@
 
               <!-- Points Earned -->
               <div class="text-center mt-3">
-                <div
-                  class="badge badge-lg font-bold text-white"
-                  :class="getPointsBadgeClass(rule.points)"
-                >
+                <MatchGuessPointsBadge :guess="{ id: 999, points: rule.points }" class="!badge-md">
                   +{{ rule.points }} pontos
-                </div>
+                </MatchGuessPointsBadge>
               </div>
             </div>
           </div>
@@ -100,6 +92,8 @@
 </template>
 
 <script setup lang="ts">
+import MatchGuessPointsBadge from '../Championships/MatchGuessPointsBadge.vue'
+
 interface Example {
   guess: {
     homeTeam: { name: string }

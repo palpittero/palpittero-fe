@@ -1,4 +1,5 @@
-import type { iRole, iStatus } from './common'
+import type { iOption, iRole, iStatus } from './common'
+import type { iChampionshipGuess } from './guesses'
 
 export type iUser = {
   id?: number
@@ -13,6 +14,9 @@ export type iUser = {
   status: iStatus
   createdAt?: string | null
   updatedAt?: string | null
+
+  // UI
+  guesses?: iChampionshipGuess[]
 }
 
 export type iUserOption = iOption & { email: string }

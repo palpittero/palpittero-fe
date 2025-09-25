@@ -73,7 +73,9 @@ const sizeClasses = {
         <h3 class="text-xl font-bold mb-3">
           {{ title }}
         </h3>
-        <slot />
+        <div class="w-full">
+          <slot />
+        </div>
         <div class="modal-action">
           <form method="dialog" class="flex gap-2">
             <button class="btn btn-neutral" v-if="!hideCloseButton">

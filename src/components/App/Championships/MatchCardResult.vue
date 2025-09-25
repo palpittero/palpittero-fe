@@ -110,8 +110,8 @@ const matchResultText = computed<string>(() => {
   }
 
   return matchRegularTimeHomeTeamGoals.value > matchRegularTimeAwayTeamGoals.value
-    ? 'Vitória da casa'
-    : 'Vitória do visitante'
+    ? 'Vitória do time da casa'
+    : 'Vitória do time visitante'
 })
 </script>
 
@@ -125,12 +125,12 @@ const matchResultText = computed<string>(() => {
         class="flex flex-col lg:flex-row items-center mb-4 gap-2"
         :class="{ 'justify-between': match?.group, 'justify-center': !match?.group }"
       >
-        <div class="text-center">
-          <div class="badge badge-sm badge-outline border-base-300" v-if="match?.group">
+        <div class="text-center" v-if="match?.group">
+          <div class="badge badge-sm badge-outline border-base-300">
             {{ match?.group?.name }}
           </div>
         </div>
-        <MatchGuessPointsBadge :guess="guess" />
+        <MatchGuessPointsBadge :guess="guess" class="lg:absolute top-3 right-3" />
         <div class="flex items-center justify-center lg:justify-between gap-2">
           <FormattedDate :date="match.date!" class="text-xs text-base-content/60" />
           <MatchStatus :status="match.status!" />
@@ -314,7 +314,7 @@ const matchResultText = computed<string>(() => {
 
       <!-- View other guesses button -->
       <div class="flex justify-center mt-3">
-        <button class="link link-hover text-xs gap-2" @click="$emit('view-other-guesses', match)">
+        <button class="link link-hover text-xs gap-2" @click="$emit('view-guesses', match)">
           <i class="fa-solid fa-search" />
           Ver todos os palpites
         </button>
