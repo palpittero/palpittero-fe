@@ -22,7 +22,7 @@ const columns: iColumn<iLeague>[] = [
   },
   {
     key: 'users',
-    label: 'Usuários',
+    label: 'Participantes',
     sortable: true,
   },
   {

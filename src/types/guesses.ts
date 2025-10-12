@@ -23,6 +23,7 @@ export type iGuess = {
   league: Pick<iLeague, 'id' | 'name' | 'badge' | 'private'>
   match: iMatch
   matchId: number
+  leagueId: number
   // match: {
   //   id: 1
   //   date: '2022-05-30T17:00:00.000Z'
@@ -61,6 +62,7 @@ export type iGuess = {
 export type iMatchGuess = {
   id?: number
   matchId: number
+  leagueId: number
   homeTeamRegularTimeGoals: number | null
   awayTeamRegularTimeGoals: number | null
   homeTeamPenaltiesTimeGoals: number | null

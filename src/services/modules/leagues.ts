@@ -26,7 +26,7 @@ const updateLeague = (league: any) => {
   )
 }
 
-const deleteLeague = (league: any) => api.delete(`${RESOURCE_URI}/${league.id}`)
+const deleteLeague = (leagueId: number) => api.delete(`${RESOURCE_URI}/${leagueId}`)
 
 const fetchUsers = ({
   league,

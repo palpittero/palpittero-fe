@@ -4,7 +4,7 @@ import services from '@/services'
 import { useToastStore } from '@/stores'
 import type { iChampionship, iChampionshipGroup, iChampionshipRound, iState } from '@/types'
 import { computed, reactive, ref, watch } from 'vue'
-import { createGroup, parseChampionshipInput } from '@/helpers/championships'
+import { createGroup, createRound, parseChampionshipInput } from '@/helpers/championships'
 
 import { CHAMPIONSHIP_MODEL } from '@/constants'
 import ChampionshipTeams from './ChampionshipTeams.vue'
@@ -23,7 +23,7 @@ const emit = defineEmits<{
 const toastStore = useToastStore()
 
 const championship = reactive<iState<iChampionship>>({
-  loading: false,
+  loading: true,
   error: null,
   data: { ...CHAMPIONSHIP_MODEL },
 })
@@ -34,18 +34,16 @@ const isCreating = computed<boolean>(() => !championship.data.id)
 
 const isSimpleRounds = computed<boolean>(() => championship.data.roundsType === 'simple')
 
-watch(
-  isSimpleRounds,
-  (current) => {
-    if (current) {
-      const rounds = championship.data.rounds as iChampionshipRound[]
-      championship.data.rounds = rounds.length || 1
-    }
-  },
-  {
-    immediate: true,
-  },
-)
+watch(isSimpleRounds, (current) => {
+  if (props.championshipId) return
+
+  if (current) {
+    const rounds = championship.data.rounds as iChampionshipRound[]
+    championship.data.rounds = rounds.length || 1
+  } else {
+    championship.data.rounds = [createRound('Rodada #1')]
+  }
+})
 
 watch(
   () => isCreating.value && championship.data.hasGroups,

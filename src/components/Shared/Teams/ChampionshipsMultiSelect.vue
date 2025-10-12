@@ -66,17 +66,20 @@ const isInvalid = computed<boolean>(
                 {{ championship.teams.length }} times
               </div>
             </div>
+
             <div class="flex items-center gap-2">
-              <label class="label">
-                <input
-                  type="checkbox"
-                  class="toggle toggle-primary"
-                  v-model="championship.enableGuesses"
-                  :true-value="1"
-                  :false-value="0"
-                />
-                Habilitar palpite de posições
-              </label>
+              <fieldset class="fieldset">
+                <label class="label">
+                  <input
+                    type="checkbox"
+                    class="toggle toggle-primary"
+                    v-model="championship.enableGuesses"
+                    :true-value="1"
+                    :false-value="0"
+                  />
+                  Habilitar palpite de posições
+                </label>
+              </fieldset>
               <div class="divider divider-horizontal mx-0" />
               <a class="link link-hover link-error" @click="handleRemove(championship)">
                 <i class="fa-solid fa-trash" />

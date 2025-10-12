@@ -92,6 +92,7 @@ const filteredChampionships = computed<iChampionship[]>(() => props.filter(state
     id="championships_modal_select"
     title="Selecionar Campeonatos"
     confirm-button-text="Confirmar"
+    size="md"
     @open="handleOpen"
     @close="handleClose"
     @submit="handleConfirm"
@@ -112,7 +113,7 @@ const filteredChampionships = computed<iChampionship[]>(() => props.filter(state
           :key="championship.id"
           @click="handleToggle(championship)"
         >
-          <div class="text-4xl font-thin opacity-30 tabular-nums">{{ championship.id }}</div>
+          <!-- <div class="text-4xl font-thin opacity-30 tabular-nums">{{ championship.id }}</div> -->
           <div>
             <div>{{ championship.name }}</div>
             <div class="text-xs uppercase font-semibold opacity-60">{{ championship.year }}</div>

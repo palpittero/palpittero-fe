@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import services from '@/services'
 import type { iMatch, iChampionshipRound, iState, iMatchGuess } from '@/types'
@@ -11,14 +11,12 @@ import ChampionshipRoundSelector from './ChampionshipRoundSelector.vue'
 import RoundMatchesListSkeleton from '@/components/App/Championships/RoundMatchesListSkeleton.vue'
 
 const props = defineProps<{
-  // modelValue: Record<number, iMatchGuess>
   rounds: iChampionshipRound[]
   leagueId: number
   memoryRegisteredGuesses?: number[]
 }>()
 
 const emit = defineEmits<{
-  // 'update:modelValue': [value: Record<number, iMatchGuess>]
   'view-guesses': [match: iMatch]
 }>()
 
@@ -115,6 +113,14 @@ const loadMatchesAndGuesses = async (roundId: number) => {
     matches.data = matchesData
     guesses.data = guessesData
 
+    matchesGuesses.value = matches.data.reduce(
+      (acc, match) => ({
+        ...acc,
+        [match.id!]: getMatchGuess(match.id),
+      }),
+      {} as Record<number, iMatchGuess>,
+    )
+
     updateRouteQuery(roundId)
   } catch (error) {
     console.error('Error loading matches and guesses:', error)
@@ -137,76 +143,36 @@ watch(
 
 const isLoading = computed<boolean>(() => matches.loading || guesses.loading)
 
-const matchesGuessesMap = computed<Record<number, iMatchGuess>>(() => {
-  return matches.data.reduce(
-    (acc, match) => {
-      acc[match.id!] = getMatchGuess(match.id)
-      return acc
-    },
-    {} as Record<number, iMatchGuess>,
-  )
-})
-
 const getMatchGuess = (matchId?: number | null): iMatchGuess => {
-  if (!matchId) return createEmptyGuess(0)
+  if (!matchId) return createEmptyGuess({ matchId: 0, leagueId: props.leagueId })
 
   const existingGuess = guesses.data.find((g) => g.matchId === matchId)
   if (existingGuess) return existingGuess
 
-  return createEmptyGuess(matchId)
+  return createEmptyGuess({ matchId, leagueId: props.leagueId })
 }
 
-const createEmptyGuess = (matchId: number): iMatchGuess => ({
+const createEmptyGuess = ({
   matchId,
+  leagueId,
+}: {
+  matchId: number
+  leagueId: number
+}): iMatchGuess => ({
+  matchId,
+  leagueId,
   homeTeamRegularTimeGoals: null,
   awayTeamRegularTimeGoals: null,
   homeTeamPenaltiesTimeGoals: null,
   awayTeamPenaltiesTimeGoals: null,
 })
 
-const handleUpdateGuess = (updatedGuess: iMatchGuess) => {
-  // Update local guesses data
-  const existingIndex = guesses.data.findIndex((g) => g.matchId === updatedGuess.matchId)
-
-  if (updatedGuess.homeTeamRegularTimeGoals !== updatedGuess.awayTeamRegularTimeGoals) {
-    updatedGuess.homeTeamPenaltiesTimeGoals = null
-    updatedGuess.awayTeamPenaltiesTimeGoals = null
-  }
-
-  if (existingIndex >= 0) {
-    guesses.data[existingIndex] = updatedGuess
-  } else {
-    guesses.data.push(updatedGuess)
-  }
-
-  // Create the modelValue format expected by parent
-  // const modelValue: Record<number, iMatchGuess> = {}
-  guesses.data.forEach((guess) => {
-    const match = matches.data.find((m) => m.id === guess.matchId)
-    if (match) {
-      matchesGuesses.value[guess.matchId] = {
-        ...guess,
-        match,
-      } as any
-    }
-  })
-
-  // emit('update:modelValue', modelValue)
-}
-
 const handleViewOtherGuesses = (match: iMatch) => {
   emit('view-guesses', match)
 }
-
-// Initialize on mount
-onMounted(() => {
-  if (selectedRound.value?.id) {
-    loadMatchesAndGuesses(selectedRound.value.id)
-  }
-})
 </script>
 <template>
-  <div class="rounds-matches-list">
+  <div class="flex flex-col space-y-4">
     <ChampionshipRoundSelector
       :selected-round="selectedRound"
       :selected-round-index="selectedRoundIndex"
@@ -224,26 +190,25 @@ onMounted(() => {
       description="Esta rodada ainda não possui jogos cadastrados"
     />
 
-    <div v-else class="space-y-4">
+    <template v-else>
       <template v-for="match in orderedMatches" :key="match.id!">
         <MatchCardGuess
           v-if="['scheduled', 'postponed'].includes(match.status!)"
+          v-model="matchesGuesses[match.id!]"
           :match="match"
-          :guess="matchesGuessesMap[match.id!]"
+          :league-id="leagueId"
           :memory-registered-guesses="memoryRegisteredGuesses"
-          @update:guess="handleUpdateGuess"
           @view-guesses="handleViewOtherGuesses"
         />
 
         <MatchCardResult
           v-else
           :match="match"
-          :guess="matchesGuessesMap[match.id!]"
+          :guess="matchesGuesses[match.id!]"
           :memory-registered-guesses="memoryRegisteredGuesses"
-          @update:guess="handleUpdateGuess"
           @view-guesses="handleViewOtherGuesses"
         />
       </template>
-    </div>
+    </template>
   </div>
 </template>

@@ -33,7 +33,7 @@ const isCurrentLastRound = computed<boolean>(
 </script>
 
 <template>
-  <div class="flex items-center justify-between py-3 bg-base-200/50 px-4 rounded-box mb-4">
+  <div class="flex items-center justify-between py-3 bg-base-200/50 px-4 rounded-box">
     <button
       class="btn btn-ghost btn-sm"
       :disabled="isCurrentFirstRound"

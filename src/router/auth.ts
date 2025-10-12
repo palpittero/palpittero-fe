@@ -14,7 +14,6 @@ const authRoutes: RouteRecordRaw[] = [
     //     next({ name: 'not-found' })
     //   }
     // },
-    meta: { public: true },
   },
   {
     name: 'account-removed',

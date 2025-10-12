@@ -46,6 +46,11 @@ const adminRoutes: RouteRecordRaw[] = [
         name: 'admin.matches',
         component: () => import('@/views/Admin/MatchesView.vue'),
       },
+      {
+        path: ':pathMatch(.*)*',
+        name: 'admin.not-found',
+        component: () => import('@/views/Admin/NotFoundView.vue'),
+      },
     ],
   },
 ]

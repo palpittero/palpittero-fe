@@ -6,7 +6,6 @@ import BaseImage from '@/components/Shared/BaseImage.vue'
 import BaseModal from '@/components/Shared/BaseModal.vue'
 import FormattedDate from '@/components/Shared/FormattedDate.vue'
 import { parseChampionshipsGuesses } from '@/helpers/guesses'
-import GuessPointsBadge from '@/components/Admin/GuessPointsBadge.vue'
 import MatchGuessPointsBadge from '../Championships/MatchGuessPointsBadge.vue'
 
 const props = defineProps<{
@@ -126,15 +125,19 @@ const loadChampionshipGuesses = async () => {
                   <BaseImage :src="user.avatar" :alt="user.name" class="size-6 rounded-md" />
                   {{ user.name }}
                 </li>
-                <li class="list-row" v-for="guess in user.guesses" :key="guess.id">
-                  <div class="text-4xl font-thin opacity-30 tabular-nums">
+                <li
+                  class="list-row items-center flex"
+                  v-for="guess in user.guesses"
+                  :key="guess.id"
+                >
+                  <div class="text-xl font-thin opacity-30 tabular-nums">
                     {{ guess.position }}
                   </div>
                   <div>
                     <BaseImage
                       :src="guess.team?.badge"
                       :alt="guess.team?.name"
-                      class="size-10 rounded-box"
+                      class="size-6 rounded-box"
                     />
                   </div>
                   <div class="list-col-grow">
@@ -143,42 +146,8 @@ const loadChampionshipGuesses = async () => {
                       {{ positionLabels[guess.position].label }}
                     </div>
                   </div>
-                  <MatchGuessPointsBadge
-                    :guess="{
-                      id: guess.id!,
-                      points: guess.points!,
-                    }"
-                  />
+                  <MatchGuessPointsBadge :guess="guess" />
                 </li>
-                <!-- <li
-                  class="list-row flex items-center w-full justify-between"
-                  v-for="guess in user.guesses"
-                  :key="guess.id"
-                >
-                  <div class="flex items-center gap-2">
-                    <div class="text-4xl font-thin opacity-30 tabular-nums">01</div>
-                    <div>
-                      <div>{{ positionLabels[guess.position].label }}</div>
-                      <div
-                        class="text-xs uppercase font-semibold opacity-60 flex items-center gap-2"
-                      >
-                        <BaseImage
-                          :src="guess.team?.badge"
-                          :alt="guess.team?.name"
-                          class="size-4 rounded-md"
-                        />
-                        <span class="font-medium">{{ guess.team?.name }}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <MatchGuessPointsBadge
-                    :guess="{
-                      id: guess.id!,
-                      points: guess.points!,
-                    }"
-                  />
-                </li> -->
               </ul>
             </div>
           </div>

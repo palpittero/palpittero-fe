@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import type { iChampionship, iChampionshipGroup, iMatchDetail, iState, iTeam } from '@/types'
+import type {
+  iChampionship,
+  iChampionshipGroup,
+  iMatchDetail,
+  iMatchRound,
+  iState,
+  iTeam,
+} from '@/types'
 import ChampionshipGroupSelect from '../Championships/ChampionshipGroupSelect.vue'
 import BaseModal from '@/components/Shared/BaseModal.vue'
 import services from '@/services'
 import TeamSelect from '../Teams/TeamSelect.vue'
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 
 const props = defineProps<{
   championship: iChampionship
+  round: iMatchRound
 }>()
 
 const emit = defineEmits<{
@@ -25,6 +33,7 @@ const filterHomeTeams = (teams: iTeam[]): iTeam[] =>
     (team) =>
       team.id !== matchDetail.value.awayTeamId &&
       (!props.championship.hasGroups ||
+        props.round.ignoreGroups ||
         (props.championship.hasGroups &&
           matchDetail.value.group?.teams.some(({ id }) => id === team.id))),
   )
@@ -34,6 +43,7 @@ const filterAwayTeams = ({ teams, matchDetail }: { teams: iTeam[]; matchDetail: 
     (team) =>
       team.id !== matchDetail.homeTeamId &&
       (!props.championship.hasGroups ||
+        props.round.ignoreGroups ||
         (props.championship.hasGroups &&
           matchDetail.group?.teams.some(({ id }) => id === team.id))),
   )
@@ -63,6 +73,10 @@ const handleHomeTeamChange = (team: iTeam) => {
 const handleAwayTeamChange = (team: iTeam) => {
   matchDetail.value.awayTeam = team
 }
+
+const showGroup = computed<boolean>(() =>
+  Boolean(props.championship.hasGroups && !props.round.ignoreGroups),
+)
 </script>
 
 <template>
@@ -74,7 +88,7 @@ const handleAwayTeamChange = (team: iTeam) => {
     @open="handleOpen"
   >
     <ChampionshipGroupSelect
-      v-if="championship?.hasGroups"
+      v-if="showGroup"
       v-model="matchDetail.groupId"
       label="Grupo"
       required
@@ -84,7 +98,7 @@ const handleAwayTeamChange = (team: iTeam) => {
 
     <div
       class="flex w-full gap-4"
-      v-if="!championship?.hasGroups || (championship?.hasGroups && matchDetail.group)"
+      v-if="(showGroup && matchDetail.groupId) || !showGroup"
       :key="matchDetail.groupId"
     >
       <div class="grid grid-cols-12 w-full gap-4">

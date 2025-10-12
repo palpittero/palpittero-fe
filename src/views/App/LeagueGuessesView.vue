@@ -105,6 +105,12 @@ const matchesGuesses = computed<iMatchGuess[]>(() => {
       if (matchGuess && matchGuess.matchId) {
         allGuesses.push({
           ...matchGuess,
+          homeTeamRegularTimeGoals: parseInt(String(matchGuess.homeTeamRegularTimeGoals)) || null,
+          awayTeamRegularTimeGoals: parseInt(String(matchGuess.awayTeamRegularTimeGoals)) || null,
+          homeTeamPenaltiesTimeGoals:
+            parseInt(String(matchGuess.homeTeamPenaltiesTimeGoals)) || null,
+          awayTeamPenaltiesTimeGoals:
+            parseInt(String(matchGuess.awayTeamPenaltiesTimeGoals)) || null,
           leagueId: leagueId.value,
         })
       }
@@ -117,6 +123,11 @@ const matchesGuesses = computed<iMatchGuess[]>(() => {
       guess.leagueId && guess.matchId && (!guess.match || guess.match?.status === 'scheduled'),
   )
 })
+
+const championshipsGuesses = computed(() =>
+  prepareChampionshipsGuesses(championshipsPositionsGuesses.value),
+)
+
 const isSubmitting = ref<boolean>(false)
 
 const isRegisterGuessesDisabled = computed<boolean>(
@@ -136,7 +147,7 @@ const handleRegisterGuesses = async () => {
 
     const payload = {
       matchesGuesses: matchesGuesses.value,
-      championshipsGuesses: prepareChampionshipsGuesses(championshipsPositionsGuesses.value),
+      championshipsGuesses: championshipsGuesses.value,
     }
 
     await services.guesses.registerGuesses(payload)
@@ -146,7 +157,7 @@ const handleRegisterGuesses = async () => {
     toastStore.success(`${total} palpites registrados com sucesso!`)
 
     // Reload data to get updated guesses
-    await loadChampionships()
+    // await loadChampionships()
   } catch (error) {
     console.error('Error registering guesses:', error)
     toastStore.error('Erro ao registrar palpites')
@@ -201,7 +212,7 @@ const handleCopyGuessesSubmit = async ({
 }
 
 // General
-const isLoading = ref<boolean>(false)
+const mounting = ref<boolean>(false)
 
 const initMatchesGuesses = () => {
   championshipsMatchesGuesses.value = championships.data.reduce(
@@ -215,15 +226,17 @@ const initMatchesGuesses = () => {
 
 // Lifecycle
 onMounted(async () => {
-  isLoading.value = true
+  mounting.value = true
   await Promise.all([loadLeague(), loadChampionships()])
 
   // Initialize matches guesses structure
   initMatchesGuesses()
 
   await nextTick()
-  isLoading.value = false
+  mounting.value = false
 })
+
+const isLoading = computed<boolean>(() => league.loading || championships.loading || mounting.value)
 
 const selectedMatch = ref<iMatch | null>(null)
 
@@ -282,7 +295,7 @@ const handleViewOtherChampionshipGuesses = (championship: iChampionship) => {
         description="Esta liga ainda não possui campeonatos para palpitar"
       />
 
-      <MatchGuessesModal :match="selectedMatch" :league-id="leagueId" />
+      <MatchGuessesModal :match="selectedMatch!" :league-id="leagueId" />
 
       <ChampionshipGuessesModal :championship="selectedChampionship" :league-id="leagueId" />
     </div>

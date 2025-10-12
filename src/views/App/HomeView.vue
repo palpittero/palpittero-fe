@@ -28,12 +28,6 @@ const allMyLeagues = reactive<iState<iLeague[]>>({
   error: null,
 })
 
-const allPublicLeagues = reactive<iState<iLeague[]>>({
-  loading: false,
-  data: [],
-  error: null,
-})
-
 const loadMyLeagues = async () => {
   try {
     allMyLeagues.loading = true
@@ -48,6 +42,12 @@ const loadMyLeagues = async () => {
     allMyLeagues.loading = false
   }
 }
+
+const allPublicLeagues = reactive<iState<iLeague[]>>({
+  loading: false,
+  data: [],
+  error: null,
+})
 
 const loadPublicLeagues = async () => {
   try {
@@ -159,7 +159,7 @@ const handleRemoveLeague = async () => {
 
   try {
     removingLeague.value = true
-    await services.leagues.deleteLeague(selectedLeague.value.id)
+    await services.leagues.deleteLeague(selectedLeague.value.id!)
 
     toastStore.success('Liga excluída com sucesso!')
     handleCloseRemoveLeagueConfirmation()
@@ -208,7 +208,6 @@ const handleLeaveLeagueConfirmation = async (league: iLeague) => {
   leave_league_confirmation_modal.showModal()
 }
 
-// League Leave
 const handleLeaveLeague = async (league: iLeague) => {
   if (!selectedLeague.value) return
 
@@ -280,9 +279,7 @@ const handleGuessesLeague = (league: iLeague) => {
   })
 }
 
-const loadData = async () => {
-  await Promise.all([loadMyLeagues(), loadPublicLeagues(), loadPendingInvitations()])
-}
+const loadData = () => Promise.all([loadMyLeagues(), loadPublicLeagues(), loadPendingInvitations()])
 
 onMounted(loadData)
 </script>

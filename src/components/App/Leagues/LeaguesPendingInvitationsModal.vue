@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import LeagueVisibility from '@/components/Admin/Leagues/LeagueVisibility.vue'
+import BaseImage from '@/components/Shared/BaseImage.vue'
 import BaseModal from '@/components/Shared/BaseModal.vue'
 import { computed, ref } from 'vue'
 
@@ -53,26 +55,30 @@ const isConfirmDisabled = computed<boolean>(() =>
     @close="handleClose"
     @submit="handleSubmit"
   >
-    <div class="mt-4 space-y-4">
-      <ul class="list">
-        <li
-          class="list-row justify-between flex items-center"
-          v-for="league in invitations"
-          :key="league.id"
-        >
-          <div>{{ league.name }}</div>
-          <fieldset class="fieldset">
-            <label class="label">
-              <input
-                v-model="invitationsState[league.id].status"
-                type="checkbox"
-                class="toggle toggle-primary"
-              />
-              Aceitar Convite
-            </label>
-          </fieldset>
-        </li>
-      </ul>
-    </div></BaseModal
-  >
+    <ul class="list bg-base-100 rounded-box shadow-md">
+      <li class="list-row" v-for="league in invitations" :key="league.id">
+        <div>
+          <BaseImage :src="league.avatar" :alt="league.name" class="size-10 rounded-lg" />
+        </div>
+        <div>
+          <div>
+            {{ league.name }}
+          </div>
+          <div class="text-xs uppercase font-semibold opacity-60">
+            Liga <LeagueVisibility :private="league.private" />
+          </div>
+        </div>
+        <fieldset class="fieldset">
+          <label class="label">
+            <input
+              v-model="invitationsState[league.id].status"
+              type="checkbox"
+              class="toggle toggle-primary"
+            />
+            Aceitar Convite
+          </label>
+        </fieldset>
+      </li>
+    </ul>
+  </BaseModal>
 </template>

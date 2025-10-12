@@ -101,7 +101,7 @@ const handleSearchBlur = () => {
 
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend" for="role">
+    <legend class="fieldset-legend w-full" for="role">
       <slot name="label">{{ label }}</slot>
     </legend>
 

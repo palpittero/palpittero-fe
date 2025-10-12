@@ -31,6 +31,11 @@ const appRoutes: RouteRecordRaw[] = [
         name: 'app.match-guesses',
         component: () => import('@/views/App/MatchGuessesView.vue'),
       },
+      {
+        path: ':pathMatch(.*)*',
+        name: 'app.not-found',
+        component: () => import('@/views/App/NotFoundView.vue'),
+      },
     ],
   },
 ]

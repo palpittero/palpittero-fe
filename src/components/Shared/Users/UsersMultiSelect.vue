@@ -86,7 +86,7 @@ const handleInviteUser = (email: string) => {
   >
     <template #chip="{ option, handleRemove }">
       <div class="badge badge-primary">
-        {{ option.name || option.email }}
+        {{ option.name || option.email || option }}
         <div
           class="tooltip"
           v-if="getOptionAttrs(option).tooltip"

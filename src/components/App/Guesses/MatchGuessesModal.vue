@@ -9,7 +9,7 @@ import FormattedDate from '@/components/Shared/FormattedDate.vue'
 import MatchGuessesModalItem from '@/components/App/Guesses/MatchGuessModalItem.vue'
 
 const props = defineProps<{
-  match: iMatch | null
+  match: iMatch
   leagueId: number
 }>()
 
@@ -58,7 +58,7 @@ const loadMatchGuesses = async () => {
       <MatchGuessesModalHeader :match="match" />
 
       <div v-if="matchGuesses.loading" class="flex justify-center py-8">
-        <span class="loading loading-spinner loading-lg text-primary"></span>
+        <span class="loading loading-spinner loading-lg text-primary" />
       </div>
 
       <div v-else-if="matchGuesses.error" class="alert alert-error">
@@ -78,7 +78,7 @@ const loadMatchGuesses = async () => {
           <h4 class="font-semibold text-base-content/80">
             {{ matchGuesses.data.length }} palpite(s)
           </h4>
-          <div class="text-sm text-base-content/60">
+          <div class="text-xs text-base-content/60">
             Atualizado em <FormattedDate :date="new Date().toISOString()" />
           </div>
         </div>

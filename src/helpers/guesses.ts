@@ -5,7 +5,6 @@ import type {
   iMatchGuess,
   iUserChampionshipGuess,
 } from '@/types'
-import { isNil } from 'lodash/fp'
 
 const parseMatchesGuesses = (guesses: iGuess[]): iChampionship[] => {
   const championships = guesses.reduce(
@@ -131,37 +130,39 @@ const hasInvalidMatchesGuesses = ({
   // Check if there are any championships that enable guesses but have no position guesses
   const hasEnabledChampionships = championships.some(({ enableGuesses }) => !!enableGuesses)
 
-  if (!hasEnabledChampionships && matchesGuesses.length === 0) {
+  if (hasEnabledChampionships) return false
+
+  if (matchesGuesses.length === 0) {
     return true
   }
 
   // Check if any guess has invalid data
   return matchesGuesses.some((guess: any) => {
-    const hasRegularTimeGoals =
-      guess.homeTeamRegularTimeGoals !== null && guess.awayTeamRegularTimeGoals !== null
+    const homeTeamRegularTimeGoals = parseInt(String(guess.homeTeamRegularTimeGoals))
+    const awayTeamRegularTimeGoals = parseInt(String(guess.awayTeamRegularTimeGoals))
 
-    if (!hasRegularTimeGoals) return true
+    const hasInvalidRegularTimeGoals =
+      isNaN(homeTeamRegularTimeGoals) || isNaN(awayTeamRegularTimeGoals)
+
+    if (hasInvalidRegularTimeGoals) return true
 
     // Check penalties validation for draw games
-    const isDraw =
-      parseInt(String(guess.homeTeamRegularTimeGoals)) ===
-      parseInt(String(guess.awayTeamRegularTimeGoals))
+    const isDraw = homeTeamRegularTimeGoals === awayTeamRegularTimeGoals
 
     const isPenaltiesRound =
-      guess.match?.round?.type === 'penalties' || guess.match?.round?.type === 'extra_time'
+      guess.match?.round?.type === 'penalties' || guess.match?.round?.type === 'extraTime'
 
     if (isDraw && isPenaltiesRound) {
-      const hasPenalties =
-        !isNil(guess.homeTeamPenaltiesTimeGoals) && !isNil(guess.awayTeamPenaltiesTimeGoals)
+      const homeTeamPenaltiesTimeGoals = parseInt(String(guess.homeTeamPenaltiesTimeGoals))
+      const awayTeamPenaltiesTimeGoals = parseInt(String(guess.awayTeamPenaltiesTimeGoals))
 
-      const penaltiesDraw =
-        parseInt(String(guess.homeTeamPenaltiesTimeGoals)) ===
-        parseInt(String(guess.awayTeamPenaltiesTimeGoals))
+      const hasInvalidPenaltiesGoals =
+        isNaN(homeTeamPenaltiesTimeGoals) || isNaN(awayTeamPenaltiesTimeGoals)
 
-      return hasPenalties && penaltiesDraw
+      if (hasInvalidPenaltiesGoals) return true
+
+      return homeTeamPenaltiesTimeGoals === awayTeamPenaltiesTimeGoals
     }
-
-    return false
   })
 }
 

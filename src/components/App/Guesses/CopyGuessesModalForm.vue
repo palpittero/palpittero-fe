@@ -73,7 +73,7 @@ const isCopyGuessesValid = computed<number | null>(() =>
 <template>
   <BaseModal
     id="copy_guesses_modal"
-    title="Time"
+    title="Copiar Palpites"
     @open="handleOpen"
     size="md"
     confirm-button-text="Copiar Papites"
@@ -92,6 +92,15 @@ const isCopyGuessesValid = computed<number | null>(() =>
         required
       />
     </fieldset>
+
+    <!-- @vue-ignore -->
+    <ChampionshipsMultiSelect
+      v-if="model.targetLeagueId"
+      v-model="model.championships"
+      :championships="intersectionChampionships"
+      label="Campeonatos"
+      required
+    />
 
     <fieldset class="fieldset w-auto inline">
       <legend class="fieldset-legend">Copiar</legend>
@@ -140,14 +149,5 @@ const isCopyGuessesValid = computed<number | null>(() =>
         <span class="validator-hint">Selecione pelo menos uma opção</span>
       </div>
     </fieldset>
-
-    <!-- @vue-ignore -->
-    <ChampionshipsMultiSelect
-      v-if="model.targetLeagueId"
-      v-model="model.championships"
-      :championships="intersectionChampionships"
-      label="Campeonatos"
-      required
-    />
   </BaseModal>
 </template>

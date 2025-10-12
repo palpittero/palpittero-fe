@@ -36,6 +36,7 @@ const league = reactive<iState<iLeague>>({
 const handleOpen = async () => {
   if (!props.leagueId) {
     league.data = { ...LEAGUE_MODEL, ownerId: loggedUser.value?.id ?? null }
+    console.log(league.data)
 
     return
   }
@@ -130,7 +131,7 @@ const filterUsers = (option: iOption) => option.id !== league.data.ownerId
 
       <UsersMultiSelect v-model="league.data.users" label="Participantes" :filter="filterUsers" />
 
-      <template v-if="leagueId">
+      <fieldset class="fieldset" v-if="leagueId">
         <label class="label">
           <input
             v-model="league.data.resendInvitations"
@@ -139,7 +140,7 @@ const filterUsers = (option: iOption) => option.id !== league.data.ownerId
           />
           Reenviar Convites
         </label>
-      </template>
+      </fieldset>
 
       <fieldset class="fieldset">
         <legend class="fieldset-legend">Prêmios</legend>

@@ -68,6 +68,8 @@ const handleProcessGuesses = async () => {
 
   toastStore.success('Palpites processados com sucesso')
   // @ts-ignore
+  process_all_guesses_confirmation_modal.close()
+  // @ts-ignore
   process_league_guesses_confirmation_modal.close()
 
   loadUnprocessedGuesses()

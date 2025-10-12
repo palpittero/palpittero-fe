@@ -103,6 +103,7 @@ const handleChampionshipChange = (championship: iChampionship) => {
         <MatchDetailModalForm
           v-model="selectedMatchDetail"
           :championship="match.championship!"
+          :round="match.round!"
           @confirm="handleSubmitMatchDetail"
         />
       </div>

@@ -28,6 +28,9 @@ router.beforeEach(
       } catch (error: any) {
         if (error.response?.status === 401) {
           next({ name: 'login', query: { returnUrl: to.fullPath } })
+        } else {
+          next({ name: 'error' })
+          return
         }
       }
     }

@@ -1,5 +1,5 @@
 import api from '@/services/api'
-import type { iCopyGuesses, iGuess } from '@/types'
+import type { iChampionshipGuess, iCopyGuesses, iGuess, iMatchGuess } from '@/types'
 
 const RESOURCE_URI = '/guesses'
 
@@ -11,8 +11,8 @@ const registerGuesses = async ({
   matchesGuesses,
   championshipsGuesses,
 }: {
-  matchesGuesses: any
-  championshipsGuesses: any
+  matchesGuesses: iMatchGuess[]
+  championshipsGuesses: iChampionshipGuess[]
 }) =>
   api.post(`${RESOURCE_URI}/register`, {
     matchesGuesses,

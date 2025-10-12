@@ -28,7 +28,6 @@ const loadingLeagueRanking = async () => {
       userId: user.id,
       userName: user.name,
       points: user.points || 0,
-      correctGuesses: user.guessesPoints || 0,
     }))
   } catch (error) {
     console.error('Error loading ranking:', error)
@@ -74,7 +73,6 @@ const handleClose = () => {
               <th>Pos.</th>
               <th>Usuário</th>
               <th>Pontos</th>
-              <th>Acertos</th>
             </tr>
           </thead>
           <tbody>
@@ -95,7 +93,6 @@ const handleClose = () => {
               <td>
                 <span class="badge badge-primary">{{ entry.points }} pts</span>
               </td>
-              <td>{{ entry.correctGuesses }}</td>
             </tr>
           </tbody>
         </table>

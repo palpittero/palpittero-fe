@@ -54,7 +54,9 @@ onMounted(activateAccount)
           </template>
           <template v-else-if="state.success">
             <h1 class="text-5xl font-bold">Agora você faz parte da liga {{ league }}</h1>
-            <router-link :to="{ name: 'home' }" class="link mt-try">Ver minhas ligas</router-link>
+            <router-link :to="{ name: 'app.index' }" class="link mt-try"
+              >Ver minhas ligas</router-link
+            >
           </template>
         </div>
       </div>

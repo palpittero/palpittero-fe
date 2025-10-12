@@ -1,116 +1,163 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import type { iMatch, iMatchGuess } from '@/types'
 import MatchStatus from '@/components/Admin/Matches/MatchStatus.vue'
-import BaseImage from '@/components/Shared/BaseImage.vue'
+
 import FormattedDate from '@/components/Shared/FormattedDate.vue'
+import MatchCardGuessDesktop from './MatchCardGuessDesktop.vue'
+import MatchCardGuessMobile from './MatchCardGuessMobile.vue'
+import services from '@/services'
+import { useToastStore } from '@/stores'
 
 const props = defineProps<{
   match: iMatch
-  guess: iMatchGuess
-  disabled?: boolean
+  leagueId: number
   memoryRegisteredGuesses?: number[]
 }>()
 
 const emit = defineEmits<{
-  'update:guess': [guess: iMatchGuess]
   'view-guesses': [match: iMatch]
 }>()
+
+const guess = defineModel<iMatchGuess>({ required: true })
+
+const homeTeamRegularTimeGoals = computed<number>(() =>
+  parseInt(String(guess.value.homeTeamRegularTimeGoals)),
+)
+
+const awayTeamRegularTimeGoals = computed<number>(() =>
+  parseInt(String(guess.value.awayTeamRegularTimeGoals)),
+)
+
+const homeTeamPenaltiesTimeGoals = computed<number>(() =>
+  parseInt(String(guess.value.homeTeamPenaltiesTimeGoals)),
+)
+
+const awayTeamPenaltiesTimeGoals = computed<number>(() =>
+  parseInt(String(guess.value.awayTeamPenaltiesTimeGoals)),
+)
+
+const isRegularTimeDraw = computed<boolean>(
+  () => homeTeamRegularTimeGoals.value === awayTeamRegularTimeGoals.value,
+)
+
+const isRegularTimeEmpty = computed<boolean>(
+  () => isNaN(homeTeamRegularTimeGoals.value) && isNaN(awayTeamRegularTimeGoals.value),
+)
+
+const isPenaltiesTimeDraw = computed<boolean>(
+  () => homeTeamPenaltiesTimeGoals.value === awayTeamPenaltiesTimeGoals.value,
+)
 
 const isPenaltiesRound = computed<boolean>(() =>
   ['extraTime', 'penalties'].includes(props.match.round?.type ?? ''),
 )
 
-const showPenaltiesGuess = ref<boolean>(false)
-
-const allowPenaltiesGuess = computed<boolean>(() => {
-  if (!isPenaltiesRound.value) return false
-
-  const isRegularTimeDraw =
-    parseInt(String(props.guess.homeTeamRegularTimeGoals)) ===
-    parseInt(String(props.guess.awayTeamRegularTimeGoals))
-
-  return isRegularTimeDraw
-})
-
 const hasPenaltiesGuess = computed<boolean>(
-  () =>
-    props.guess.homeTeamPenaltiesTimeGoals !== null ||
-    props.guess.awayTeamPenaltiesTimeGoals !== null,
+  () => !isNaN(homeTeamPenaltiesTimeGoals.value) && !isNaN(awayTeamPenaltiesTimeGoals.value),
 )
 
-const togglePenaltiesGuess = () => {
-  showPenaltiesGuess.value = !showPenaltiesGuess.value
-
-  emit('update:guess', {
-    ...props.guess,
-    homeTeamPenaltiesTimeGoals: showPenaltiesGuess.value ? 0 : null,
-    awayTeamPenaltiesTimeGoals: showPenaltiesGuess.value ? 0 : null,
-  })
-}
-
-onMounted(() => {
-  showPenaltiesGuess.value = isPenaltiesRound.value && hasPenaltiesGuess.value
-})
-
-const regularTimeHomeTeamGoals = computed<number>(() =>
-  parseInt(String(props.guess.homeTeamRegularTimeGoals)),
-)
-const regularTimeAwayTeamGoals = computed<number>(() =>
-  parseInt(String(props.guess.awayTeamRegularTimeGoals)),
-)
-
-const penaltiesHomeTeamGoals = computed<number>(() =>
-  parseInt(String(props.guess.homeTeamPenaltiesTimeGoals)),
-)
-
-const penaltiesAwayTeamGoals = computed<number>(() =>
-  parseInt(String(props.guess.awayTeamPenaltiesTimeGoals)),
+const allowPenaltiesGuess = computed<boolean>(
+  () => isPenaltiesRound.value && (isRegularTimeDraw.value || hasPenaltiesGuess.value),
 )
 
 const isHomeTeamWinningRegularTime = computed<boolean>(
-  () => regularTimeHomeTeamGoals.value > regularTimeAwayTeamGoals.value,
+  () => homeTeamRegularTimeGoals.value > awayTeamRegularTimeGoals.value,
 )
 
 const isAwayTeamWinningRegularTime = computed<boolean>(
-  () => regularTimeAwayTeamGoals.value > regularTimeHomeTeamGoals.value,
+  () => awayTeamRegularTimeGoals.value > homeTeamRegularTimeGoals.value,
 )
 
 const isHomeTeamWinningPenalties = computed<boolean>(
-  () => penaltiesHomeTeamGoals.value > penaltiesAwayTeamGoals.value,
+  () => homeTeamPenaltiesTimeGoals.value > awayTeamPenaltiesTimeGoals.value,
 )
 
 const isAwayTeamWinningPenalties = computed<boolean>(
-  () => penaltiesAwayTeamGoals.value > penaltiesHomeTeamGoals.value,
+  () => awayTeamPenaltiesTimeGoals.value > homeTeamPenaltiesTimeGoals.value,
 )
 
-const handleUpdateGuess = async (
-  key:
-    | 'homeTeamRegularTimeGoals'
-    | 'awayTeamRegularTimeGoals'
-    | 'homeTeamPenaltiesTimeGoals'
-    | 'awayTeamPenaltiesTimeGoals',
-  event: Event,
-) => {
-  emit('update:guess', {
-    ...props.guess,
-    [key]: (event.target as HTMLInputElement).value,
-  })
+const isHomeTeamWinning = computed<boolean>(
+  () => isHomeTeamWinningRegularTime.value || isHomeTeamWinningPenalties.value,
+)
 
-  await nextTick()
+const isAwayTeamWinning = computed<boolean>(
+  () => isAwayTeamWinningRegularTime.value || isAwayTeamWinningPenalties.value,
+)
 
-  showPenaltiesGuess.value =
-    props.guess.homeTeamRegularTimeGoals === props.guess.awayTeamRegularTimeGoals
+const isMatchGuessValid = computed<boolean>(() => {
+  if (isRegularTimeDraw.value) {
+    const isPenaltiesGuessValid =
+      !isNaN(homeTeamPenaltiesTimeGoals.value) &&
+      !isNaN(awayTeamPenaltiesTimeGoals.value) &&
+      !isPenaltiesTimeDraw.value
+
+    return isPenaltiesGuessValid
+  } else {
+    const isRegularTimeGuessEmpty =
+      isNaN(homeTeamRegularTimeGoals.value) && isNaN(awayTeamRegularTimeGoals.value)
+
+    const isRegularTimeGuessValid =
+      !isNaN(homeTeamRegularTimeGoals.value) && !isNaN(awayTeamRegularTimeGoals.value)
+
+    return isRegularTimeGuessValid || isRegularTimeGuessEmpty
+  }
+})
+
+const invalidGuessMessage = computed<string>(() => {
+  if (isPenaltiesTimeDraw.value) {
+    return 'Disputa de pênaltis não pode terminar empatada'
+  } else if (isRegularTimeDraw.value && !hasPenaltiesGuess.value) {
+    return 'Informe o placar da disputa de pênaltis'
+  }
+
+  return 'Informe o placar do tempo regular'
+})
+
+const toastStore = useToastStore()
+
+const registerGuesses = async () => {
+  try {
+    guess.value.leagueId = props.leagueId
+
+    const payload = {
+      matchesGuesses: [guess.value],
+      championshipsGuesses: [],
+    }
+
+    await services.guesses.registerGuesses(payload)
+
+    toastStore.success('Palpite registrado com sucesso!')
+  } catch (error) {
+    console.error('Error registering guesses:', error)
+    toastStore.error('Erro ao registrar palpites')
+  }
+}
+
+const handleUpdateGuess = () => {
+  if (isRegularTimeEmpty.value) {
+    guess.value.homeTeamRegularTimeGoals = null
+    guess.value.awayTeamRegularTimeGoals = null
+  }
+
+  if (!isRegularTimeDraw.value) {
+    guess.value.homeTeamPenaltiesTimeGoals = null
+    guess.value.awayTeamPenaltiesTimeGoals = null
+  }
+
+  if (isMatchGuessValid.value) {
+    registerGuesses()
+  }
 }
 </script>
 
 <template>
-  <div class="card bg-base-200/50 shadow-sm">
+  <div
+    class="card bg-base-200/50 shadow-sm"
+    :class="{ ' border border-error': !isMatchGuessValid }"
+  >
     <div class="card-body py-2 px-4">
-      <div
-        class="flex flex-col gap-2 items-center"
-        :class="{ 'justify-between': match?.group, 'justify-center': !match?.group }"
-      >
+      <div class="flex flex-col gap-2 items-center">
         <div class="text-center">
           <div class="badge badge-xs badge-outline border-base-300" v-if="match?.group">
             {{ match?.group?.name }}
@@ -122,114 +169,59 @@ const handleUpdateGuess = async (
         </div>
       </div>
 
-      <!-- Teams and scores -->
-      <div class="flex flex-col gap-2">
-        <div class="text-center text-xs font-medium">Tempo Regular</div>
-        <div class="flex lg:grid lg:grid-cols-12 justify-center gap-2 items-center">
-          <!-- Home team -->
-          <div class="col-span-5 flex flex-col-reverse lg:flex-row items-center justify-end gap-2">
-            <span
-              class="text-sm md:text-base text-right"
-              :class="{ 'font-bold': isHomeTeamWinningRegularTime || isHomeTeamWinningPenalties }"
-            >
-              {{ match.homeTeam?.name }}
-              <span class="font-bold" v-if="isHomeTeamWinningPenalties"> * </span>
-            </span>
-            <BaseImage
-              :src="match.homeTeam?.badge"
-              :alt="match.homeTeam?.name"
-              class="size-6 lg:size-10 rounded-lg border border-base-300"
-            />
-          </div>
-          <!-- Score -->
-          <div class="col-span-2 flex items-center justify-around gap-2">
-            <input
-              :value="guess.homeTeamRegularTimeGoals"
-              type="text"
-              min="0"
-              max="20"
-              class="input !w-12 !lg:w-14 text-center"
-              :class="{ 'font-bold': isHomeTeamWinningRegularTime }"
-              :disabled="disabled"
-              @input="handleUpdateGuess('homeTeamRegularTimeGoals', $event)"
-            />
-            <i class="fa-solid fa-xmark text-base-content/60" />
-            <input
-              :value="guess.awayTeamRegularTimeGoals"
-              type="text"
-              min="0"
-              max="20"
-              class="input !w-12 !lg:w-14 text-center"
-              :class="{ 'font-bold': isAwayTeamWinningRegularTime }"
-              :disabled="disabled"
-              @input="handleUpdateGuess('awayTeamRegularTimeGoals', $event)"
-            />
-          </div>
+      <MatchCardGuessDesktop
+        v-model="guess"
+        :match="match"
+        :is-home-team-winning="isHomeTeamWinning"
+        :is-away-team-winning="isAwayTeamWinning"
+        :is-home-team-winning-regular-time="isHomeTeamWinningRegularTime"
+        :is-away-team-winning-regular-time="isAwayTeamWinningRegularTime"
+        :is-home-team-winning-penalties="isHomeTeamWinningPenalties"
+        :is-away-team-winning-penalties="isAwayTeamWinningPenalties"
+        :allow-penalties-guess="allowPenaltiesGuess"
+        @update-guess="handleUpdateGuess"
+      />
 
-          <!-- Away team -->
-          <div class="col-span-5 flex flex-col lg:flex-row items-center justify-start gap-2">
-            <BaseImage
-              :src="match.awayTeam?.badge"
-              :alt="match.awayTeam?.name"
-              class="size-6 lg:size-10 rounded-lg border border-base-300"
-            />
-            <span
-              class="text-sm md:text-base text-left"
-              :class="{ 'font-bold': isAwayTeamWinningRegularTime || isAwayTeamWinningPenalties }"
-            >
-              {{ match.awayTeam?.name }}
-              <span class="font-bold" v-if="isAwayTeamWinningPenalties"> * </span>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div
-        v-if="showPenaltiesGuess"
-        class="bg-base-200/50 pt-2 px-3 pb-4 rounded-box self-center w-2/3 lg:w-1/4"
-      >
-        <div class="text-center text-xs font-medium mb-2">Pênaltis</div>
-        <div class="flex items-center gap-2 justify-center">
-          <input
-            :value="guess.homeTeamPenaltiesTimeGoals"
-            type="text"
-            min="0"
-            max="20"
-            class="input !w-12 !lg:w-14 text-center"
-            :disabled="disabled"
-            :class="{ 'font-bold': isHomeTeamWinningPenalties }"
-            @input="handleUpdateGuess('homeTeamPenaltiesTimeGoals', $event)"
-          />
-          <i class="fa-solid fa-xmark text-base-content/60" />
-          <input
-            :value="guess.awayTeamPenaltiesTimeGoals"
-            type="text"
-            min="0"
-            max="20"
-            class="input !w-12 !lg:w-14 text-center"
-            :disabled="disabled"
-            :class="{ 'font-bold': isAwayTeamWinningPenalties }"
-            @input="handleUpdateGuess('awayTeamPenaltiesTimeGoals', $event)"
-          />
-        </div>
-      </div>
-
-      <!-- Penalties section (if applicable) -->
-      <button
-        v-if="allowPenaltiesGuess"
-        class="btn btn-xs self-center"
-        @click="togglePenaltiesGuess"
-      >
-        {{ showPenaltiesGuess ? 'Cancelar Pênaltis' : 'Palpitar pênaltis' }}
-      </button>
+      <MatchCardGuessMobile
+        v-model="guess"
+        :match="match"
+        :is-home-team-winning="isHomeTeamWinning"
+        :is-away-team-winning="isAwayTeamWinning"
+        :is-home-team-winning-regular-time="isHomeTeamWinningRegularTime"
+        :is-away-team-winning-regular-time="isAwayTeamWinningRegularTime"
+        :is-home-team-winning-penalties="isHomeTeamWinningPenalties"
+        :is-away-team-winning-penalties="isAwayTeamWinningPenalties"
+        :allow-penalties-guess="allowPenaltiesGuess"
+        @update-guess="handleUpdateGuess"
+      />
 
       <!-- View other guesses button -->
       <div class="flex justify-center lg:justify-end">
-        <button class="link link-hover link-xs" @click="$emit('view-guesses', match)">
+        <button class="link link-hover text-xs link-xs" @click="emit('view-guesses', match)">
           <i class="fa-solid fa-search" />
           Ver palpites
         </button>
       </div>
+
+      <div v-if="!isMatchGuessValid" class="flex justify-center">
+        <div class="badge badge-error badge-sm badge-soft border">
+          <i class="fa-solid fa-warning" />
+          {{ invalidGuessMessage }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
+<style lang="scss">
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
+}
+</style>

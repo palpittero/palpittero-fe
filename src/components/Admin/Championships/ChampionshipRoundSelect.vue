@@ -24,7 +24,9 @@ const loadChampionships = async () => {
   try {
     state.loading = true
 
-    state.data = parseOptions(await services.championships.fetchRounds(props.championshipId))
+    state.data = parseOptions(await services.championships.fetchRounds(props.championshipId), [
+      'ignoreGroups',
+    ])
   } catch (error: any) {
     state.error = error.message
   } finally {

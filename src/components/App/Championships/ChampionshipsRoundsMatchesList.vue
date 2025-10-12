@@ -123,7 +123,7 @@ onMounted(loadChampionshipData)
       />
 
       <!-- Championship content -->
-      <div v-if="isOpen" class="transition-all duration-300 ease-in-out">
+      <div v-if="isOpen" class="transition-all duration-300 ease-in-out flex flex-col gap-4">
         <!-- Championship guesses (champion/runner-up predictions) -->
         <ChampionshipPositionsGuesses
           v-model="championshipPositionsGuesses"
@@ -140,7 +140,7 @@ onMounted(loadChampionshipData)
 
         <!-- Rounds matches list -->
         <RoundsMatchesList
-          v-else-if="hasRounds"
+          v-if="hasRounds"
           v-model="matchesGuesses"
           :rounds="rounds.data"
           :league-id="leagueId"

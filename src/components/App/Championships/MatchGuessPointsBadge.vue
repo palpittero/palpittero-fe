@@ -1,14 +1,10 @@
 <script setup lang="ts">
+import type { iChampionshipGuess, iMatchGuess } from '@/types'
 import { isNil } from 'lodash/fp'
 import { computed } from 'vue'
 
-type iPartialGuess = {
-  id: number
-  points: number
-}
-
 const props = defineProps<{
-  guess: iPartialGuess
+  guess: iMatchGuess | iChampionshipGuess
 }>()
 
 const classMap = {
@@ -35,20 +31,16 @@ const label = computed<string>(() => {
   const { id, points } = props.guess
 
   if (id) {
-    return isNil(points)
-      ? 'Processando Palpite'
-      : points <= 1
-        ? `${points} ponto`
-        : `${points} pontos`
+    return isNil(points) ? '' : points <= 1 ? `${points} ponto` : `${points} pontos`
   }
 
   return 'Palpite não registrado'
 })
 </script>
 <template>
-  <div :class="badgeClass">
+  <div :class="badgeClass" v-if="label">
     <slot>
-      <i v-if="guess.points >= 5" class="fa-solid fa-star" />
+      <i v-if="guess.points! >= 5" class="fa-solid fa-star" />
       {{ label }}
     </slot>
   </div>

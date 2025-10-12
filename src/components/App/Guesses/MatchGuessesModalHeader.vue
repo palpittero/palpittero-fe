@@ -2,6 +2,7 @@
 import type { iMatch } from '@/types'
 import BaseImage from '@/components/Shared/BaseImage.vue'
 import FormattedDate from '@/components/Shared/FormattedDate.vue'
+import MatchStatus from '@/components/Admin/Matches/MatchStatus.vue'
 
 defineProps<{
   match: iMatch | null
@@ -10,12 +11,14 @@ defineProps<{
 
 <template>
   <div class="card bg-base-200/50 shadow-sm">
-    <div class="card-body">
+    <div class="card-body flex flex-col gap-2">
       <div class="text-center" v-if="match?.group">
-        <div class="badge badge-sm badge-outline">{{ match?.group?.name }}</div>
+        <div class="badge badge-sm badge-outline">
+          {{ match?.group?.name }}
+        </div>
       </div>
-      <div class="flex items-center justify-center gap-4">
-        <div class="flex items-center gap-3">
+      <div class="flex items-center justify-center gap-2">
+        <div class="flex items-center gap-2">
           <BaseImage
             :src="match?.homeTeam?.badge"
             :alt="match?.homeTeam?.name"
@@ -26,7 +29,7 @@ defineProps<{
         <div>
           <i class="fa-solid fa-xmark font-bold" />
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
           <span class="font-medium text-lg">{{ match?.awayTeam?.name }}</span>
           <BaseImage
             :src="match?.awayTeam?.badge"
@@ -35,12 +38,16 @@ defineProps<{
           />
         </div>
       </div>
-      <div class="text-xs text-center text-base-content/60">
-        {{ match?.round?.championship.name }} {{ match?.round?.championship.year }}
-      </div>
-
-      <div class="text-xs text-center text-base-content/60">
-        <FormattedDate :date="match?.date!" />
+      <div>
+        <div class="flex flex-col items-center gap-2">
+          <div class="text-sm text-center text-base-content/60">
+            {{ match?.round?.championship.name }} {{ match?.round?.championship.year }}
+          </div>
+          <div class="flex flex-col gap-1 items-center">
+            <FormattedDate :date="match?.date!" class="text-xs text-center text-base-content/60" />
+            <MatchStatus :status="match?.status!" />
+          </div>
+        </div>
       </div>
     </div>
   </div>

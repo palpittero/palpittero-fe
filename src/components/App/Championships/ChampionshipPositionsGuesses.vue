@@ -3,6 +3,8 @@ import TeamSelect from '@/components/Admin/Teams/TeamSelect.vue'
 import type { iChampionship, iChampionshipGuess, iTeam } from '@/types'
 import MatchGuessPointsBadge from './MatchGuessPointsBadge.vue'
 import BaseImage from '@/components/Shared/BaseImage.vue'
+import { useToastStore } from '@/stores'
+import services from '@/services'
 
 const props = defineProps<{
   championship: iChampionship
@@ -36,24 +38,53 @@ const positionsTitles: Record<number, string> = {
 const handleViewOtherChampionshipGuesses = () => {
   emit('view-championship-guesses', props.championship)
 }
+
+const toastStore = useToastStore()
+
+const handleUpdateChampionshipGuess = async () => {
+  try {
+    const payload = {
+      matchesGuesses: [],
+      championshipsGuesses: Object.values(championshipGuesses.value),
+    }
+
+    await services.guesses.registerGuesses(payload)
+
+    toastStore.success('Palpite registrado com sucesso!')
+  } catch (error) {
+    console.error('Error registering guesses:', error)
+    toastStore.error('Erro ao registrar palpites')
+  }
+}
 </script>
 
 <template>
-  <div class="mb-4 py-4">
-    <div
-      class="flex flex-col justify-between bg-primary/5 p-4 rounded-box border border-primary/20"
-    >
-      <div class="flex-1 gap-4">
-        <div class="animate-pulse space-y-4" v-if="loading">
-          <div class="h-4 bg-base-300 rounded w-1/2" />
-          <div class="h-10 bg-base-300 rounded" />
-        </div>
-        <div v-else class="flex flex-col lg:flex-row gap-4">
-          <div
-            v-for="(guess, index) in championshipGuesses"
-            :key="index"
-            class="flex items-center gap-2 w-full"
-          >
+  <div
+    v-if="championship.enableGuesses"
+    class="py-2 flex flex-col justify-between bg-primary/5 p-4 rounded-box border border-primary/20 gap-4"
+  >
+    <div class="text-right">
+      <button
+        @click="handleViewOtherChampionshipGuesses"
+        class="link link-hover text-xs link-primary"
+        type="button"
+      >
+        <i class="fa-solid fa-search" />
+        Ver palpites
+      </button>
+    </div>
+    <div class="flex-1 gap-4">
+      <div class="animate-pulse space-y-4" v-if="loading">
+        <div class="h-4 bg-base-300 rounded w-1/2" />
+        <div class="h-10 bg-base-300 rounded" />
+      </div>
+      <div v-else class="flex flex-col lg:flex-row gap-4 items-start">
+        <div
+          v-for="(guess, index) in championshipGuesses"
+          :key="index"
+          class="flex items-center gap-2 w-full"
+        >
+          <div class="flex flex-col w-full items-end">
             <TeamSelect
               :label="positionsTitles[guess.position]"
               :id="`position_${guess.position}`"
@@ -62,39 +93,36 @@ const handleViewOtherChampionshipGuesses = () => {
               :disabled="disabled"
               :championship-id="championship.id"
               :filter="(teams) => onFilterTeams({ guess, teams })"
+              @update:model-value="handleUpdateChampionshipGuess"
             >
               <template #label>
-                <div class="flex items-center gap-2 justify-between w-full">
-                  {{ positionsTitles[guess.position] }} -
+                <div class="flex flex-col lg:flex-row gap-1 justify-between w-full">
                   <div class="flex items-center gap-2">
-                    <BaseImage
-                      :src="championship.positions?.[index - 1]?.team?.badge"
-                      class="size-3.5 rounded-sm"
-                    />
-                    {{ championship.positions?.[index - 1]?.team?.name }}
+                    {{ positionsTitles[guess.position] }}
+                    <template v-if="championship.positions?.[index - 1]">
+                      -
+                      <div class="flex items-center gap-2">
+                        <BaseImage
+                          :src="championship.positions?.[index - 1]?.team?.badge"
+                          class="size-3.5 rounded-sm"
+                        />
+                        {{ championship.positions?.[index - 1]?.team?.name }}
+                      </div>
+                    </template>
                   </div>
-                  <MatchGuessPointsBadge
-                    class="!text-xs"
-                    :guess="{
-                      id: guess.id!,
-                      points: guess.points!,
-                    }"
-                  />
                 </div>
               </template>
             </TeamSelect>
+            <!-- Workaround to show the points badge for the championship guess -->
+            <MatchGuessPointsBadge
+              class="!text-xs"
+              :guess="{
+                ...guess,
+                id: championshipGuesses[index].teamId ? guess.id : undefined,
+              }"
+            />
           </div>
         </div>
-      </div>
-      <div class="text-right">
-        <button
-          @click="handleViewOtherChampionshipGuesses"
-          class="link link-hover text-xs link-primary"
-          type="button"
-        >
-          <i class="fa-solid fa-search" />
-          Ver todos os palpites
-        </button>
       </div>
     </div>
   </div>
